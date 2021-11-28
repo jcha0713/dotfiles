@@ -51,13 +51,10 @@ return require('packer').startup({
         end
       }
 
-      -- coc
-      --[[
+      -- copilot: copi
       use {
-        'neoclide/coc.nvim',
-        branch = 'release',
+        'github/copilot.vim',
       }
-      ]]
 
       -- luasnip: snippets for autocompletion
       use {
