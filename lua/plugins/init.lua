@@ -52,9 +52,11 @@ return require('packer').startup({
       }
 
       -- copilot: copi
+      --[[
       use {
         'github/copilot.vim',
       }
+      ]]
 
       -- luasnip: snippets for autocompletion
       use {
@@ -172,12 +174,17 @@ return require('packer').startup({
         requires = {'hrsh7th/nvim-cmp', 'tzachar/fuzzy.nvim'}
       }
 
-      -- auto pairs: paring brackets/braces automatically
+      -- autopairs: paring brackets/braces automatically
       use {
         'windwp/nvim-autopairs',
         config = function ()
           require 'plugins.autopairs'
         end
+      }
+
+      -- autotag: auto close the tag using treesitter
+      use {
+        'windwp/nvim-ts-autotag',
       }
 
       -- Treesitter: more language syntaxes

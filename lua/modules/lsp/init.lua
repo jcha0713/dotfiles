@@ -1,5 +1,8 @@
 local u = require('modules.utils')
 
+local capabilities = vim.lsp.protocol.make_client_capabilities()
+capabilities.textDocument.completion.completionItem.snippetSupport = true
+
 local on_attach = function(client, bufnr)
     -- commands
     u.lua_command("LspFormatting", "vim.lsp.buf.formatting()")
@@ -41,9 +44,10 @@ end
 require("modules.lsp.tsserver").setup(on_attach)
 require("modules.lsp.jsonls").setup(on_attach)
 require("modules.lsp.svelte").setup(on_attach)
-require("modules.lsp.html").setup(on_attach)
-require("modules.lsp.cssls").setup(on_attach)
+require("modules.lsp.html").setup(on_attach, capabilities)
+require("modules.lsp.cssls").setup(on_attach, capabilities)
 require("modules.lsp.tailwindcss").setup(on_attach)
+require("modules.lsp.emmet").setup(on_attach, capabilities)
 require("modules.lsp.null-ls").setup(on_attach)
 require("modules.lsp.sumneko").setup(on_attach)
 

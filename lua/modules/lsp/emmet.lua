@@ -1,14 +1,17 @@
 local lspconfig = require("lspconfig")
+local util = require 'lspconfig.util'
 
 local M = {}
 
 M.setup = function(on_attach, capabilities)
-    lspconfig.html.setup({
+    lspconfig.emmet_ls.setup({
       on_attach = function(client)
         on_attach(client)
       end,
       capabilities = capabilities,
-      cmd = { 'vscode-html-language-server', '--stdio' }
+      root_dir = function(fname)
+        return util.root_pattern('package.json', 'tsconfig.json', 'jsconfig.json', '.git')(fname)
+      end,
     })
 end
 
