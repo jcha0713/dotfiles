@@ -37,8 +37,24 @@ utils.map('n', '<Leader>p', ':RainbowParentheses!!<CR>')
 -- Clear highlight
 utils.map('n', '<Leader>n', '<cmd>noh<CR>')
 
---Telescope
+-- Telescope
 utils.map('n', '<Leader>ff', ':Telescope find_files<CR>')
 utils.map('n', '<Leader>fg', ':Telescope live_grep<CR>')
 utils.map('n', '<Leader>fb', ':Telescope buffers<CR>')
 utils.map('n', '<Leader>fr', ':Telescope projects<CR>')
+utils.map('n', '<Leader>fh', ':Telescope help_tags<CR>')
+
+-- always keep the cursor at center
+utils.map('n', 'n', 'nzzzv')
+utils.map('n', 'N', 'Nzzzv')
+utils.map('n', '<Leader>j', 'mzJ`z')
+
+-- set break points for undos
+utils.map('i', ',', ',<C-g>u')
+utils.map('i', '.', '.<C-g>u')
+utils.map('i', '<', '<<C-g>u')
+utils.map('i', '>', '><C-g>u')
+utils.map('i', '(', '(<C-g>u')
+utils.map('i', ')', ')<C-g>u')
+utils.map('i', '[', '[<C-g>u')
+utils.map('i', ']', ']<C-g>u')
