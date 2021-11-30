@@ -1,6 +1,10 @@
 require('telescope').load_extension('projects')
 require('telescope').load_extension('fzf')
 local actions = require('telescope.actions')
+local b = require('telescope.builtin')
+
+local M = {}
+
 require('telescope').setup {
     defaults = {
         layout_config = {
@@ -48,3 +52,10 @@ require('telescope').setup {
         }
     }
 }
+
+function M.edit_nvim()
+  b.find_files {
+    cwd = '~/.config/nvim',
+  }
+end
+

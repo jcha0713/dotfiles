@@ -43,6 +43,7 @@ utils.map('n', '<Leader>fg', ':Telescope live_grep<CR>')
 utils.map('n', '<Leader>fb', ':Telescope buffers<CR>')
 utils.map('n', '<Leader>fr', ':Telescope projects<CR>')
 utils.map('n', '<Leader>fh', ':Telescope help_tags<CR>')
+utils.map('n', '<Leader>lc', ':lua require("plugins.telescope").edit_nvim()<CR>')
 
 -- always keep the cursor at center
 utils.map('n', 'n', 'nzzzv')
@@ -58,3 +59,9 @@ utils.map('i', '(', '(<C-g>u')
 utils.map('i', ')', ')<C-g>u')
 utils.map('i', '[', '[<C-g>u')
 utils.map('i', ']', ']<C-g>u')
+
+-- move line
+utils.map('v', '<C-j>', ":m '>+1<CR>gv=gv")
+utils.map('v', '<C-k>', ":m '<-2<CR>gv=gv")
+utils.map('n', '<Leader>k', ":m .-2<CR>==")
+utils.map('n', '<Leader>j', ":m .+1<CR>==")
