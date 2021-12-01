@@ -225,5 +225,13 @@ return require('packer').startup({
         end
       }
 
+      -- emmet-vim: support for emmet
+      use {
+        'mattn/emmet-vim',
+        config = function ()
+          require 'plugins.emmet'
+        end
+      }
+
     end
   })

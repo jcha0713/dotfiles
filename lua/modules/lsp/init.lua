@@ -13,11 +13,15 @@ local on_attach = function(client, bufnr)
     u.lua_command("LspDiagLine", "vim.diagnostic.open_float(nil, global.lsp.border_opts)")
     u.lua_command("LspSignatureHelp", "vim.lsp.buf.signature_help()")
     u.lua_command("LspTypeDef", "vim.lsp.buf.type_definition()")
+    u.lua_command("LspDec", "vim.lsp.buf.declaration()")
+    u.lua_command("LspDef", "vim.lsp.buf.definition()")
 
     -- bindings
-    u.buf_map("n", "gi", ":LspRename<CR>", nil, bufnr)
+    u.buf_map("n", "gD", ":LspDec<CR>", nil, bufnr)
+    u.buf_map("n", "gd", ":LspDef<CR>", nil, bufnr)
+    u.buf_map("n", "<Leader>rn", ":LspRename<CR>", nil, bufnr)
     u.buf_map("n", "gy", ":LspTypeDef<CR>", nil, bufnr)
-    u.buf_map("n", "H", ":LspHover<CR>", nil, bufnr)
+    u.buf_map("n", "<Leader>h", ":LspHover<CR>", nil, bufnr)
     u.buf_map("n", "[a", ":LspDiagPrev<CR>", nil, bufnr)
     u.buf_map("n", "]a", ":LspDiagNext<CR>", nil, bufnr)
     u.buf_map("n", "<Leader>a", ":LspDiagLine<CR>", nil, bufnr)
@@ -47,9 +51,9 @@ require("modules.lsp.svelte").setup(on_attach)
 require("modules.lsp.html").setup(on_attach, capabilities)
 require("modules.lsp.cssls").setup(on_attach, capabilities)
 require("modules.lsp.tailwindcss").setup(on_attach)
-require("modules.lsp.emmet").setup(on_attach, capabilities)
 require("modules.lsp.null-ls").setup(on_attach)
 require("modules.lsp.sumneko").setup(on_attach)
+-- require("modules.lsp.emmet").setup(on_attach, capabilities)
 
 local configs = require 'lspconfig.configs'
 local util = require 'lspconfig.util'

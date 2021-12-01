@@ -99,12 +99,17 @@ custom('<leader>nv', 'find_nvim', 'find_files', {
   prompt_title = 'find files in neovim config',
 })
 
+custom('<leader>gnv', 'grep_nvim', 'live_grep', {
+  cwd = '~/.config/nvim',
+  prompt_title = 'find files in neovim config',
+})
+
 custom('<leader>jh', 'find_jhcha', 'find_files', {
   cwd = '/Users/jcha0713/jhcha/dev/',
   prompt_title = 'find files in my personal workspace',
 })
 
-custom('<leader>gjh', 'find_jhcha', 'live_grep', {
+custom('<leader>gjh', 'grep_jhcha', 'live_grep', {
   cwd = '/Users/jcha0713/jhcha/dev/',
   prompt_title = 'grep in my personal workspace',
 })
