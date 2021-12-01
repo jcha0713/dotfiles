@@ -1,11 +1,36 @@
-require('telescope').load_extension('projects')
-require('telescope').load_extension('fzf')
 local actions = require('telescope.actions')
-local b = require('telescope.builtin')
+local utils = require('modules.utils')
 
 local M = {}
 
+local ignore_files = {
+  'node_modules/.*',
+  '.git/.*',
+  '.yarn/.*',
+  '.neuron/*',
+  'fonts/*',
+  'icons/*',
+  'images/*',
+  'dist/*',
+  'build/*',
+  'yarn.lock',
+  'package%-lock.json',
+  '%.svg',
+  '%.png',
+  '%.jpeg',
+  '%.jpg',
+  '%.webp',
+  '%.ico',
+}
+
+local picker_opt = {
+  live_grep = {
+    file_ignore_patterns = ignore_files,
+  }
+}
+
 require('telescope').setup {
+    pickers = picker_opt,
     defaults = {
         layout_config = {
           width = 0.75,
@@ -23,14 +48,12 @@ require('telescope').setup {
         sorting_strategy = "ascending",
         layout_strategy = "horizontal",
         file_sorter = require'telescope.sorters'.get_fuzzy_file,
-        file_ignore_patterns = {},
         generic_sorter =require'telescope.sorters'.get_generic_fuzzy_sorter,
         path_display = {},
         winblend = 0,
         border = {},
         borderchars = {'─', '│', '─', '│', '╭', '╮', '╯', '╰'},
         color_devicons = true,
-        use_less = true,
         set_env = {['COLORTERM'] = 'truecolor'}, -- default = nil,
         file_previewer = require'telescope.previewers'.vim_buffer_cat.new,
         grep_previewer = require'telescope.previewers'.vim_buffer_vimgrep.new,
@@ -53,9 +76,38 @@ require('telescope').setup {
     }
 }
 
-function M.edit_nvim()
-  b.find_files {
-    cwd = '~/.config/nvim',
-  }
+require('telescope').load_extension('projects')
+require('telescope').load_extension('fzf')
+
+local builtin = function(mapping, picker, is_custom)
+  local module = is_custom and 'plugins.telescope' or 'telescope.builtin'
+  local rhs = string.format([[<cmd>lua require'%s'.%s()<cr>]], module, picker)
+  utils.map('n', mapping, rhs)
 end
 
+local custom = function(mapping, picker_name, builtin_name, opts)
+  opts = opts or {}
+  M[picker_name] = function()
+    require('telescope.builtin')[builtin_name](opts)
+  end
+  local rhs = string.format([[<cmd>lua require'plugins.telescope'.%s()<cr>]], picker_name)
+  utils.map('n', mapping, rhs)
+end
+
+custom('<leader>nv', 'find_nvim', 'find_files', {
+  cwd = '~/.config/nvim',
+  prompt_title = 'find files in neovim config',
+})
+
+custom('<leader>jh', 'find_jhcha', 'find_files', {
+  cwd = '/Users/jcha0713/jhcha/dev/',
+  prompt_title = 'find files in my personal workspace',
+})
+
+custom('<leader>gjh', 'find_jhcha', 'live_grep', {
+  cwd = '/Users/jcha0713/jhcha/dev/',
+  prompt_title = 'grep in my personal workspace',
+})
+
+
+return M

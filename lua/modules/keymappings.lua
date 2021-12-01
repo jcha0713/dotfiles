@@ -43,7 +43,6 @@ utils.map('n', '<Leader>fg', ':Telescope live_grep<CR>')
 utils.map('n', '<Leader>fb', ':Telescope buffers<CR>')
 utils.map('n', '<Leader>fr', ':Telescope projects<CR>')
 utils.map('n', '<Leader>fh', ':Telescope help_tags<CR>')
-utils.map('n', '<Leader>lc', ':lua require("plugins.telescope").edit_nvim()<CR>')
 
 -- always keep the cursor at center
 utils.map('n', 'n', 'nzzzv')
