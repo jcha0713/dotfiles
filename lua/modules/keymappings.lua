@@ -2,6 +2,9 @@ local utils = require('modules.utils')
 
 vim.g.mapleader = ' '
 
+-- full help page
+utils.map('c', ':help', ':tab help<CR>')
+
 -- easy keys for ESC
 utils.map('i', 'jj', '<ESC>')
 
@@ -9,7 +12,7 @@ utils.map('i', 'jj', '<ESC>')
 utils.map('n', '<CR>', 'o<ESC>k')
 
 -- no hl
-utils.map('n', '<Leader>h', ':set hlsearch!<CR>')
+-- utils.map('n', '<Leader>h', ':set hlsearch!<CR>')
 
 -- explorer
 utils.map('n', '<C-n>', ':NvimTreeToggle<CR>')
