@@ -4,7 +4,7 @@ local util = require 'lspconfig.util'
 local M = {}
 
 M.setup = function(on_attach, capabilities)
-    lspconfig.emmet_ls.setup({
+    lspconfig.emmet_language_server.setup({
       on_attach = function(client)
         on_attach(client)
       end,
