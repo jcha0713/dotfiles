@@ -22,3 +22,4 @@ o.smarttab      = true -- <BS> deletes a shiftwidth worth of spaces
 o.termguicolors = true -- Turn true RGB on
 o.wildignorecase= true -- ignore case for paths or directories
 o.wildmenu      = true -- <Tab> to invoke completion above the command-line
+o.hlsearch      = false -- no highlight for searching 
