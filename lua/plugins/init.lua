@@ -233,5 +233,15 @@ return require('packer').startup({
         end
       }
 
+      -- comment.nvim: comment out lines
+      use {
+        'numToStr/Comment.nvim',
+        config = function()
+            require 'plugins.comment'
+        end
+      }
+
+
+
     end
-  })
+})
