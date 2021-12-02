@@ -196,6 +196,14 @@ return require('packer').startup({
         end
       }
 
+      -- nvim-treesitter-textsubjects: new way to select text objects
+      use {
+        'RRethy/nvim-treesitter-textsubjects',
+        config = function ()
+          require 'plugins/textsubjects'
+        end
+      }
+
       -- neoformat: ultimate formatter
       use {
         'sbdchd/neoformat'
@@ -240,8 +248,6 @@ return require('packer').startup({
             require 'plugins.comment'
         end
       }
-
-
 
     end
 })
