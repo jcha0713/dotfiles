@@ -188,11 +188,19 @@ return require('packer').startup({
       }
 
       -- Treesitter: more language syntaxes
-       use {
+      use {
         'nvim-treesitter/nvim-treesitter',
         run = ':TSUpdate',
         config = function ()
           require 'plugins/treesitter'
+        end
+      }
+
+      -- Treesitter textobjects: more text objects to easily select them
+      use {
+        'nvim-treesitter/nvim-treesitter-textobjects',
+        config = function ()
+          require 'plugins/textobjects'
         end
       }
 

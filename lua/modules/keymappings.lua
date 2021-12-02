@@ -11,7 +11,7 @@ utils.map('i', 'jj', '<ESC>')
 -- paste with Enter key
 utils.map('n', '<CR>', 'o<ESC>k')
 
--- no hl
+-- toggle hl
 -- utils.map('n', '<Leader>h', ':set hlsearch!<CR>')
 
 -- explorer
