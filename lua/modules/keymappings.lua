@@ -67,3 +67,6 @@ utils.map('v', '<C-j>', ":m '>+1<CR>gv=gv")
 utils.map('v', '<C-k>', ":m '<-2<CR>gv=gv")
 utils.map('n', '<Leader>k', ":m .-2<CR>==")
 utils.map('n', '<Leader>j', ":m .+1<CR>==")
+
+-- vv for select line
+utils.map ('n', 'vv', '<S-v>')
