@@ -1,6 +1,7 @@
 local cmp = require "cmp"
 
 local lspkind = require "lspkind"
+local ls = require "luasnip"
 
 cmp.setup {
   snippet = {
@@ -34,25 +35,27 @@ cmp.setup {
       behavior = cmp.ConfirmBehavior.Replace,
       select = true,
     }, ]]
-    --   ["<tab>"] = function(fallback)
-    --     if
-    --     else
-    --       fallback()
-    --     end
-    --   end,
-    --   ["<s-tab>"] = function(fallback)
-    --     if
-    --     else
-    --       fallback()
-    --     end
-    --   end,
+    ["<tab>"] = cmp.mapping(function(fallback)
+      if ls.expand_or_jumpable() then
+        ls.expand_or_jump()
+      else
+        fallback()
+      end
+    end, { "i", "s" }),
+    ["<s-tab>"] = cmp.mapping(function(fallback)
+      if ls.jumpable(-1) then
+        ls.jump(-1)
+      else
+        fallback()
+      end
+    end, { "i", "s" }),
   },
   sources = {
+    { name = "luasnip" },
     { name = "nvim_lua" },
     { name = "nvim_lsp" },
     { name = "cmp_tabnine" },
     { name = "path" },
-    { name = "luasnip" },
     {
       name = "fuzzy_buffer",
       keyword_length = 5,
@@ -64,3 +67,10 @@ cmp.setup {
     ghost_text = false,
   },
 }
+
+-- pmenu style
+local Color, colors, Group, groups = require("colorbuddy").setup()
+Color.new("pMatch", "#92b7d7")
+
+Group.new("CmpMatch", colors.pMatch, nil)
+Group.new("CmpItemAbbrMatch", groups.CmpMatch, nil)
