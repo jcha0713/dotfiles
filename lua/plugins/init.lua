@@ -1,261 +1,281 @@
 local fn = vim.fn
-local execute = vim.api.nvim_command
+  local execute = vim.api.nvim_command
 
 -- Auto install packer.nvim if not exists
-local install_path = fn.stdpath('data')..'/site/pack/packer/opt/packer.nvim'
+local install_path = fn.stdpath "data" .. "/site/pack/packer/opt/packer.nvim"
 if fn.empty(fn.glob(install_path)) > 0 then
-  execute('!git clone https://github.com/wbthomason/packer.nvim '..install_path)
+  execute(
+    "!git clone https://github.com/wbthomason/packer.nvim " .. install_path
+  )
 end
 vim.cmd [[packadd packer.nvim]]
-vim.cmd 'autocmd BufWritePost plugins.lua PackerCompile' -- Auto compile when there are changes in plugins.lua
-
+vim.cmd "autocmd BufWritePost plugins.lua PackerCompile" -- Auto compile when there are changes in plugins.lua
 
 -- Plugins
 
-return require('packer').startup({
-    function (use)
-      -- Packer manages plugins
-      use { 'wbthomason/packer.nvim', opt = true }
+return require("packer").startup {
+  function(use)
+    -- Packer manages plugins
+    use { "wbthomason/packer.nvim", opt = true }
 
-      -- By junegunn
-      -- Seoul256 color scheme
-      use {
-        'junegunn/seoul256.vim',
-        config = function ()
-          vim.g.seoul256_background = 236
-        end
-      }
+    -- By junegunn
+    -- Seoul256 color scheme
+    use {
+      "junegunn/seoul256.vim",
+      config = function()
+        vim.g.seoul256_background = 236
+      end,
+    }
 
-      -- rainbow_parentheses: colorful parenthesis (!)
-      use {
-        'junegunn/rainbow_parentheses.vim',
-        config = function ()
-          require 'plugins.rainbow_parentheses'
-        end
-      }
+    -- rainbow_parentheses: colorful parenthesis (!)
+    use {
+      "junegunn/rainbow_parentheses.vim",
+      config = function()
+        require "plugins.rainbow_parentheses"
+      end,
+    }
 
-      -- Goyo + limelight: for ultra focus mode
-      use {
-        'junegunn/goyo.vim',
-        config = function ()
-          vim.cmd [[colo seoul256]]
-        end
-      }
-      use {
-        'junegunn/limelight.vim',
-        config = function ()
-          vim.api.nvim_command([[
+    -- Goyo + limelight: for ultra focus mode
+    use {
+      "junegunn/goyo.vim",
+      config = function()
+        vim.cmd [[colo seoul256]]
+      end,
+    }
+    use {
+      "junegunn/limelight.vim",
+      config = function()
+        vim.api.nvim_command [[
             autocmd! User GoyoEnter Limelight
             autocmd! User GoyoLeave Limelight!
-          ]])
-        end
-      }
+          ]]
+      end,
+    }
 
-      -- copilot: copi
-      --[[
+    -- copilot: copi
+    --[[
       use {
         'github/copilot.vim',
       }
       ]]
 
-      -- luasnip: snippets for autocompletion
-      use {
-        'L3MON4D3/Luasnip',
-        config = function ()
-          require 'plugins.luasnip'
-        end
-      }
+    -- luasnip: snippets for autocompletion
+    use {
+      "L3MON4D3/Luasnip",
+      config = function()
+        require "plugins.luasnip"
+      end,
+    }
 
-      -- nvim-cmp: manages snippets
-      use {
-        'hrsh7th/nvim-cmp',
-        config = function ()
-          require 'plugins.cmp'
-        end,
-        requires = {
-          'hrsh7th/cmp-nvim-lsp',
-          'hrsh7th/cmp-path',
-          'hrsh7th/cmp-cmdline',
-          'saadparwaiz1/cmp_luasnip',
-          'tamago324/nlsp-settings.nvim',
-          'onsails/lspkind-nvim'
-        }
-      }
+    -- nvim-cmp: manages snippets
+    use {
+      "hrsh7th/nvim-cmp",
+      config = function()
+        require "plugins.cmp"
+      end,
+      requires = {
+        "hrsh7th/cmp-nvim-lsp",
+        "hrsh7th/cmp-path",
+        "hrsh7th/cmp-nvim-lua",
+        "hrsh7th/cmp-cmdline",
+        "saadparwaiz1/cmp_luasnip",
+        "tamago324/nlsp-settings.nvim",
+        "onsails/lspkind-nvim",
+      },
+    }
 
-      -- cmp-fuzzy-buffer: buffer source using fuzzy
-      use {
-        'tzachar/cmp-fuzzy-buffer',
-        requires = { 'hrsh7th/nvim-cmp', 'tzachar/fuzzy.nvim' }
-      }
+    -- cmp-tabnine: tabnine autocompletion
+    use {
+      "tzachar/cmp-tabnine",
+      run = "./install.sh",
+      requires = "hrsh7th/nvim-cmp",
+      config = function()
+        require "plugins.tabnine"
+      end,
+    }
 
-      -- nvim-lspconfig: lsp configuration
-      use {
-        'neovim/nvim-lspconfig',
-        requires = {
-          'jose-elias-alvarez/null-ls.nvim',
-          'jose-elias-alvarez/nvim-lsp-ts-utils',
-        },
-        config = function ()
-          require 'modules.lsp'
-        end
-      }
+    -- cmp-fuzzy-buffer: buffer source using fuzzy
+    use {
+      "tzachar/cmp-fuzzy-buffer",
+      requires = { "hrsh7th/nvim-cmp", "tzachar/fuzzy.nvim" },
+    }
 
-      -- vim-illuminate: find occurrences
-      use {
-        'RRethy/vim-illuminate',
-        config = function ()
-          require 'plugins.illuminate'
-        end
-      }
+    -- nvim-lspconfig: lsp configuration
+    use {
+      "neovim/nvim-lspconfig",
+      requires = {
+        "jose-elias-alvarez/null-ls.nvim",
+        "jose-elias-alvarez/nvim-lsp-ts-utils",
+      },
+      config = function()
+        require "modules.lsp"
+      end,
+    }
 
-      -- vim-surround: easily change surrounding tags
-      use {
-        'tpope/vim-surround'
-      }
+    -- vim-illuminate: find occurrences
+    use {
+      "RRethy/vim-illuminate",
+      config = function()
+        require "plugins.illuminate"
+      end,
+    }
 
-      -- schemastore: access to the SchemaStore catalog
-      use {
-        'b0o/schemastore.nvim'
-      }
+    -- vim-surround: easily change surrounding tags
+    use {
+      "tpope/vim-surround",
+    }
 
-      -- Dashboard: start page
-      use {
-        'glepnir/dashboard-nvim',
-        config = function ()
-          require "plugins.dashboard"
-        end
-      }
+    -- schemastore: access to the SchemaStore catalog
+    use {
+      "b0o/schemastore.nvim",
+    }
 
-      -- NvimTree: file explore
-      use {
-        'kyazdani42/nvim-tree.lua',
-        config = function ()
-          require 'plugins.nvim-tree'
-        end
-      }
+    -- Dashboard: start page
+    use {
+      "glepnir/dashboard-nvim",
+      config = function()
+        require "plugins.dashboard"
+      end,
+    }
 
-      -- lualine: better status line
-      use {
-        'nvim-lualine/lualine.nvim',
-        requires = { 'kyazdani42/nvim-web-devicons', opt = true },
-        config = function ()
-          require 'plugins.lualine'
-        end
-      }
+    -- NvimTree: file explore
+    use {
+      "kyazdani42/nvim-tree.lua",
+      config = function()
+        require "plugins.nvim-tree"
+      end,
+    }
 
-      -- Bufferline: bufferline management
-      use {
-        'akinsho/bufferline.nvim',
-        requires = 'kyazdani42/nvim-web-devicons',
-        config = function ()
-          require 'plugins.bufferline'
-        end
-      }
+    -- lualine: better status line
+    use {
+      "nvim-lualine/lualine.nvim",
+      requires = { "kyazdani42/nvim-web-devicons", opt = true },
+      config = function()
+        require "plugins.lualine"
+      end,
+    }
 
-      -- Telescope family
-      -- telescope: file finder / explorer
-      use {
-        'nvim-telescope/telescope.nvim',
-        requires = 'nvim-lua/plenary.nvim',
-        config = function ()
-          require 'plugins.telescope'
-        end
-      }
+    -- Bufferline: bufferline management
+    use {
+      "akinsho/bufferline.nvim",
+      requires = "kyazdani42/nvim-web-devicons",
+      config = function()
+        require "plugins.bufferline"
+      end,
+    }
 
-      use {
-        'BurntSushi/ripgrep'
-      }
-      use {
-        'nvim-telescope/telescope-fzf-native.nvim',
-        run = 'make'
-      }
-      use {
-        'tzachar/fuzzy.nvim',
-        requires = {'hrsh7th/nvim-cmp', 'tzachar/fuzzy.nvim'}
-      }
+    -- Telescope family
+    -- telescope: file finder / explorer
+    use {
+      "nvim-telescope/telescope.nvim",
+      requires = "nvim-lua/plenary.nvim",
+      config = function()
+        require "plugins.telescope"
+      end,
+    }
 
-      -- autopairs: paring brackets/braces automatically
-      use {
-        'windwp/nvim-autopairs',
-        config = function ()
-          require 'plugins.autopairs'
-        end
-      }
+    use {
+      "BurntSushi/ripgrep",
+    }
+    use {
+      "nvim-telescope/telescope-fzf-native.nvim",
+      run = "make",
+    }
+    use {
+      "tzachar/fuzzy.nvim",
+      requires = { "hrsh7th/nvim-cmp", "tzachar/fuzzy.nvim" },
+    }
 
-      -- autotag: auto close the tag using treesitter
-      use {
-        'windwp/nvim-ts-autotag',
-      }
+    -- autopairs: paring brackets/braces automatically
+    use {
+      "windwp/nvim-autopairs",
+      config = function()
+        require "plugins.autopairs"
+      end,
+    }
 
-      -- Treesitter: more language syntaxes
-      use {
-        'nvim-treesitter/nvim-treesitter',
-        run = ':TSUpdate',
-        config = function ()
-          require 'plugins/treesitter'
-        end
-      }
+    -- autotag: auto close the tag using treesitter
+    use {
+      "windwp/nvim-ts-autotag",
+    }
 
-      -- Treesitter textobjects: more text objects to easily select them
-      use {
-        'nvim-treesitter/nvim-treesitter-textobjects',
-        config = function ()
-          require 'plugins/textobjects'
-        end
-      }
+    -- Treesitter: more language syntaxes
+    use {
+      "nvim-treesitter/nvim-treesitter",
+      run = ":TSUpdate",
+      config = function()
+        require "plugins/treesitter"
+      end,
+    }
 
-      -- nvim-treesitter-textsubjects: new way to select text objects
-      use {
-        'RRethy/nvim-treesitter-textsubjects',
-        config = function ()
-          require 'plugins/textsubjects'
-        end
-      }
+    -- Treesitter textobjects: more text objects to easily select them
+    use {
+      "nvim-treesitter/nvim-treesitter-textobjects",
+      config = function()
+        require "plugins/textobjects"
+      end,
+    }
 
-      -- neoformat: ultimate formatter
-      use {
-        'sbdchd/neoformat'
-      }
+    -- nvim-treesitter-textsubjects: new way to select text objects
+    use {
+      "RRethy/nvim-treesitter-textsubjects",
+      config = function()
+        require "plugins/textsubjects"
+      end,
+    }
 
-      -- neoscroll: enables smooth scrolling
-      use {
-        'karb94/neoscroll.nvim',
-        config = function ()
-          require 'plugins.neoscroll'
-        end
-      }
+    -- neoformat: ultimate formatter
+    use {
+      "sbdchd/neoformat",
+    }
 
-      -- nvim-colorizer: color label for hex codes
-      use {
-        'norcalli/nvim-colorizer.lua',
-        config = function ()
-          require 'plugins.colorizer'
-        end
-      }
+    -- neoscroll: enables smooth scrolling
+    use {
+      "karb94/neoscroll.nvim",
+      config = function()
+        require "plugins.neoscroll"
+      end,
+    }
 
-      -- project-nvim: project management plugin
-      use {
-        'ahmedkhalf/project.nvim',
-        config = function ()
-          require 'plugins.project_nvim'
-        end
-      }
+    -- nvim-colorizer: color label for hex codes
+    use {
+      "norcalli/nvim-colorizer.lua",
+      config = function()
+        require "plugins.colorizer"
+      end,
+    }
 
-      -- emmet-vim: support for emmet
-      use {
-        'mattn/emmet-vim',
-        config = function ()
-          require 'plugins.emmet'
-        end
-      }
+    -- project-nvim: project management plugin
+    use {
+      "ahmedkhalf/project.nvim",
+      config = function()
+        require "plugins.project_nvim"
+      end,
+    }
 
-      -- comment.nvim: comment out lines
-      use {
-        'numToStr/Comment.nvim',
-        config = function()
-            require 'plugins.comment'
-        end
-      }
+    -- emmet-vim: support for emmet
+    use {
+      "mattn/emmet-vim",
+      config = function()
+        require "plugins.emmet"
+      end,
+    }
 
-    end
-})
+    -- comment.nvim: comment out lines
+    use {
+      "numToStr/Comment.nvim",
+      config = function()
+        require "plugins.comment"
+      end,
+    }
+
+    -- colorbuddy.nvim: make defining colors easy
+    use {
+      "tjdevries/Colorbuddy.nvim",
+      config = function()
+        require "plugins.colorbuddy"
+      end
+    }
+
+  end,
+}
