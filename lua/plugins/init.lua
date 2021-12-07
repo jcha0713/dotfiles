@@ -1,5 +1,5 @@
 local fn = vim.fn
-  local execute = vim.api.nvim_command
+local execute = vim.api.nvim_command
 
 -- Auto install packer.nvim if not exists
 local install_path = fn.stdpath "data" .. "/site/pack/packer/opt/packer.nvim"
@@ -58,6 +58,11 @@ return require("packer").startup {
         'github/copilot.vim',
       }
       ]]
+
+    -- friendly snippets: snippets for autocompletion
+    use {
+      "rafamadriz/friendly-snippets",
+    }
 
     -- luasnip: snippets for autocompletion
     use {
@@ -274,8 +279,7 @@ return require("packer").startup {
       "tjdevries/Colorbuddy.nvim",
       config = function()
         require "plugins.colorbuddy"
-      end
+      end,
     }
-
   end,
 }
