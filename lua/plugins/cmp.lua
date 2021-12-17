@@ -20,6 +20,7 @@ cmp.setup {
         luasnip = "[Snip]",
         nvim_lua = "[Lua]",
         cmp_tabnine = "[TN]",
+        look = "[Dict]",
       },
     },
   },
@@ -60,6 +61,15 @@ cmp.setup {
       name = "fuzzy_buffer",
       keyword_length = 5,
       max_item_count = 10,
+    },
+    {
+      name = "look",
+      keyword_length = 2,
+      max_item_count = 4,
+      option = {
+        convert_case = true,
+        loud = true,
+      },
     },
   },
   experimental = {
