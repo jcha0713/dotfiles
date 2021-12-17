@@ -1,5 +1,8 @@
 local Color, colors, Group, groups, styles = require("colorbuddy").setup()
 
+vim.g.seoul256_background = 236
+vim.cmd [[colo seoul256]]
+
 -- new popup menu style
 Color.new("pBg", "#5e5e5e")
 Color.new("pText", "#b1cfb1")
@@ -12,3 +15,15 @@ Group.new("mypmenuSbar", nil, colors.pThumb)
 Group.new("pmenu", groups.mypmenu, groups.mypmenu)
 Group.new("pmenuSel", groups.mypmenuSel, groups.mypmenuSel, groups.mypmenuSel)
 Group.new("pmenuThumb", nil, groups.mypmenuSbar)
+
+-- comment style
+Color.new("comment", "#808080")
+
+Group.new("mycomment", colors.comment, nil, styles.italic)
+Group.new("comment", groups.mycomment, groups.mycomment, groups.mycomment)
+
+-- incSearch: highlight when a line gets copied
+Color.new("hlonyank", "#5bccf5")
+
+Group.new("myhlonyank", nil, colors.hlonyank, nil)
+Group.new("incSearch", groups.myhlonyank, groups.myhlonyank, groups.myhlonyank)
