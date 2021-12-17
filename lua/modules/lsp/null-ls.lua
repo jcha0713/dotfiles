@@ -23,6 +23,7 @@ local sources = {
       "html",
       "astro",
       "json",
+      "jsonc",
       "svelte",
       "markdown",
       "css",
@@ -34,8 +35,7 @@ local sources = {
   },
   b.formatting.trim_whitespace.with { filetypes = { "tmux", "teal", "zsh" } },
   b.formatting.shfmt,
-  b.diagnostics.write_good,
-  b.diagnostics.markdownlint,
+  -- b.diagnostics.markdownlint,
   b.diagnostics.teal,
   b.diagnostics.shellcheck.with { diagnostics_format = "#{m} [#{c}]" },
   b.code_actions.gitsigns,
@@ -44,11 +44,11 @@ local sources = {
 
 local M = {}
 M.setup = function(on_attach)
-  null_ls.config {
+  null_ls.setup {
     -- debug = true,
     sources = sources,
+    on_attach = on_attach,
   }
-  require("lspconfig")["null-ls"].setup { on_attach = on_attach }
 end
 
 return M
