@@ -22,9 +22,10 @@ return require("packer").startup {
     -- Seoul256 color scheme
     use {
       "junegunn/seoul256.vim",
-      config = function()
-        vim.g.seoul256_background = 236
-      end,
+    }
+
+    use {
+      "morhetz/gruvbox",
     }
 
     -- rainbow_parentheses: colorful parenthesis (!)
@@ -38,10 +39,8 @@ return require("packer").startup {
     -- Goyo + limelight: for ultra focus mode
     use {
       "junegunn/goyo.vim",
-      config = function()
-        vim.cmd [[colo seoul256]]
-      end,
     }
+
     use {
       "junegunn/limelight.vim",
       config = function()
@@ -67,6 +66,7 @@ return require("packer").startup {
     -- luasnip: snippets for autocompletion
     use {
       "L3MON4D3/Luasnip",
+      commit = "09e3bc6",
       config = function()
         require "plugins.luasnip"
       end,
@@ -86,6 +86,7 @@ return require("packer").startup {
         "saadparwaiz1/cmp_luasnip",
         "tamago324/nlsp-settings.nvim",
         "onsails/lspkind-nvim",
+        "octaltree/cmp-look",
       },
     }
 
@@ -136,12 +137,12 @@ return require("packer").startup {
     }
 
     -- Dashboard: start page
-    use {
+    --[[ use {
       "glepnir/dashboard-nvim",
       config = function()
         require "plugins.dashboard"
       end,
-    }
+    } ]]
 
     -- NvimTree: file explore
     use {
