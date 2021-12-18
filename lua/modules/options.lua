@@ -3,6 +3,7 @@ local indent = 2 -- num of spaces for indentation
 
 o.autoindent = true -- auto indent when starting a new line
 o.breakindent = true -- wrapped line is visually indented
+o.conceallevel = 2
 o.clipboard = "unnamed,unnamedplus"
 o.completeopt = { "menu", "menuone", "noinsert", "noselect" } -- options for insert mode completion
 o.cursorline = true -- highlight the line of the cursor
