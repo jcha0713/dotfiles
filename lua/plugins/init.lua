@@ -267,6 +267,11 @@ return require("packer").startup {
       end,
     }
 
+    -- Glow: markdown preview
+    -- use {
+    --   "ellisonleao/glow.nvim",
+    -- }
+
     -- comment.nvim: comment out lines
     use {
       "numToStr/Comment.nvim",
