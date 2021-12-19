@@ -36,20 +36,28 @@ return require("packer").startup {
       end,
     }
 
-    -- Goyo + limelight: for ultra focus mode
-    use {
-      "junegunn/goyo.vim",
-    }
-
-    use {
-      "junegunn/limelight.vim",
-      config = function()
-        vim.api.nvim_command [[
-            autocmd! User GoyoEnter Limelight
-            autocmd! User GoyoLeave Limelight!
-          ]]
-      end,
-    }
+    -- Zen Mode: for ultra focus mode
+    -- use {
+    --   "folke/zen-mode.nvim",
+    --   config = function()
+    --     require("zen-mode").setup {
+    --       window = {
+    --         backdrop = 0.8,
+    --         width = 90,
+    --         height = 0.8,
+    --         options = {
+    --           number = false,
+    --           relativenumber = false,
+    --         },
+    --       },
+    --       plugins = {
+    --         tmux = {
+    --           enabled = true,
+    --         },
+    --       },
+    --     }
+    --   end,
+    -- }
 
     -- copilot: copi
     --[[

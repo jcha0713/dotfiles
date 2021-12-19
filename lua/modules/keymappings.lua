@@ -27,9 +27,6 @@ utils.map("n", "<CR>", "o<ESC>k")
 -- explorer
 utils.map("n", "<C-n>", ":NvimTreeToggle<CR>")
 
--- Enter Goyo
-utils.map("n", "<Leader>g", ":Goyo<CR>")
-
 -- source lua file
 utils.map("n", "<Leader>s", ":luafile %<CR>")
 
