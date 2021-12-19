@@ -17,7 +17,7 @@ Group.new("pmenuSel", groups.mypmenuSel, groups.mypmenuSel, groups.mypmenuSel)
 Group.new("pmenuThumb", nil, groups.mypmenuSbar)
 
 -- comment style
-Color.new("comment", "#808080")
+Color.new("comment", "#888888")
 
 Group.new("mycomment", colors.comment, nil, styles.italic)
 Group.new("comment", groups.mycomment, groups.mycomment, groups.mycomment)
