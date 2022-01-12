@@ -6,14 +6,22 @@ vim.g.mapleader = " "
 utils.map("c", ":help", ":tab help<CR>")
 
 -- easy keys for ESC
-utils.map("i", "jj", "<ESC>")
+utils.map("i", "jj", "<C-[>")
+
+utils.map("n", "<C-c>", "<C-[>")
 
 -- change colorscheme to gruvbox
 utils.map("n", "<Leader>cc", ":colorscheme gruvbox<CR>")
 
+-- limelight toggle
+utils.map("n", "<Leader>l", ":Limelight!!<CR>")
+
 -- split windows
 utils.map("n", "<Leader>|", "<C-W>v")
 utils.map("n", "<Leader>_", "<C-W>s")
+
+-- MarkdownPreviewToggle
+utils.map("n", "<Leader>mp", ":MarkdownPreviewToggle<CR>")
 
 -- fzf-dictionary
 vim.cmd [[  imap <C-l> <Plug>(fzf-dictionary-open) ]]
@@ -40,9 +48,6 @@ utils.map("n", "<C-l>", "<C-w>l")
 utils.map("n", "<S-k>", ":BufferLineCycleNext<CR>")
 utils.map("n", "<S-j>", ":BufferLineCyclePrev<CR>")
 utils.map("n", "<Leader>x", ":bdelete<CR>")
-
--- Rainbow Parentheses
-utils.map("n", "<Leader>p", ":RainbowParentheses!!<CR>")
 
 -- Clear highlight
 utils.map("n", "<Leader>n", "<cmd>noh<CR>")
@@ -78,3 +83,10 @@ utils.map("n", "<Leader>j", ":m .+1<CR>==")
 
 -- vv for select line
 utils.map("n", "vv", "<S-v>")
+
+-- Neorg: daily journal
+utils.map("n", "<leader>jt", ":Neorg journal today<CR>")
+
+-- Hop.nvim
+utils.map("n", "<leader>hl", ":HopLine<CR>")
+utils.map("n", "<leader>hw", ":HopWord<CR>")
