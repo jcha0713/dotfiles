@@ -36,11 +36,12 @@ require("telescope").setup {
       "data/lua%-language%-server",
     },
     layout_config = {
-      width = 0.75,
+      width = 0.90,
       prompt_position = "top",
       preview_cutoff = 120,
       horizontal = { mirror = false },
       vertical = { mirror = false },
+      preview_width = 0.55,
     },
     find_command = {
       "rg",
@@ -125,6 +126,16 @@ custom("<leader>jh", "find_jhcha", "find_files", {
 custom("<leader>gjh", "grep_jhcha", "live_grep", {
   cwd = "/Users/jcha0713/jhcha/dev/",
   prompt_title = "grep in my personal workspace",
+})
+
+custom("<leader>nt", "find_note", "find_files", {
+  cwd = "/Users/jcha0713/jhcha/note",
+  prompt_title = "find files in my note folder",
+})
+
+custom("<leader>gnt", "grep_note", "live_grep", {
+  cwd = "/Users/jcha0713/jhcha/note/",
+  prompt_title = "grep in my note folder",
 })
 
 return M
