@@ -20,51 +20,58 @@ return require("packer").startup {
 
     -- By junegunn
     -- Seoul256 color scheme
+    -- use {
+    --   "junegunn/seoul256.vim",
+    -- }
+
+    -- vim-startify: start screen
     use {
-      "junegunn/seoul256.vim",
+      "mhinz/vim-startify",
     }
 
+    -- markdown-preview: preview for *.md
     use {
-      "morhetz/gruvbox",
+      "iamcco/markdown-preview.nvim",
+      run = "cd app && npm install",
+      cmd = "MarkdownPreview",
+      setup = function()
+        vim.g.mkdp_filetypes = { "markdown" }
+      end,
+      ft = { "markdown" },
     }
 
-    -- rainbow_parentheses: colorful parenthesis (!)
+    -- vim-pencil: writing in vim
     use {
-      "junegunn/rainbow_parentheses.vim",
+      "reedes/vim-pencil",
+    }
+
+    -- Gruvbox-flat: colorscheme
+    use {
+      "eddyekofo94/gruvbox-flat.nvim",
+    }
+
+    -- write good: highlight for writing problems
+    use {
+      "davidbeckingsale/writegood.vim",
+    }
+
+    -- limelight: focus on one paragraph
+    use {
+      "junegunn/limelight.vim",
+    }
+
+    -- neorg: todo list
+    use {
+      "nvim-neorg/neorg",
       config = function()
-        require "plugins.rainbow_parentheses"
+        require "plugins.neorg"
       end,
     }
 
-    -- Zen Mode: for ultra focus mode
-    -- use {
-    --   "folke/zen-mode.nvim",
-    --   config = function()
-    --     require("zen-mode").setup {
-    --       window = {
-    --         backdrop = 0.8,
-    --         width = 90,
-    --         height = 0.8,
-    --         options = {
-    --           number = false,
-    --           relativenumber = false,
-    --         },
-    --       },
-    --       plugins = {
-    --         tmux = {
-    --           enabled = true,
-    --         },
-    --       },
-    --     }
-    --   end,
-    -- }
-
-    -- copilot: copi
-    --[[
-      use {
-        'github/copilot.vim',
-      }
-      ]]
+    -- nvim-peekup: pickup from register
+    use {
+      "gennaro-tedesco/nvim-peekup",
+    }
 
     -- friendly snippets: snippets for autocompletion
     use {
@@ -139,18 +146,15 @@ return require("packer").startup {
       "tpope/vim-surround",
     }
 
+    -- vim-fugitive: git integration for neovim
+    use {
+      "tpope/vim-fugitive",
+    }
+
     -- schemastore: access to the SchemaStore catalog
     use {
       "b0o/schemastore.nvim",
     }
-
-    -- Dashboard: start page
-    --[[ use {
-      "glepnir/dashboard-nvim",
-      config = function()
-        require "plugins.dashboard"
-      end,
-    } ]]
 
     -- NvimTree: file explore
     use {
@@ -239,9 +243,9 @@ return require("packer").startup {
     }
 
     -- neoformat: ultimate formatter
-    use {
-      "sbdchd/neoformat",
-    }
+    -- use {
+    --   "sbdchd/neoformat",
+    -- }
 
     -- neoscroll: enables smooth scrolling
     use {
@@ -276,15 +280,26 @@ return require("packer").startup {
     }
 
     -- Glow: markdown preview
-    -- use {
-    --   "ellisonleao/glow.nvim",
-    -- }
+    use {
+      "ellisonleao/glow.nvim",
+      config = function()
+        vim.g.glow_border = "rounded"
+      end,
+    }
 
     -- comment.nvim: comment out lines
     use {
       "numToStr/Comment.nvim",
       config = function()
         require "plugins.comment"
+      end,
+    }
+
+    -- hop.nvim: flexible cursor movement
+    use {
+      "phaazon/hop.nvim",
+      config = function()
+        require "plugins.hop"
       end,
     }
 
