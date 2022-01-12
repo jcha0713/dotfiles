@@ -26,18 +26,18 @@ parser_configs.norg_table = {
 
 require("nvim-treesitter.configs").setup {
   ensure_installed = {
+    "css",
+    "html",
+    "javascript",
+    "json",
+    "jsonc",
+    "lua",
     "norg",
     "norg_meta",
     "norg_table",
-    "html",
-    "css",
-    "javascript",
-    "typescript",
-    "svelte",
     "scss",
-    "lua",
-    "json",
-    "jsonc",
+    "svelte",
+    "typescript",
   },
   highlight = {
     enable = true, -- false will disable the whole extension
