@@ -12,6 +12,9 @@ vim.api.nvim_buf_set_keymap(
   "gk",
   { noremap = true, silent = true }
 )
+vim.cmd [[
+let g:markdown_fenced_languages = ['javascript', 'js=javascript']
+]]
 
 vim.opt.conceallevel = 2
 vim.cmd [[
