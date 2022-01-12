@@ -29,7 +29,7 @@ cmp.setup {
     ["<C-j>"] = cmp.mapping.select_next_item(),
     ["<C-d>"] = cmp.mapping.scroll_docs(-4),
     ["<C-u>"] = cmp.mapping.scroll_docs(4),
-    ["<C-space>"] = cmp.mapping.complete(),
+    -- ["<C-space>"] = cmp.mapping.complete(),
     ["<C-e>"] = cmp.mapping.close(),
     ["<CR>"] = cmp.mapping.confirm(),
     --[[ ["<C-f>"] = cmp.mapping.confirm {
@@ -62,6 +62,7 @@ cmp.setup {
       keyword_length = 5,
       max_item_count = 10,
     },
+    { name = "neorg" },
     {
       name = "look",
       keyword_length = 2,
@@ -71,6 +72,7 @@ cmp.setup {
         loud = true,
       },
     },
+    { name = "orgmode" },
   },
   experimental = {
     native_menu = false,
