@@ -9,16 +9,14 @@ local eslint_opts = {
 }
 
 local sources = {
-  --[[
-    b.formatting.prettier.with({
-        disabled_filetypes = { "typescript", "typescriptreact" },
-    }),
-    ]]
   b.diagnostics.eslint_d.with(eslint_opts),
   b.formatting.eslint_d.with(eslint_opts),
   b.code_actions.eslint_d.with(eslint_opts),
   b.formatting.stylua,
   b.formatting.prettierd.with {
+    env = {
+      PRETTIERD_DEFAULT_CONFIG = vim.fn.expand "~/.config/nvim/utils/linter-config/.prettierrc.json",
+    },
     filetypes = {
       "html",
       "astro",
@@ -33,11 +31,6 @@ local sources = {
       "typescriptreact",
     },
   },
-  b.formatting.trim_whitespace.with { filetypes = { "tmux", "teal", "zsh" } },
-  b.formatting.shfmt,
-  -- b.diagnostics.markdownlint,
-  b.diagnostics.teal,
-  b.diagnostics.shellcheck.with { diagnostics_format = "#{m} [#{c}]" },
   b.code_actions.gitsigns,
   b.hover.dictionary,
 }
