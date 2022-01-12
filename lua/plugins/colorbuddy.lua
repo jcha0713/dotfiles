@@ -1,9 +1,10 @@
 local Color, colors, Group, groups, styles = require("colorbuddy").setup()
 
-vim.g.seoul256_background = 236
-vim.cmd [[colo seoul256]]
+-- vim.g.seoul256_background = 236
+-- vim.cmd [[colo seoul256]]
+vim.cmd [[colorscheme gruvbox-flat]]
 
--- new popup menu style
+--[[ -- new popup menu style
 Color.new("pBg", "#5e5e5e")
 Color.new("pText", "#b1cfb1")
 Color.new("pThumb", "#f1f1ff")
@@ -26,4 +27,4 @@ Group.new("comment", groups.mycomment, groups.mycomment, groups.mycomment)
 Color.new("hlonyank", "#5bccf5")
 
 Group.new("myhlonyank", nil, colors.hlonyank, nil)
-Group.new("incSearch", groups.myhlonyank, groups.myhlonyank, groups.myhlonyank)
+Group.new("incSearch", groups.myhlonyank, groups.myhlonyank, groups.myhlonyank) ]]
