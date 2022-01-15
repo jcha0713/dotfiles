@@ -14,27 +14,21 @@ local on_attach = function(client, bufnr)
     "LspDiagLine",
     "vim.diagnostic.open_float(nil, global.lsp.border_opts)"
   )
-  u.lua_command("LspSignatureHelp", "vim.lsp.buf.signature_help()")
   u.lua_command("LspTypeDef", "vim.lsp.buf.type_definition()")
   u.lua_command("LspDec", "vim.lsp.buf.declaration()")
   u.lua_command("LspDef", "vim.lsp.buf.definition()")
+  u.lua_command("LspCodeAction", "vim.lsp.buf.code_action()")
 
   -- bindings
   u.buf_map("n", "gD", ":LspDec<CR>", nil, bufnr)
   u.buf_map("n", "gd", ":LspDef<CR>", nil, bufnr)
   u.buf_map("n", "<Leader>rn", ":LspRename<CR>", nil, bufnr)
-  u.buf_map("n", "gy", ":LspTypeDef<CR>", nil, bufnr)
+  u.buf_map("n", "<Leader>td", ":LspTypeDef<CR>", nil, bufnr)
   u.buf_map("n", "<Leader>h", ":LspHover<CR>", nil, bufnr)
-  u.buf_map("n", "[a", ":LspDiagPrev<CR>", nil, bufnr)
-  u.buf_map("n", "]a", ":LspDiagNext<CR>", nil, bufnr)
-  u.buf_map("n", "<Leader>a", ":LspDiagLine<CR>", nil, bufnr)
-  u.buf_map("i", "<C-x><C-x>", "<cmd> LspSignatureHelp<CR>", nil, bufnr)
-
-  -- telescope
-  u.buf_map("n", "gr", ":LspRef<CR>", nil, bufnr)
-  u.buf_map("n", "gd", ":LspDef<CR>", nil, bufnr)
-  u.buf_map("n", "ga", ":LspAct<CR>", nil, bufnr)
-  u.buf_map("v", "ga", "<Esc><cmd> LspRangeAct<CR>", nil, bufnr)
+  u.buf_map("n", "dk", ":LspDiagPrev<CR>", nil, bufnr)
+  u.buf_map("n", "dj", ":LspDiagNext<CR>", nil, bufnr)
+  u.buf_map("n", "<Leader>dl", ":LspDiagLine<CR>", nil, bufnr)
+  u.buf_map("n", "<leader>ca", ":LspCodeAction<CR>", nil, bufnr)
 
   -- format file on save
   if client.resolved_capabilities.document_formatting then
@@ -83,3 +77,17 @@ configs[server_name] = {
 }
 
 require("modules.lsp.astro").setup(on_attach)
+
+vim.diagnostic.config {
+  virtual_text = false,
+  signs = true,
+  underline = true,
+  update_in_insert = false,
+  severity_sort = false,
+}
+
+local signs = { Error = " ", Warn = " ", Hint = " ", Info = " " }
+for type, icon in pairs(signs) do
+  local hl = "DiagnosticSign" .. type
+  vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = hl })
+end
