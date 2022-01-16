@@ -1,8 +1,7 @@
-local Color, colors, Group, groups, styles = require("colorbuddy").setup()
+-- local Color, colors, Group, groups, styles = require("colorbuddy").setup()
 
 -- vim.g.seoul256_background = 236
 -- vim.cmd [[colo seoul256]]
-vim.cmd [[colorscheme gruvbox-flat]]
 
 --[[ -- new popup menu style
 Color.new("pBg", "#5e5e5e")

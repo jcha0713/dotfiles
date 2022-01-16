@@ -79,10 +79,3 @@ cmp.setup {
     ghost_text = false,
   },
 }
-
--- pmenu style
-local Color, colors, Group, groups = require("colorbuddy").setup()
-Color.new("pMatch", "#92b7d7")
-
-Group.new("CmpMatch", colors.pMatch, nil)
-Group.new("CmpItemAbbrMatch", groups.CmpMatch, nil)

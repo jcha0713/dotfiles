@@ -6,3 +6,6 @@ require "modules.options"
 require "modules.keymappings"
 require "modules.utils"
 require "modules.autocmd"
+
+vim.g.gruvbox_theme = { NormalFloat = { bg = "none" } }
+vim.cmd [[colorscheme gruvbox-flat]]

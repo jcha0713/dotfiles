@@ -133,6 +133,11 @@ return require("packer").startup {
       end,
     }
 
+    -- lsp_signature.nvim: signature help for lsp
+    use {
+      "ray-x/lsp_signature.nvim",
+    }
+
     -- vim-illuminate: find occurrences
     use {
       "RRethy/vim-illuminate",
@@ -300,14 +305,6 @@ return require("packer").startup {
       "phaazon/hop.nvim",
       config = function()
         require "plugins.hop"
-      end,
-    }
-
-    -- colorbuddy.nvim: make defining colors easy
-    use {
-      "tjdevries/Colorbuddy.nvim",
-      config = function()
-        require "plugins.colorbuddy"
       end,
     }
   end,
