@@ -19,7 +19,7 @@ cmp.setup {
         nvim_lsp = "[LSP]",
         luasnip = "[Snip]",
         nvim_lua = "[Lua]",
-        cmp_tabnine = "[TN]",
+        -- cmp_tabnine = "[TN]",
         look = "[Dict]",
       },
     },
@@ -55,7 +55,7 @@ cmp.setup {
     { name = "luasnip" },
     { name = "nvim_lua" },
     { name = "nvim_lsp" },
-    { name = "cmp_tabnine" },
+    -- { name = "cmp_tabnine" },
     { name = "path" },
     {
       name = "fuzzy_buffer",

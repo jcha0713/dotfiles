@@ -106,14 +106,14 @@ return require("packer").startup {
     }
 
     -- cmp-tabnine: tabnine autocompletion
-    use {
-      "tzachar/cmp-tabnine",
-      run = "./install.sh",
-      requires = "hrsh7th/nvim-cmp",
-      config = function()
-        require "plugins.tabnine"
-      end,
-    }
+    -- use {
+    --   "tzachar/cmp-tabnine",
+    --   run = "./install.sh",
+    --   requires = "hrsh7th/nvim-cmp",
+    --   config = function()
+    --     require "plugins.tabnine"
+    --   end,
+    -- }
 
     -- cmp-fuzzy-buffer: buffer source using fuzzy
     use {
