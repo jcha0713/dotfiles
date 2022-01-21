@@ -10,13 +10,11 @@ local eslint_opts = {
 
 local sources = {
   b.diagnostics.eslint_d.with(eslint_opts),
-  b.formatting.eslint_d.with(eslint_opts),
+  -- b.formatting.eslint_d.with(eslint_opts),
   b.code_actions.eslint_d.with(eslint_opts),
   b.formatting.stylua,
-  b.formatting.prettierd.with {
-    env = {
-      PRETTIERD_DEFAULT_CONFIG = vim.fn.expand "~/.config/nvim/utils/linter-config/.prettierrc.json",
-    },
+  b.formatting.prettier.with {
+    prefer_local = "node_modules/.bin",
     filetypes = {
       "html",
       "astro",
@@ -31,7 +29,24 @@ local sources = {
       "typescriptreact",
     },
   },
-  b.code_actions.gitsigns,
+  -- b.formatting.prettierd.with {
+  --   env = {
+  --     PRETTIERD_DEFAULT_CONFIG = vim.fn.expand "~/.config/nvim/utils/linter-config/.prettierrc.json",
+  --   },
+  --   filetypes = {
+  --     "html",
+  --     "astro",
+  --     "json",
+  --     "jsonc",
+  --     "svelte",
+  --     "markdown",
+  --     "css",
+  --     "javascript",
+  --     "javascriptreact",
+  --     "typescript",
+  --     "typescriptreact",
+  --   },
+  -- },
   b.hover.dictionary,
 }
 
