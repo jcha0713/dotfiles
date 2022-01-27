@@ -198,6 +198,10 @@ return require("packer").startup {
     }
 
     use {
+      "nvim-telescope/telescope-file-browser.nvim",
+    }
+
+    use {
       "BurntSushi/ripgrep",
     }
     use {
@@ -269,12 +273,12 @@ return require("packer").startup {
     }
 
     -- project-nvim: project management plugin
-    use {
-      "ahmedkhalf/project.nvim",
-      config = function()
-        require "plugins.project_nvim"
-      end,
-    }
+    -- use {
+    --   "ahmedkhalf/project.nvim",
+    --   config = function()
+    --     require "plugins.project_nvim"
+    --   end,
+    -- }
 
     -- emmet-vim: support for emmet
     use {

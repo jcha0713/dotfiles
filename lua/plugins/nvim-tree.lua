@@ -1,7 +1,7 @@
 -- following options are the default
 -- each of these are documented in `:help nvim-tree.OPTION_NAME`
 
-vim.g.nvim_tree_respect_buf_cwd = 1
+vim.g.nvim_tree_respect_buf_cwd = 0
 
 require("nvim-tree").setup {
   disable_netrw = true,

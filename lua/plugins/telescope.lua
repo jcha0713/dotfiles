@@ -84,11 +84,17 @@ require("telescope").setup {
         ["<C-q>"] = actions.smart_send_to_qflist + actions.open_qflist,
       },
     },
+    extensions = {
+      file_browser = {
+        theme = "ivy",
+      },
+    },
   },
 }
 
-require("telescope").load_extension "projects"
+-- require("telescope").load_extension "projects"
 require("telescope").load_extension "fzf"
+require("telescope").load_extension "file_browser"
 
 local builtin = function(mapping, picker, is_custom)
   local module = is_custom and "plugins.telescope" or "telescope.builtin"
