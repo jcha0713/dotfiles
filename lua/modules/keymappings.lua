@@ -7,8 +7,8 @@ utils.map("c", ":help", ":tab help<CR>")
 
 -- easy keys for ESC
 utils.map("i", "jj", "<C-[>")
-
 utils.map("n", "<C-c>", "<C-[>")
+utils.map("i", "<C-[>", "<C-[>:w<CR>")
 
 -- change colorscheme to gruvbox
 utils.map("n", "<Leader>cc", ":colorscheme gruvbox<CR>")
@@ -33,7 +33,7 @@ utils.map("n", "<CR>", "o<ESC>k")
 -- utils.map('n', '<Leader>h', ':set hlsearch!<CR>')
 
 -- explorer
--- utils.map("n", "<C-n>", ":NvimTreeToggle<CR>")
+utils.map("n", "<C-n>", ":NvimTreeToggle<CR>")
 
 -- source lua file
 utils.map("n", "<Leader>s", ":luafile %<CR>")
@@ -59,8 +59,8 @@ utils.map("n", "<Leader>B", ":Telescope buffers<CR>")
 utils.map("n", "<Leader>fr", ":Telescope projects<CR>")
 utils.map("n", "<Leader>fh", ":Telescope help_tags<CR>")
 utils.map("n", "<Leader>fo", ":Telescope oldfiles<CR>")
--- utils.map("n", "<Leader>fb", ":Telescope file_browser<CR>")
-utils.map("n", "<C-n>", ":Telescope file_browser<CR>")
+utils.map("n", "<Leader>f", ":Telescope file_browser<CR>")
+-- utils.map("n", "<C-n>", ":Telescope file_browser<CR>")
 
 -- always keep the cursor at center
 utils.map("n", "n", "nzzzv")
