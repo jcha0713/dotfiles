@@ -29,6 +29,9 @@ vim.cmd [[  imap <C-l> <Plug>(fzf-dictionary-open) ]]
 -- paste with Enter key
 utils.map("n", "<CR>", "o<ESC>k")
 
+-- leader + esc to exit terminal mode
+utils.map("t", "<leader><esc>", "<C-\\><C-n><CR>")
+
 -- toggle hl
 -- utils.map('n', '<Leader>h', ':set hlsearch!<CR>')
 
