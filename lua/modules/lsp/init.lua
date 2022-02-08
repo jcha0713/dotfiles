@@ -57,6 +57,7 @@ require("modules.lsp.cssls").setup(on_attach, capabilities)
 require("modules.lsp.tailwindcss").setup(on_attach)
 require("modules.lsp.sumneko").setup(on_attach)
 require("modules.lsp.null-ls").setup(on_attach)
+require("modules.lsp.solang").setup(on_attach)
 -- require("modules.lsp.emmet").setup(on_attach, capabilities)
 
 local configs = require "lspconfig.configs"

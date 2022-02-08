@@ -304,6 +304,10 @@ return require("packer").startup {
       end,
     }
 
+    use {
+      "TovarishFin/vim-solidity",
+    }
+
     -- hop.nvim: flexible cursor movement
     use {
       "phaazon/hop.nvim",
