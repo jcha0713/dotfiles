@@ -19,7 +19,6 @@ cmp.setup {
         nvim_lsp = "[LSP]",
         luasnip = "[Snip]",
         nvim_lua = "[Lua]",
-        -- cmp_tabnine = "[TN]",
         look = "[Dict]",
       },
     },
@@ -36,20 +35,20 @@ cmp.setup {
       behavior = cmp.ConfirmBehavior.Replace,
       select = true,
     }, ]]
-    ["<tab>"] = cmp.mapping(function(fallback)
-      if ls.expand_or_jumpable() then
-        ls.expand_or_jump()
-      else
-        fallback()
-      end
-    end, { "i", "s" }),
-    ["<s-tab>"] = cmp.mapping(function(fallback)
-      if ls.jumpable(-1) then
-        ls.jump(-1)
-      else
-        fallback()
-      end
-    end, { "i", "s" }),
+    -- ["<tab>"] = cmp.mapping(function(fallback)
+    --   if ls.expand_or_jumpable() then
+    --     ls.expand_or_jump()
+    --   else
+    --     fallback()
+    --   end
+    -- end, { "i", "s" }),
+    -- ["<s-tab>"] = cmp.mapping(function(fallback)
+    --   if ls.jumpable(-1) then
+    --     ls.jump(-1)
+    --   else
+    --     fallback()
+    --   end
+    -- end, { "i", "s" }),
   },
   sources = {
     { name = "luasnip" },

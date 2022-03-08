@@ -40,6 +40,11 @@ return require("packer").startup {
       ft = { "markdown" },
     }
 
+    -- copilot.vim
+    use {
+      "github/copilot.vim",
+    }
+
     -- vim-pencil: writing in vim
     use {
       "reedes/vim-pencil",
