@@ -57,7 +57,7 @@ utils.map("n", "<Leader>n", "<cmd>noh<CR>")
 
 -- Telescope
 utils.map("n", "<Leader>ff", ":Telescope find_files<CR>")
-utils.map("n", "<Leader>fg", ":Telescope live_grep<CR>")
+utils.map("n", "<Leader>gf", ":Telescope live_grep<CR>")
 utils.map("n", "<Leader>B", ":Telescope buffers<CR>")
 utils.map("n", "<Leader>fr", ":Telescope projects<CR>")
 utils.map("n", "<Leader>fh", ":Telescope help_tags<CR>")

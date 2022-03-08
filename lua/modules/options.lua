@@ -24,7 +24,6 @@ o.smartcase = true -- ignore case if the search pattern contains uppercase lette
 o.smartindent = true -- smart autoindent when starting a new line
 o.smarttab = true -- <BS> deletes a shiftwidth worth of spaces
 o.termguicolors = true -- Turn true RGB on
-o.textwidth = 80
 o.updatetime = 250 -- for hover
 o.wildignorecase = true -- ignore case for paths or directories
 o.wildmenu = true -- <Tab> to invoke completion above the command-line
