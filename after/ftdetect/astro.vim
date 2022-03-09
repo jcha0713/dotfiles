@@ -1,1 +1,1 @@
-au! BufRead,BufNewFile *.astro setfiletype astro
+autocmd BufRead,BufNewFile *.astro set filetype=astro
