@@ -8,6 +8,7 @@ if fn.empty(fn.glob(install_path)) > 0 then
     "!git clone https://github.com/wbthomason/packer.nvim " .. install_path
   )
 end
+
 vim.cmd [[packadd packer.nvim]]
 vim.cmd "autocmd BufWritePost plugins.lua PackerCompile" -- Auto compile when there are changes in plugins.lua
 
@@ -17,12 +18,6 @@ return require("packer").startup {
   function(use)
     -- Packer manages plugins
     use { "wbthomason/packer.nvim", opt = true }
-
-    -- By junegunn
-    -- Seoul256 color scheme
-    -- use {
-    --   "junegunn/seoul256.vim",
-    -- }
 
     -- vim-startify: start screen
     use {
@@ -40,11 +35,6 @@ return require("packer").startup {
       ft = { "markdown" },
     }
 
-    -- copilot.vim
-    use {
-      "github/copilot.vim",
-    }
-
     -- vim-pencil: writing in vim
     use {
       "reedes/vim-pencil",
@@ -58,11 +48,6 @@ return require("packer").startup {
     -- write good: highlight for writing problems
     use {
       "davidbeckingsale/writegood.vim",
-    }
-
-    -- limelight: focus on one paragraph
-    use {
-      "junegunn/limelight.vim",
     }
 
     -- neorg: todo list
@@ -86,7 +71,7 @@ return require("packer").startup {
     -- luasnip: snippets for autocompletion
     use {
       "L3MON4D3/Luasnip",
-      commit = "09e3bc6",
+      -- commit = "09e3bc6",
       config = function()
         require "plugins.luasnip"
       end,
@@ -110,16 +95,6 @@ return require("packer").startup {
       },
     }
 
-    -- cmp-tabnine: tabnine autocompletion
-    -- use {
-    --   "tzachar/cmp-tabnine",
-    --   run = "./install.sh",
-    --   requires = "hrsh7th/nvim-cmp",
-    --   config = function()
-    --     require "plugins.tabnine"
-    --   end,
-    -- }
-
     -- cmp-fuzzy-buffer: buffer source using fuzzy
     use {
       "tzachar/cmp-fuzzy-buffer",
@@ -141,6 +116,9 @@ return require("packer").startup {
     -- lsp_signature.nvim: signature help for lsp
     use {
       "ray-x/lsp_signature.nvim",
+      config = function()
+        require "plugins.lsp_signature"
+      end,
     }
 
     -- vim-illuminate: find occurrences
@@ -154,11 +132,6 @@ return require("packer").startup {
     -- vim-surround: easily change surrounding tags
     use {
       "tpope/vim-surround",
-    }
-
-    -- vim-fugitive: git integration for neovim
-    use {
-      "tpope/vim-fugitive",
     }
 
     -- schemastore: access to the SchemaStore catalog
@@ -180,15 +153,6 @@ return require("packer").startup {
       requires = { "kyazdani42/nvim-web-devicons", opt = true },
       config = function()
         require "plugins.lualine"
-      end,
-    }
-
-    -- Bufferline: bufferline management
-    use {
-      "akinsho/bufferline.nvim",
-      requires = "kyazdani42/nvim-web-devicons",
-      config = function()
-        require "plugins.bufferline"
       end,
     }
 
@@ -256,11 +220,6 @@ return require("packer").startup {
       end,
     }
 
-    -- neoformat: ultimate formatter
-    -- use {
-    --   "sbdchd/neoformat",
-    -- }
-
     -- neoscroll: enables smooth scrolling
     use {
       "karb94/neoscroll.nvim",
@@ -276,14 +235,6 @@ return require("packer").startup {
         require "plugins.colorizer"
       end,
     }
-
-    -- project-nvim: project management plugin
-    -- use {
-    --   "ahmedkhalf/project.nvim",
-    --   config = function()
-    --     require "plugins.project_nvim"
-    --   end,
-    -- }
 
     -- emmet-vim: support for emmet
     use {
@@ -318,6 +269,49 @@ return require("packer").startup {
       "phaazon/hop.nvim",
       config = function()
         require "plugins.hop"
+      end,
+    }
+
+    -- diffview.nvim: git diff view
+    use {
+      "sindrets/diffview.nvim",
+      requires = "nvim-lua/plenary.nvim",
+      config = function()
+        require "plugins.diffview"
+      end,
+    }
+
+    -- toggleterm.nvim: terminal in neovim
+    use {
+      "akinsho/toggleterm.nvim",
+      config = function()
+        require "plugins.toggleterm"
+      end,
+    }
+
+    -- neogit.nvim: git in neovim
+    use {
+      "TimUntersberger/neogit",
+      requires = "nvim-lua/plenary.nvim",
+      config = function()
+        require "plugins.neogit"
+      end,
+    }
+
+    -- trouble.nvim: error fix using quickfix list
+    use {
+      "folke/trouble.nvim",
+      requires = "kyazdani42/nvim-web-devicons",
+      config = function()
+        require "plugins.trouble"
+      end,
+    }
+
+    -- vim-rooter: changes working directory when opening a file
+    use {
+      "airblade/vim-rooter",
+      config = function()
+        require "plugins.vim-rooter"
       end,
     }
   end,
