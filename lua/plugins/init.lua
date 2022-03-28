@@ -2,30 +2,30 @@ local fn = vim.fn
 local execute = vim.api.nvim_command
 
 -- Auto install packer.nvim if not exists
-local install_path = fn.stdpath "data" .. "/site/pack/packer/opt/packer.nvim"
+local install_path = fn.stdpath("data") .. "/site/pack/packer/opt/packer.nvim"
 if fn.empty(fn.glob(install_path)) > 0 then
   execute(
     "!git clone https://github.com/wbthomason/packer.nvim " .. install_path
   )
 end
 
-vim.cmd [[packadd packer.nvim]]
-vim.cmd "autocmd BufWritePost plugins.lua PackerCompile" -- Auto compile when there are changes in plugins.lua
+vim.cmd([[packadd packer.nvim]])
+vim.cmd("autocmd BufWritePost plugins.lua PackerCompile") -- Auto compile when there are changes in plugins.lua
 
 -- Plugins
 
-return require("packer").startup {
+return require("packer").startup({
   function(use)
     -- Packer manages plugins
-    use { "wbthomason/packer.nvim", opt = true }
+    use({ "wbthomason/packer.nvim", opt = true })
 
     -- vim-startify: start screen
-    use {
+    use({
       "mhinz/vim-startify",
-    }
+    })
 
     -- markdown-preview: preview for *.md
-    use {
+    use({
       "iamcco/markdown-preview.nvim",
       run = "cd app && npm install",
       cmd = "MarkdownPreview",
@@ -33,286 +33,290 @@ return require("packer").startup {
         vim.g.mkdp_filetypes = { "markdown" }
       end,
       ft = { "markdown" },
-    }
+    })
 
     -- vim-pencil: writing in vim
-    use {
+    use({
       "reedes/vim-pencil",
-    }
+    })
 
     -- Gruvbox-flat: colorscheme
-    use {
+    use({
       "eddyekofo94/gruvbox-flat.nvim",
-    }
+    })
 
     -- write good: highlight for writing problems
-    use {
+    use({
       "davidbeckingsale/writegood.vim",
-    }
+    })
 
     -- neorg: todo list
-    use {
+    use({
       "nvim-neorg/neorg",
       config = function()
-        require "plugins.neorg"
+        require("plugins.neorg")
       end,
-    }
+    })
 
     -- nvim-peekup: pickup from register
-    use {
+    use({
       "gennaro-tedesco/nvim-peekup",
-    }
+    })
 
     -- friendly snippets: snippets for autocompletion
-    use {
+    use({
       "rafamadriz/friendly-snippets",
-    }
+    })
 
     -- luasnip: snippets for autocompletion
-    use {
+    use({
       "L3MON4D3/Luasnip",
-      -- commit = "09e3bc6",
       config = function()
-        require "plugins.luasnip"
+        require("plugins.luasnip")
       end,
-    }
+    })
 
     -- nvim-cmp: manages snippets
-    use {
+    use({
       "hrsh7th/nvim-cmp",
       config = function()
-        require "plugins.cmp"
+        require("plugins.cmp")
       end,
       requires = {
         "hrsh7th/cmp-nvim-lsp",
         "hrsh7th/cmp-path",
         "hrsh7th/cmp-nvim-lua",
         "hrsh7th/cmp-cmdline",
-        "saadparwaiz1/cmp_luasnip",
+        -- "saadparwaiz1/cmp_luasnip",
         "tamago324/nlsp-settings.nvim",
         "onsails/lspkind-nvim",
         "octaltree/cmp-look",
       },
-    }
+    })
+
+    use({
+      "saadparwaiz1/cmp_luasnip",
+      commit = "d6f837f4e8fe48eeae288e638691b91b97d1737f",
+    })
 
     -- cmp-fuzzy-buffer: buffer source using fuzzy
-    use {
+    use({
       "tzachar/cmp-fuzzy-buffer",
       requires = { "hrsh7th/nvim-cmp", "tzachar/fuzzy.nvim" },
-    }
+    })
 
     -- nvim-lspconfig: lsp configuration
-    use {
+    use({
       "neovim/nvim-lspconfig",
       requires = {
         "jose-elias-alvarez/null-ls.nvim",
         "jose-elias-alvarez/nvim-lsp-ts-utils",
       },
       config = function()
-        require "modules.lsp"
+        require("modules.lsp")
       end,
-    }
+    })
 
     -- lsp_signature.nvim: signature help for lsp
-    use {
+    use({
       "ray-x/lsp_signature.nvim",
       config = function()
-        require "plugins.lsp_signature"
+        require("plugins.lsp_signature")
       end,
-    }
+    })
 
     -- vim-illuminate: find occurrences
-    use {
+    use({
       "RRethy/vim-illuminate",
       config = function()
-        require "plugins.illuminate"
+        require("plugins.illuminate")
       end,
-    }
+    })
 
     -- vim-surround: easily change surrounding tags
-    use {
+    use({
       "tpope/vim-surround",
-    }
+    })
 
     -- schemastore: access to the SchemaStore catalog
-    use {
+    use({
       "b0o/schemastore.nvim",
-    }
+    })
 
     -- NvimTree: file explore
-    use {
+    use({
       "kyazdani42/nvim-tree.lua",
       config = function()
-        require "plugins.nvim-tree"
+        require("plugins.nvim-tree")
       end,
-    }
+    })
 
     -- lualine: better status line
-    use {
+    use({
       "nvim-lualine/lualine.nvim",
       requires = { "kyazdani42/nvim-web-devicons", opt = true },
       config = function()
-        require "plugins.lualine"
+        require("plugins.lualine")
       end,
-    }
+    })
 
     -- Telescope family
     -- telescope: file finder / explorer
-    use {
+    use({
       "nvim-telescope/telescope.nvim",
       requires = "nvim-lua/plenary.nvim",
       config = function()
-        require "plugins.telescope"
+        require("plugins.telescope")
       end,
-    }
+    })
 
-    use {
+    use({
       "nvim-telescope/telescope-file-browser.nvim",
-    }
+    })
 
-    use {
+    use({
       "BurntSushi/ripgrep",
-    }
-    use {
+    })
+    use({
       "nvim-telescope/telescope-fzf-native.nvim",
       run = "make",
-    }
-    use {
+    })
+    use({
       "tzachar/fuzzy.nvim",
       requires = { "hrsh7th/nvim-cmp", "tzachar/fuzzy.nvim" },
-    }
+    })
 
     -- autopairs: paring brackets/braces automatically
-    use {
+    use({
       "windwp/nvim-autopairs",
       config = function()
-        require "plugins.autopairs"
+        require("plugins.autopairs")
       end,
-    }
+    })
 
     -- autotag: auto close the tag using treesitter
-    use {
+    use({
       "windwp/nvim-ts-autotag",
-    }
+    })
 
     -- Treesitter: more language syntaxes
-    use {
+    use({
       "nvim-treesitter/nvim-treesitter",
       run = ":TSUpdate",
       config = function()
-        require "plugins/treesitter"
+        require("plugins/treesitter")
       end,
-    }
+    })
 
     -- Treesitter textobjects: more text objects to easily select them
-    use {
+    use({
       "nvim-treesitter/nvim-treesitter-textobjects",
       config = function()
-        require "plugins/textobjects"
+        require("plugins/textobjects")
       end,
-    }
+    })
 
     -- nvim-treesitter-textsubjects: new way to select text objects
-    use {
+    use({
       "RRethy/nvim-treesitter-textsubjects",
       config = function()
-        require "plugins/textsubjects"
+        require("plugins/textsubjects")
       end,
-    }
+    })
 
     -- neoscroll: enables smooth scrolling
-    use {
+    use({
       "karb94/neoscroll.nvim",
       config = function()
-        require "plugins.neoscroll"
+        require("plugins.neoscroll")
       end,
-    }
+    })
 
     -- nvim-colorizer: color label for hex codes
-    use {
+    use({
       "norcalli/nvim-colorizer.lua",
       config = function()
-        require "plugins.colorizer"
+        require("plugins.colorizer")
       end,
-    }
+    })
 
     -- emmet-vim: support for emmet
-    use {
+    use({
       "mattn/emmet-vim",
       config = function()
-        require "plugins.emmet"
+        require("plugins.emmet")
       end,
-    }
+    })
 
     -- Glow: markdown preview
-    use {
+    use({
       "ellisonleao/glow.nvim",
       config = function()
         vim.g.glow_border = "rounded"
       end,
-    }
+    })
 
     -- comment.nvim: comment out lines
-    use {
+    use({
       "numToStr/Comment.nvim",
       config = function()
-        require "plugins.comment"
+        require("plugins.comment")
       end,
-    }
+    })
 
-    use {
+    use({
       "TovarishFin/vim-solidity",
-    }
+    })
 
     -- hop.nvim: flexible cursor movement
-    use {
+    use({
       "phaazon/hop.nvim",
       config = function()
-        require "plugins.hop"
+        require("plugins.hop")
       end,
-    }
+    })
 
     -- diffview.nvim: git diff view
-    use {
+    use({
       "sindrets/diffview.nvim",
       requires = "nvim-lua/plenary.nvim",
       config = function()
-        require "plugins.diffview"
+        require("plugins.diffview")
       end,
-    }
+    })
 
     -- toggleterm.nvim: terminal in neovim
-    use {
+    use({
       "akinsho/toggleterm.nvim",
       config = function()
-        require "plugins.toggleterm"
+        require("plugins.toggleterm")
       end,
-    }
+    })
 
     -- neogit.nvim: git in neovim
-    use {
+    use({
       "TimUntersberger/neogit",
       requires = "nvim-lua/plenary.nvim",
       config = function()
-        require "plugins.neogit"
+        require("plugins.neogit")
       end,
-    }
+    })
 
     -- trouble.nvim: error fix using quickfix list
-    use {
+    use({
       "folke/trouble.nvim",
       requires = "kyazdani42/nvim-web-devicons",
       config = function()
-        require "plugins.trouble"
+        require("plugins.trouble")
       end,
-    }
+    })
 
     -- vim-rooter: changes working directory when opening a file
-    use {
+    use({
       "airblade/vim-rooter",
       config = function()
-        require "plugins.vim-rooter"
+        require("plugins.vim-rooter")
       end,
-    }
+    })
   end,
-}
+})

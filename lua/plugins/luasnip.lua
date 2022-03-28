@@ -16,8 +16,6 @@ local fmt = require("luasnip.extras.fmt").fmt
 ls.config.set_config({
   history = true,
   updateevents = "TextChanged,TextChangedI",
-  -- testing
-  enable_autosnippets = true,
 })
 
 -- snippets
@@ -60,22 +58,24 @@ ls.snippets = {
   },
 }
 
+-- enable js, html snippets in jsx and tsx
+-- the order matters here
+ls.filetype_extend("javascriptreact", { "javascript", "html" })
+ls.filetype_extend("typescript", { "javascript" })
+ls.filetype_extend("typescriptreact", { "javascript", "typescript", "html" })
+
 -- loading friendly snippets
 require("luasnip/loaders/from_vscode").lazy_load({
   paths = { "~/.config/nvim/friendly-snippets/" },
 })
 
--- enable html snippets in js, js snippets in jsx, ts, and tsx
-ls.filetype_extend("javascript", { "html" })
-ls.filetype_extend("javascriptreact", { "html", "javascript" })
-ls.filetype_extend("typescript", { "html", "javascript" })
-ls.filetype_extend("typescriptreact", { "html", "javascript", "typescript" })
-
 -- <c-k>: expansion key
 -- this will expand the current item or jump to the next item within the snippet.
 vim.keymap.set({ "i", "s" }, "<c-k>", function()
-  if ls.expand_or_jumpable() then
-    ls.expand_or_jump()
+  if ls.jumpable(1) then
+    ls.jump(1)
+  elseif ls.expandable() then
+    ls.expand()
   end
 end, { silent = true })
 
