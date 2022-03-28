@@ -3,13 +3,11 @@ local lualine = require "lualine"
 lualine.setup {
   options = {
     icons_enabled = true,
-    -- theme = "seoul256",
     theme = "gruvbox-flat",
-    --component_separators = { left = '', right = ''},
-    --section_separators = { left = '', right = ''},
     section_separators = "",
     component_separators = "",
     always_divide_middle = true,
+    globalstatus = true,
   },
   sections = {
     lualine_a = { "mode" },
