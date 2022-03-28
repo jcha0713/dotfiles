@@ -38,7 +38,7 @@ local settings = {
   },
 }
 
-  local M = {}
+local M = {}
 M.setup = function(on_attach)
   lspconfig.sumneko_lua.setup {
     autostart = true,
