@@ -27,7 +27,8 @@ function utils.opt(scope, key, value)
 end
 
 function utils.map(mode, lhs, rhs, opts)
-  api.nvim_set_keymap(mode, lhs, rhs, get_map_options(opts))
+  -- api.nvim_set_keymap(mode, lhs, rhs, get_map_options(opts))
+  vim.keymap.set(mode, lhs, rhs, get_map_options(opts))
 end
 
 function utils.map_expr(mode, lhs, rhs, opts)
