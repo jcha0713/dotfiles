@@ -4,8 +4,8 @@
 vim.g.nvim_tree_respect_buf_cwd = 0
 
 require("nvim-tree").setup {
-  disable_netrw = true,
-  hijack_netrw = true,
+  -- disable_netrw = true,
+  -- hijack_netrw = true,
   open_on_setup = false,
   ignore_ft_on_setup = {},
   auto_close = false,
@@ -28,10 +28,6 @@ require("nvim-tree").setup {
   update_focused_file = {
     enable = true,
     update_cwd = true,
-  },
-  system_open = {
-    cmd = nil,
-    args = {},
   },
   filters = {
     dotfiles = false,

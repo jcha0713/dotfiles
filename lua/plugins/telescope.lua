@@ -21,6 +21,7 @@ local ignore_files = {
   "%.jpg",
   "%.webp",
   "%.ico",
+  "data/lua%-language%-server",
 }
 
 local picker_opt = {
@@ -32,9 +33,7 @@ local picker_opt = {
 require("telescope").setup {
   pickers = picker_opt,
   defaults = {
-    file_ignore_patterns = {
-      "data/lua%-language%-server",
-    },
+    file_ignore_patterns = ignore_files,
     layout_config = {
       width = 0.90,
       prompt_position = "top",

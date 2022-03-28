@@ -38,6 +38,7 @@ require("nvim-treesitter.configs").setup {
     "scss",
     "svelte",
     "typescript",
+    "tsx",
   },
   highlight = {
     enable = true, -- false will disable the whole extension
