@@ -48,9 +48,9 @@ utils.map("n", "<C-k>", "<C-w>k")
 utils.map("n", "<C-l>", "<C-w>l")
 
 -- Switch buffers
-utils.map("n", "<S-k>", ":BufferLineCycleNext<CR>")
-utils.map("n", "<S-j>", ":BufferLineCyclePrev<CR>")
-utils.map("n", "<Leader>x", ":bdelete<CR>")
+map("n", "]b", ":bnext<CR>")
+map("n", "[b", ":bprevious<CR>")
+map("n", "<Leader>x", ":bd<CR>")
 
 -- Clear highlight
 utils.map("n", "<Leader>n", "<cmd>noh<CR>")
