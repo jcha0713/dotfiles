@@ -1,15 +1,28 @@
 require("neorg").setup {
   -- Tell Neorg what modules to load
   load = {
-    ["core.defaults"] = {}, -- Load all the default modules
-    ["core.norg.concealer"] = {
-      config = { -- Note that this table is optional and doesn't need to be provided
-        markup = {
-          enabled = true,
+    ["core.defaults"] = {},
+    ["core.norg.esupports.metagen"] = {
+      config = {
+        type = "auto",
+        template = {
+          {
+            "title",
+            function()
+              return vim.fn.expand "%:p:t:r"
+            end,
+          },
+          { "authors", require("neorg.external.helpers").get_username },
+          {
+            "created",
+            function()
+              return os.date "%Y-%m-%d"
+            end,
+          },
         },
-        markup_preset = "brave",
       },
     },
+    ["core.norg.concealer"] = {},
     ["core.norg.dirman"] = { -- Manage your directories with Neorg
       config = {
         workspaces = {
@@ -29,7 +42,7 @@ require("neorg").setup {
     },
     ["core.norg.completion"] = {
       config = {
-        engine = "nvim-cmp", -- We current support nvim-compe and nvim-cmp only
+        engine = "nvim-cmp",
       },
     },
     ["core.gtd.queries"] = {},
