@@ -12,12 +12,12 @@ vim.api.nvim_buf_set_keymap(
   "gk",
   { noremap = true, silent = true }
 )
-vim.cmd [[
+vim.cmd([[
 let g:markdown_fenced_languages = ['javascript', 'js=javascript']
-]]
+]])
 
 vim.opt.conceallevel = 2
-vim.cmd [[
+vim.cmd([[
 let g:pencil#wrapModeDefault = 'soft'
 
 augroup pencil
@@ -25,4 +25,4 @@ augroup pencil
   autocmd FileType markdown,mkd call pencil#init()
   autocmd FileType text         call pencil#init()
 augroup END
-]]
+]])
