@@ -1,4 +1,4 @@
-local u = require "modules.utils"
+local u = require("modules.utils")
 
 local capabilities = vim.lsp.protocol.make_client_capabilities()
 capabilities.textDocument.completion.completionItem.snippetSupport = true
@@ -24,7 +24,7 @@ local on_attach = function(client, bufnr)
   u.buf_map("n", "gd", ":LspDef<CR>", nil, bufnr)
   u.buf_map("n", "<Leader>rn", ":LspRename<CR>", nil, bufnr)
   u.buf_map("n", "<Leader>td", ":LspTypeDef<CR>", nil, bufnr)
-  u.buf_map("n", "<Leader>h", ":LspHover<CR>", nil, bufnr)
+  u.buf_map("n", "H", ":LspHover<CR>", nil, bufnr)
   u.buf_map("n", "dk", ":LspDiagPrev<CR>", nil, bufnr)
   u.buf_map("n", "dj", ":LspDiagNext<CR>", nil, bufnr)
   u.buf_map("n", "<Leader>dl", ":LspDiagLine<CR>", nil, bufnr)
@@ -32,7 +32,9 @@ local on_attach = function(client, bufnr)
 
   -- format file on save
   if client.resolved_capabilities.document_formatting then
-    vim.cmd "autocmd BufWritePre <buffer> lua vim.lsp.buf.formatting_sync(nil, 1500)"
+    vim.cmd(
+      "autocmd BufWritePre <buffer> lua vim.lsp.buf.formatting_sync(nil, 1500)"
+    )
   end
 
   if client.resolved_capabilities.completion then
@@ -60,8 +62,8 @@ require("modules.lsp.null-ls").setup(on_attach)
 require("modules.lsp.solang").setup(on_attach)
 -- require("modules.lsp.emmet").setup(on_attach, capabilities)
 
-local configs = require "lspconfig.configs"
-local util = require "lspconfig.util"
+local configs = require("lspconfig.configs")
+local util = require("lspconfig.util")
 
 local server_name = "astro"
 
@@ -104,13 +106,13 @@ function vim.lsp.util.open_floating_preview(contents, syntax, opts, ...)
   return orig_util_open_floating_preview(contents, syntax, opts, ...)
 end
 
-vim.diagnostic.config {
+vim.diagnostic.config({
   virtual_text = false,
   signs = true,
   underline = true,
   update_in_insert = false,
   severity_sort = false,
-}
+})
 
 local signs = { Error = " ", Warn = " ", Hint = " ", Info = " " }
 for type, icon in pairs(signs) do
@@ -118,7 +120,7 @@ for type, icon in pairs(signs) do
   vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = hl })
 end
 
-local win = require "lspconfig.ui.windows"
+local win = require("lspconfig.ui.windows")
 local _default_opts = win.default_opts
 
 win.default_opts = function(options)
