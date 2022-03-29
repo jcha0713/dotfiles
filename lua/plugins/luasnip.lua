@@ -65,16 +65,22 @@ ls.filetype_extend("typescript", { "javascript" })
 ls.filetype_extend("typescriptreact", { "javascript", "typescript", "html" })
 
 -- loading friendly snippets
--- require("luasnip/loaders/from_vscode").lazy_load({
---   paths = { "~/.config/nvim/friendly-snippets/" },
--- })
+require("luasnip/loaders/from_vscode").lazy_load({
+  paths = { "~/.config/nvim/friendly-snippets/" },
+})
 
--- <c-k>: expansion key
--- this will expand the current item or jump to the next item within the snippet.
+-- <c-k>: jump forward key
+-- this will jump to the next item within the snippet.
 vim.keymap.set({ "i", "s" }, "<c-k>", function()
   if ls.jumpable(1) then
     ls.jump(1)
-  elseif ls.expandable() then
+  end
+end, { silent = true })
+
+-- <c-i>: expand key (move into the snippet)
+-- this expands the snippet
+vim.keymap.set({ "i", "s" }, "<c-i>", function()
+  if ls.expandable() then
     ls.expand()
   end
 end, { silent = true })
