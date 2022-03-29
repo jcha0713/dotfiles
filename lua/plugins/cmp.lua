@@ -1,7 +1,6 @@
 local cmp = require("cmp")
 
 local lspkind = require("lspkind")
-local ls = require("luasnip")
 
 cmp.setup({
   snippet = {
@@ -32,7 +31,9 @@ cmp.setup({
     ["<CR>"] = cmp.mapping.confirm(),
   },
   sources = cmp.config.sources({
-    { name = "luasnip" },
+    {
+      name = "luasnip", --[[ option = { use_show_condition = false } ]]
+    },
     { name = "nvim_lua" },
     { name = "nvim_lsp" },
     { name = "path" },
@@ -53,10 +54,6 @@ cmp.setup({
     },
     { name = "orgmode" },
   }),
-  experimental = {
-    native_menu = false,
-    ghost_text = false,
-  },
 })
 
 -- Use cmdline & path source for ':' (if you enabled `native_menu`, this won't work anymore).

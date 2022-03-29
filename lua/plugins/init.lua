@@ -71,6 +71,7 @@ return require("packer").startup({
     -- luasnip: snippets for autocompletion
     use({
       "L3MON4D3/Luasnip",
+      -- branch = "ls_snippets_preserve",
       config = function()
         require("plugins.luasnip")
       end,
@@ -87,16 +88,11 @@ return require("packer").startup({
         "hrsh7th/cmp-path",
         "hrsh7th/cmp-nvim-lua",
         "hrsh7th/cmp-cmdline",
-        -- "saadparwaiz1/cmp_luasnip",
+        "saadparwaiz1/cmp_luasnip",
         "tamago324/nlsp-settings.nvim",
         "onsails/lspkind-nvim",
         "octaltree/cmp-look",
       },
-    })
-
-    use({
-      "saadparwaiz1/cmp_luasnip",
-      commit = "d6f837f4e8fe48eeae288e638691b91b97d1737f",
     })
 
     -- cmp-fuzzy-buffer: buffer source using fuzzy

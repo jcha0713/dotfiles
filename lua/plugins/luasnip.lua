@@ -20,43 +20,43 @@ ls.config.set_config({
 
 -- snippets
 -- TODO: this part will be moved to separate files for each filetype
-ls.snippets = {
-  javascript = {
-    -- cl: console.log({value}), basic thing
-    s("cl", { t("console.log("), i(1), t(")") }),
+ls.add_snippets("lua", { s("testing", { t("test!") }) })
 
-    -- var: {const or let} {name}, variable declaration
-    s(
-      "var",
-      fmt(
-        [[
+ls.add_snippets("javascript", {
+  -- cl: console.log({value}), basic thing
+  s("cl", { t("console.log("), i(1), t(")") }),
+
+  -- var: {const or let} {name}, variable declaration
+  s(
+    "var",
+    fmt(
+      [[
         {1} {2}
         ]],
-        {
-          c(1, { t("const"), t("let") }),
-          i(2, "name"),
-        }
-      )
-    ),
+      {
+        c(1, { t("const"), t("let") }),
+        i(2, "name"),
+      }
+    )
+  ),
 
-    -- ar: ({param}) => { () or {} }
-    s(
-      "ar",
-      fmt(
-        [[
+  -- ar: ({param}) => { () or {} }
+  s(
+    "ar",
+    fmt(
+      [[
         ({1}) => {2}
         ]],
-        {
-          i(1, "param"),
-          c(2, {
-            sn(nil, { t("("), i(1), t(")") }),
-            sn(nil, { t("{"), i(1), t("}") }),
-          }),
-        }
-      )
-    ),
-  },
-}
+      {
+        i(1, "param"),
+        c(2, {
+          sn(nil, { t("("), i(1), t(")") }),
+          sn(nil, { t("{"), i(1), t("}") }),
+        }),
+      }
+    )
+  ),
+})
 
 -- enable js, html snippets in jsx and tsx
 -- the order matters here
@@ -65,9 +65,9 @@ ls.filetype_extend("typescript", { "javascript" })
 ls.filetype_extend("typescriptreact", { "javascript", "typescript", "html" })
 
 -- loading friendly snippets
-require("luasnip/loaders/from_vscode").lazy_load({
-  paths = { "~/.config/nvim/friendly-snippets/" },
-})
+-- require("luasnip/loaders/from_vscode").lazy_load({
+--   paths = { "~/.config/nvim/friendly-snippets/" },
+-- })
 
 -- <c-k>: expansion key
 -- this will expand the current item or jump to the next item within the snippet.
