@@ -314,5 +314,13 @@ return require("packer").startup({
         require("plugins.vim-rooter")
       end,
     })
+
+    -- -- dressing.nvim: ui selector
+    -- use({
+    --   "stevearc/dressing.nvim",
+    --   config = function()
+    --     require("plugins.dressing")
+    --   end,
+    -- })
   end,
 })

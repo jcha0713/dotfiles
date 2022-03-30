@@ -1,5 +1,5 @@
-local actions = require "telescope.actions"
-local utils = require "modules.utils"
+local actions = require("telescope.actions")
+local utils = require("modules.utils")
 
 local M = {}
 
@@ -30,7 +30,7 @@ local picker_opt = {
   },
 }
 
-require("telescope").setup {
+require("telescope").setup({
   pickers = picker_opt,
   defaults = {
     file_ignore_patterns = ignore_files,
@@ -89,11 +89,11 @@ require("telescope").setup {
       },
     },
   },
-}
+})
 
 -- require("telescope").load_extension "projects"
-require("telescope").load_extension "fzf"
-require("telescope").load_extension "file_browser"
+require("telescope").load_extension("fzf")
+require("telescope").load_extension("file_browser")
 
 local builtin = function(mapping, picker, is_custom)
   local module = is_custom and "plugins.telescope" or "telescope.builtin"
