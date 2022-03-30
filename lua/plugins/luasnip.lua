@@ -1,16 +1,4 @@
 local ls = require("luasnip")
-local s = ls.snippet
-local sn = ls.snippet_node
-local isn = ls.indent_snippet_node
-local t = ls.text_node
-local i = ls.insert_node
-local f = ls.function_node
-local c = ls.choice_node
-local d = ls.dynamic_node
-local r = ls.restore_node
-local events = require("luasnip.util.events")
-local ai = require("luasnip.nodes.absolute_indexer")
-local fmt = require("luasnip.extras.fmt").fmt
 
 -- basic configuration
 ls.config.set_config({
@@ -18,51 +6,14 @@ ls.config.set_config({
   updateevents = "TextChanged,TextChangedI",
 })
 
--- snippets
--- TODO: this part will be moved to separate files for each filetype
-ls.add_snippets("lua", { s("testing", { t("test!") }) })
-
-ls.add_snippets("javascript", {
-  -- cl: console.log({value}), basic thing
-  s("cl", { t("console.log("), i(1), t(")") }),
-
-  -- var: {const or let} {name}, variable declaration
-  s(
-    "var",
-    fmt(
-      [[
-        {1} {2}
-        ]],
-      {
-        c(1, { t("const"), t("let") }),
-        i(2, "name"),
-      }
-    )
-  ),
-
-  -- ar: ({param}) => { () or {} }
-  s(
-    "ar",
-    fmt(
-      [[
-        ({1}) => {2}
-        ]],
-      {
-        i(1, "param"),
-        c(2, {
-          sn(nil, { t("("), i(1), t(")") }),
-          sn(nil, { t("{"), i(1), t("}") }),
-        }),
-      }
-    )
-  ),
-})
-
 -- enable js, html snippets in jsx and tsx
 -- the order matters here
 ls.filetype_extend("javascriptreact", { "javascript", "html" })
 ls.filetype_extend("typescript", { "javascript" })
 ls.filetype_extend("typescriptreact", { "javascript", "typescript", "html" })
+
+-- load snippets from ~/.config/nvim/snippets directory
+require("luasnip.loaders.from_lua").load({ paths = "~/.config/nvim/snippets" })
 
 -- loading friendly snippets
 require("luasnip/loaders/from_vscode").lazy_load({
@@ -77,7 +28,7 @@ vim.keymap.set({ "i", "s" }, "<c-k>", function()
   end
 end, { silent = true })
 
--- <c-i>: expand key (move into the snippet)
+-- <c-i>: expand key (move 'i'nto the snippet)
 -- this expands the snippet
 vim.keymap.set({ "i", "s" }, "<c-i>", function()
   if ls.expandable() then
