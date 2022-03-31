@@ -3,7 +3,7 @@
 
 vim.g.nvim_tree_respect_buf_cwd = 0
 
-require("nvim-tree").setup {
+require("nvim-tree").setup({
   -- disable_netrw = true,
   -- hijack_netrw = true,
   open_on_setup = false,
@@ -44,4 +44,4 @@ require("nvim-tree").setup {
       list = {},
     },
   },
-}
+})
