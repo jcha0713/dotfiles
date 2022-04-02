@@ -1,11 +1,18 @@
-local utils = require "modules.utils"
+local utils = require("modules.utils")
 local map = utils.map
 
 vim.g.mapleader = " "
 
 -- F and L for first and last character movement
-map("n", "F", "^")
-map("n", "L", "$")
+-- and now tesing gh and gl
+map("n", "gh", "^")
+map("n", "gl", "$")
+map("n", "dgh", "d^")
+map("n", "dgl", "d$")
+map("n", "cgh", "c^")
+map("n", "cgl", "c$")
+map("n", "vgh", "v^")
+map("n", "vgl", "v$")
 
 -- yank from cursor to the end of the line
 map("n", "Y", "y$")
