@@ -29,12 +29,12 @@ M.setup = function(on_attach)
             u.buf_map("n", "gI", ":TSLspRenameFile<CR>", nil, bufnr)
             u.buf_map("n", "go", ":TSLspImportAll<CR>", nil, bufnr)
 
-            u.buf_map("i", ".", ".<C-x><C-o>", nil, bufnr)
         end,
         flags = {
             debounce_text_changes = 150,
         },
     })
+      -- u.buf_map("i", ".", ".<C-x><C-o>", nil, bufnr)
 end
 
 return M

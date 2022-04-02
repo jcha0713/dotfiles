@@ -37,9 +37,9 @@ local on_attach = function(client, bufnr)
     )
   end
 
-  if client.resolved_capabilities.completion then
-    vim.opt_local.omnifunc = "v:lua.vim.lsp.omnifunc"
-  end
+  -- if client.resolved_capabilities.completion then
+  --   vim.opt_local.omnifunc = "v:lua.vim.lsp.omnifunc"
+  -- end
 
   require("lsp_signature").on_attach({
     bind = true, -- This is mandatory, otherwise border config won't get registered.
