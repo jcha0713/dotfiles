@@ -1,5 +1,5 @@
-local u = require "modules.utils"
-local lspconfig = require "lspconfig"
+local u = require("modules.utils")
+local lspconfig = require("lspconfig")
 
 local runtime_path = vim.split(package.path, ";")
 table.insert(runtime_path, "lua/?.lua")
@@ -40,7 +40,7 @@ local settings = {
 
 local M = {}
 M.setup = function(on_attach)
-  lspconfig.sumneko_lua.setup {
+  lspconfig.sumneko_lua.setup({
     autostart = true,
     on_attach = function(client, bufnr)
       u.buf_map("i", ".", ".<C-x><C-o>", nil, bufnr)
@@ -52,7 +52,7 @@ M.setup = function(on_attach)
     flags = {
       debounce_text_changes = 150,
     },
-  }
+  })
 end
 
 return M
