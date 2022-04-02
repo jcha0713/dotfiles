@@ -1,6 +1,8 @@
 local u = require("modules.utils")
+local lspconfig = require("lspconfig")
 
 local capabilities = vim.lsp.protocol.make_client_capabilities()
+capabilities = require("cmp_nvim_lsp").update_capabilities(capabilities)
 capabilities.textDocument.completion.completionItem.snippetSupport = true
 
 local on_attach = function(client, bufnr)
@@ -51,17 +53,6 @@ local on_attach = function(client, bufnr)
   require("illuminate").on_attach(client)
 end
 
-require("modules.lsp.tsserver").setup(on_attach)
-require("modules.lsp.jsonls").setup(on_attach)
-require("modules.lsp.svelte").setup(on_attach)
-require("modules.lsp.html").setup(on_attach, capabilities)
-require("modules.lsp.cssls").setup(on_attach, capabilities)
-require("modules.lsp.tailwindcss").setup(on_attach)
-require("modules.lsp.sumneko").setup(on_attach)
-require("modules.lsp.null-ls").setup(on_attach)
-require("modules.lsp.solang").setup(on_attach)
--- require("modules.lsp.emmet").setup(on_attach, capabilities)
-
 local configs = require("lspconfig.configs")
 local util = require("lspconfig.util")
 
@@ -86,7 +77,23 @@ configs[server_name] = {
   },
 }
 
-require("modules.lsp.astro").setup(on_attach)
+local servers = {
+  "tsserver",
+  "jsonls",
+  "svelte",
+  "html",
+  "cssls",
+  "tailwindcss",
+  "sumneko",
+  "null-ls",
+  "solang",
+  "astro",
+}
+
+for _, lsp in ipairs(servers) do
+  local server = "modules.lsp." .. lsp
+  require(server).setup(on_attach, capabilities)
+end
 
 local border = {
   { "╭", "FloatBorder" },
