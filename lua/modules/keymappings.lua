@@ -80,7 +80,7 @@ map("n", "<Leader>nh", "<cmd>noh<CR>")
 -- Telescope
 map("n", "<M-\\>", ":Telescope<CR>")
 map("n", "<Leader>ff", ":Telescope find_files<CR>")
-map("n", "<Leader>lg", ":Telescope live_grep<CR>")
+map("n", "<Leader>gr", ":Telescope live_grep<CR>")
 map("n", "<Leader>bf", ":Telescope buffers<CR>")
 map("n", "<Leader>gf", ":Telescope git_files<CR>")
 map("n", "<Leader>jp", ":Telescope jumplist<CR>")
