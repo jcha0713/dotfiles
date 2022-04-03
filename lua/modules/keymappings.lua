@@ -44,8 +44,8 @@ map("n", "<Leader>mp", ":MarkdownPreviewToggle<CR>")
 -- paste with Enter key
 map("n", "<CR>", "o<ESC>k")
 
--- leader + esc to exit terminal mode
-map("t", "<leader><esc>", "<C-\\><C-n><CR>")
+-- esc + esc to exit terminal mode
+map("t", "<C-q><esc>", "<C-\\><C-n><CR>")
 
 -- toggle hl
 -- utils.map('n', '<Leader>h', ':set hlsearch!<CR>')
