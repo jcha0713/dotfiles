@@ -145,4 +145,4 @@ map("n", "<leader>tdd", ":TroubleToggle document_diagnostics<CR>")
 -- map("n", "<leader>zm", ":ZenMode<CR>")
 
 -- Grammar checking in the terminal(using gramma)
-map("n", "<leader>gr", ":term gramma check %<cr>")
+map("n", "<leader>gc", ":term gramma check %<cr>")
