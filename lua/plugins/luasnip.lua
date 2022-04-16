@@ -1,5 +1,4 @@
 local ls = require("luasnip")
-
 -- basic configuration
 ls.config.set_config({
   history = true,
@@ -28,9 +27,9 @@ vim.keymap.set({ "i", "s" }, "<c-k>", function()
   end
 end, { silent = true })
 
--- <c-i>: expand key (move 'i'nto the snippet)
+-- <c-f>: expand key (go 'f'orward into snippet)
 -- this expands the snippet
-vim.keymap.set({ "i", "s" }, "<c-i>", function()
+vim.keymap.set({ "i", "s" }, "<c-f>", function()
   if ls.expandable() then
     ls.expand()
   end
