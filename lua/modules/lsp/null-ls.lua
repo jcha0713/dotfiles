@@ -1,9 +1,9 @@
-local null_ls = require "null-ls"
+local null_ls = require("null-ls")
 local b = null_ls.builtins
 
 local eslint_opts = {
   condition = function(utils)
-    return utils.root_has_file ".eslintrc.*"
+    return utils.root_has_file(".eslintrc.*")
   end,
   diagnostics_format = "#{m} [#{c}]",
 }
@@ -29,9 +29,9 @@ local sources = {
   --     "typescriptreact",
   --   },
   -- },
-  b.formatting.prettierd.with {
+  b.formatting.prettierd.with({
     env = {
-      PRETTIERD_DEFAULT_CONFIG = vim.fn.expand "~/.config/nvim/utils/linter-config/.prettierrc.json",
+      PRETTIERD_DEFAULT_CONFIG = vim.fn.expand("~/.config/nvim/utils/linter-config/.prettierrc.json"),
     },
     filetypes = {
       "html",
@@ -47,17 +47,17 @@ local sources = {
       "typescript",
       "typescriptreact",
     },
-  },
+  }),
   b.hover.dictionary,
 }
 
 local M = {}
 M.setup = function(on_attach)
-  null_ls.setup {
+  null_ls.setup({
     -- debug = true,
     sources = sources,
     on_attach = on_attach,
-  }
+  })
 end
 
 return M
