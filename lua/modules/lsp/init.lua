@@ -70,6 +70,18 @@ configs[server_name] = {
         ".git"
       )(fname)
     end,
+    init_options = {
+      configuration = {
+        astro = {},
+        prettier = {},
+        emmet = {},
+        typescript = {},
+        javascript = {},
+      },
+      environment = "node",
+      dontFilterIncompleteCompletions = true,
+      isTrusted = true,
+    },
   },
   docs = {
     package_json = "https://raw.githubusercontent.com/withastro/astro-language-tools/main/packages/vscode/package.json",
