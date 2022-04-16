@@ -16,8 +16,9 @@ parser_configs.norg_table = {
   },
 }
 
-require("nvim-treesitter.configs").setup {
+require("nvim-treesitter.configs").setup({
   ensure_installed = {
+    "astro",
     "css",
     "html",
     "javascript",
@@ -42,4 +43,4 @@ require("nvim-treesitter.configs").setup {
   autotag = {
     enable = true,
   },
-}
+})
