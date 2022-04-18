@@ -39,11 +39,49 @@ return {
         ({1}) => {2}
         ]],
       {
-        i(1, "param"),
+        i(1),
         c(2, {
           sn(nil, { t("("), i(1), t(")") }),
           sn(nil, { t("{"), i(1), t("}") }),
         }),
+      }
+    )
+  ),
+
+  -- imp: import statement
+  s(
+    "imp",
+    fmt(
+      [[
+      import {} from '{}'
+      ]],
+      {
+        c(1, {
+          sn(nil, { t("{"), i(1), t("}") }),
+          sn(nil, { i(1) }),
+        }),
+        i(2),
+      }
+    )
+  ),
+
+  -- edfu: export default function ...
+  s(
+    "edfu",
+    fmt(
+      [[
+      export default{}function {}({}) {{
+        {}
+      }}
+      ]],
+      {
+        c(1, {
+          t(" "),
+          t(" async "),
+        }),
+        i(2),
+        i(3),
+        i(4),
       }
     )
   ),
