@@ -146,3 +146,6 @@ map("n", "<leader>tdd", ":TroubleToggle document_diagnostics<CR>")
 
 -- Grammar checking in the terminal(using gramma)
 map("n", "<leader>gc", ":term gramma check %<cr>")
+
+-- add comma and jump
+map("i", "<A-,>", "<esc>la,")
