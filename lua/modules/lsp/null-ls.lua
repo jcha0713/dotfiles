@@ -13,7 +13,7 @@ local sources = {
   -- b.formatting.eslint_d.with(eslint_opts),
   b.code_actions.eslint_d.with(eslint_opts),
   b.formatting.stylua,
-  -- b.formatting.prettier.with {
+  -- b.formatting.prettier.with({
   --   prefer_local = "node_modules/.bin",
   --   filetypes = {
   --     "html",
@@ -28,10 +28,12 @@ local sources = {
   --     "typescript",
   --     "typescriptreact",
   --   },
-  -- },
+  -- }),
   b.formatting.prettierd.with({
     env = {
-      PRETTIERD_DEFAULT_CONFIG = vim.fn.expand("~/.config/nvim/utils/linter-config/.prettierrc.json"),
+      PRETTIERD_DEFAULT_CONFIG = vim.fn.expand(
+        "~/.config/nvim/utils/linter-config/.prettierrc.json"
+      ),
     },
     filetypes = {
       "html",
