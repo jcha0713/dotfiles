@@ -16,6 +16,10 @@ M.setup = function(on_attach, capabilities)
         },
       },
     },
+    filetypes = {
+      "css",
+      "scss",
+    },
   })
 end
 
