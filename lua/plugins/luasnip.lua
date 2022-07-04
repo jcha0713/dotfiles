@@ -7,6 +7,7 @@ ls.config.set_config({
 
 -- enable js, html snippets in jsx and tsx
 -- the order matters here
+ls.filetype_extend("astro", { "javascript" })
 ls.filetype_extend("javascriptreact", { "javascript", "html" })
 ls.filetype_extend("typescript", { "javascript" })
 ls.filetype_extend("typescriptreact", { "javascript", "typescript", "html" })
