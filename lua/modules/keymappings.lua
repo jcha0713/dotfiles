@@ -149,3 +149,6 @@ map("n", "<leader>gc", ":term gramma check %<cr>")
 
 -- add comma and jump
 map("i", "<A-,>", "<esc>la,")
+
+-- add colon and jump
+map("i", "<A-;>", "<esc>la:")
