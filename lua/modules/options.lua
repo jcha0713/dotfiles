@@ -28,4 +28,4 @@ o.updatetime = 250 -- for hover
 o.wildignorecase = true -- ignore case for paths or directories
 o.wildmenu = true -- <Tab> to invoke completion above the command-line
 
-vim.opt.dictionary:append { "/usr/share/dict/words" }
+vim.opt.dictionary:append({ "/usr/share/dict/words" })

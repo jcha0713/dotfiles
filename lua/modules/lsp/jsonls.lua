@@ -1,11 +1,12 @@
 local M = {}
 
 M.setup = function(on_attach)
-  require("lspconfig").jsonls.setup {
+  require("lspconfig").jsonls.setup({
     filetypes = { "json", "jsonc" },
     settings = {
       json = {
         schemas = require("schemastore").json.schemas(),
+        validate = { enable = true },
       },
     },
     on_attach = function(client)
@@ -13,7 +14,7 @@ M.setup = function(on_attach)
 
       on_attach(client)
     end,
-  }
+  })
 end
 
 return M
