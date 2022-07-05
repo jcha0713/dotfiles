@@ -38,10 +38,21 @@ local on_attach = function(client, bufnr)
   u.buf_map("n", "<leader>ca", ":LspCodeAction<CR>", nil, bufnr)
 
   -- format file on save
-  if client.resolved_capabilities.document_formatting then
-    vim.cmd(
-      "autocmd BufWritePre <buffer> lua vim.lsp.buf.formatting_sync(nil, 1500)"
-    )
+  local augroup = vim.api.nvim_create_augroup("LspFormatting", {})
+  if client.supports_method("textDocument/formatting") then
+    vim.api.nvim_clear_autocmds({ group = augroup, buffer = bufnr })
+    vim.api.nvim_create_autocmd("BufWritePre", {
+      group = augroup,
+      buffer = bufnr,
+      callback = function()
+        vim.lsp.buf.format({
+          bufnr = bufnr,
+          filter = function(client)
+            return client.name == "null-ls"
+          end,
+        })
+      end,
+    })
   end
 
   -- if client.resolved_capabilities.completion then
@@ -57,42 +68,6 @@ local on_attach = function(client, bufnr)
 
   require("illuminate").on_attach(client)
 end
-
-local configs = require("lspconfig.configs")
-local util = require("lspconfig.util")
-
-local server_name = "astro"
-
-configs[server_name] = {
-  default_config = {
-    cmd = { "astro-ls", "--stdio" },
-    filetypes = { "astro" },
-    root_dir = function(fname)
-      return util.root_pattern(
-        "package.json",
-        "tsconfig.json",
-        "jsconfig.json",
-        ".git"
-      )(fname)
-    end,
-    init_options = {
-      configuration = {
-        astro = {},
-        prettier = {},
-        emmet = {},
-        typescript = {},
-        javascript = {},
-      },
-      environment = "node",
-      dontFilterIncompleteCompletions = true,
-      isTrusted = true,
-    },
-  },
-  docs = {
-    package_json = "https://raw.githubusercontent.com/withastro/astro-language-tools/main/packages/vscode/package.json",
-    root_dir = [[root_pattern("package.json", "tsconfig.json", "jsconfig.json", ".git")]],
-  },
-}
 
 local servers = {
   "tsserver",

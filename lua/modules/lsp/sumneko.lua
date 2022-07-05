@@ -44,7 +44,6 @@ M.setup = function(on_attach)
     autostart = true,
     on_attach = function(client, bufnr)
       -- u.buf_map("i", ".", ".<C-x><C-o>", nil, bufnr)
-      client.resolved_capabilities.document_formatting = false
       on_attach(client, bufnr)
     end,
     cmd = { binary, "-E", root .. "/main.lua" },

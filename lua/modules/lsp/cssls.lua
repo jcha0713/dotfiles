@@ -4,9 +4,7 @@ local M = {}
 
 M.setup = function(on_attach, capabilities)
   lspconfig.cssls.setup({
-    on_attach = function(client)
-      on_attach(client)
-    end,
+    on_attach = on_attach,
     capabilities = capabilities or {},
     cmd = { "vscode-css-language-server", "--stdio" },
     settings = {
