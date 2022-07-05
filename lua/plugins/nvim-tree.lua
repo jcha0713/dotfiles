@@ -1,18 +1,16 @@
 -- following options are the default
 -- each of these are documented in `:help nvim-tree.OPTION_NAME`
 
-vim.g.nvim_tree_respect_buf_cwd = 0
-
 require("nvim-tree").setup({
   -- disable_netrw = true,
   -- hijack_netrw = true,
   open_on_setup = false,
+  respect_buf_cwd = false,
   ignore_ft_on_setup = {},
-  auto_close = false,
   open_on_tab = false,
   hijack_cursor = false,
   update_cwd = true,
-  update_to_buf_dir = {
+  hijack_directories = {
     enable = true,
     auto_open = true,
   },
@@ -33,12 +31,16 @@ require("nvim-tree").setup({
     dotfiles = false,
     custom = {},
   },
+  actions = {
+    open_file = {
+      resize_window = true,
+    },
+  },
   view = {
     width = 30,
     height = 30,
     hide_root_folder = false,
     side = "left",
-    auto_resize = false,
     mappings = {
       custom_only = false,
       list = {},

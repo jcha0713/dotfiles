@@ -28,7 +28,6 @@ return require("packer").startup({
     use({
       "iamcco/markdown-preview.nvim",
       run = "cd app && npm install",
-      cmd = "MarkdownPreview",
       setup = function()
         vim.g.mkdp_filetypes = { "markdown" }
       end,
@@ -113,12 +112,9 @@ return require("packer").startup({
       end,
     })
 
-    -- lsp_signature.nvim: signature help for lsp
+    -- lsp-signature: signature help
     use({
       "ray-x/lsp_signature.nvim",
-      config = function()
-        require("plugins.lsp_signature")
-      end,
     })
 
     -- vim-illuminate: find occurrences
@@ -284,6 +280,7 @@ return require("packer").startup({
     -- toggleterm.nvim: terminal in neovim
     use({
       "akinsho/toggleterm.nvim",
+      tag = "v1.*",
       config = function()
         require("plugins.toggleterm")
       end,
