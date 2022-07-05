@@ -13,6 +13,10 @@ local on_attach = function(client, bufnr)
   u.lua_command("LspDiagPrev", "vim.diagnostic.goto_prev()")
   u.lua_command("LspDiagNext", "vim.diagnostic.goto_next()")
   u.lua_command(
+    "LspDiagOpen",
+    "vim.diagnostic.open_float({border='rounded', focus=false})"
+  )
+  u.lua_command(
     "LspDiagLine",
     "vim.diagnostic.open_float(nil, global.lsp.border_opts)"
   )
@@ -29,6 +33,7 @@ local on_attach = function(client, bufnr)
   u.buf_map("n", "H", ":LspHover<CR>", nil, bufnr)
   u.buf_map("n", "dk", ":LspDiagPrev<CR>", nil, bufnr)
   u.buf_map("n", "dj", ":LspDiagNext<CR>", nil, bufnr)
+  u.buf_map("n", "da", ":LspDiagOpen<CR>", nil, bufnr)
   u.buf_map("n", "<Leader>dl", ":LspDiagLine<CR>", nil, bufnr)
   u.buf_map("n", "<leader>ca", ":LspCodeAction<CR>", nil, bufnr)
 
@@ -42,7 +47,7 @@ local on_attach = function(client, bufnr)
   -- if client.resolved_capabilities.completion then
   --   vim.opt_local.omnifunc = "v:lua.vim.lsp.omnifunc"
   -- end
-
+  --
   require("lsp_signature").on_attach({
     bind = true, -- This is mandatory, otherwise border config won't get registered.
     handler_opts = {
@@ -100,6 +105,7 @@ local servers = {
   "null-ls",
   "solang",
   "astro",
+  "cssmodules_ls",
 }
 
 for _, lsp in ipairs(servers) do
