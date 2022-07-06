@@ -5,6 +5,18 @@ local capabilities = vim.lsp.protocol.make_client_capabilities()
 capabilities = require("cmp_nvim_lsp").update_capabilities(capabilities)
 capabilities.textDocument.completion.completionItem.snippetSupport = true
 
+local lsp_formatting = function(bufnr)
+  vim.lsp.buf.format({
+    filter = function(client)
+      -- apply whatever logic you want (in this example, we'll only use null-ls)
+      return client.name == "null-ls"
+    end,
+    bufnr = bufnr,
+  })
+end
+
+local augroup = vim.api.nvim_create_augroup("LspFormatting", {})
+
 local on_attach = function(client, bufnr)
   -- commands
   u.lua_command("LspFormatting", "vim.lsp.buf.formatting()")
@@ -38,19 +50,14 @@ local on_attach = function(client, bufnr)
   u.buf_map("n", "<leader>ca", ":LspCodeAction<CR>", nil, bufnr)
 
   -- format file on save
-  local augroup = vim.api.nvim_create_augroup("LspFormatting", {})
+  -- client.server_capabilities.documentFormattingProvider = true
   if client.supports_method("textDocument/formatting") then
     vim.api.nvim_clear_autocmds({ group = augroup, buffer = bufnr })
     vim.api.nvim_create_autocmd("BufWritePre", {
       group = augroup,
       buffer = bufnr,
       callback = function()
-        vim.lsp.buf.format({
-          bufnr = bufnr,
-          filter = function(client)
-            return client.name == "null-ls"
-          end,
-        })
+        lsp_formatting(bufnr)
       end,
     })
   end
@@ -58,7 +65,7 @@ local on_attach = function(client, bufnr)
   -- if client.resolved_capabilities.completion then
   --   vim.opt_local.omnifunc = "v:lua.vim.lsp.omnifunc"
   -- end
-  --
+
   require("lsp_signature").on_attach({
     bind = true, -- This is mandatory, otherwise border config won't get registered.
     handler_opts = {
@@ -70,17 +77,17 @@ local on_attach = function(client, bufnr)
 end
 
 local servers = {
-  "tsserver",
-  "jsonls",
-  "svelte",
-  "html",
+  "astro",
   "cssls",
-  "tailwindcss",
-  "sumneko",
+  "cssmodules_ls",
+  "html",
+  "jsonls",
   "null-ls",
   "solang",
-  "astro",
-  "cssmodules_ls",
+  "sumneko",
+  "svelte",
+  "tailwindcss",
+  "tsserver",
 }
 
 for _, lsp in ipairs(servers) do
