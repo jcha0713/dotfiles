@@ -115,6 +115,9 @@ return require("packer").startup({
     -- lsp-signature: signature help
     use({
       "ray-x/lsp_signature.nvim",
+      config = function()
+        require("plugins.lsp_signature")
+      end,
     })
 
     -- vim-illuminate: find occurrences

@@ -1,4 +1,5 @@
 local cmp = require("cmp")
+local compare = require("cmp.config.compare")
 
 local lspkind = require("lspkind")
 
@@ -14,34 +15,51 @@ cmp.setup({
       maxwidth = math.floor(vim.api.nvim_win_get_width(0) / 2),
       maxheight = math.floor(vim.api.nvim_win_get_height(0) / 3 * 2),
       menu = {
-        buffer = "[Buf]",
         nvim_lsp = "[LSP]",
         luasnip = "[Snip]",
         nvim_lua = "[Nvim]",
+        fuzzy_buffer = "[Buf]",
         look = "[Dict]",
       },
     }),
   },
   mapping = {
-    ["<C-p>"] = cmp.mapping.select_prev_item(),
-    ["<C-n>"] = cmp.mapping.select_next_item(),
+    ["<C-p>"] = cmp.mapping(cmp.mapping.select_prev_item(), { "i", "c" }),
+    ["<C-n>"] = cmp.mapping(cmp.mapping.select_next_item(), { "i", "c" }),
     ["<C-d>"] = cmp.mapping.scroll_docs(-4),
     ["<C-u>"] = cmp.mapping.scroll_docs(4),
-    ["<C-e>"] = cmp.mapping.close(),
-    ["<CR>"] = cmp.mapping.confirm(),
+    ["<C-s>"] = cmp.mapping.close(),
+    ["<CR>"] = cmp.mapping.confirm({ select = true }),
+  },
+  experimental = {
+    ghost_text = true,
+  },
+  sorting = {
+    priority_weight = 2,
+    comparators = {
+      require("cmp_fuzzy_buffer.compare"),
+      compare.offset,
+      compare.exact,
+      compare.score,
+      compare.recently_used,
+      compare.kind,
+      compare.sort_text,
+      compare.length,
+      compare.order,
+    },
   },
   sources = cmp.config.sources({
+    { name = "nvim_lsp" },
     {
       name = "luasnip", --[[ option = { use_show_condition = false } ]]
     },
     { name = "nvim_lua" },
-    { name = "nvim_lsp" },
-    { name = "path" },
     {
       name = "fuzzy_buffer",
       keyword_length = 5,
       max_item_count = 10,
     },
+    { name = "path" },
     { name = "neorg" },
     {
       name = "look",
@@ -52,7 +70,7 @@ cmp.setup({
         loud = true,
       },
     },
-    { name = "orgmode" },
+    -- { name = "orgmode" },
   }),
 })
 
