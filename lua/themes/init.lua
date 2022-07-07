@@ -18,11 +18,14 @@ vim.g.gruvbox_flat_style = "dark"
 vim.g.gruvbox_hideInactiveStatusline = true
 
 -- set colorscheme to gruvbox-flat
-vim.cmd [[colorscheme gruvbox-flat]]
+vim.cmd([[colorscheme gruvbox-flat]])
 
 -- highlight for comments
-vim.cmd [[highlight Visual guifg=#f7f6f0 guibg=#8a6363]]
+vim.cmd([[highlight Visual guifg=#f7f6f0 guibg=#8a6363]])
 
 -- highlight for cmp: matching characters
-vim.cmd [[highlight! CmpItemAbbrMatch guibg=NONE guifg=#d3869b]]
-vim.cmd [[highlight! CmpItemAbbrMatchFuzzy guibg=NONE guifg=#d3869b]]
+vim.cmd([[highlight! CmpItemAbbrMatch guibg=NONE guifg=#d3869b]])
+vim.cmd([[highlight! CmpItemAbbrMatchFuzzy guibg=NONE guifg=#d3869b]])
+
+-- highlihgt for matching parameter in lsp signature popup
+vim.cmd([[highlight! LspSignatureActiveParameter guibg=NONE guifg=#4ce0b6]])
