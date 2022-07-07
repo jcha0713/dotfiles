@@ -65,9 +65,30 @@ return {
     )
   ),
 
-  -- edfu: export default function ...
+  -- ef: export function ...
   s(
-    "edfu",
+    "ef",
+    fmt(
+      [[
+      export{}function {}({}) {{
+        {}
+      }}
+      ]],
+      {
+        c(1, {
+          t(" "),
+          t(" async "),
+        }),
+        i(2),
+        i(3),
+        i(4),
+      }
+    )
+  ),
+
+  -- edf: export default function ...
+  s(
+    "edf",
     fmt(
       [[
       export default{}function {}({}) {{
