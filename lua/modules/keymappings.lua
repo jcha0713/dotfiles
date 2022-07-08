@@ -38,6 +38,12 @@ map("i", "<C-c>", "")
 map("n", "|", "<C-w>v")
 map("n", "_", "<C-w>s")
 
+-- manage window size
+map("n", "<C-w>+", "5<C-w>+")
+map("n", "<C-w>-", "5<C-w>-")
+map("n", "<C-w><", "5<C-w><")
+map("n", "<C-w>>", "5<C-w>>")
+
 -- MarkdownPreviewToggle
 map("n", "<Leader>mp", ":MarkdownPreviewToggle<CR>")
 
