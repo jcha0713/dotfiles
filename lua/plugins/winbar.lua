@@ -1,26 +1,29 @@
 local M = {}
 
-M.winbar_filetype_exclude = {
-  "help",
-  "startify",
-  "packer",
-  "neogitstatus",
-  "neo-tree",
-  "Trouble",
-  "NvimTree",
-  "toggleterm",
+M.winbar_filetype = {
+  "javascript",
+  "typescript",
+  "jsx",
+  "tsx",
+  "astro",
+  "lua",
+  "json",
+  "html",
+  "css",
+  "markdown",
+  "pug",
 }
 
-local excludes = function()
-  if vim.tbl_contains(M.winbar_filetype_exclude, vim.bo.filetype) then
-    vim.opt_local.winbar = nil
-    return true
+local includes = function()
+  if vim.tbl_contains(M.winbar_filetype, vim.bo.filetype) then
+    return false
   end
-  return false
+  vim.opt_local.winbar = nil
+  return true
 end
 
 M.get_winbar = function()
-  if excludes() then
+  if includes() then
     return
   end
 
