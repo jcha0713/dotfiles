@@ -27,5 +27,8 @@ vim.cmd([[highlight Visual guifg=#f7f6f0 guibg=#8a6363]])
 vim.cmd([[highlight! CmpItemAbbrMatch guibg=NONE guifg=#d3869b]])
 vim.cmd([[highlight! CmpItemAbbrMatchFuzzy guibg=NONE guifg=#d3869b]])
 
--- highlihgt for matching parameter in lsp signature popup
+-- highlight for matching parameter in lsp signature popup
 vim.cmd([[highlight! LspSignatureActiveParameter guibg=NONE guifg=#4ce0b6]])
+
+-- highlight for winbar
+vim.cmd([[highlight! WinBar guifg=#a390a2]])

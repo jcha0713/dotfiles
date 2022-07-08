@@ -1,5 +1,7 @@
 local api = vim.api
 local cmd = vim.cmd
+local augroup = api.nvim_create_augroup
+local autocmd = api.nvim_create_autocmd
 
 cmd([[au TextYankPost * lua vim.highlight.on_yank {on_visual = false}]]) -- highlint on yank
 -- cmd(
@@ -18,11 +20,23 @@ cmd([[au TextYankPost * lua vim.highlight.on_yank {on_visual = false}]]) -- high
 -- })
 
 -- q to quit quickfix list
-local qf = api.nvim_create_augroup("qf", { clear = true })
-api.nvim_create_autocmd("FileType", {
+local qf = augroup("qf", { clear = true })
+autocmd("FileType", {
   pattern = "qf",
   callback = function()
     vim.keymap.set("n", "q", "<cmd>ccl<cr>")
   end,
   group = qf,
+})
+
+autocmd({
+  "CursorMoved",
+  "BufWinEnter",
+  "BufFilePost",
+  "InsertEnter",
+  "BufWritePost",
+}, {
+  callback = function()
+    require("plugins.winbar").get_winbar()
+  end,
 })
