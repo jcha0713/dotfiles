@@ -158,3 +158,6 @@ map("i", "<A-,>", "<esc>la,")
 
 -- add colon and jump
 map("i", "<A-;>", "<esc>la:")
+
+-- Neogen
+map("n", "<leader>ng", ":lua require('neogen').generate()<CR>")

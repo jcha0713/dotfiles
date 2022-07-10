@@ -219,6 +219,17 @@ return require("packer").startup({
       end,
     })
 
+    -- neogen: docstring generator
+    use({
+      "danymat/neogen",
+      config = function()
+        require("plugins.neogen")
+      end,
+      requires = "nvim-treesitter/nvim-treesitter",
+      -- Uncomment next line if you want to follow only stable versions
+      -- tag = "*"
+    })
+
     -- neoscroll: enables smooth scrolling
     use({
       "karb94/neoscroll.nvim",
