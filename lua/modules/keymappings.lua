@@ -161,3 +161,6 @@ map("i", "<A-;>", "<esc>la:")
 
 -- Neogen
 map("n", "<leader>ng", ":lua require('neogen').generate()<CR>")
+
+-- LspRestart
+map("n", "<leader>rs", ":LspRestart<CR>:e<CR>")
