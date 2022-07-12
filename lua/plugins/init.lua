@@ -105,7 +105,7 @@ return require("packer").startup({
       "neovim/nvim-lspconfig",
       requires = {
         "jose-elias-alvarez/null-ls.nvim",
-        "jose-elias-alvarez/nvim-lsp-ts-utils",
+        "jose-elias-alvarez/typescript.nvim",
       },
       config = function()
         require("modules.lsp")
