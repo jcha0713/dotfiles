@@ -9,6 +9,7 @@ local eslint_opts = {
 }
 
 local sources = {
+  b.formatting.rustfmt,
   b.diagnostics.eslint_d.with(eslint_opts),
   -- b.formatting.eslint_d.with(eslint_opts),
   b.code_actions.eslint_d.with(eslint_opts),

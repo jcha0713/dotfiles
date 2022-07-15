@@ -86,6 +86,7 @@ local servers = {
   "solang",
   "sumneko",
   "svelte",
+  "rust_analyzer",
   "tailwindcss",
   "tsserver",
 }
