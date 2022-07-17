@@ -1,1 +1,14 @@
-friendly-snippets/
+# ignore all
+*
+
+# but add these:
+!hammerspoon/
+!nvim/
+
+!hammerspoon/**
+!nvim/**
+
+nvim/friendly-snippets
+
+# macOS-specific files
+*/**/.DS_store
