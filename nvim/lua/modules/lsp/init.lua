@@ -84,7 +84,7 @@ local servers = {
   "jsonls",
   "null-ls",
   "solang",
-  "sumneko",
+  "sumneko_lua",
   "svelte",
   "rust_analyzer",
   "tailwindcss",
