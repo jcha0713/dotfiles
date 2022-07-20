@@ -9,17 +9,19 @@ local settings = {
         "assert",
         "before_each",
         "after_each",
+        "hs", -- hammerspoon
       },
     },
-    completion = {
-      showWord = "Disable",
-      callSnippet = "Disable",
-      keywordSnippet = "Disable",
-    },
+    -- completion = {
+    --   showWord = "Disable",
+    --   callSnippet = "Disable",
+    --   keywordSnippet = "Disable",
+    -- },
     workspace = {
       checkThirdParty = false,
       library = {
-        ["${3rd}/love2d/library"] = true,
+        "$HOME/.config/hammerspoon/Spoons/EmmyLua.spoon/annotations",
+        "/Applications/Hammerspoon.app/Contents/Resources/extensions/hs/",
       },
     },
   },
