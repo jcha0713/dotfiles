@@ -10,7 +10,8 @@
 !hammerspoon/**
 !nvim/**
 
-nvim/friendly-snippets
+hammerspoon/Spoons/EmmyLua.spoon/annotations
+nvim/friendly-snippets/
 
 # macOS-specific files
 */**/.DS_store

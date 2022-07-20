@@ -22,6 +22,8 @@ local ignore_files = {
   "%.webp",
   "%.ico",
   "data/lua%-language%-server",
+  ".DS_Store",
+  "/EmmyLua.spoon/annotations/*",
 }
 
 local picker_opt = {
