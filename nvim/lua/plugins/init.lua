@@ -280,6 +280,7 @@ return require("packer").startup({
     -- hop.nvim: flexible cursor movement
     use({
       "phaazon/hop.nvim",
+      branch = "v2",
       config = function()
         require("plugins.hop")
       end,
