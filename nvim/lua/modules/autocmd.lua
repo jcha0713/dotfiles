@@ -37,6 +37,6 @@ autocmd({
   "BufWritePost",
 }, {
   callback = function()
-    require("plugins.winbar").get_winbar()
+    require("plugins.custom.winbar").get_winbar()
   end,
 })
