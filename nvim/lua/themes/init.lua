@@ -32,3 +32,6 @@ vim.cmd([[highlight! LspSignatureActiveParameter guibg=NONE guifg=#4ce0b6]])
 
 -- highlight for winbar
 vim.cmd([[highlight! WinBar guifg=#a390a2]])
+
+-- SearchBoxMatch
+vim.cmd([[highlight! SearchBoxMatch guibg=#9393e2 guifg=#000000]])

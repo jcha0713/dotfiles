@@ -206,6 +206,10 @@ return require("packer").startup({
       end,
     })
 
+    use({
+      "nvim-treesitter/playground",
+    })
+
     -- Treesitter textobjects: more text objects to easily select them
     use({
       "nvim-treesitter/nvim-treesitter-textobjects",
@@ -298,20 +302,20 @@ return require("packer").startup({
     -- toggleterm.nvim: terminal in neovim
     use({
       "akinsho/toggleterm.nvim",
-      tag = "v1.*",
+      tag = "v2.*",
       config = function()
         require("plugins.toggleterm")
       end,
     })
 
     -- neogit.nvim: git in neovim
-    use({
-      "TimUntersberger/neogit",
-      requires = "nvim-lua/plenary.nvim",
-      config = function()
-        require("plugins.neogit")
-      end,
-    })
+    -- use({
+    --   "TimUntersberger/neogit",
+    --   requires = "nvim-lua/plenary.nvim",
+    --   config = function()
+    --     require("plugins.neogit")
+    --   end,
+    -- })
 
     -- trouble.nvim: error fix using quickfix list
     use({
@@ -330,12 +334,15 @@ return require("packer").startup({
       end,
     })
 
-    -- -- dressing.nvim: ui selector
-    -- use({
-    --   "stevearc/dressing.nvim",
-    --   config = function()
-    --     require("plugins.dressing")
-    --   end,
-    -- })
+    -- searchbox.nvim: searchbox for searching and replacing words
+    use({
+      "VonHeikemen/searchbox.nvim",
+      config = function()
+        require("plugins.searchbox")
+      end,
+      requires = {
+        { "MunifTanjim/nui.nvim" },
+      },
+    })
   end,
 })

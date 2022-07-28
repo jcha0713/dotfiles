@@ -164,3 +164,8 @@ map("n", "<leader>ng", ":lua require('neogen').generate()<CR>")
 
 -- LspRestart
 map("n", "<leader>rs", ":LspRestart<CR>:e<CR>")
+
+-- SearchBox
+map("n", "<M-/>", ":SearchBoxIncSearch<CR>")
+map("x", "<M-/>", ":SearchBoxIncSearch visual_mode=true<CR>")
+map("x", "<leader>rp", ":SearchBoxReplace<CR>")
