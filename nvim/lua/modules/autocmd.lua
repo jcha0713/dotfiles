@@ -29,14 +29,14 @@ autocmd("FileType", {
   group = qf,
 })
 
-autocmd({
-  "CursorMoved",
-  "BufWinEnter",
-  "BufFilePost",
-  "InsertEnter",
-  "BufWritePost",
-}, {
-  callback = function()
-    require("plugins.custom.winbar").get_winbar()
-  end,
-})
+-- autocmd({
+--   "CursorMoved",
+--   "BufWinEnter",
+--   "BufFilePost",
+--   "InsertEnter",
+--   "BufWritePost",
+-- }, {
+--   callback = function()
+--     require("plugins.custom.winbar").get_winbar()
+--   end,
+-- })
