@@ -1,12 +1,16 @@
-local M
+local M = {}
 
 local modules = {
   "korToEng",
+  "wifiWatcher",
 }
 
-for _, module in ipairs(modules) do
-  local modulePath = "modules." .. module
-  require(modulePath)
+-- load custom modules
+function M.init()
+  for _, module in ipairs(modules) do
+    local modulePath = "modules." .. module
+    require(modulePath):init()
+  end
 end
 
 return M

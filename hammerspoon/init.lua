@@ -1,10 +1,17 @@
 local secret = require("secret")
 secret.init(".secret.json")
 
-require("modules")
+-- initialize modules
+--
+local modules = require("modules")
+modules.init()
 
+-- Spoons
+
+-- annotations
 -- hs.loadSpoon("EmmyLua")
--- CONFIG RELOADING:
+
+-- Config Reloading
 hs.notify.new({ title = "Hammerspoon", informativeText = "Config loaded" }):send()
 hs.loadSpoon("ReloadConfiguration")
 spoon.ReloadConfiguration:start()

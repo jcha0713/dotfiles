@@ -1,6 +1,8 @@
+local M = {}
+local utils = require("utils")
 local inputEnglish = "com.apple.keylayout.ABC"
 
-local function korToEng()
+local changeSource = function()
   local inputSource = hs.keycodes.currentSourceID()
   if not (inputSource == inputEnglish) then
     hs.keycodes.currentSourceID(inputEnglish)
@@ -8,4 +10,8 @@ local function korToEng()
   hs.eventtap.keyStroke({}, "escape")
 end
 
-hs.hotkey.bind({ "control" }, 33, korToEng)
+function M:init()
+  utils.bind({ "control" }, 33, changeSource)
+end
+
+return M
