@@ -1,17 +1,17 @@
 # ignore all
 *
 
-!README.md
-
 # but add these:
+!README.md
 !hammerspoon/
 !nvim/
 
 !hammerspoon/**
 !nvim/**
 
-hammerspoon/Spoons/EmmyLua.spoon/annotations
+# but ignore again
 nvim/friendly-snippets/
+hammerspoon/.secret.json
 
 # macOS-specific files
 */**/.DS_store
