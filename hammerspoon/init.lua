@@ -1,6 +1,3 @@
-local secret = require("secret")
-secret.init(".secret.json")
-
 -- initialize modules
 --
 local modules = require("modules")
@@ -11,6 +8,9 @@ local hyper = require("modules.hyper")
 hyper.bind({}, "r", nil, function()
   hs.reload()
 end)
+
+local secret = require("secret")
+secret.init(".secret.json")
 
 -- Spoons
 
