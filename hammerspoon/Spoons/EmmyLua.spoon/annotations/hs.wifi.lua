@@ -93,6 +93,7 @@ function M.backgroundScan(fn, interface, ...) end
 --
 -- Returns:
 --  * A string containing the SSID of the WiFi network currently joined, or nil if no there is no WiFi connection
+---@return string
 function M.currentNetwork(interface, ...) end
 
 -- Disconnect the interface from its current network.
