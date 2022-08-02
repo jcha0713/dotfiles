@@ -4,6 +4,7 @@ local modules = {
   "hyper",
   "korToEng",
   "wifiWatcher",
+  "windowManager",
 }
 
 -- load custom modules
