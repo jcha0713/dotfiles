@@ -1,6 +1,7 @@
 local M = {}
 
 local modules = {
+  "hyper",
   "korToEng",
   "wifiWatcher",
 }

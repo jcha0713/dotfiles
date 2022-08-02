@@ -6,6 +6,12 @@ secret.init(".secret.json")
 local modules = require("modules")
 modules.init()
 
+local hyper = require("modules.hyper")
+
+hyper.bind({}, "r", nil, function()
+  hs.reload()
+end)
+
 -- Spoons
 
 -- annotations
