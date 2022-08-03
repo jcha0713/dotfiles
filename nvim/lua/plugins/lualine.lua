@@ -1,6 +1,6 @@
-local lualine = require "lualine"
+local lualine = require("lualine")
 
-lualine.setup {
+lualine.setup({
   options = {
     icons_enabled = true,
     theme = "gruvbox-flat",
@@ -31,4 +31,4 @@ lualine.setup {
   },
   tabline = {},
   extensions = { "nvim-tree" },
-}
+})

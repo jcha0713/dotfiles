@@ -28,14 +28,7 @@ return require("packer").startup({
     })
 
     -- markdown-preview: preview for *.md
-    use({
-      "iamcco/markdown-preview.nvim",
-      run = "cd app && npm install",
-      setup = function()
-        vim.g.mkdp_filetypes = { "markdown" }
-      end,
-      ft = { "markdown" },
-    })
+    -- use({ "iamcco/markdown-preview.nvim" })
 
     -- vim-pencil: writing in vim
     use({
@@ -284,7 +277,7 @@ return require("packer").startup({
     -- hop.nvim: flexible cursor movement
     use({
       "phaazon/hop.nvim",
-      branch = "v2",
+      branch = "master",
       config = function()
         require("plugins.hop")
       end,
