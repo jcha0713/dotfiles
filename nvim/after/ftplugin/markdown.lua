@@ -7,7 +7,7 @@ api.nvim_buf_set_keymap(0, "n", "k", "gk", { noremap = true, silent = true })
 -- let g:markdown_fenced_languages = ['javascript', 'js=javascript']
 -- ]])
 
-vim.opt.conceallevel = 2
+-- vim.opt.conceallevel = 2
 vim.cmd([[
 let g:pencil#wrapModeDefault = 'soft'
 
