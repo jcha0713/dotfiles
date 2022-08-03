@@ -7,6 +7,7 @@ o.clipboard = "unnamed,unnamedplus"
 o.completeopt = { "menu", "menuone", "noinsert", "noselect" } -- options for insert mode completion
 o.cursorline = true -- highlight the line of the cursor
 o.expandtab = true -- use spaces to insert a tab
+o.foldlevelstart = 99 -- open all folds when opening a file
 o.hlsearch = false -- no highlight for searching
 o.ignorecase = true -- ignore case in search patterns
 o.linebreak = true -- wrap long lines
