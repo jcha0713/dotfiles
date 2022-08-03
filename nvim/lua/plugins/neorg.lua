@@ -1,4 +1,4 @@
-require("neorg").setup {
+require("neorg").setup({
   -- Tell Neorg what modules to load
   load = {
     ["core.defaults"] = {},
@@ -9,14 +9,14 @@ require("neorg").setup {
           {
             "title",
             function()
-              return vim.fn.expand "%:p:t:r"
+              return vim.fn.expand("%:p:t:r")
             end,
           },
           { "authors", require("neorg.external.helpers").get_username },
           {
             "created",
             function()
-              return os.date "%Y-%m-%d"
+              return os.date("%Y-%m-%d")
             end,
           },
         },
@@ -27,17 +27,22 @@ require("neorg").setup {
       config = {
         workspaces = {
           organizer = "~/jhcha/note/organizer",
-          -- Automatically detect whenever we have entered a subdirectory of a workspace
-          autodetect = true,
-          -- Automatically change the directory to the root of the workspace every time
-          autochdir = true,
         },
+        default_workspace = "organizer",
+        -- Automatically change the directory to the root of the workspace every time
+        autochdir = true,
       },
     },
     ["core.keybinds"] = { -- Configure core.keybinds
       config = {
-        default_keybinds = true, -- Generate the default keybinds
-        neorg_leader = "<Leader>o", -- This is the default if unspecified
+        default_keybinds = true,
+        neorg_leader = "<Leader>",
+      },
+    },
+    ["core.export"] = { config = {} },
+    ["core.export.markdown"] = {
+      config = {
+        extensions = "all",
       },
     },
     ["core.norg.completion"] = {
@@ -55,4 +60,4 @@ require("neorg").setup {
     },
     ["core.norg.journal"] = {},
   },
-}
+})
