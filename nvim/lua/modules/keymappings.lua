@@ -45,7 +45,8 @@ map("n", "<C-w><", "5<C-w><")
 map("n", "<C-w>>", "5<C-w>>")
 
 -- MarkdownPreviewToggle
-map("n", "<Leader>mp", ":MarkdownPreviewToggle<CR>")
+-- map("n", "<Leader>mp", ":MarkdownPreviewToggle<CR>")
+map("n", "<Leader>mp", ":Glow<CR>")
 
 -- paste with Enter key
 map("n", "<CR>", "o<ESC>k")
