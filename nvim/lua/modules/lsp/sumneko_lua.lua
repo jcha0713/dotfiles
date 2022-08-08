@@ -9,7 +9,7 @@ local settings = {
         "assert",
         "before_each",
         "after_each",
-        -- "hs", -- hammerspoon
+        "hs", -- hammerspoon
       },
     },
     completion = {
@@ -19,10 +19,7 @@ local settings = {
     },
     workspace = {
       checkThirdParty = false,
-      library = {
-        "$HOME/.config/hammerspoon/Spoons/EmmyLua.spoon/annotations",
-        -- "/Applications/Hammerspoon.app/Contents/Resources/extensions/hs/",
-      },
+      preloadFileSize = 20000,
     },
   },
 }
@@ -30,16 +27,17 @@ local settings = {
 local M = {}
 
 M.setup = function(on_attach, capabilities)
-  local luadev = require("lua-dev").setup({
-    lspconfig = {
-      on_attach = on_attach,
-      settings = settings,
-      flags = {
-        debounce_text_changes = 150,
-      },
-      capabilities = capabilities,
+  local opt = {
+    on_attach = on_attach,
+    capabilities = capabilities,
+    flags = {
+      debounce_text_changes = 150,
     },
-  })
+    settings = settings,
+  }
+
+  local luadev = vim.tbl_deep_extend("force", require("lua-dev").setup(), opt)
+
   require("lspconfig").sumneko_lua.setup(luadev)
 end
 
