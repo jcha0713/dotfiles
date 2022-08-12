@@ -87,6 +87,7 @@ return require("packer").startup({
         "tamago324/nlsp-settings.nvim",
         "onsails/lspkind-nvim",
         "octaltree/cmp-look",
+        -- "jcha0713/cmp-tw2css",
       },
     })
 
@@ -125,8 +126,16 @@ return require("packer").startup({
     })
 
     -- vim-surround: easily change surrounding tags
+    -- use({
+    --   "tpope/vim-surround",
+    -- })
+
+    -- nvim-surround: nvim version of vim-surround
     use({
-      "tpope/vim-surround",
+      "kylechui/nvim-surround",
+      config = function()
+        require("plugins.nvim-surround")
+      end,
     })
 
     -- schemastore: access to the SchemaStore catalog
@@ -258,7 +267,11 @@ return require("packer").startup({
     use({
       "ellisonleao/glow.nvim",
       config = function()
-        vim.g.glow_border = "rounded"
+        require("glow").setup({
+          style = "dark",
+          width = 120,
+          border = "rounded",
+        })
       end,
     })
 
