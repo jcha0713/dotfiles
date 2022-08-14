@@ -17,9 +17,9 @@ return {
   -- cl: console.log({value}), basic thing
   s("cl", { t("console.log("), i(1), t(")") }),
 
-  -- var: {const or let} {name}, variable declaration
+  -- v: {const or let} {name}, variable declaration
   s(
-    "var",
+    "v",
     fmt(
       [[
         {1} {2}
