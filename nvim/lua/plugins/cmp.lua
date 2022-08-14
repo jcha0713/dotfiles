@@ -1,6 +1,5 @@
 local cmp = require("cmp")
 local compare = require("cmp.config.compare")
-
 local lspkind = require("lspkind")
 
 cmp.setup({
@@ -31,9 +30,9 @@ cmp.setup({
     ["<C-s>"] = cmp.mapping.close(),
     ["<CR>"] = cmp.mapping.confirm(),
   },
-  experimental = {
-    ghost_text = { hl_group = "CmpItemAbbrMatch" },
-  },
+  -- experimental = {
+  --   ghost_text = { hl_group = "CmpItemAbbrMatch" },
+  -- },
   sorting = {
     priority_weight = 2,
     comparators = {
@@ -49,9 +48,10 @@ cmp.setup({
     },
   },
   sources = cmp.config.sources({
+    { name = "cmp-tw2css" },
     { name = "nvim_lsp" },
     {
-      name = "luasnip", --[[ option = { use_show_condition = false } ]]
+      name = "luasnip",
     },
     { name = "nvim_lua" },
     {
@@ -70,7 +70,6 @@ cmp.setup({
         loud = true,
       },
     },
-    -- { name = "orgmode" },
   }),
 })
 

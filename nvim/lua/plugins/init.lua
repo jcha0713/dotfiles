@@ -87,7 +87,7 @@ return require("packer").startup({
         "tamago324/nlsp-settings.nvim",
         "onsails/lspkind-nvim",
         "octaltree/cmp-look",
-        -- "jcha0713/cmp-tw2css",
+        "jcha0713/cmp-tw2css",
       },
     })
 
