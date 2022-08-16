@@ -3,6 +3,12 @@ local map = utils.map
 
 vim.g.mapleader = " "
 
+-- PackerSync
+map("n", "<leader>ps", ":PackerSync<CR>")
+
+-- TSPlaygroundToggle
+map("n", "<leader>tsp", ":TSPlaygroundToggle<CR>")
+
 -- F and L for first and last character movement
 -- and now tesing gh and gl
 map("n", "gh", "^")
@@ -35,8 +41,8 @@ map("i", "jj", "<C-[>")
 map("i", "<C-c>", "")
 
 -- split windows
-map("n", "|", "<C-w>v")
-map("n", "_", "<C-w>s")
+map("n", "|", "<cmd>vnew<cr>")
+map("n", "_", "<cmd>new<cr>")
 
 -- manage window size
 map("n", "<C-w>+", "5<C-w>+")
