@@ -8,13 +8,13 @@ M.setup = function(on_attach, capabilities)
     on_attach = function(client)
       on_attach(client)
     end,
-    -- settings = {
-    --   ["rust_analyzer"] = {
-    --     checkOnSave = {
-    --       command = "clippy",
-    --     },
-    --   },
-    -- },
+    settings = {
+      ["rust_analyzer"] = {
+        checkOnSave = {
+          command = "clippy",
+        },
+      },
+    },
   })
 end
 
