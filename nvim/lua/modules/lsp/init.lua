@@ -83,10 +83,11 @@ local servers = {
   "html",
   "jsonls",
   "null-ls",
+  "prismals",
+  "rust_analyzer",
   "solang",
   "sumneko_lua",
   "svelte",
-  "rust_analyzer",
   "tailwindcss",
   "tsserver",
 }
