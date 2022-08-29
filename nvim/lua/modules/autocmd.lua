@@ -29,14 +29,17 @@ autocmd("FileType", {
   group = qf,
 })
 
--- autocmd({
---   "CursorMoved",
---   "BufWinEnter",
---   "BufFilePost",
---   "InsertEnter",
---   "BufWritePost",
--- }, {
---   callback = function()
---     require("plugins.custom.winbar").get_winbar()
---   end,
--- })
+-- attach winbar
+local winbar = augroup("winbar", { clear = true })
+autocmd({
+  "CursorMoved",
+  "BufWinEnter",
+  "BufFilePost",
+  "InsertEnter",
+  "BufWritePost",
+}, {
+  callback = function()
+    require("plugins.custom.winbar").get_winbar()
+  end,
+  group = winbar,
+})
