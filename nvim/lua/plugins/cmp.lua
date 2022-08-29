@@ -14,9 +14,9 @@ cmp.setup({
       maxwidth = math.floor(vim.api.nvim_win_get_width(0) / 2),
       maxheight = math.floor(vim.api.nvim_win_get_height(0) / 3 * 2),
       menu = {
+        ["cmp-tw2css"] = "[TailwindCSS]",
         nvim_lsp = "[LSP]",
         luasnip = "[Snip]",
-        nvim_lua = "[Nvim]",
         fuzzy_buffer = "[Buf]",
         look = "[Dict]",
       },
@@ -53,7 +53,7 @@ cmp.setup({
     {
       name = "luasnip",
     },
-    { name = "nvim_lua" },
+    -- { name = "nvim_lua" },
     {
       name = "fuzzy_buffer",
       keyword_length = 5,

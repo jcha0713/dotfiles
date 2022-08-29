@@ -28,7 +28,14 @@ return require("packer").startup({
     })
 
     -- markdown-preview: preview for *.md
-    -- use({ "iamcco/markdown-preview.nvim" })
+    use({
+      "iamcco/markdown-preview.nvim",
+      run = "cd app && npm install",
+      setup = function()
+        vim.g.mkdp_filetypes = { "markdown" }
+      end,
+      ft = { "markdown" },
+    })
 
     -- vim-pencil: writing in vim
     use({
@@ -81,13 +88,12 @@ return require("packer").startup({
       requires = {
         "hrsh7th/cmp-nvim-lsp",
         "hrsh7th/cmp-path",
-        "hrsh7th/cmp-nvim-lua",
         "hrsh7th/cmp-cmdline",
         "saadparwaiz1/cmp_luasnip",
         "tamago324/nlsp-settings.nvim",
         "onsails/lspkind-nvim",
         "octaltree/cmp-look",
-        "jcha0713/cmp-tw2css",
+        -- "jcha0713/cmp-tw2css",
       },
     })
 
@@ -349,6 +355,20 @@ return require("packer").startup({
       requires = {
         { "MunifTanjim/nui.nvim" },
       },
+    })
+
+    use({
+      "jbyuki/nabla.nvim",
+      config = function()
+        require("plugins.nabla")
+      end,
+    })
+
+    use({
+      "jakewvincent/mkdnflow.nvim",
+      config = function()
+        require("plugins.mkdnflow")
+      end,
     })
   end,
 })

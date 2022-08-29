@@ -1,5 +1,6 @@
 local actions = require("telescope.actions")
 local utils = require("modules.utils")
+local fb_actions = require("telescope").extensions.file_browser.actions
 
 local M = {}
 
@@ -86,9 +87,7 @@ require("telescope").setup({
       },
     },
     extensions = {
-      file_browser = {
-        theme = "ivy",
-      },
+      file_browser = {},
     },
   },
 })
