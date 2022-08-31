@@ -1,5 +1,8 @@
 require("mkdnflow").setup({
   mappings = {
+    MkdnEnter = false,
+    MkdnFollowLink = { "n", "<leader>fl" },
+
     MkdnNextLink = false,
     MkdnPrevLink = false,
     MkdnTableNextCell = false,
