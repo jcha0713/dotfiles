@@ -370,5 +370,9 @@ return require("packer").startup({
         require("plugins.mkdnflow")
       end,
     })
+
+    use({
+      "simrat39/rust-tools.nvim",
+    })
   end,
 })

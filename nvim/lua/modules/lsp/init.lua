@@ -49,6 +49,8 @@ local on_attach = function(client, bufnr)
   u.buf_map("n", "<Leader>dl", ":LspDiagLine<CR>", nil, bufnr)
   u.buf_map("n", "<leader>ca", ":LspCodeAction<CR>", nil, bufnr)
 
+  u.buf_map("n", "<leader>rr", ":RustRun<CR>", nil, bufnr)
+
   -- format file on save
   -- client.server_capabilities.documentFormattingProvider = true
   if client.supports_method("textDocument/formatting") then
@@ -93,8 +95,27 @@ local servers = {
 }
 
 for _, lsp in ipairs(servers) do
+  if lsp == "rust_analyzer" then
+    local rt = require("rust-tools")
+
+    rt.setup({
+      server = {
+        on_attach = on_attach,
+        settings = {
+          ["rust-analyzer"] = {
+            checkOnSave = {
+              command = "clippy",
+            },
+          },
+        },
+      },
+    })
+    goto continue
+  end
+
   local server = "modules.lsp." .. lsp
   require(server).setup(on_attach, capabilities)
+  ::continue::
 end
 
 local border = {

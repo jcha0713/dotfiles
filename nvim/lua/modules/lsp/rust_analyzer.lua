@@ -11,6 +11,7 @@ M.setup = function(on_attach, capabilities)
     settings = {
       ["rust_analyzer"] = {
         checkOnSave = {
+          allFeatures = true,
           command = "clippy",
         },
       },
