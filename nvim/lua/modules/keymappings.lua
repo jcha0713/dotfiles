@@ -6,6 +6,9 @@ vim.g.mapleader = " "
 -- PackerSync
 map("n", "<leader>ps", ":PackerSync<CR>")
 
+-- easy quit
+map("n", "<leader>q", "<cmd>qa<cr>")
+
 -- TSPlaygroundToggle
 map("n", "<leader>tsp", ":TSPlaygroundToggle<CR>")
 
@@ -141,9 +144,9 @@ map("n", "<leader>hc", ":HopChar1<CR>")
 map("n", "<leader>hp", ":HopPattern<CR>")
 
 -- diffview.nvim
-map("n", "<leader>dv", ":DiffviewOpen<CR>")
-map("n", "<leader>dc", ":DiffviewClose<CR>")
-map("n", "<leader>dt", ":DiffviewToggleFiles<CR>")
+map("n", "<leader>dvo", ":DiffviewOpen<CR>")
+map("n", "<leader>dvc", ":DiffviewClose<CR>")
+map("n", "<leader>dvt", ":DiffviewToggleFiles<CR>")
 
 -- neogit
 map("n", "<leader>gg", ":Neogit<CR>")
@@ -155,9 +158,6 @@ map("n", "<C-p>", "viwp")
 map("n", "<leader>tt", ":TroubleToggle<CR>")
 map("n", "<leader>twd", ":TroubleToggle workspace_diagnostics<CR>")
 map("n", "<leader>tdd", ":TroubleToggle document_diagnostics<CR>")
-
--- -- Zen-mode
--- map("n", "<leader>zm", ":ZenMode<CR>")
 
 -- Grammar checking in the terminal(using gramma)
 map("n", "<leader>gc", ":term gramma check %<cr>")
