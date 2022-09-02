@@ -96,10 +96,14 @@ local servers = {
 
 for _, lsp in ipairs(servers) do
   if lsp == "rust_analyzer" then
-    local rt = require("rust-tools")
+    local ok, rt = pcall(require, "rust-tools")
+    if not ok then
+      return
+    end
 
     rt.setup({
       server = {
+        standalone = false,
         on_attach = on_attach,
         settings = {
           ["rust-analyzer"] = {
@@ -110,6 +114,7 @@ for _, lsp in ipairs(servers) do
         },
       },
     })
+
     goto continue
   end
 
