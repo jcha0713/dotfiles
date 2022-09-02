@@ -34,22 +34,12 @@ return require("packer").startup({
       setup = function()
         vim.g.mkdp_filetypes = { "markdown" }
       end,
-      ft = { "markdown" },
-    })
-
-    -- vim-pencil: writing in vim
-    use({
-      "reedes/vim-pencil",
+      ft = { "markdown", "md" },
     })
 
     -- Gruvbox-flat: colorscheme
     use({
       "eddyekofo94/gruvbox-flat.nvim",
-    })
-
-    -- write good: highlight for writing problems
-    use({
-      "davidbeckingsale/writegood.vim",
     })
 
     -- neorg: todo list
@@ -63,6 +53,7 @@ return require("packer").startup({
     -- nvim-peekup: pickup from register
     use({
       "gennaro-tedesco/nvim-peekup",
+      keys = { { "n", '""' } },
     })
 
     -- friendly snippets: snippets for autocompletion
@@ -73,7 +64,6 @@ return require("packer").startup({
     -- luasnip: snippets for autocompletion
     use({
       "L3MON4D3/Luasnip",
-      -- branch = "ls_snippets_preserve",
       config = function()
         require("plugins.luasnip")
       end,
@@ -131,11 +121,6 @@ return require("packer").startup({
       end,
     })
 
-    -- vim-surround: easily change surrounding tags
-    -- use({
-    --   "tpope/vim-surround",
-    -- })
-
     -- nvim-surround: nvim version of vim-surround
     use({
       "kylechui/nvim-surround",
@@ -183,10 +168,12 @@ return require("packer").startup({
     use({
       "BurntSushi/ripgrep",
     })
+
     use({
       "nvim-telescope/telescope-fzf-native.nvim",
       run = "make",
     })
+
     use({
       "tzachar/fuzzy.nvim",
       requires = { "hrsh7th/nvim-cmp", "tzachar/fuzzy.nvim" },
@@ -214,6 +201,7 @@ return require("packer").startup({
       end,
     })
 
+    -- playground for treesitter
     use({
       "nvim-treesitter/playground",
     })
@@ -357,13 +345,16 @@ return require("packer").startup({
       },
     })
 
+    -- Latex in markdown
     use({
       "jbyuki/nabla.nvim",
+      ft = { "markdown", "md" },
       config = function()
         require("plugins.nabla")
       end,
     })
 
+    -- Markdown
     use({
       "jakewvincent/mkdnflow.nvim",
       config = function()
@@ -371,8 +362,20 @@ return require("packer").startup({
       end,
     })
 
+    -- Rust
     use({
       "simrat39/rust-tools.nvim",
+      ft = { "rs" },
     })
+
+    -- Profiling
+    use({
+      "dstein64/vim-startuptime",
+      cmd = "StartupTime",
+      config = [[vim.g.startuptime_tries = 10]],
+    })
+
+    -- Optimizing startuptime
+    use({ "lewis6991/impatient.nvim" })
   end,
 })
