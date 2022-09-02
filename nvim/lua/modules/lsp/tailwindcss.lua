@@ -1,9 +1,9 @@
-local lspconfig = require "lspconfig"
+local lspconfig = require("lspconfig")
 
 local M = {}
 
 M.setup = function(on_attach)
-  lspconfig.tailwindcss.setup {
+  lspconfig.tailwindcss.setup({
     on_attach = function(client)
       on_attach(client)
     end,
@@ -75,10 +75,12 @@ M.setup = function(on_attach)
     end,
     root_dir = function(fname)
       return require("lspconfig.util").root_pattern(
-        "tailwind.config.js",
-        "tailwind.config.ts",
+        "postcss.config.cjs",
         "postcss.config.js",
-        "postcss.config.tx"
+        "postcss.config.tx",
+        "tailwind.config.cjs",
+        "tailwind.config.js",
+        "tailwind.config.ts"
       )(fname)
     end,
     settings = {
@@ -96,7 +98,7 @@ M.setup = function(on_attach)
         validate = true,
       },
     },
-  }
+  })
 end
 
 return M
