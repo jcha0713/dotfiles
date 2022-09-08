@@ -35,6 +35,7 @@ return require("packer").startup({
         vim.g.mkdp_filetypes = { "markdown" }
       end,
       ft = { "markdown", "md" },
+      cmd = "MarkdownPreview",
     })
 
     -- Gruvbox-flat: colorscheme
@@ -145,7 +146,7 @@ return require("packer").startup({
     -- lualine: better status line
     use({
       "nvim-lualine/lualine.nvim",
-      requires = { "kyazdani42/nvim-web-devicons", opt = true },
+      requires = { { "kyazdani42/nvim-web-devicons", opt = true } },
       config = function()
         require("plugins.lualine")
       end,
@@ -173,6 +174,8 @@ return require("packer").startup({
       "nvim-telescope/telescope-fzf-native.nvim",
       run = "make",
     })
+
+    --
 
     use({
       "tzachar/fuzzy.nvim",
@@ -267,6 +270,7 @@ return require("packer").startup({
           border = "rounded",
         })
       end,
+      cmd = "Glow",
     })
 
     -- comment.nvim: comment out lines
@@ -365,7 +369,6 @@ return require("packer").startup({
     -- Rust
     use({
       "simrat39/rust-tools.nvim",
-      ft = { "rs" },
     })
 
     -- Profiling
@@ -377,5 +380,27 @@ return require("packer").startup({
 
     -- Optimizing startuptime
     use({ "lewis6991/impatient.nvim" })
+
+    -- icons for extensions
+    use({
+      "kyazdani42/nvim-web-devicons",
+      config = function()
+        require("plugins.nvim-web-devicons")
+      end,
+    })
+
+    -- display keymap info
+    use({
+      "folke/which-key.nvim",
+      config = function()
+        require("plugins.which-key")
+      end,
+    })
+
+    -- web bookmarks
+    use({
+      "dhruvmanila/telescope-bookmarks.nvim",
+      tag = "*",
+    })
   end,
 })

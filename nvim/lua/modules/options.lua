@@ -28,6 +28,7 @@ o.smarttab = true -- <BS> deletes a shiftwidth worth of spaces
 o.splitbelow = true -- open new split on bottom
 o.splitright = true -- open new split on bottom
 o.termguicolors = true -- Turn true RGB on
+o.timeoutlen = 120 -- how long to wait for a keymap sequence to complete
 o.updatetime = 250 -- for hover
 o.wildignorecase = true -- ignore case for paths or directories
 o.wildmenu = true -- <Tab> to invoke completion above the command-line
