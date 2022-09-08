@@ -98,7 +98,7 @@ for _, lsp in ipairs(servers) do
   if lsp == "rust_analyzer" then
     local ok, rt = pcall(require, "rust-tools")
     if not ok then
-      return
+      goto continue
     end
 
     rt.setup({
