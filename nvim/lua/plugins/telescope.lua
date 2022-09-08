@@ -88,6 +88,22 @@ require("telescope").setup({
     },
     extensions = {
       file_browser = {},
+      bookmarks = {
+        selected_browser = "brave",
+
+        -- Either provide a shell command to open the URL
+        url_open_command = "open",
+
+        -- Or provide the plugin name which is already installed
+        -- Available: 'vim_external', 'open_browser'
+        url_open_plugin = nil,
+
+        -- Show the full path to the bookmark instead of just the bookmark name
+        full_path = true,
+
+        -- Provide debug messages
+        debug = false,
+      },
     },
   },
 })
@@ -95,6 +111,7 @@ require("telescope").setup({
 -- require("telescope").load_extension "projects"
 require("telescope").load_extension("fzf")
 require("telescope").load_extension("file_browser")
+require("telescope").load_extension("bookmarks")
 
 local builtin = function(mapping, picker, is_custom)
   local module = is_custom and "plugins.telescope" or "telescope.builtin"
