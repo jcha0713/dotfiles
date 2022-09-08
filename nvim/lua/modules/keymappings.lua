@@ -108,7 +108,7 @@ map("n", "<Leader>fb", ":Telescope file_browser<CR>")
 map("n", "<Leader>cm", ":Telescope commands<CR>")
 map("n", "<Leader>gs", ":Telescope grep_string<CR>")
 map("n", "<Leader>km", ":Telescope keymaps<CR>")
--- utils.map("n", "<C-n>", ":Telescope file_browser<CR>")
+map("n", "<Leader>bm", ":Telescope bookmarks<CR>")
 
 -- always keep the cursor at center
 map("n", "n", "nzzzv")
@@ -128,8 +128,6 @@ map("i", "]", "]<C-g>u")
 -- move line
 map("v", "<C-j>", ":m '>+1<CR>gv=gv")
 map("v", "<C-k>", ":m '<-2<CR>gv=gv")
-map("n", "<Leader>k", ":m .-2<CR>==")
-map("n", "<Leader>j", ":m .+1<CR>==")
 
 -- vv for select line
 map("n", "vv", "<S-v>")
