@@ -24,10 +24,7 @@ local on_attach = function(client, bufnr)
   u.lua_command("LspRename", "vim.lsp.buf.rename()")
   u.lua_command("LspDiagPrev", "vim.diagnostic.goto_prev()")
   u.lua_command("LspDiagNext", "vim.diagnostic.goto_next()")
-  u.lua_command(
-    "LspDiagOpen",
-    "vim.diagnostic.open_float({border='rounded', focus=false})"
-  )
+  u.lua_command("LspDiagOpen", "vim.diagnostic.open_float({border='rounded'})")
   u.lua_command(
     "LspDiagLine",
     "vim.diagnostic.open_float(nil, global.lsp.border_opts)"
