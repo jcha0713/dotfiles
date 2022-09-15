@@ -5,13 +5,16 @@
 !README.md
 !hammerspoon/
 !nvim/
+!karabiner/
 
 !hammerspoon/**
 !nvim/**
+!karabiner/**
 
 # but ignore again
 nvim/friendly-snippets/
 hammerspoon/.secret.json
+karabiner/automatic_backups
 
 # macOS-specific files
 */**/.DS_store
