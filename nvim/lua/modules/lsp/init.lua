@@ -33,6 +33,7 @@ local on_attach = function(client, bufnr)
   u.lua_command("LspDec", "vim.lsp.buf.declaration()")
   u.lua_command("LspDef", "vim.lsp.buf.definition()")
   u.lua_command("LspCodeAction", "vim.lsp.buf.code_action()")
+  u.lua_command("LspFindRef", "vim.lsp.buf.references()")
 
   -- bindings
   u.buf_map("n", "gD", ":LspDec<CR>", nil, bufnr)
@@ -45,6 +46,7 @@ local on_attach = function(client, bufnr)
   u.buf_map("n", "da", ":LspDiagOpen<CR>", nil, bufnr)
   u.buf_map("n", "<Leader>dl", ":LspDiagLine<CR>", nil, bufnr)
   u.buf_map("n", "<leader>ca", ":LspCodeAction<CR>", nil, bufnr)
+  u.buf_map("n", "<leader>fr", ":LspFindRef<CR>", nil, bufnr)
 
   u.buf_map("n", "<leader>rr", ":RustRun<CR>", nil, bufnr)
 
