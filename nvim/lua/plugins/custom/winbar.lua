@@ -3,8 +3,8 @@ local M = {}
 M.winbar_filetype = {
   "javascript",
   "typescript",
-  "jsx",
-  "tsx",
+  "javascriptreact",
+  "typescriptreact",
   "astro",
   "lua",
   "json",
@@ -12,6 +12,7 @@ M.winbar_filetype = {
   "css",
   "markdown",
   "pug",
+  "rust",
 }
 
 local includes = function()
