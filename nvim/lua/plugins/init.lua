@@ -39,9 +39,10 @@ return require("packer").startup({
     })
 
     -- Gruvbox-flat: colorscheme
-    use({
-      "eddyekofo94/gruvbox-flat.nvim",
-    })
+    -- use({
+    --   "eddyekofo94/gruvbox-flat.nvim",
+    -- })
+    use({ "rebelot/kanagawa.nvim" })
 
     -- neorg: todo list
     use({
@@ -174,8 +175,6 @@ return require("packer").startup({
       "nvim-telescope/telescope-fzf-native.nvim",
       run = "make",
     })
-
-    --
 
     use({
       "tzachar/fuzzy.nvim",

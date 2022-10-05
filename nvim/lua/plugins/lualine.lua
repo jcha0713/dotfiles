@@ -3,7 +3,7 @@ local lualine = require("lualine")
 lualine.setup({
   options = {
     icons_enabled = true,
-    theme = "gruvbox-flat",
+    theme = "kanagawa",
     section_separators = "",
     component_separators = "",
     always_divide_middle = true,
