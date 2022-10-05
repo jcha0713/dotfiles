@@ -81,6 +81,7 @@ local servers = {
   "astro",
   "cssls",
   "cssmodules_ls",
+  "gopls",
   "html",
   "jsonls",
   "null-ls",
