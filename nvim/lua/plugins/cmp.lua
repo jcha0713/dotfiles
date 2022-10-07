@@ -53,7 +53,6 @@ cmp.setup({
     {
       name = "luasnip",
     },
-    -- { name = "nvim_lua" },
     {
       name = "fuzzy_buffer",
       keyword_length = 5,
@@ -70,6 +69,7 @@ cmp.setup({
         loud = true,
       },
     },
+    { name = "crates" },
   }),
 })
 

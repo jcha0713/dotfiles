@@ -401,5 +401,16 @@ return require("packer").startup({
       "dhruvmanila/telescope-bookmarks.nvim",
       tag = "*",
     })
+
+    -- crates.io
+    use({
+      "saecki/crates.nvim",
+      event = { "BufRead Cargo.toml" },
+      tag = "v0.3.0",
+      requires = { "nvim-lua/plenary.nvim" },
+      config = function()
+        require("crates").setup()
+      end,
+    })
   end,
 })
