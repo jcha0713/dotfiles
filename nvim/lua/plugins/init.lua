@@ -412,5 +412,14 @@ return require("packer").startup({
         require("crates").setup()
       end,
     })
+
+    -- cosmic-ui
+    use({
+      "CosmicNvim/cosmic-ui",
+      requires = { "MunifTanjim/nui.nvim", "nvim-lua/plenary.nvim" },
+      config = function()
+        require("plugins.cosmic-ui")
+      end,
+    })
   end,
 })
