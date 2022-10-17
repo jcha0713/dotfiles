@@ -20,6 +20,7 @@ require("nvim-treesitter.configs").setup({
   ensure_installed = {
     "astro",
     "css",
+    "go",
     "html",
     "javascript",
     "json",
@@ -28,13 +29,15 @@ require("nvim-treesitter.configs").setup({
     "norg",
     "norg_meta",
     "norg_table",
+    "prisma",
+    "rust",
     "scss",
     "svelte",
-    "typescript",
     "tsx",
+    "typescript",
   },
   highlight = {
-    enable = true, -- false will disable the whole extension
+    enable = true,
     additional_vim_regex_highlighting = false,
   },
   indent = {
