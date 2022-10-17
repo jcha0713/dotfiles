@@ -12,6 +12,7 @@ local lsp_formatting = function(bufnr)
       return client.name == "null-ls" or client.name == "rust_analyzer"
     end,
     bufnr = bufnr,
+    async = true,
   })
 end
 
