@@ -78,6 +78,35 @@ local on_attach = function(client, bufnr)
   require("illuminate").on_attach(client)
 end
 
+-- Configure sumneko_lua to support neovim Lua runtime APIs
+require("neodev").setup({
+  settings = {
+    Lua = {
+      diagnostics = {
+        globals = {
+          "vim",
+          "use",
+          "describe",
+          "it",
+          "assert",
+          "before_each",
+          "after_each",
+          "hs", -- hammerspoon
+        },
+      },
+      completion = {
+        showWord = "Disable",
+        callSnippet = "Disable",
+        keywordSnippet = "Disable",
+      },
+      workspace = {
+        checkThirdParty = false,
+        preloadFileSize = 20000,
+      },
+    },
+  },
+})
+
 local servers = {
   "astro",
   "cssls",

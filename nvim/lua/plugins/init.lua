@@ -19,8 +19,8 @@ return require("packer").startup({
     -- Packer manages plugins
     use({ "wbthomason/packer.nvim", opt = true })
 
-    -- lua-dev: For better lua lsp configuration
-    use("folke/lua-dev.nvim")
+    -- neodev: For better lua lsp configuration
+    use("folke/neodev.nvim")
 
     -- vim-startify: start screen
     use({
