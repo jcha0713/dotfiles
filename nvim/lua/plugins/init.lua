@@ -50,6 +50,7 @@ return require("packer").startup({
       config = function()
         require("plugins.neorg")
       end,
+      requires = "nvim-neorg/neorg-telescope",
     })
 
     -- nvim-peekup: pickup from register

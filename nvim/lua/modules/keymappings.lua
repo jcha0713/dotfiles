@@ -31,13 +31,7 @@ map("n", "Q", ":cw<CR>")
 map("n", "]c", ":cn<CR>")
 map("n", "[c", ":cp<CR>")
 
--- map("n", "paw", '"_dawP')
--- map("n", "pi{", '"_di{P')
--- map("n", "pi}", '"_di}P')
--- map("n", "pi(", '"_di(P')
--- map("n", "pi)", '"_di)P')
--- map("n", "pi'", "\"_di'P")
--- map("n", 'pi"', '"_di"P')
+map("x", "<leader>p", '"_dP')
 
 -- easy keys for ESC
 map("i", "jj", "<C-[>")
@@ -59,11 +53,11 @@ map("n", "<Leader>mp", ":MarkdownPreviewToggle<CR>")
 -- Glow previewer
 map("n", "<Leader>gl", ":Glow<CR>")
 
--- paste with Enter key
+-- insert a newline
 map("n", "<CR>", "o<ESC>k")
 
 -- esc + esc to exit terminal mode
-map("t", "<C-q><esc>", "<C-\\><C-n><CR>")
+map("t", "<esc>", "<C-\\><C-n>")
 
 -- toggle hl
 -- utils.map('n', '<Leader>h', ':set hlsearch!<CR>')
@@ -109,6 +103,10 @@ map("n", "<Leader>cm", ":Telescope commands<CR>")
 map("n", "<Leader>gs", ":Telescope grep_string<CR>")
 map("n", "<Leader>km", ":Telescope keymaps<CR>")
 map("n", "<Leader>bm", ":Telescope bookmarks<CR>")
+map("n", "<Leader>nosh", ":Telescope neorg search_headings<CR>")
+map("n", "<Leader>nop", ":Telescope neorg find_project_tasks<CR>")
+map("n", "<Leader>noc", ":Telescope neorg find_context_tasks<CR>")
+map("n", "<Leader>noa", ":Telescope neorg find_aof_tasks<CR>")
 
 -- always keep the cursor at center
 map("n", "n", "nzzzv")
@@ -134,6 +132,8 @@ map("n", "vv", "<S-v>")
 
 -- Neorg: daily journal
 map("n", "<leader>jt", ":Neorg journal today<CR>")
+map("n", "<leader>gtdc", ":Neorg gtd capture<CR>")
+map("n", "<leader>gtdv", ":Neorg gtd views<CR>")
 
 -- Hop.nvim
 map("n", "<leader>hl", ":HopLine<CR>")

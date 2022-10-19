@@ -59,5 +59,6 @@ require("neorg").setup({
       },
     },
     ["core.norg.journal"] = {},
+    ["core.integrations.telescope"] = {}, -- Enable the telescope module
   },
 })
