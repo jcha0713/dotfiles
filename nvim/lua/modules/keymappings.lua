@@ -176,3 +176,7 @@ map("n", "<leader>rs", ":LspRestart<CR>:e<CR>")
 map("n", "<M-/>", ":SearchBoxIncSearch<CR>")
 map("x", "<M-/>", ":SearchBoxIncSearch visual_mode=true<CR>")
 map("x", "<leader>rp", ":SearchBoxReplace<CR>")
+
+-- React extract
+map({ "v" }, "<Leader>re", require("react-extract").extract_to_new_file)
+map({ "v" }, "<Leader>rc", require("react-extract").extract_to_current_file)

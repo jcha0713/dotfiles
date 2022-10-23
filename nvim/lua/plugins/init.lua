@@ -422,5 +422,13 @@ return require("packer").startup({
         require("plugins.cosmic-ui")
       end,
     })
+
+    use({
+      "jcha0713/react-extract.nvim",
+      branch = "fix",
+      config = function()
+        require("plugins.react-extract")
+      end,
+    })
   end,
 })

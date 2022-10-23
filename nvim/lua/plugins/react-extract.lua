@@ -1,0 +1,1 @@
+require("react-extract").setup()
