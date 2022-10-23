@@ -204,6 +204,10 @@ return require("packer").startup({
       end,
     })
 
+    use({
+      "p00f/nvim-ts-rainbow",
+    })
+
     -- playground for treesitter
     use({
       "nvim-treesitter/playground",

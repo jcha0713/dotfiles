@@ -45,6 +45,11 @@ local overrides = {
   HopNextKey2 = { fg = "#ff9900" },
   TelescopeBorder = { bg = "#181820" },
   WinSeparator = { fg = "#727169" },
+  rainbowcol1 = { fg = "#DE6647" },
+  rainbowcol2 = { fg = "#FF6185" },
+  rainbowcol3 = { fg = "#B594FF" },
+  rainbowcol4 = { fg = "#F4A65B" },
+  rainbowcol5 = { fg = "#FAE957" },
 }
 
 require("kanagawa").setup({
