@@ -6,9 +6,29 @@ M.setup = function(on_attach, capabilities)
   require("typescript").setup({
     server = {
       on_attach = function(client, bufnr)
-        u.buf_map("n", "gs", ":TSLspOrganize<CR>", nil, bufnr)
-        u.buf_map("n", "gI", ":TSLspRenameFile<CR>", nil, bufnr)
-        u.buf_map("n", "go", ":TSLspImportAll<CR>", nil, bufnr)
+        u.lua_command(
+          "TSLspOrganize",
+          "require('typescript').actions.organizeImports()"
+        )
+
+        u.lua_command(
+          "TSLspImportAll",
+          "require('typescript').actions.addMissingImports()"
+        )
+
+        u.lua_command(
+          "TSLspImportAll",
+          "require('typescript').actions.addMissingImports()"
+        )
+
+        u.lua_command(
+          "TSLspSourceDef",
+          "require('typescript').goToSourceDefinition(0, {})"
+        )
+
+        u.buf_map("n", "<leader>oi", ":TSLspOrganize<CR>", nil, bufnr)
+        u.buf_map("n", "<leader>ia", ":TSLspImportAll<CR>", nil, bufnr)
+        u.buf_map("n", "<leader>sd", ":TSLspSourceDef<CR>", nil, bufnr)
         on_attach(client, bufnr)
       end,
     },

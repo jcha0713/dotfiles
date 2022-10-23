@@ -33,8 +33,12 @@ local on_attach = function(client, bufnr)
   u.lua_command("LspTypeDef", "vim.lsp.buf.type_definition()")
   u.lua_command("LspDec", "vim.lsp.buf.declaration()")
   u.lua_command("LspDef", "vim.lsp.buf.definition()")
-  u.lua_command("LspCodeAction", "require('cosmic-ui').code_actions()<cr>")
   u.lua_command("LspFindRef", "vim.lsp.buf.references()")
+  u.lua_command("LspCodeAction", "require('cosmic-ui').code_actions()<cr>")
+  u.lua_command(
+    "LspRangeCodeAction",
+    "require('cosmic-ui').range_code_actions()"
+  )
 
   -- bindings
   u.buf_map("n", "gD", ":LspDec<CR>", nil, bufnr)
@@ -48,7 +52,7 @@ local on_attach = function(client, bufnr)
   u.buf_map("n", "<Leader>dl", ":LspDiagLine<CR>", nil, bufnr)
   u.buf_map("n", "<leader>ca", ":LspCodeAction<CR>", nil, bufnr)
   u.buf_map("n", "<leader>fr", ":LspFindRef<CR>", nil, bufnr)
-
+  u.buf_map("v", "<leader>ca", ":LspRangeCodeAction<CR>", nil, bufnr)
   u.buf_map("n", "<leader>rr", ":RustRun<CR>", nil, bufnr)
 
   -- format file on save
