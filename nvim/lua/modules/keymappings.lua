@@ -180,3 +180,7 @@ map("x", "<leader>rp", ":SearchBoxReplace<CR>")
 -- React extract
 map({ "v" }, "<Leader>re", require("react-extract").extract_to_new_file)
 map({ "v" }, "<Leader>rc", require("react-extract").extract_to_current_file)
+
+-- TODO-comments.nvim
+map("n", "<leader>tdt", ":TodoTelescope<CR>")
+map("n", "<leader>tdq", ":TodoQuickFix<CR>")

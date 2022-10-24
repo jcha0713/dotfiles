@@ -427,11 +427,21 @@ return require("packer").startup({
       end,
     })
 
+    -- extracting react components
     use({
       "jcha0713/react-extract.nvim",
       branch = "fix",
       config = function()
         require("plugins.react-extract")
+      end,
+    })
+
+    -- todo management
+    use({
+      "folke/todo-comments.nvim",
+      requires = "nvim-lua/plenary.nvim",
+      config = function()
+        require("plugins.todo-comments")
       end,
     })
   end,
