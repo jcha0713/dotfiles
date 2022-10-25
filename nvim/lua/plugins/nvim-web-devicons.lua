@@ -14,6 +14,11 @@ require("nvim-web-devicons").setup({
       color = "#fc8403",
       name = "astro",
     },
+    norg = {
+      icon = "",
+      color = "#4675BF",
+      name = "neorg",
+    },
   },
   -- globally enable different highlight colors per icon (default to true)
   -- if set to false all icons will have the default icon's color
