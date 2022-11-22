@@ -13,6 +13,8 @@ local sources = {
   -- b.formatting.eslint_d.with(eslint_opts),
   b.code_actions.eslint_d.with(eslint_opts),
   b.formatting.stylua,
+  b.formatting.gofmt,
+  b.formatting.goimports,
   -- b.formatting.prettier.with({
   --   prefer_local = "node_modules/.bin",
   --   filetypes = {
