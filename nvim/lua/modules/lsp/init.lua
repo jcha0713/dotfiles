@@ -12,7 +12,7 @@ local lsp_formatting = function(bufnr)
       return client.name == "null-ls" or client.name == "rust_analyzer"
     end,
     bufnr = bufnr,
-    async = true,
+    -- async = true,
   })
 end
 
@@ -42,16 +42,31 @@ local on_attach = function(client, bufnr)
 
   -- bindings
   u.buf_map("n", "gD", ":LspDec<CR>", nil, bufnr)
-  u.buf_map("n", "gd", ":LspDef<CR>", nil, bufnr)
+  -- u.buf_map("n", "gd", ":LspDef<CR>", nil, bufnr)
+  u.buf_map("n", "gd", "<cmd>TroubleToggle lsp_definitions<CR>", nil, bufnr)
   u.buf_map("n", "<Leader>rn", ":LspRename<CR>", nil, bufnr)
-  u.buf_map("n", "<Leader>td", ":LspTypeDef<CR>", nil, bufnr)
+  -- u.buf_map("n", "<Leader>td", ":LspTypeDef<CR>", nil, bufnr)
+  u.buf_map(
+    "n",
+    "<leader>td",
+    "<cmd>TroubleToggle lsp_type_definitions<CR>",
+    nil,
+    bufnr
+  )
   u.buf_map("n", "H", ":LspHover<CR>", nil, bufnr)
   u.buf_map("n", "dk", ":LspDiagPrev<CR>", nil, bufnr)
   u.buf_map("n", "dj", ":LspDiagNext<CR>", nil, bufnr)
   u.buf_map("n", "da", ":LspDiagOpen<CR>", nil, bufnr)
   u.buf_map("n", "<Leader>dl", ":LspDiagLine<CR>", nil, bufnr)
   u.buf_map("n", "<leader>ca", ":LspCodeAction<CR>", nil, bufnr)
-  u.buf_map("n", "<leader>fr", ":LspFindRef<CR>", nil, bufnr)
+  -- u.buf_map("n", "<leader>fr", ":LspFindRef<CR>", nil, bufnr)
+  u.buf_map(
+    "n",
+    "<leader>fr",
+    "<cmd>TroubleToggle lsp_references<CR>",
+    nil,
+    bufnr
+  )
   u.buf_map("v", "<leader>ca", ":LspRangeCodeAction<CR>", nil, bufnr)
   u.buf_map("n", "<leader>rr", ":RustRun<CR>", nil, bufnr)
 
