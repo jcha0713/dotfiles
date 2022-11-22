@@ -27,7 +27,7 @@ map("n", "vgl", "v$")
 map("n", "Y", "y$")
 
 -- quickfix
-map("n", "Q", ":cw<CR>")
+-- map("n", "Q", ":cw<CR>")
 map("n", "]c", ":cn<CR>")
 map("n", "[c", ":cp<CR>")
 
@@ -55,9 +55,7 @@ map("n", "<Leader>gl", ":Glow<CR>")
 
 -- insert a newline
 map("n", "<CR>", "o<ESC>k")
-
--- esc + esc to exit terminal mode
-map("t", "<esc>", "<C-\\><C-n>")
+map("i", "<c-j>", "<esc>o<esc>ki")
 
 -- toggle hl
 -- utils.map('n', '<Leader>h', ':set hlsearch!<CR>')
@@ -103,10 +101,11 @@ map("n", "<Leader>cm", ":Telescope commands<CR>")
 map("n", "<Leader>gs", ":Telescope grep_string<CR>")
 map("n", "<Leader>km", ":Telescope keymaps<CR>")
 map("n", "<Leader>bm", ":Telescope bookmarks<CR>")
-map("n", "<Leader>nosh", ":Telescope neorg search_headings<CR>")
-map("n", "<Leader>nop", ":Telescope neorg find_project_tasks<CR>")
-map("n", "<Leader>noc", ":Telescope neorg find_context_tasks<CR>")
-map("n", "<Leader>noa", ":Telescope neorg find_aof_tasks<CR>")
+-- Telescope + Neorg
+map("n", "<Leader>nsh", ":Telescope neorg search_headings<CR>")
+map("n", "<Leader>nfp", ":Telescope neorg find_project_tasks<CR>")
+map("n", "<Leader>nfc", ":Telescope neorg find_context_tasks<CR>")
+map("n", "<Leader>nfa", ":Telescope neorg find_aof_tasks<CR>")
 
 -- always keep the cursor at center
 map("n", "n", "nzzzv")
@@ -132,8 +131,11 @@ map("n", "vv", "<S-v>")
 
 -- Neorg: daily journal
 map("n", "<leader>jt", ":Neorg journal today<CR>")
-map("n", "<leader>gtdc", ":Neorg gtd capture<CR>")
-map("n", "<leader>gtdv", ":Neorg gtd views<CR>")
+map("n", "<leader>ngc", ":Neorg gtd capture<CR>")
+map("n", "<leader>ngv", ":Neorg gtd views<CR>")
+map("n", "<leader>nge", ":Neorg gtd edit<CR>")
+map("n", "<leader>nw", ":Neorg workspace organizer<CR>")
+map("n", "<leader>ntf", ":Neorg tangle current-file<CR>")
 
 -- Hop.nvim
 map("n", "<leader>hl", ":HopLine<CR>")
@@ -154,8 +156,9 @@ map("n", "<C-p>", "viwp")
 
 -- Trouble.nvim
 map("n", "<leader>tt", ":TroubleToggle<CR>")
-map("n", "<leader>twd", ":TroubleToggle workspace_diagnostics<CR>")
-map("n", "<leader>tdd", ":TroubleToggle document_diagnostics<CR>")
+map("n", "<leader>wd", ":TroubleToggle workspace_diagnostics<CR>")
+map("n", "<leader>dd", ":TroubleToggle document_diagnostics<CR>")
+map("n", "Q", ":TroubleToggle quickfix<CR>")
 
 -- Grammar checking in the terminal(using gramma)
 map("n", "<leader>gc", ":term gramma check %<cr>")
@@ -184,3 +187,22 @@ map({ "v" }, "<Leader>rc", require("react-extract").extract_to_current_file)
 -- TODO-comments.nvim
 map("n", "<leader>tdt", ":TodoTelescope<CR>")
 map("n", "<leader>tdq", ":TodoQuickFix<CR>")
+
+-- global yank
+map("n", "gy", "ggyG")
+
+map(
+  "n",
+  "<leader><leader>c",
+  ":luafile ~/.config/nvim/lua/plugins/custom/neorg_complete_item.lua<cr>"
+)
+
+map(
+  "v",
+  "<leader><leader>c",
+  ":luafile ~/.config/nvim/lua/plugins/custom/neorg_complete_item.lua<cr>"
+)
+
+map("n", "<leader>ac", ":ClassyAddClass<cr>")
+map("n", "<leader>dc", ":ClassyRemoveClass<cr>")
+map("n", "<leader>rc", ":ClassyResetClass<cr>")
