@@ -22,6 +22,9 @@ return require("packer").startup({
     -- neodev: For better lua lsp configuration
     use("folke/neodev.nvim")
 
+    -- lua utils for neovim
+    use("nvim-lua/plenary.nvim")
+
     -- vim-startify: start screen
     use({
       "mhinz/vim-startify",
@@ -290,13 +293,13 @@ return require("packer").startup({
     })
 
     -- hop.nvim: flexible cursor movement
-    use({
-      "phaazon/hop.nvim",
-      branch = "master",
-      config = function()
-        require("plugins.hop")
-      end,
-    })
+    -- use({
+    --   "phaazon/hop.nvim",
+    --   branch = "master",
+    --   config = function()
+    --     require("plugins.hop")
+    --   end,
+    -- })
 
     -- diffview.nvim: git diff view
     use({
@@ -442,6 +445,13 @@ return require("packer").startup({
       requires = "nvim-lua/plenary.nvim",
       config = function()
         require("plugins.todo-comments")
+      end,
+    })
+    -- easy jumps
+    use({
+      "ggandor/leap.nvim",
+      config = function()
+        require("plugins.leap")
       end,
     })
     -- nim
