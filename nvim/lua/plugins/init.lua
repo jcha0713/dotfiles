@@ -89,7 +89,7 @@ return require("packer").startup({
         "tamago324/nlsp-settings.nvim",
         "onsails/lspkind-nvim",
         "octaltree/cmp-look",
-        -- "jcha0713/cmp-tw2css",
+        "jcha0713/cmp-tw2css",
       },
     })
 
@@ -447,6 +447,11 @@ return require("packer").startup({
         require("plugins.todo-comments")
       end,
     })
+
+    use({
+      "jcha0713/classy.nvim",
+    })
+
     -- easy jumps
     use({
       "ggandor/leap.nvim",
@@ -454,6 +459,10 @@ return require("packer").startup({
         require("plugins.leap")
       end,
     })
+
+    -- mdx
+    use({ "jxnblk/vim-mdx-js" })
+
     -- nim
     use({ "alaviss/nim.nvim" })
   end,
