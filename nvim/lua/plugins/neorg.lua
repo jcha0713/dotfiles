@@ -29,6 +29,7 @@ require("neorg").setup({
           organizer = "~/jhcha/note/organizer",
         },
         default_workspace = "organizer",
+
         -- Automatically change the directory to the root of the workspace every time
         autochdir = true,
       },
@@ -56,6 +57,9 @@ require("neorg").setup({
       config = {
         workspace = "organizer",
         custom_tag_completion = true,
+        exclude = {
+          "journal",
+        },
       },
     },
     ["core.norg.journal"] = {},
