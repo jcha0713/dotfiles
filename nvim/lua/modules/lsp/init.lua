@@ -118,6 +118,7 @@ local servers = {
   "gopls",
   "html",
   "jsonls",
+  "nimls",
   "null-ls",
   "prismals",
   "rust_analyzer",

@@ -444,5 +444,7 @@ return require("packer").startup({
         require("plugins.todo-comments")
       end,
     })
+    -- nim
+    use({ "alaviss/nim.nvim" })
   end,
 })

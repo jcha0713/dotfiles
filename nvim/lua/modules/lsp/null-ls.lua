@@ -1,4 +1,5 @@
 local null_ls = require("null-ls")
+local nim_src = require("modules.lsp.nim_src")
 local b = null_ls.builtins
 
 local eslint_opts = {
@@ -9,6 +10,7 @@ local eslint_opts = {
 }
 
 local sources = {
+  nim_src,
   b.diagnostics.eslint_d.with(eslint_opts),
   -- b.formatting.eslint_d.with(eslint_opts),
   b.code_actions.eslint_d.with(eslint_opts),
@@ -56,6 +58,7 @@ local sources = {
 }
 
 local M = {}
+
 M.setup = function(on_attach)
   null_ls.setup({
     -- debug = true,
