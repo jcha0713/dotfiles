@@ -1,22 +1,66 @@
 local u = require("modules.utils")
-local lspconfig = require("lspconfig")
+local lsp = vim.lsp
 
 local capabilities = vim.lsp.protocol.make_client_capabilities()
 capabilities = require("cmp_nvim_lsp").default_capabilities(capabilities)
 capabilities.textDocument.completion.completionItem.snippetSupport = true
 
-local lsp_formatting = function(bufnr)
-  vim.lsp.buf.format({
-    filter = function(client)
-      -- apply whatever logic you want (in this example, we'll only use null-ls)
-      return client.name == "null-ls" or client.name == "rust_analyzer"
-    end,
-    bufnr = bufnr,
-    -- async = true,
-  })
-end
+local eslint_disabled_buffers = {}
+
+-- track buffers that eslint can't format to use prettier instead
+lsp.handlers["textDocument/publishDiagnostics"] =
+  function(_, result, ctx, config)
+    local client = lsp.get_client_by_id(ctx.client_id)
+    if not (client and client.name == "eslint") then
+      goto done
+    end
+
+    for _, diagnostic in ipairs(result.diagnostics) do
+      if
+        diagnostic.message:find("The file does not match your project config")
+      then
+        local bufnr = vim.uri_to_bufnr(result.uri)
+        eslint_disabled_buffers[bufnr] = true
+      end
+    end
+
+    ::done::
+    return lsp.diagnostic.on_publish_diagnostics(nil, result, ctx, config)
+  end
 
 local augroup = vim.api.nvim_create_augroup("LspFormatting", {})
+
+-- local lsp_formatting = function(bufnr)
+--   vim.lsp.buf.format({
+--     bufnr = bufnr,
+--     filter = function(client)
+--       return client.name == "null-ls" or client.name == "rust_analyzer"
+--     end,
+--   })
+-- end
+
+local lsp_formatting = function(bufnr)
+  lsp.buf.format({
+    bufnr = bufnr,
+    filter = function(client)
+      if client.name == "rust_analyzer" then
+        return true
+      end
+
+      if client.name == "eslint" then
+        return not eslint_disabled_buffers[bufnr]
+      end
+
+      if client.name == "null-ls" then
+        local clients = vim.lsp.get_active_clients({ bufnr = bufnr })
+        return not u.some(clients, function(_, other_client)
+          return other_client.name == "eslint"
+            and not eslint_disabled_buffers[bufnr]
+        end)
+      end
+    end,
+  })
+end
 
 local on_attach = function(client, bufnr)
   -- commands
@@ -98,38 +142,13 @@ local on_attach = function(client, bufnr)
 end
 
 -- Configure sumneko_lua to support neovim Lua runtime APIs
-require("neodev").setup({
-  settings = {
-    Lua = {
-      diagnostics = {
-        globals = {
-          "vim",
-          "use",
-          "describe",
-          "it",
-          "assert",
-          "before_each",
-          "after_each",
-          "hs", -- hammerspoon
-        },
-      },
-      completion = {
-        showWord = "Disable",
-        callSnippet = "Disable",
-        keywordSnippet = "Disable",
-      },
-      workspace = {
-        checkThirdParty = false,
-        preloadFileSize = 20000,
-      },
-    },
-  },
-})
+require("neodev").setup()
 
 local servers = {
   "astro",
   "cssls",
   "cssmodules_ls",
+  "eslint",
   "gopls",
   "html",
   "jsonls",
@@ -144,8 +163,8 @@ local servers = {
   "tsserver",
 }
 
-for _, lsp in ipairs(servers) do
-  if lsp == "rust_analyzer" then
+for _, server_name in ipairs(servers) do
+  if server_name == "rust_analyzer" then
     local ok, rt = pcall(require, "rust-tools")
     if not ok then
       goto continue
@@ -168,7 +187,7 @@ for _, lsp in ipairs(servers) do
     goto continue
   end
 
-  local server = "modules.lsp." .. lsp
+  local server = "modules.lsp." .. server_name
   require(server).setup(on_attach, capabilities)
   ::continue::
 end
