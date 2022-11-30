@@ -460,10 +460,30 @@ return require("packer").startup({
       end,
     })
 
+    -- smarter f/t
+    use({
+      "ggandor/flit.nvim",
+      config = function()
+        require("plugins.flit")
+      end,
+    })
+
     -- mdx
     use({ "jxnblk/vim-mdx-js" })
 
     -- nim
     use({ "alaviss/nim.nvim" })
+
+    -- explain regex
+    use({
+      "bennypowers/nvim-regexplainer",
+      config = function()
+        require("plugins.regexplainer")
+      end,
+      requires = {
+        "nvim-treesitter/nvim-treesitter",
+        "MunifTanjim/nui.nvim",
+      },
+    })
   end,
 })
