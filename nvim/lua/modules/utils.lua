@@ -3,7 +3,7 @@ local api = vim.api
 
 local scopes = { o = vim.o, b = vim.bo, w = vim.wo }
 
-local get_map_options = function(custom_options)
+local function get_map_options(custom_options)
   local options = { noremap = true, silent = true }
   if custom_options then
     options = vim.tbl_extend("force", options, custom_options)
@@ -11,7 +11,7 @@ local get_map_options = function(custom_options)
   return options
 end
 
-local get_map_options_expr = function(custom_options)
+local function get_map_options_expr(custom_options)
   local options = { expr = true, noremap = true, silent = true }
   if custom_options then
     options = vim.tbl_extend("force", options, custom_options)
@@ -35,7 +35,7 @@ function utils.map_expr(mode, lhs, rhs, opts)
   api.nvim_set_keymap(mode, lhs, rhs, get_map_options_expr(opts))
 end
 
-utils.buf_map = function(mode, target, source, opts, bufnr)
+function utils.buf_map(mode, target, source, opts, bufnr)
   api.nvim_buf_set_keymap(
     bufnr or 0,
     mode,
@@ -45,12 +45,21 @@ utils.buf_map = function(mode, target, source, opts, bufnr)
   )
 end
 
-utils.command = function(name, fn)
+function utils.command(name, fn)
   vim.cmd(string.format("command! %s %s", name, fn))
 end
 
-utils.lua_command = function(name, fn)
+function utils.lua_command(name, fn)
   utils.command(name, "lua " .. fn)
+end
+
+function utils.some(tbl, cb)
+  for key, value in pairs(tbl) do
+    if cb(key, value) then
+      return true
+    end
+  end
+  return false
 end
 
 return utils
