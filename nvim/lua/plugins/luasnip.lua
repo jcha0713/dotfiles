@@ -49,41 +49,19 @@ vim.keymap.set({ "i", "s" }, "<c-j>", function()
   end
 end, { silent = true })
 
--- <c-u>: cycling up the list of choice nodes
-vim.keymap.set("i", "<c-u>", function()
-  if ls.choice_active() then
-    ls.change_choice(1)
-  end
-end)
-
-local function no_region_check_wrap(fn, ...)
-  session.jump_active = true
-  -- will run on next tick, after autocommands (especially CursorMoved) for this are done.
-  vim.schedule(function()
-    session.jump_active = false
-  end)
-  return fn(...)
-end
-
-local function set_choice_callback(_, indx)
-  local choice = indx and session.active_choice_node.choices[indx]
-  if not choice then
-    return
-  end
-  local new_active = no_region_check_wrap(
-    session.active_choice_node.set_choice,
-    session.active_choice_node,
-    choice,
-    session.current_nodes[vim.api.nvim_get_current_buf()]
-  )
-  session.current_nodes[vim.api.nvim_get_current_buf()] = new_active
-end
+-- <c-l>: cycling up the list of choice nodes
+-- vim.keymap.set({ "i", "v" }, "<c-l>", function()
+--   if ls.choice_active() then
+--     require("luasnip.extras.select_choice")()
+--   end
+-- end)
 
 local function get_menu_choices()
   local menu_choices = {}
 
   for i, choice in ipairs(session.active_choice_node.choices) do
-    table.insert(menu_choices, Menu.item(choice:get_docstring()[1], { id = i }))
+    local item = choice:get_docstring()[1]
+    table.insert(menu_choices, Menu.item(item, { id = i }))
   end
 
   return menu_choices
@@ -91,15 +69,14 @@ end
 
 -- <c-l>: selecting within a list of options.
 -- this uses nui.nvim for ui
-vim.keymap.set("i", "<c-l>", function()
+vim.keymap.set({ "i", "v" }, "<c-l>", function()
+  vim.cmd("stopi")
   if ls.choice_active() then
-    assert(session.active_choice_node, "No active choiceNode")
-
     local menu = Menu({
       relative = "cursor",
       position = {
-        row = 1,
-        col = 0,
+        row = 2,
+        col = 1,
       },
       size = {
         width = 30,
@@ -115,28 +92,25 @@ vim.keymap.set("i", "<c-l>", function()
         winhighlight = "Normal:Normal",
       },
     }, {
-      prepare_item = function(item)
-        print(item.text)
-        return string.gsub(item.text, "${(.*)}", "%1", 1)
-      end,
       lines = get_menu_choices(),
+      prepare_item = function(item)
+        item = string.gsub(item.text, "${(.*)}", "%1", 1)
+        if string.len(item) == 0 then
+          item = "empty"
+        end
+        return item
+      end,
       keymap = {
         focus_next = { "j", "<Down>", "<Tab>" },
         focus_prev = { "k", "<Up>", "<S-Tab>" },
         close = { "<Esc>", "<C-c>" },
         submit = { "<CR>", "<Space>" },
       },
-      on_close = function()
-        print("Menu Closed!")
-      end,
+      on_clonse = nil,
       on_submit = function(item)
-        set_choice_callback(_, item:get_id())
+        ls.set_choice(item:get_id())
       end,
     })
-
-    if vim.fn.mode() ~= "n" then
-      vim.api.nvim_input("<Esc>")
-    end
 
     menu:mount()
 
