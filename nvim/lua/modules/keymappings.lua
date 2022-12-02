@@ -135,7 +135,7 @@ map("n", "<leader>ngc", ":Neorg gtd capture<CR>")
 map("n", "<leader>ngv", ":Neorg gtd views<CR>")
 map("n", "<leader>nge", ":Neorg gtd edit<CR>")
 map("n", "<leader>nw", ":Neorg workspace organizer<CR>")
-map("n", "<leader>ntf", ":Neorg tangle current-file<CR>")
+map("n", "<leader>not", ":Neorg tangle current-file<CR>")
 
 -- Hop.nvim
 map("n", "<leader>hl", ":HopLine<CR>")
