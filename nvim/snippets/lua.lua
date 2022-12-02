@@ -13,6 +13,11 @@ local ai = require("luasnip.nodes.absolute_indexer")
 local fmt = require("luasnip.extras.fmt").fmt
 
 return {
+  s("req", { t("require("), i(0, "module"), t(")") }),
+  s(
+    "lreq",
+    { t("local "), i(1, "name"), t(" = require("), i(0, "module"), t(")") }
+  ),
   s(
     "use",
     fmt(
@@ -22,16 +27,21 @@ return {
         config = function()
           require("plugins.{2}")
         end,
-        {}
       }})
       ]],
       {
         i(1),
         f(function(plugin_name)
-          local splits = vim.split(plugin_name[1][1], "/", true)
-          return splits[#splits] or ""
+          local splits = vim.split(
+            plugin_name[1][1],
+            "/",
+            { plain = true, trimempty = true }
+          )
+          if splits[#splits] ~= nil then
+            return splits[#splits]:gsub(".nvim", "")
+          end
+          return ""
         end, { 1 }),
-        i(0),
       }
     )
   ),

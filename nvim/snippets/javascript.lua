@@ -53,56 +53,14 @@ return {
     "imp",
     fmt(
       [[
-      import {} from '{}'
+      import {2} from '{1}'
       ]],
       {
-        c(1, {
+        i(1),
+        c(2, {
           sn(nil, { t("{"), i(1), t("}") }),
           sn(nil, { i(1) }),
         }),
-        i(2),
-      }
-    )
-  ),
-
-  -- ef: export function ...
-  s(
-    "ef",
-    fmt(
-      [[
-      export{}function {}({}) {{
-        {}
-      }}
-      ]],
-      {
-        c(1, {
-          t(" "),
-          t(" async "),
-        }),
-        i(2),
-        i(3),
-        i(4),
-      }
-    )
-  ),
-
-  -- edf: export default function ...
-  s(
-    "edf",
-    fmt(
-      [[
-      export default{}function {}({}) {{
-        {}
-      }}
-      ]],
-      {
-        c(1, {
-          t(" "),
-          t(" async "),
-        }),
-        i(2),
-        i(3),
-        i(4),
       }
     )
   ),
