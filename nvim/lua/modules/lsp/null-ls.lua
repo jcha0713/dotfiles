@@ -10,7 +10,7 @@ local with_root_file = function(...)
 end
 
 local xo_opts = {
-  condition = with_root_file(".xo-config.json"),
+  condition = with_root_file("node_modules/xo/index.js"),
   diagnostics_format = "[#{c}] #{m} (#{s})",
 }
 
