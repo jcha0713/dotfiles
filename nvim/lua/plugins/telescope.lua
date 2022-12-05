@@ -1,7 +1,6 @@
 local utils = require("modules.utils")
 local actions = require("telescope.actions")
 local trouble = require("trouble.providers.telescope")
-local fb_actions = require("telescope").extensions.file_browser.actions
 
 local M = {}
 
@@ -116,10 +115,13 @@ require("telescope").load_extension("fzf")
 require("telescope").load_extension("file_browser")
 require("telescope").load_extension("bookmarks")
 
-local builtin = function(mapping, picker, is_custom)
-  local module = is_custom and "plugins.telescope" or "telescope.builtin"
-  local rhs = string.format([[<cmd>lua require'%s'.%s()<cr>]], module, picker)
-  utils.map("n", mapping, rhs)
+local builtin = function(mapping, picker, opts)
+  opts = opts or {}
+  -- local module = is_custom and "plugins.telescope" or "telescope.builtin"
+  -- local rhs = string.format("<cmd>lua require'%s'.%s(opts)<cr>", module, picker)
+  utils.map("n", mapping, function()
+    require("telescope.builtin")[picker](opts)
+  end)
 end
 
 local custom = function(mapping, picker_name, builtin_name, opts)
@@ -133,6 +135,20 @@ local custom = function(mapping, picker_name, builtin_name, opts)
   )
   utils.map("n", mapping, rhs)
 end
+
+builtin("<M-\\>", "builtin")
+builtin("<Leader>ff", "find_files", { hidden = true })
+builtin("<Leader>gr", "live_grep")
+builtin("<Leader>bf", "buffers")
+builtin("<Leader>gf", "git_files")
+builtin("<Leader>jp", "jumplist")
+builtin("<Leader>fh", "help_tags")
+builtin("<Leader>of", "oldfiles")
+builtin("<Leader>fb", "file_browser")
+builtin("<Leader>cm", "commands")
+builtin("<Leader>gs", "grep_string")
+builtin("<Leader>km", "keymaps")
+builtin("<Leader>bm", "bookmarks")
 
 custom("<leader>nv", "find_nvim", "find_files", {
   cwd = "~/.config/nvim",
