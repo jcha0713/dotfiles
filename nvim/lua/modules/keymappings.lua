@@ -26,6 +26,8 @@ map("n", "vgl", "v$")
 -- yank from cursor to the end of the line
 map("n", "Y", "y$")
 
+map("v", "<C-s>", "g<C-a>")
+
 -- quickfix
 -- map("n", "Q", ":cw<CR>")
 map("n", "]c", ":cn<CR>")
