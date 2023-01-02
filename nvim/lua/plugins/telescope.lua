@@ -90,22 +90,22 @@ require("telescope").setup({
     },
     extensions = {
       file_browser = {},
-      bookmarks = {
-        selected_browser = "brave",
-
-        -- Either provide a shell command to open the URL
-        url_open_command = "open",
-
-        -- Or provide the plugin name which is already installed
-        -- Available: 'vim_external', 'open_browser'
-        url_open_plugin = nil,
-
-        -- Show the full path to the bookmark instead of just the bookmark name
-        full_path = true,
-
-        -- Provide debug messages
-        debug = false,
-      },
+      -- bookmarks = {
+      --   selected_browser = "brave",
+      --
+      --   -- Either provide a shell command to open the URL
+      --   url_open_command = "open",
+      --
+      --   -- Or provide the plugin name which is already installed
+      --   -- Available: 'vim_external', 'open_browser'
+      --   url_open_plugin = nil,
+      --
+      --   -- Show the full path to the bookmark instead of just the bookmark name
+      --   full_path = true,
+      --
+      --   -- Provide debug messages
+      --   debug = false,
+      -- },
     },
   },
 })
@@ -113,7 +113,7 @@ require("telescope").setup({
 -- require("telescope").load_extension "projects"
 require("telescope").load_extension("fzf")
 require("telescope").load_extension("file_browser")
-require("telescope").load_extension("bookmarks")
+-- require("telescope").load_extension("bookmarks")
 
 local builtin = function(mapping, picker, opts)
   opts = opts or {}
@@ -148,7 +148,7 @@ builtin("<Leader>fb", "file_browser")
 builtin("<Leader>cm", "commands")
 builtin("<Leader>gs", "grep_string")
 builtin("<Leader>km", "keymaps")
-builtin("<Leader>bm", "bookmarks")
+-- builtin("<Leader>bm", "bookmarks")
 
 custom("<leader>nv", "find_nvim", "find_files", {
   cwd = "~/.config/nvim",

@@ -60,3 +60,5 @@ vim.cmd([[colorscheme kanagawa]])
 
 -- highlight for winbar
 vim.cmd([[highlight! WinBar guifg=#a390a2]])
+
+vim.cmd([[hi TreesitterContext guibg=#272834]])

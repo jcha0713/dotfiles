@@ -1,7 +1,12 @@
 require("neorg").setup({
-  -- Tell Neorg what modules to load
+  lazy_loading = true,
   load = {
     ["core.defaults"] = {},
+    ["core.norg.news"] = {
+      config = {
+        check_news = false,
+      },
+    },
     ["core.norg.esupports.metagen"] = {
       config = {
         type = "auto",

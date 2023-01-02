@@ -12,9 +12,11 @@ end
 vim.cmd([[packadd packer.nvim]])
 vim.cmd("autocmd BufWritePost plugins.lua PackerCompile") -- Auto compile when there are changes in plugins.lua
 
--- Plugins
+local packer = require("packer")
+packer.init({ max_jobs = 10 })
 
-return require("packer").startup({
+-- Plugins
+return packer.startup({
   function(use)
     -- Packer manages plugins
     use({ "wbthomason/packer.nvim", opt = true })
@@ -54,12 +56,6 @@ return require("packer").startup({
         require("plugins.neorg")
       end,
       requires = "nvim-neorg/neorg-telescope",
-    })
-
-    -- nvim-peekup: pickup from register
-    use({
-      "gennaro-tedesco/nvim-peekup",
-      keys = { { "n", '""' } },
     })
 
     -- friendly snippets: snippets for autocompletion
@@ -292,15 +288,6 @@ return require("packer").startup({
       "TovarishFin/vim-solidity",
     })
 
-    -- hop.nvim: flexible cursor movement
-    -- use({
-    --   "phaazon/hop.nvim",
-    --   branch = "master",
-    --   config = function()
-    --     require("plugins.hop")
-    --   end,
-    -- })
-
     -- diffview.nvim: git diff view
     use({
       "sindrets/diffview.nvim",
@@ -318,15 +305,6 @@ return require("packer").startup({
         require("plugins.toggleterm")
       end,
     })
-
-    -- neogit.nvim: git in neovim
-    -- use({
-    --   "TimUntersberger/neogit",
-    --   requires = "nvim-lua/plenary.nvim",
-    --   config = function()
-    --     require("plugins.neogit")
-    --   end,
-    -- })
 
     -- trouble.nvim: error fix using quickfix list
     use({
@@ -412,10 +390,10 @@ return require("packer").startup({
     })
 
     -- web bookmarks
-    use({
-      "dhruvmanila/telescope-bookmarks.nvim",
-      tag = "*",
-    })
+    -- use({
+    --   "dhruvmanila/telescope-bookmarks.nvim",
+    --   tag = "*",
+    -- })
 
     -- crates.io
     use({
@@ -492,6 +470,15 @@ return require("packer").startup({
         "MunifTanjim/nui.nvim",
       },
     })
+
+    -- pin context at the top
+    -- use({
+    --   "nvim-treesitter/nvim-treesitter-context",
+    --   config = function()
+    --     require("plugins.nvim-treesitter-context")
+    --   end,
+    -- })
+
     -- just for fun
     use({
       "tamton-aquib/duck.nvim",
