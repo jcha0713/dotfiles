@@ -208,3 +208,16 @@ map(
 map("n", "<leader>ac", ":ClassyAddClass<cr>")
 map("n", "<leader>dc", ":ClassyRemoveClass<cr>")
 map("n", "<leader>rc", ":ClassyResetClass<cr>")
+
+map("v", "<leader>rf", "::lua require('refactoring').select_refactor()<CR>")
+
+map("n", "<leader><leader>h", function()
+  require("duck").hatch("💕", 5)
+  require("duck").hatch("💞", 5)
+  require("duck").hatch("💕", 5)
+end)
+
+map("n", "<leader><leader>r", function()
+  require("duck").cook()
+end)
+

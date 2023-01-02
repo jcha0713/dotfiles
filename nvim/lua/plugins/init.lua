@@ -485,5 +485,9 @@ return require("packer").startup({
         "MunifTanjim/nui.nvim",
       },
     })
+    -- just for fun
+    use({
+      "tamton-aquib/duck.nvim",
+    })
   end,
 })
