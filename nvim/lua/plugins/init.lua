@@ -338,10 +338,17 @@ return require("packer").startup({
     })
 
     -- vim-rooter: changes working directory when opening a file
+    -- use({
+    --   "airblade/vim-rooter",
+    --   config = function()
+    --     require("plugins.vim-rooter")
+    --   end,
+    -- })
+
     use({
-      "airblade/vim-rooter",
+      "notjedi/nvim-rooter.lua",
       config = function()
-        require("plugins.vim-rooter")
+        require("plugins.nvim-rooter")
       end,
     })
 
@@ -488,6 +495,22 @@ return require("packer").startup({
     -- just for fun
     use({
       "tamton-aquib/duck.nvim",
+    })
+
+    use({
+      "phaazon/mind.nvim",
+      branch = "v2.2",
+      requires = { "nvim-lua/plenary.nvim" },
+      config = function()
+        require("plugins.mind")
+      end,
+    })
+
+    use({
+      "stevearc/dressing.nvim",
+      config = function()
+        require("plugins.dressing")
+      end,
     })
   end,
 })
