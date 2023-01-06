@@ -204,7 +204,7 @@ return packer.startup({
     })
 
     use({
-      "p00f/nvim-ts-rainbow",
+      "jcha0713/nvim-ts-rainbow",
     })
 
     -- playground for treesitter
