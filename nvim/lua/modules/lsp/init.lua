@@ -187,6 +187,7 @@ require("neodev").setup()
 
 local servers = {
   "astro",
+  "bashls",
   "cssls",
   "cssmodules_ls",
   "eslint",
