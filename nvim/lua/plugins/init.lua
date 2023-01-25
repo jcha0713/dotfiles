@@ -499,5 +499,15 @@ return packer.startup({
         require("plugins.dressing")
       end,
     })
+    use({
+      "renerocksai/telekasten.nvim",
+      config = function()
+        require("plugins.telekasten")
+      end,
+    })
+
+    use({
+      "renerocksai/calendar-vim",
+    })
   end,
 })

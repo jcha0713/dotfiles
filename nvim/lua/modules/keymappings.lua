@@ -227,3 +227,16 @@ map("n", "<leader>mdp", function()
   require("mind").open_project(true)
 end)
 map("n", "<leader>mdc", ":MindClose<cr>")
+
+map("v", "<leader><leader>l", ":lua require('markdowny').link()<CR>")
+
+-- Telekasten
+map("n", "<leader><leader>z", ":lua require('telekasten').panel()<CR>")
+map("n", "<leader>zfn", ":lua require('telekasten').find_notes()<CR>")
+map("n", "<leader>zz", ":lua require('telekasten').follow_link()<CR>")
+map("n", "<leader>zT", ":lua require('telekasten').goto_today()<CR>")
+map("n", "<leader>zW", ":lua require('telekasten').goto_thisweek()<CR>")
+map("n", "<leader>zn", ":lua require('telekasten').new_note()<CR>")
+map("n", "<leader>zl", ":lua require('telekasten').insert_link()<CR>")
+map("n", "<leader>zc", ":lua require('telekasten').show_calendar()<CR>")
+map("n", "<leader>zC", ":CalendarT<CR>")

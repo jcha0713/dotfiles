@@ -38,12 +38,10 @@ require("telescope").setup({
   defaults = {
     file_ignore_patterns = ignore_files,
     layout_config = {
-      width = 0.90,
       prompt_position = "top",
       preview_cutoff = 120,
-      horizontal = { mirror = false },
+      horizontal = { width = 0.9, mirror = false, preview_width = 0.55 },
       vertical = { mirror = false },
-      preview_width = 0.55,
     },
     find_command = {
       "rg",
@@ -90,22 +88,6 @@ require("telescope").setup({
     },
     extensions = {
       file_browser = {},
-      -- bookmarks = {
-      --   selected_browser = "brave",
-      --
-      --   -- Either provide a shell command to open the URL
-      --   url_open_command = "open",
-      --
-      --   -- Or provide the plugin name which is already installed
-      --   -- Available: 'vim_external', 'open_browser'
-      --   url_open_plugin = nil,
-      --
-      --   -- Show the full path to the bookmark instead of just the bookmark name
-      --   full_path = true,
-      --
-      --   -- Provide debug messages
-      --   debug = false,
-      -- },
     },
   },
 })
@@ -113,7 +95,6 @@ require("telescope").setup({
 -- require("telescope").load_extension "projects"
 require("telescope").load_extension("fzf")
 require("telescope").load_extension("file_browser")
--- require("telescope").load_extension("bookmarks")
 
 local builtin = function(mapping, picker, opts)
   opts = opts or {}
@@ -148,7 +129,6 @@ builtin("<Leader>fb", "file_browser")
 builtin("<Leader>cm", "commands")
 builtin("<Leader>gs", "grep_string")
 builtin("<Leader>km", "keymaps")
--- builtin("<Leader>bm", "bookmarks")
 
 custom("<leader>nv", "find_nvim", "find_files", {
   cwd = "~/.config/nvim",
@@ -178,6 +158,31 @@ custom("<leader>nt", "find_note", "find_files", {
 custom("<leader>gnt", "grep_note", "live_grep", {
   cwd = "/Users/jcha0713/jhcha/note/",
   prompt_title = "grep in my note folder",
+})
+
+custom("<leader>zfc", "zettel_find_capture", "find_files", {
+  cwd = "~/Library/Mobile Documents/iCloud~md~obsidian/Documents/zettelkasten/captures",
+  prompt_title = "find notes from captures",
+})
+
+custom("<leader>zfs", "zettel_find_thought", "find_files", {
+  cwd = "~/Library/Mobile Documents/iCloud~md~obsidian/Documents/zettelkasten/thoughts",
+  prompt_title = "find notes from thoughts",
+})
+
+custom("<leader>zfj", "zettel_find_journal", "find_files", {
+  cwd = "~/Library/Mobile Documents/iCloud~md~obsidian/Documents/zettelkasten/journal/daily",
+  prompt_title = "find notes from daily journal",
+})
+
+custom("<leader>zfk", "zettel_find_knowledge", "find_files", {
+  cwd = "~/Library/Mobile Documents/iCloud~md~obsidian/Documents/zettelkasten/knowledge",
+  prompt_title = "find notes from knowledge",
+})
+
+custom("<leader>zfm", "zettel_browse_media", "find_files", {
+  cwd = "~/Library/Mobile Documents/iCloud~md~obsidian/Documents/zettelkasten/img",
+  prompt_title = "Browse images",
 })
 
 return M
