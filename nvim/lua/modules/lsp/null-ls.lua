@@ -15,7 +15,8 @@ local xo_opts = {
 }
 
 local sources = {
-  nim_src,
+  -- nim_src,
+  b.formatting.nimpretty,
   b.code_actions.xo.with(xo_opts),
   b.diagnostics.xo.with(xo_opts),
   b.formatting.stylua,
@@ -54,6 +55,7 @@ local sources = {
       "scss",
       "javascript",
       "javascriptreact",
+      "twig",
       "typescript",
       "typescriptreact",
     },
