@@ -258,6 +258,7 @@ return packer.startup({
     -- emmet-vim: support for emmet
     use({
       "mattn/emmet-vim",
+      -- "jcha0713/emmet-vim",
       config = function()
         require("plugins.emmet")
       end,
@@ -499,6 +500,14 @@ return packer.startup({
         require("plugins.dressing")
       end,
     })
+
+    use({
+      "antonk52/markdowny.nvim",
+      config = function()
+        require("plugins.markdowny")
+      end,
+    })
+
     use({
       "renerocksai/telekasten.nvim",
       config = function()
@@ -509,5 +518,12 @@ return packer.startup({
     use({
       "renerocksai/calendar-vim",
     })
+
+    -- use({
+    --   "andrewferrier/wrapping.nvim",
+    --   config = function()
+    --     require("wrapping").setup()
+    --   end,
+    -- })
   end,
 })
