@@ -199,6 +199,7 @@ local servers = {
   "prismals",
   "rust_analyzer",
   "solang",
+  "sourcekit",
   "sumneko_lua",
   "svelte",
   "tailwindcss",

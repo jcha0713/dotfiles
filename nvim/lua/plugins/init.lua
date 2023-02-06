@@ -519,11 +519,17 @@ return packer.startup({
       "renerocksai/calendar-vim",
     })
 
-    -- use({
-    --   "andrewferrier/wrapping.nvim",
-    --   config = function()
-    --     require("wrapping").setup()
-    --   end,
-    -- })
+    use({
+      "xbase-lab/xbase",
+      run = "make install",
+      requires = {
+        "nvim-lua/plenary.nvim",
+        "nvim-telescope/telescope.nvim",
+        "neovim/nvim-lspconfig",
+      },
+      config = function()
+        require("plugins.xbase")
+      end,
+    })
   end,
 })
