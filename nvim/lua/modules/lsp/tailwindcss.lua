@@ -85,6 +85,12 @@ M.setup = function(on_attach)
     end,
     settings = {
       tailwindCSS = {
+        experimental = {
+          classRegex = {
+            "cva\\(([^)]*)\\)",
+            "[\"'`]([^\"'`]*).*?[\"'`]",
+          },
+        },
         classAttributes = { "class", "className", "classList", "ngClass" },
         lint = {
           cssConflict = "warning",
