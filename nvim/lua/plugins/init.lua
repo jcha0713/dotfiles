@@ -531,5 +531,12 @@ return packer.startup({
         require("plugins.xbase")
       end,
     })
+
+    use({
+      "Exafunction/codeium.vim",
+      config = function()
+        require("plugins.codeium")
+      end,
+    })
   end,
 })
