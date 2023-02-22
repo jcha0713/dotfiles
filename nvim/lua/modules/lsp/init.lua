@@ -189,7 +189,7 @@ local servers = {
   "astro",
   "bashls",
   "cssls",
-  "cssmodules_ls",
+  -- "cssmodules_ls",
   "eslint",
   "gopls",
   "html",
