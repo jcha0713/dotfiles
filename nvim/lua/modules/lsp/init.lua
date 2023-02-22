@@ -208,6 +208,7 @@ local servers = {
   "svelte",
   "tailwindcss",
   "tsserver",
+  "unocss",
 }
 
 for _, server_name in ipairs(servers) do

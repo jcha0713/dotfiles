@@ -52,8 +52,8 @@ cmp.setup({
     comparators = {
       compare.locality,
       compare.recently_used,
-      compare.score,
       compare.exact,
+      compare.score,
       compare.kind,
       -- require("cmp_fuzzy_buffer.compare"),
       -- compare.offset,
@@ -63,7 +63,7 @@ cmp.setup({
     },
   },
   sources = cmp.config.sources({
-    { name = "nvim_lsp" },
+    { name = "nvim_lsp", trigger_characters = { "-" } },
     { name = "cmp-tw2css" },
     {
       name = "fuzzy_buffer",
