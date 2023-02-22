@@ -24,6 +24,10 @@ function vim.lsp.util.open_floating_preview(contents, syntax, opts, ...)
 end
 
 vim.diagnostic.config({
+  float = {
+    source = "always",
+    show_header = true,
+  },
   virtual_text = false,
   signs = true,
   underline = true,
