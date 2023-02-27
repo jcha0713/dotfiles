@@ -64,4 +64,7 @@ return {
       }
     )
   ),
+
+  -- etw: easy-tailwind
+  s("etw", { t("import { e } from 'easy-tailwind'") }),
 }

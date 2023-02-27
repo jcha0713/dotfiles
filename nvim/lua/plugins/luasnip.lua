@@ -21,9 +21,9 @@ ls.filetype_extend("typescriptreact", { "javascript", "typescript", "html" })
 require("luasnip.loaders.from_lua").load({ paths = "~/.config/nvim/snippets" })
 
 -- loading friendly snippets
-require("luasnip/loaders/from_vscode").lazy_load({
-  paths = { "~/.config/nvim/friendly-snippets/" },
-})
+-- require("luasnip/loaders/from_vscode").lazy_load({
+--   paths = { "~/.config/nvim/friendly-snippets/" },
+-- })
 
 -- <c-k>: jump forward key
 -- this will jump to the next item within the snippet.
