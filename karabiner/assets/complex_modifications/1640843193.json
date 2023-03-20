@@ -300,6 +300,27 @@
           "type": "basic"
         }
       ]
+    },
+    {
+      "description": "normal cmd+k",
+      "manipulators": [
+        {
+          "from": {
+            "key_code": "k",
+            "modifiers": {
+              "mandatory": ["right_command", "left_control"],
+              "optional": ["any"]
+            }
+          },
+          "to": [
+            {
+              "key_code": "k",
+              "modifiers": ["right_command"]
+            }
+          ],
+          "type": "basic"
+        }
+      ]
     }
   ]
 }
