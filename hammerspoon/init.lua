@@ -1,5 +1,5 @@
 -- initialize modules
---
+
 local modules = require("modules")
 modules.init()
 
@@ -7,6 +7,10 @@ local hyper = require("modules.hyper")
 
 hyper.bind({}, "r", nil, function()
   hs.reload()
+end)
+
+hyper.bind({ "shift" }, "s", nil, function()
+  hs.spotify.playpause()
 end)
 
 local secret = require("secret")
