@@ -520,19 +520,6 @@ return packer.startup({
     })
 
     use({
-      "xbase-lab/xbase",
-      run = "make install",
-      requires = {
-        "nvim-lua/plenary.nvim",
-        "nvim-telescope/telescope.nvim",
-        "neovim/nvim-lspconfig",
-      },
-      config = function()
-        require("plugins.xbase")
-      end,
-    })
-
-    use({
       "Exafunction/codeium.vim",
       config = function()
         require("plugins.codeium")
