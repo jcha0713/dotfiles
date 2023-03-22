@@ -50,20 +50,21 @@ cmp.setup({
   sorting = {
     priority_weight = 100,
     comparators = {
-      compare.locality,
-      compare.recently_used,
+      -- compare.locality,
+      -- compare.recently_used,
       compare.exact,
       compare.score,
-      compare.kind,
+      -- compare.kind,
       -- require("cmp_fuzzy_buffer.compare"),
       -- compare.offset,
       -- compare.sort_text,
       -- compare.length,
-      -- compare.order,
+      compare.order,
     },
   },
   sources = cmp.config.sources({
-    { name = "nvim_lsp", trigger_characters = { "-" } },
+    -- { name = "nvim_lsp", trigger_characters = { "-" } },
+    { name = "nvim_lsp" },
     { name = "cmp-tw2css" },
     {
       name = "fuzzy_buffer",
