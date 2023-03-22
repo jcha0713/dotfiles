@@ -3,6 +3,7 @@ vim.filetype.add({
     mdx = "markdown",
     sol = "solidity",
     nimja = "html",
+    nims = "nims",
   },
   filename = {
     [".prettierrc"] = "jsonc",
