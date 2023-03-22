@@ -6,10 +6,12 @@
 !hammerspoon/
 !nvim/
 !karabiner/
+!lf/
 
 !hammerspoon/**
 !nvim/**
 !karabiner/**
+!lf/**
 
 # but ignore again
 nvim/friendly-snippets/
