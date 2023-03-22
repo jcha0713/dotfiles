@@ -8,6 +8,7 @@ local function changeNetwork()
 
   if newSSID ~= nil then
     if homeSSID ~= newSSID and lastSSID == homeSSID then
+      hs.alert("you're not home")
       if newSSID == "eduroam" or newSSID == "University of Washington" then
         local address = hs.settings.get("secret").contacts.mj.address
         hs.messages.iMessage(
@@ -19,6 +20,7 @@ local function changeNetwork()
           informativeText = "iMessage was sent to " .. address,
         }):send()
       end
+
       hs.audiodevice.defaultOutputDevice():setVolume(0)
       hs.notify.new({
         title = "wifiWatcher",
@@ -27,6 +29,7 @@ local function changeNetwork()
           .. ". The volume is set to 0.",
       }):send()
     elseif newSSID == homeSSID and lastSSID ~= homeSSID then
+      hs.alert("home")
       local address = hs.settings.get("secret").contacts.mj.address
       hs.messages.iMessage(
         address,
@@ -49,8 +52,9 @@ local function changeNetwork()
   end
 end
 
-function M:init()
+function M.init()
   local wifiWatcher = hs.wifi.watcher.new(changeNetwork)
+  print("initializing the wifiWatcher module ... ")
   wifiWatcher:start()
 end
 
