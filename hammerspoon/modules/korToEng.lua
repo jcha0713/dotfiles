@@ -10,7 +10,7 @@ local changeSource = function()
   hs.eventtap.keyStroke({}, "escape")
 end
 
-function M:init()
+function M.init()
   utils.bind({ "control" }, 33, changeSource)
 end
 
