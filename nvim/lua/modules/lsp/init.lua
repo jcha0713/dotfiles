@@ -204,7 +204,7 @@ local servers = {
   "rust_analyzer",
   "solang",
   "sourcekit",
-  "sumneko_lua",
+  "lua_ls",
   "svelte",
   "tailwindcss",
   "tsserver",
