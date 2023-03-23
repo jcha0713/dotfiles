@@ -1,22 +1,42 @@
 vim.g.ts_highlight_lua = true
 
-local imp_ok, _ = pcall(require, "impatient")
-if not imp_ok then
-  return
+local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
+if not vim.loop.fs_stat(lazypath) then
+  vim.fn.system({
+    "git",
+    "clone",
+    "--filter=blob:none",
+    "https://github.com/folke/lazy.nvim.git",
+    "--branch=stable", -- latest stable release
+    lazypath,
+  })
 end
+vim.opt.rtp:prepend(lazypath)
 
---General settings
-require("plugins")
+vim.g.mapleader = " "
+
+-- General settings
+require("lazy").setup("plugins", {
+  defaults = { lazy = true },
+  performance = {
+    rtp = {
+      disabled_plugins = {
+        "gzip",
+        "matchit",
+        "matchparen",
+        "netrwPlugin",
+        "tarPlugin",
+        "tohtml",
+        "tutor",
+        "zipPlugin",
+      },
+    },
+  },
+})
+
+require("modules.utils")
 require("modules.keymappings")
 require("modules.options")
-require("modules.utils")
 require("modules.autocmd")
 require("modules.globals")
 require("themes")
-
-local cmp_ok, tw2css = pcall(require, "cmp-tw2css")
-if not cmp_ok then
-  return
-end
-
-require("classy").setup()

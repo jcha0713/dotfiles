@@ -36,28 +36,6 @@
 -- -- SearchBoxMatch
 -- vim.cmd([[highlight! SearchBoxMatch guibg=#9393e2 guifg=#000000]])
 
--- Kanagawa: new colorscheme i'm testing
-local default_colors = require("kanagawa.colors").setup()
-local overrides = {
-  Normal = { fg = default_colors.fujiWhite, bg = "#181820" },
-  HopNextKey = { fg = "#ff9900" },
-  HopNextKey1 = { fg = "#ff9900" },
-  HopNextKey2 = { fg = "#ff9900" },
-  TelescopeBorder = { bg = "#181820" },
-  WinSeparator = { fg = "#727169" },
-  rainbowcol1 = { fg = "#DE6647" },
-  rainbowcol2 = { fg = "#FF6185" },
-  rainbowcol3 = { fg = "#B594FF" },
-  rainbowcol4 = { fg = "#F4A65B" },
-  rainbowcol5 = { fg = "#FAE957" },
-}
-
-require("kanagawa").setup({
-  overrides = overrides,
-})
-
-vim.cmd([[colorscheme kanagawa]])
-
 -- highlight for winbar
 vim.cmd([[highlight! WinBar guifg=#a390a2]])
 

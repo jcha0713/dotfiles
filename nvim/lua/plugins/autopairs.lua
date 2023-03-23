@@ -1,19 +1,25 @@
-local status_ok, npairs = pcall(require, "nvim-autopairs")
-if not status_ok then
-  return
-end
+return {
+  "windwp/nvim-autopairs",
+  event = "VeryLazy",
+  config = function()
+    local status_ok, npairs = pcall(require, "nvim-autopairs")
+    if not status_ok then
+      return
+    end
 
-npairs.setup({
-  check_ts = true,
-})
+    npairs.setup({
+      check_ts = true,
+    })
 
--- auto insert () for cmp completion
-local cmp_autopairs = require("nvim-autopairs.completion.cmp")
-local cmp_status_ok, cmp = pcall(require, "cmp")
-if not cmp_status_ok then
-  return
-end
-cmp.event:on(
-  "confirm_done",
-  cmp_autopairs.on_confirm_done({ map_char = { tex = "" } })
-)
+    -- auto insert () for cmp completion
+    local cmp_autopairs = require("nvim-autopairs.completion.cmp")
+    local cmp_status_ok, cmp = pcall(require, "cmp")
+    if not cmp_status_ok then
+      return
+    end
+    cmp.event:on(
+      "confirm_done",
+      cmp_autopairs.on_confirm_done({ map_char = { tex = "" } })
+    )
+  end,
+}

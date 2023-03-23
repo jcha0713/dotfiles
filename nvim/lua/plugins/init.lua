@@ -1,529 +1,330 @@
-local fn = vim.fn
-local execute = vim.api.nvim_command
+return {
+  -- neodev: For better lua lsp configuration
+  { "folke/neodev.nvim", ft = "lua" },
 
--- Auto install packer.nvim if not exists
-local install_path = fn.stdpath("data") .. "/site/pack/packer/opt/packer.nvim"
-if fn.empty(fn.glob(install_path)) > 0 then
-  execute(
-    "!git clone https://github.com/wbthomason/packer.nvim " .. install_path
-  )
-end
+  -- lua utils for neovim
+  "nvim-lua/plenary.nvim",
 
-vim.cmd([[packadd packer.nvim]])
-vim.cmd("autocmd BufWritePost plugins.lua PackerCompile") -- Auto compile when there are changes in plugins.lua
+  -- vim-startify: start screen
+  { "mhinz/vim-startify", lazy = false },
 
-local packer = require("packer")
-packer.init({ max_jobs = 10 })
+  -- markdown-preview: preview for *.md
+  {
+    "iamcco/markdown-preview.nvim",
+    build = "cd app && npm install",
+    init = function()
+      vim.g.mkdp_filetypes = { "markdown" }
+    end,
+    ft = { "markdown" },
+    keys = {
+      { "<leader>mp", ":MarkdownPreviewToggle<CR>", "preview md" },
+    },
+  },
 
--- Plugins
-return packer.startup({
-  function(use)
-    -- Packer manages plugins
-    use({ "wbthomason/packer.nvim", opt = true })
+  -- cmp-fuzzy-buffer: buffer source using fuzzy
+  {
+    "tzachar/cmp-fuzzy-buffer",
+    dependencies = { "hrsh7th/nvim-cmp", "tzachar/fuzzy.nvim" },
+  },
 
-    -- neodev: For better lua lsp configuration
-    use("folke/neodev.nvim")
-
-    -- lua utils for neovim
-    use("nvim-lua/plenary.nvim")
-
-    -- vim-startify: start screen
-    use({
-      "mhinz/vim-startify",
-    })
-
-    -- markdown-preview: preview for *.md
-    use({
-      "iamcco/markdown-preview.nvim",
-      run = "cd app && npm install",
-      setup = function()
-        vim.g.mkdp_filetypes = { "markdown" }
-      end,
-      ft = { "markdown", "md" },
-      cmd = "MarkdownPreview",
-    })
-
-    -- Gruvbox-flat: colorscheme
-    -- use({
-    --   "eddyekofo94/gruvbox-flat.nvim",
-    -- })
-    use({ "rebelot/kanagawa.nvim" })
-
-    -- neorg: todo list
-    use({
-      "nvim-neorg/neorg",
-      config = function()
-        require("plugins.neorg")
-      end,
-      requires = "nvim-neorg/neorg-telescope",
-    })
-
-    -- friendly snippets: snippets for autocompletion
-    use({
-      "rafamadriz/friendly-snippets",
-    })
-
-    -- luasnip: snippets for autocompletion
-    use({
-      "L3MON4D3/Luasnip",
-      config = function()
-        require("plugins.luasnip")
-      end,
-    })
-
-    -- nvim-cmp: manages snippets
-    use({
-      "hrsh7th/nvim-cmp",
-      config = function()
-        require("plugins.cmp")
-      end,
-      requires = {
-        "hrsh7th/cmp-nvim-lsp",
-        "hrsh7th/cmp-path",
-        "hrsh7th/cmp-cmdline",
-        "saadparwaiz1/cmp_luasnip",
-        "tamago324/nlsp-settings.nvim",
-        "onsails/lspkind-nvim",
-        "octaltree/cmp-look",
-        "jcha0713/cmp-tw2css",
+  -- vim-illuminate: find occurrences
+  -- TODO: check readme
+  {
+    "RRethy/vim-illuminate",
+    keys = {
+      {
+        "<A-n>",
+        '<cmd> lua require"illuminate".next_reference{wrap=true}<CR>',
       },
-    })
-
-    -- cmp-fuzzy-buffer: buffer source using fuzzy
-    use({
-      "tzachar/cmp-fuzzy-buffer",
-      requires = { "hrsh7th/nvim-cmp", "tzachar/fuzzy.nvim" },
-    })
-
-    -- nvim-lspconfig: lsp configuration
-    use({
-      "neovim/nvim-lspconfig",
-      requires = {
-        "jose-elias-alvarez/null-ls.nvim",
-        "jose-elias-alvarez/typescript.nvim",
+      {
+        "<A-p>",
+        '<cmd> lua require"illuminate".next_reference{reverse=true,wrap=true}<CR>',
       },
-      config = function()
-        require("modules.lsp")
-      end,
-    })
+    },
+  },
 
-    -- lsp-signature: signature help
-    use({
-      "ray-x/lsp_signature.nvim",
-      config = function()
-        require("plugins.lsp_signature")
-      end,
-    })
+  -- nvim-surround: nvim version of vim-surround
+  {
+    "kylechui/nvim-surround",
+    version = "*", -- Use for stability; omit to use `main` branch for the latest features
+    event = "VeryLazy",
+    config = function()
+      require("nvim-surround").setup({})
+    end,
+  },
 
-    -- vim-illuminate: find occurrences
-    use({
-      "RRethy/vim-illuminate",
-      config = function()
-        require("plugins.illuminate")
-      end,
-    })
+  {
+    "tzachar/fuzzy.nvim",
+    dependencies = { "hrsh7th/nvim-cmp", "tzachar/fuzzy.nvim" },
+  },
 
-    -- nvim-surround: nvim version of vim-surround
-    use({
-      "kylechui/nvim-surround",
-      config = function()
-        require("plugins.nvim-surround")
-      end,
-    })
+  {
+    "HiPhish/nvim-ts-rainbow2",
+    event = "VeryLazy",
+  },
 
-    -- schemastore: access to the SchemaStore catalog
-    use({
-      "b0o/schemastore.nvim",
-    })
+  -- playground for treesitter
+  {
+    "nvim-treesitter/playground",
+    cmd = "TSPlaygroundToggle",
+  },
 
-    -- NvimTree: file explore
-    use({
-      "kyazdani42/nvim-tree.lua",
-      config = function()
-        require("plugins.nvim-tree")
-      end,
-    })
-
-    -- lualine: better status line
-    use({
-      "nvim-lualine/lualine.nvim",
-      requires = { { "kyazdani42/nvim-web-devicons", opt = true } },
-      config = function()
-        require("plugins.lualine")
-      end,
-    })
-
-    -- Telescope family
-    -- telescope: file finder / explorer
-    use({
-      "nvim-telescope/telescope.nvim",
-      requires = "nvim-lua/plenary.nvim",
-      config = function()
-        require("plugins.telescope")
-      end,
-    })
-
-    use({
-      "nvim-telescope/telescope-file-browser.nvim",
-    })
-
-    use({
-      "BurntSushi/ripgrep",
-    })
-
-    use({
-      "nvim-telescope/telescope-fzf-native.nvim",
-      run = "make",
-    })
-
-    use({
-      "tzachar/fuzzy.nvim",
-      requires = { "hrsh7th/nvim-cmp", "tzachar/fuzzy.nvim" },
-    })
-
-    -- autopairs: paring brackets/braces automatically
-    use({
-      "windwp/nvim-autopairs",
-      config = function()
-        require("plugins.autopairs")
-      end,
-    })
-
-    -- autotag: auto close the tag using treesitter
-    use({
-      "windwp/nvim-ts-autotag",
-    })
-
-    -- Treesitter: more language syntaxes
-    use({
-      "nvim-treesitter/nvim-treesitter",
-      run = ":TSUpdate",
-      config = function()
-        require("plugins/treesitter")
-      end,
-    })
-
-    use({
-      "jcha0713/nvim-ts-rainbow",
-    })
-
-    -- playground for treesitter
-    use({
-      "nvim-treesitter/playground",
-    })
-
-    -- Treesitter textobjects: more text objects to easily select them
-    use({
-      "nvim-treesitter/nvim-treesitter-textobjects",
-      config = function()
-        require("plugins/textobjects")
-      end,
-    })
-
-    -- nvim-treesitter-textsubjects: new way to select text objects
-    use({
-      "RRethy/nvim-treesitter-textsubjects",
-      config = function()
-        require("plugins/textsubjects")
-      end,
-    })
-
-    -- neogen: docstring generator
-    use({
-      "danymat/neogen",
-      config = function()
-        require("plugins.neogen")
-      end,
-      requires = "nvim-treesitter/nvim-treesitter",
-      -- Uncomment next line if you want to follow only stable versions
-      -- tag = "*"
-    })
-
-    -- neoscroll: enables smooth scrolling
-    use({
-      "karb94/neoscroll.nvim",
-      config = function()
-        require("plugins.neoscroll")
-      end,
-    })
-
-    -- nvim-colorizer: color label for hex codes
-    use({
-      "norcalli/nvim-colorizer.lua",
-      config = function()
-        require("plugins.colorizer")
-      end,
-    })
-
-    -- emmet-vim: support for emmet
-    use({
-      "mattn/emmet-vim",
-      -- "jcha0713/emmet-vim",
-      config = function()
-        require("plugins.emmet")
-      end,
-    })
-
-    -- Glow: markdown preview
-    use({
-      "ellisonleao/glow.nvim",
-      config = function()
-        require("glow").setup({
-          style = "dark",
-          width = 120,
-          border = "rounded",
-        })
-      end,
-      cmd = "Glow",
-    })
-
-    -- comment.nvim: comment out lines
-    use({
-      "numToStr/Comment.nvim",
-      config = function()
-        require("plugins.comment")
-      end,
-    })
-
-    use({
-      "TovarishFin/vim-solidity",
-    })
-
-    -- diffview.nvim: git diff view
-    use({
-      "sindrets/diffview.nvim",
-      requires = "nvim-lua/plenary.nvim",
-      config = function()
-        require("plugins.diffview")
-      end,
-    })
-
-    -- toggleterm.nvim: terminal in neovim
-    use({
-      "akinsho/toggleterm.nvim",
-      tag = "v2.*",
-      config = function()
-        require("plugins.toggleterm")
-      end,
-    })
-
-    -- trouble.nvim: error fix using quickfix list
-    use({
-      "folke/trouble.nvim",
-      requires = "kyazdani42/nvim-web-devicons",
-      config = function()
-        require("plugins.trouble")
-      end,
-    })
-
-    -- vim-rooter: changes working directory when opening a file
-    -- use({
-    --   "airblade/vim-rooter",
-    --   config = function()
-    --     require("plugins.vim-rooter")
-    --   end,
-    -- })
-
-    use({
-      "notjedi/nvim-rooter.lua",
-      config = function()
-        require("plugins.nvim-rooter")
-      end,
-    })
-
-    -- searchbox.nvim: searchbox for searching and replacing words
-    use({
-      "VonHeikemen/searchbox.nvim",
-      config = function()
-        require("plugins.searchbox")
-      end,
-      requires = {
-        { "MunifTanjim/nui.nvim" },
+  -- neogen: docstring generator
+  {
+    "danymat/neogen",
+    dependencies = "nvim-treesitter/nvim-treesitter",
+    keys = {
+      {
+        "<leader>ng",
+        ":lua require('neogen').generate()<CR>",
+        "generate doc",
       },
-    })
+    },
+    config = function()
+      require("neogen").setup({
+        enabled = true,
+        input_after_comment = true,
+        snippet_engine = "luasnip",
+      })
+    end,
+    -- Uncomment next line if you want to follow only stable versions
+    version = "*",
+  },
 
-    -- Latex in markdown
-    use({
-      "jbyuki/nabla.nvim",
-      ft = { "markdown", "md" },
-      config = function()
-        require("plugins.nabla")
-      end,
-    })
+  -- nvim-colorizer: color label for hex codes
+  {
+    "norcalli/nvim-colorizer.lua",
+    event = "VeryLazy",
+  },
 
-    -- Markdown
-    use({
-      "jakewvincent/mkdnflow.nvim",
-      config = function()
-        require("plugins.mkdnflow")
-      end,
-    })
+  -- emmet-vim: support for emmet
+  {
+    "mattn/emmet-vim",
+    ft = { "html", "javascriptreact", "typescriptreact" },
+    -- "jcha0713/emmet-vim",
+    init = function()
+      vim.g["user_emmet_leader_key"] = "<C-e>"
+      vim.g["user_emmet_settings"] = [[{'astro': {'extends' : 'html',}}]]
+    end,
+  },
 
-    -- Rust
-    use({
-      "simrat39/rust-tools.nvim",
-    })
+  -- diffview.nvim: git diff view
+  {
+    "sindrets/diffview.nvim",
+    dependencies = "nvim-lua/plenary.nvim",
+  },
+  --
+  -- trouble.nvim: error fix using quickfix list
+  {
+    "folke/trouble.nvim",
+    event = "VeryLazy",
+    dependencies = "kyazdani42/nvim-web-devicons",
+    config = function()
+      vim.keymap.set("n", "<leader>tt", ":TroubleToggle<CR>")
+      vim.keymap.set(
+        "n",
+        "<leader>wd",
+        ":TroubleToggle workspace_diagnostics<CR>"
+      )
+      vim.keymap.set(
+        "n",
+        "<leader>dd",
+        ":TroubleToggle document_diagnostics<CR>"
+      )
+      vim.keymap.set("n", "Q", ":TroubleToggle quickfix<CR>")
+    end,
+  },
 
-    -- Profiling
-    use({
-      "dstein64/vim-startuptime",
-      cmd = "StartupTime",
-      config = [[vim.g.startuptime_tries = 10]],
-    })
+  -- vim-rooter: changes working directory when opening a file
+  -- {
+  --   "airblade/vim-rooter",
+  --   event = "VeryLazy",
+  --   config = function()
+  --     vim.g.rooter_patterns = {
+  --       "!.git/worktrees", -- without this line, git commit in neogit does not work well because vim-rooter is changing the cwd
+  --       ".git",
+  --     }
+  --
+  --     vim.g.rooter_change_directory_for_non_project_files = "current"
+  --   end,
+  -- },
 
-    -- Optimizing startuptime
-    use({ "lewis6991/impatient.nvim" })
+  {
+    "notjedi/nvim-rooter.lua",
+    event = "VeryLazy",
+  },
 
-    -- icons for extensions
-    use({
-      "kyazdani42/nvim-web-devicons",
-      config = function()
-        require("plugins.nvim-web-devicons")
-      end,
-    })
+  -- searchbox.nvim: searchbox for searching and replacing words
+  {
+    "VonHeikemen/searchbox.nvim",
+    config = function()
+      require("plugins.searchbox")
+    end,
+    dependencies = {
+      { "MunifTanjim/nui.nvim" },
+    },
+  },
 
-    -- display keymap info
-    use({
-      "folke/which-key.nvim",
-      config = function()
-        require("plugins.which-key")
-      end,
-    })
-
-    -- web bookmarks
-    -- use({
-    --   "dhruvmanila/telescope-bookmarks.nvim",
-    --   tag = "*",
-    -- })
-
-    -- crates.io
-    use({
-      "saecki/crates.nvim",
-      event = { "BufRead Cargo.toml" },
-      tag = "v0.3.0",
-      requires = { "nvim-lua/plenary.nvim" },
-      config = function()
-        require("crates").setup()
-      end,
-    })
-
-    -- cosmic-ui
-    use({
-      "CosmicNvim/cosmic-ui",
-      requires = { "MunifTanjim/nui.nvim", "nvim-lua/plenary.nvim" },
-      config = function()
-        require("plugins.cosmic-ui")
-      end,
-    })
-
-    -- extracting react components
-    use({
-      "jcha0713/react-extract.nvim",
-      branch = "fix",
-      config = function()
-        require("plugins.react-extract")
-      end,
-    })
-
-    -- todo management
-    use({
-      "folke/todo-comments.nvim",
-      requires = "nvim-lua/plenary.nvim",
-      config = function()
-        require("plugins.todo-comments")
-      end,
-    })
-
-    use({
-      "jcha0713/classy.nvim",
-    })
-
-    -- easy jumps
-    use({
-      "ggandor/leap.nvim",
-      config = function()
-        require("plugins.leap")
-      end,
-    })
-
-    -- smarter f/t
-    use({
-      "ggandor/flit.nvim",
-      config = function()
-        require("plugins.flit")
-      end,
-    })
-
-    -- mdx
-    use({ "jxnblk/vim-mdx-js" })
-
-    -- nim
-    use({ "alaviss/nim.nvim" })
-
-    -- explain regex
-    use({
-      "bennypowers/nvim-regexplainer",
-      config = function()
-        require("plugins.regexplainer")
-      end,
-      requires = {
-        "nvim-treesitter/nvim-treesitter",
-        "MunifTanjim/nui.nvim",
+  -- Latex in markdown
+  {
+    "jbyuki/nabla.nvim",
+    ft = { "markdown" },
+    keys = {
+      {
+        "<leader>ma",
+        function()
+          require("nabla").enable_virt()
+        end,
       },
-    })
+    },
+  },
 
-    -- pin context at the top
-    -- use({
-    --   "nvim-treesitter/nvim-treesitter-context",
-    --   config = function()
-    --     require("plugins.nvim-treesitter-context")
-    --   end,
-    -- })
+  -- Rust
+  {
+    "simrat39/rust-tools.nvim",
+    ft = "rust",
+  },
 
-    -- just for fun
-    use({
-      "tamton-aquib/duck.nvim",
-    })
+  -- Profiling
+  {
+    "dstein64/vim-startuptime",
+    cmd = "StartupTime",
+    init = function()
+      vim.g.startuptime_tries = 10
+    end,
+  },
 
-    use({
-      "phaazon/mind.nvim",
-      branch = "v2.2",
-      requires = { "nvim-lua/plenary.nvim" },
-      config = function()
-        require("plugins.mind")
-      end,
-    })
+  -- crates.io
+  {
+    "saecki/crates.nvim",
+    event = { "BufRead Cargo.toml" },
+    version = "v0.3.0",
+    dependencies = { "nvim-lua/plenary.nvim" },
+    config = function()
+      require("crates").setup()
+    end,
+  },
 
-    use({
-      "stevearc/dressing.nvim",
-      config = function()
-        require("plugins.dressing")
-      end,
-    })
+  -- cosmic-ui
+  {
+    "CosmicNvim/cosmic-ui",
+    dependencies = { "MunifTanjim/nui.nvim", "nvim-lua/plenary.nvim" },
+    config = function()
+      require("cosmic-ui").setup({
+        border_style = "rounded",
+      })
+    end,
+  },
 
-    use({
-      "antonk52/markdowny.nvim",
-      config = function()
-        require("plugins.markdowny")
-      end,
-    })
+  -- -- extracting react components
+  -- {
+  --   "jcha0713/react-extract.nvim",
+  --   branch = "fix",
+  --   config = function()
+  --     require("plugins.react-extract")
+  --   end,
+  -- },
+  --
 
-    use({
-      "renerocksai/telekasten.nvim",
-      config = function()
-        require("plugins.telekasten")
-      end,
-    })
+  -- easy jumps
+  {
+    "ggandor/leap.nvim",
+    event = "VeryLazy",
+    config = function()
+      require("leap").add_default_mappings()
 
-    use({
-      "renerocksai/calendar-vim",
-    })
+      vim.api.nvim_set_hl(0, "LeapBackdrop", { link = "Comment" })
+    end,
+  },
 
-    use({
-      "Exafunction/codeium.vim",
-      config = function()
-        require("plugins.codeium")
-      end,
-    })
-  end,
-})
+  -- mdx
+  { "jxnblk/vim-mdx-js", ft = "markdown" },
+
+  -- nim
+  { "alaviss/nim.nvim", ft = "nim" },
+
+  -- just for fun
+  {
+    "tamton-aquib/duck.nvim",
+    keys = {
+      {
+        "<leader><leader>h",
+        function()
+          require("duck").hatch("💕", 5)
+          require("duck").hatch("💕", 5)
+          require("duck").hatch("💕", 5)
+        end,
+      },
+    },
+    config = function()
+      vim.keymap.set("n", "<leader><leader>r", function()
+        require("duck").cook()
+      end)
+    end,
+  },
+
+  {
+    "phaazon/mind.nvim",
+    branch = "v2.2",
+    keys = {
+      {
+        "<leader>mdm",
+        ":MindOpenMain<CR>",
+      },
+      {
+        "<leader>mdp",
+        function()
+          require("nvim-rooter").rooter()
+          require("mind").open_project(true)
+        end,
+      },
+      {
+        "<leader>mdc",
+        ":MindClose<CR>",
+      },
+    },
+    dependencies = { "nvim-lua/plenary.nvim" },
+    config = function()
+      require("mind").setup()
+    end,
+  },
+
+  {
+    "stevearc/dressing.nvim",
+    event = "VeryLazy",
+  },
+
+  {
+    "Exafunction/codeium.vim",
+    event = "VeryLazy",
+    init = function()
+      vim.g.codeium_filetypes = {
+        nim = false,
+        markdown = false,
+      }
+    end,
+    config = function()
+      vim.keymap.set("i", "<C-c>", function()
+        return vim.fn["codeium#Accept"]()
+      end, { expr = true })
+      -- vim.keymap.set("i", "<c-;>", function()
+      --   return vim.fn["codeium#CycleCompletions"](1)
+      -- end, { expr = true })
+      -- vim.keymap.set("i", "<c-,>", function()
+      --   return vim.fn["codeium#CycleCompletions"](-1)
+      -- end, { expr = true })
+      vim.keymap.set("i", "<c-x>", function()
+        return vim.fn["codeium#Clear"]()
+      end, { expr = true })
+    end,
+  },
+
+  {
+    "jcha0713/classy.nvim",
+    keys = {
+      { "<leader>ac", ":ClassyAddClass<CR>", desc = "Add class attr" },
+      { "<leader>dc", ":ClassyRemoveClass<CR>", desc = "Remove class attr" },
+      { "<leader>rc", ":ClassyResetClass<CR>", desc = "Reset class attr" },
+    },
+  },
+}
