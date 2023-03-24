@@ -2,7 +2,7 @@ return {
   "L3MON4D3/Luasnip",
   event = "InsertEnter",
   dependencies = {
-    "MunifTanjim/nui.nvim"
+    "MunifTanjim/nui.nvim",
   },
   config = function()
     local ls = require("luasnip")
@@ -22,10 +22,15 @@ return {
     ls.filetype_extend("astro", { "javascript" })
     ls.filetype_extend("javascriptreact", { "javascript", "html" })
     ls.filetype_extend("typescript", { "javascript" })
-    ls.filetype_extend("typescriptreact", { "javascript", "typescript", "html" })
+    ls.filetype_extend(
+      "typescriptreact",
+      { "javascript", "typescript", "html" }
+    )
 
     -- load snippets from ~/.config/nvim/snippets directory
-    require("luasnip.loaders.from_lua").load({ paths = "~/.config/nvim/snippets" })
+    require("luasnip.loaders.from_lua").load({
+      paths = "~/.config/nvim/snippets",
+    })
 
     -- loading friendly snippets
     -- require("luasnip/loaders/from_vscode").lazy_load({

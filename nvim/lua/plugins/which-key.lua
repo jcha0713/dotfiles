@@ -2,7 +2,8 @@ return {
   "folke/which-key.nvim",
   event = "VeryLazy",
   config = function()
-    require("which-key").setup({
+    local wk = require("which-key")
+    wk.setup({
       plugins = {
         presets = {
           operators = false, -- adds help for operators like d, y, ... and registers them for motion / text object completion
@@ -13,10 +14,19 @@ return {
           z = true, -- bindings for folds, spelling and others prefixed with z
           g = true, -- bindings for prefixed with g
         },
+        spelling = true,
       },
       window = {
         border = "single",
       },
     })
+
+    local keymaps = {
+      mode = { "n", "v" },
+      ["]"] = { name = "+next" },
+      ["["] = { name = "+prev" },
+    }
+
+    wk.register(keymaps)
   end,
 }

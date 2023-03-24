@@ -27,6 +27,9 @@ return {
           rainbowcol3 = { fg = "#B594FF" },
           rainbowcol4 = { fg = "#F4A65B" },
           rainbowcol5 = { fg = "#FAE957" },
+          CmpCursorLine = { bg = "#a390a2", fg = "#171717" },
+          CmpItemKindVariable = { fg = colors.oniViolet },
+          CmpItemKindField = { fg = colors.surimiOrange },
         }
       end,
     })

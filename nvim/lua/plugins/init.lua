@@ -27,22 +27,6 @@ return {
     dependencies = { "hrsh7th/nvim-cmp", "tzachar/fuzzy.nvim" },
   },
 
-  -- vim-illuminate: find occurrences
-  -- TODO: check readme
-  {
-    "RRethy/vim-illuminate",
-    keys = {
-      {
-        "<A-n>",
-        '<cmd> lua require"illuminate".next_reference{wrap=true}<CR>',
-      },
-      {
-        "<A-p>",
-        '<cmd> lua require"illuminate".next_reference{reverse=true,wrap=true}<CR>',
-      },
-    },
-  },
-
   -- nvim-surround: nvim version of vim-surround
   {
     "kylechui/nvim-surround",
@@ -229,7 +213,7 @@ return {
   -- easy jumps
   {
     "ggandor/leap.nvim",
-    event = "VeryLazy",
+    event = "BufRead",
     config = function()
       require("leap").add_default_mappings()
 
@@ -294,28 +278,45 @@ return {
     event = "VeryLazy",
   },
 
+  -- {
+  --   "Exafunction/codeium.vim",
+  --   event = "VeryLazy",
+  --   init = function()
+  --     vim.g.codeium_filetypes = {
+  --       nim = false,
+  --       markdown = false,
+  --     }
+  --   end,
+  --   config = function()
+  --     vim.keymap.set("i", "<C-c>", function()
+  --       return vim.fn["codeium#Accept"]()
+  --     end, { expr = true })
+  --     -- vim.keymap.set("i", "<c-;>", function()
+  --     --   return vim.fn["codeium#CycleCompletions"](1)
+  --     -- end, { expr = true })
+  --     -- vim.keymap.set("i", "<c-,>", function()
+  --     --   return vim.fn["codeium#CycleCompletions"](-1)
+  --     -- end, { expr = true })
+  --     vim.keymap.set("i", "<c-x>", function()
+  --       return vim.fn["codeium#Clear"]()
+  --     end, { expr = true })
+  --   end,
+  -- },
+
   {
-    "Exafunction/codeium.vim",
-    event = "VeryLazy",
-    init = function()
-      vim.g.codeium_filetypes = {
-        nim = false,
-        markdown = false,
-      }
-    end,
-    config = function()
-      vim.keymap.set("i", "<C-c>", function()
-        return vim.fn["codeium#Accept"]()
-      end, { expr = true })
-      -- vim.keymap.set("i", "<c-;>", function()
-      --   return vim.fn["codeium#CycleCompletions"](1)
-      -- end, { expr = true })
-      -- vim.keymap.set("i", "<c-,>", function()
-      --   return vim.fn["codeium#CycleCompletions"](-1)
-      -- end, { expr = true })
-      vim.keymap.set("i", "<c-x>", function()
-        return vim.fn["codeium#Clear"]()
-      end, { expr = true })
+    "zbirenbaum/copilot.lua",
+    event = "BufRead",
+    build = ":Copilot auth",
+    opts = {
+      suggestion = {
+        auto_trigger = true,
+        keymap = {
+          accept = "<C-c>",
+        },
+      },
+    },
+    config = function(_, opts)
+      require("copilot").setup(opts)
     end,
   },
 

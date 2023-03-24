@@ -10,6 +10,7 @@ local ignore_files = {
   "build/*",
   "yarn.lock",
   "package%-lock.json",
+  "lazy%-lock.json",
   "%.svg",
   "%.png",
   "%.jpeg",
@@ -24,6 +25,12 @@ local ignore_files = {
 local picker_opt = {
   defaults = {
     file_ignore_patterns = ignore_files,
+  },
+  registers = {
+    theme = "cursor",
+  },
+  live_grep = {
+    theme = "ivy",
   },
 }
 
@@ -51,14 +58,24 @@ return {
       ":Telescope live_grep<CR>",
       desc = "Telescope live grep",
     },
+    {
+      "<leader>fh",
+      ":Telescope help_tags<CR>",
+      desc = "Telescope find help",
+    },
     { "<leader>bf", ":Telescope buffers<CR>", desc = "Telescope buffers" },
     {
       "<leader>of",
-      ":Telescope old_files<CR>",
+      ":Telescope oldfiles<CR>",
       desc = "Telescope old files",
     },
     { "<leader>cm", ":Telescope commands<CR>", desc = "Telescope commands" },
-    { "<leader>km", ":Telescope keymaps<CR>", desc = "Telescope  keymaps" },
+    { "<leader>km", ":Telescope keymaps<CR>", desc = "Telescope keymaps" },
+    {
+      "<leader>rg",
+      ":Telescope registers<CR>",
+      desc = "Telescope registers",
+    },
   },
   config = function()
     local actions = require("telescope.actions")
