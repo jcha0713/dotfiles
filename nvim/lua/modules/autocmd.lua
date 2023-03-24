@@ -43,3 +43,15 @@ autocmd({
   end,
   group = winbar,
 })
+
+-- don't auto insert comments when starting a newline
+local no_comments = augroup("no_comments", { clear = true })
+autocmd("FileType", {
+  pattern = "*",
+  callback = function()
+    vim.opt_local.formatoptions:remove("c")
+    vim.opt_local.formatoptions:remove("r")
+    vim.opt_local.formatoptions:remove("o")
+  end,
+  group = no_comments,
+})
