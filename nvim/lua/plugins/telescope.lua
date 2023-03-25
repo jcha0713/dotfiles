@@ -32,6 +32,9 @@ local picker_opt = {
   live_grep = {
     theme = "ivy",
   },
+  lsp_references = {
+    theme = "cursor",
+  },
 }
 
 return {
@@ -75,6 +78,11 @@ return {
       "<leader>rg",
       ":Telescope registers<CR>",
       desc = "Telescope registers",
+    },
+    {
+      "<leader>lr",
+      ":Telescope lsp_references<CR>",
+      desc = "Telescope lsp references",
     },
   },
   config = function()
