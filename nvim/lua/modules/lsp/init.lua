@@ -201,6 +201,7 @@ local servers = {
   "nimls",
   "null-ls",
   "prismals",
+  "pyright",
   "rust_analyzer",
   "solang",
   "sourcekit",
