@@ -14,6 +14,11 @@ local xo_opts = {
   diagnostics_format = "[#{c}] #{m} (#{s})",
 }
 
+local dprint_opts = {
+  condition = with_root_file("dprint.json"),
+  diagnostics_format = "[#{c}] #{m} (#{s})",
+}
+
 local sources = {
   -- nim_src,
   b.formatting.nimpretty,
@@ -22,6 +27,7 @@ local sources = {
   b.formatting.stylua,
   b.formatting.gofmt,
   b.formatting.goimports,
+  b.formatting.dprint.with(dprint_opts),
   -- b.formatting.prettier.with({
   --   prefer_local = "node_modules/.bin",
   --   filetypes = {

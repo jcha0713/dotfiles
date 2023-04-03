@@ -98,6 +98,25 @@ local lsp_formatting = function(bufnr)
 
       if client.name == "null-ls" then
         local clients = vim.lsp.get_active_clients({ bufnr = bufnr })
+
+        local util = require("lspconfig.util")
+        local root_pattern = util.root_pattern
+        local files_to_search = { "dprint.json" }
+
+        local current_file = vim.api.nvim_buf_get_name(0)
+        local root_dir = root_pattern(unpack(files_to_search))(current_file)
+
+        if root_dir then
+          for _, file in ipairs(files_to_search) do
+            local file_path = root_dir .. "/" .. file
+            local file_exists = vim.loop.fs_stat(file_path) ~= nil
+            if file_exists then
+              require("null-ls").disable("prettierd")
+              break
+            end
+          end
+        end
+
         return not u.some(clients, function(_, other_client)
           return other_client.name == "eslint"
             and not eslint_disabled_buffers[bufnr]
