@@ -278,8 +278,25 @@ return {
     event = "VeryLazy",
   },
 
+  -- {
+  --   "zbirenbaum/copilot.lua",
+  --   event = "BufRead",
+  --   build = ":Copilot auth",
+  --   opts = {
+  --     suggestion = {
+  --       auto_trigger = true,
+  --       keymap = {
+  --         accept = "<C-c>",
+  --       },
+  --     },
+  --   },
+  --   config = function(_, opts)
+  --     require("copilot").setup(opts)
+  --   end,
+  -- },
+
   {
-    "zbirenbaum/copilot.lua",
+    dir = "~/jhcha/dev/2023/project/copilot.lua",
     event = "BufRead",
     build = ":Copilot auth",
     opts = {
@@ -309,7 +326,14 @@ return {
     version = false,
     event = "VeryLazy",
     config = function()
-      require("mini.animate").setup()
+      require("mini.animate").setup({
+        cursor = {
+          timing = require("mini.animate").gen_timing.linear({
+            duration = 150,
+            unit = "total",
+          }),
+        },
+      })
     end,
   },
 }
