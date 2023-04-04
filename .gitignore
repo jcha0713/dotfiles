@@ -7,11 +7,13 @@
 !nvim/
 !karabiner/
 !lf/
+!wezterm/
 
 !hammerspoon/**
 !nvim/**
 !karabiner/**
 !lf/**
+!wezterm/**
 
 # but ignore again
 nvim/friendly-snippets/
