@@ -153,11 +153,11 @@ return {
       rename_update_links = true,
 
       vaults = {
-        vault2 = {
-          -- alternate configuration for vault2 here. Missing values are defaulted to
-          -- default values from telekasten.
-          -- e.g.
-          -- home = "/home/user/vaults/personal",
+        knot = {
+          home = vim.fn.expand(
+            "~/jhcha/dev/2023/project/knot-journal/jcha0713"
+          ),
+          template_new_note = home .. "/" .. "templates/new_note.md",
         },
       },
 
