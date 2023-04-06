@@ -96,6 +96,12 @@ return {
   {
     "sindrets/diffview.nvim",
     dependencies = "nvim-lua/plenary.nvim",
+    keys = {
+      { "<leader>dvo", ":DiffviewOpen<CR>", "open diffview" },
+    },
+    config = function()
+      require("diffview").setup({})
+    end,
   },
   --
   -- trouble.nvim: error fix using quickfix list
