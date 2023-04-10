@@ -1,9 +1,6 @@
 local u = require("modules.utils")
 local lsp = vim.lsp
-
-local capabilities = vim.lsp.protocol.make_client_capabilities()
-capabilities = require("cmp_nvim_lsp").default_capabilities(capabilities)
-capabilities.textDocument.completion.completionItem.snippetSupport = true
+local capabilities = require("cmp_nvim_lsp").default_capabilities()
 
 local border = {
   { "╭", "FloatBorder" },
@@ -16,8 +13,8 @@ local border = {
   { "│", "FloatBorder" },
 }
 
-local orig_util_open_floating_preview = vim.lsp.util.open_floating_preview
-function vim.lsp.util.open_floating_preview(contents, syntax, opts, ...)
+local orig_util_open_floating_preview = lsp.util.open_floating_preview
+function lsp.util.open_floating_preview(contents, syntax, opts, ...)
   opts = opts or {}
   opts.border = opts.border or border
   return orig_util_open_floating_preview(contents, syntax, opts, ...)
@@ -35,10 +32,10 @@ vim.diagnostic.config({
   severity_sort = false,
 })
 
-local signs = { Error = " ", Warn = " ", Hint = " ", Info = " " }
+local signs = { Error = "", Warn = "", Hint = "", Info = "" }
 for type, icon in pairs(signs) do
   local hl = "DiagnosticSign" .. type
-  vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = hl })
+  vim.fn.sign_define(hl, { text = icon .. " ", texthl = hl, numhl = hl })
 end
 
 local win = require("lspconfig.ui.windows")
@@ -60,6 +57,7 @@ lsp.handlers["textDocument/publishDiagnostics"] =
       goto done
     end
 
+    -- clinet is the ESLint server
     for _, diagnostic in ipairs(result.diagnostics) do
       if
         diagnostic.message:find("The file does not match your project config")
@@ -75,15 +73,6 @@ lsp.handlers["textDocument/publishDiagnostics"] =
 
 local augroup = vim.api.nvim_create_augroup("LspFormatting", {})
 
--- local lsp_formatting = function(bufnr)
---   vim.lsp.buf.format({
---     bufnr = bufnr,
---     filter = function(client)
---       return client.name == "null-ls" or client.name == "rust_analyzer"
---     end,
---   })
--- end
-
 local lsp_formatting = function(bufnr)
   lsp.buf.format({
     bufnr = bufnr,
@@ -92,12 +81,8 @@ local lsp_formatting = function(bufnr)
         return true
       end
 
-      if client.name == "eslint" then
-        return not eslint_disabled_buffers[bufnr]
-      end
-
       if client.name == "null-ls" then
-        local clients = vim.lsp.get_active_clients({ bufnr = bufnr })
+        local clients = lsp.get_active_clients({ bufnr = bufnr })
 
         local util = require("lspconfig.util")
         local root_pattern = util.root_pattern
@@ -117,10 +102,22 @@ local lsp_formatting = function(bufnr)
           end
         end
 
-        return not u.some(clients, function(_, other_client)
+        local format = not u.some(clients, function(_, other_client)
           return other_client.name == "eslint"
             and not eslint_disabled_buffers[bufnr]
         end)
+
+        -- let me know if the formatting is done by null-ls
+        if format then
+          vim.api.nvim_echo({
+            {
+              "Formatting with null-ls",
+              "Comment",
+            },
+          }, true, {})
+        end
+
+        return format
       end
     end,
   })
@@ -128,7 +125,7 @@ end
 
 local on_attach = function(client, bufnr)
   -- commands
-  u.lua_command("LspFormatting", "vim.lsp.buf.formatting()")
+  u.lua_command("LspFormatting", "vim.lsp.buf.format()")
   u.lua_command("LspHover", "vim.lsp.buf.hover()")
   u.lua_command("LspRename", "vim.lsp.buf.rename()")
   u.lua_command("LspDiagPrev", "vim.diagnostic.goto_prev()")
@@ -178,22 +175,20 @@ local on_attach = function(client, bufnr)
   u.buf_map("v", "<leader>ca", ":LspRangeCodeAction<CR>", nil, bufnr)
   u.buf_map("n", "<leader>rr", ":RustRun<CR>", nil, bufnr)
 
-  -- format file on save
-  -- client.server_capabilities.documentFormattingProvider = true
+  if client.name == "tsserver" then
+    client.server_capabilities.documentFormattingProvider = false
+  end
+
   if client.supports_method("textDocument/formatting") then
     vim.api.nvim_clear_autocmds({ group = augroup, buffer = bufnr })
     vim.api.nvim_create_autocmd("BufWritePre", {
       group = augroup,
       buffer = bufnr,
-      callback = function()
+      callback = function(event)
         lsp_formatting(bufnr)
       end,
     })
   end
-
-  -- if client.resolved_capabilities.completion then
-  --   vim.opt_local.omnifunc = "v:lua.vim.lsp.omnifunc"
-  -- end
 
   require("lsp_signature").on_attach({
     bind = true, -- This is mandatory, otherwise border config won't get registered.

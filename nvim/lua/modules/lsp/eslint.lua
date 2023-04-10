@@ -10,12 +10,27 @@ M.setup = function(on_attach, capabilities)
       ".eslintrc.json"
     ),
     on_attach = function(client, bufnr)
-      on_attach(client, bufnr)
-
       client.server_capabilities.documentFormattingProvider = true
+      local au_lsp = vim.api.nvim_create_augroup("eslint_lsp", { clear = true })
+      vim.api.nvim_create_autocmd("BufWritePre", {
+        pattern = "*",
+        callback = function()
+          vim.lsp.buf.format(nil)
+        end,
+        group = au_lsp,
+      })
     end,
     capabilities = capabilities or {},
     settings = {
+      codeAction = {
+        showDocumentation = {
+          enable = true,
+        },
+      },
+      validate = "on",
+      workingDirectories = {
+        mode = "auto",
+      },
       format = {
         enable = true,
       },
