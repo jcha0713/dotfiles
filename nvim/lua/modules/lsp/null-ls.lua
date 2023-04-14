@@ -76,6 +76,10 @@ local method = null_ls.methods.DIAGNOSTICS
 M.setup = function(on_attach)
   null_ls.setup({
     -- debug = true,
+    should_attach = function(bufnr)
+      local filetype = vim.api.nvim_buf_get_option(bufnr, "filetype")
+      return filetype ~= "rust"
+    end,
     sources = sources,
     on_attach = on_attach,
   })

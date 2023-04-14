@@ -102,13 +102,16 @@ local lsp_formatting = function(bufnr)
           end
         end
 
-        local format = not u.some(clients, function(_, other_client)
-          return other_client.name == "eslint"
-            and not eslint_disabled_buffers[bufnr]
-        end)
+        local is_eslint_not_present = not u.some(
+          clients,
+          function(_, other_client)
+            return other_client.name == "eslint"
+              and not eslint_disabled_buffers[bufnr]
+          end
+        )
 
         -- let me know if the formatting is done by null-ls
-        if format then
+        if is_eslint_not_present then
           vim.api.nvim_echo({
             {
               "Formatting with null-ls",
@@ -117,7 +120,7 @@ local lsp_formatting = function(bufnr)
           }, true, {})
         end
 
-        return format
+        return is_eslint_not_present
       end
     end,
   })
@@ -184,7 +187,7 @@ local on_attach = function(client, bufnr)
     vim.api.nvim_create_autocmd("BufWritePre", {
       group = augroup,
       buffer = bufnr,
-      callback = function(event)
+      callback = function()
         lsp_formatting(bufnr)
       end,
     })
@@ -237,6 +240,7 @@ for _, server_name in ipairs(servers) do
       server = {
         standalone = false,
         on_attach = on_attach,
+        capabilities = capabilities,
         settings = {
           ["rust-analyzer"] = {
             checkOnSave = {
