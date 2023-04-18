@@ -84,10 +84,10 @@ return {
   -- emmet-vim: support for emmet
   {
     "mattn/emmet-vim",
+    event = "BufEnter",
     ft = { "html", "javascriptreact", "typescriptreact" },
-    -- "jcha0713/emmet-vim",
     init = function()
-      vim.g["user_emmet_leader_key"] = "<C-e>"
+      vim.g["user_emmet_leader_key"] = "<C-,>"
       vim.g["user_emmet_settings"] = [[{'astro': {'extends' : 'html',}}]]
     end,
   },
@@ -98,6 +98,7 @@ return {
     dependencies = "nvim-lua/plenary.nvim",
     keys = {
       { "<leader>dvo", ":DiffviewOpen<CR>", "open diffview" },
+      { "<leader>dvc", ":DiffviewClose<CR>", "close diffview" },
     },
     config = function()
       require("diffview").setup({})
