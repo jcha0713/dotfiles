@@ -31,8 +31,8 @@ M.setup = function(on_attach, capabilities)
         u.buf_map("n", "<leader>sd", ":TSLspSourceDef<CR>", nil, bufnr)
         on_attach(client, bufnr)
       end,
+      capabilities = capabilities,
     },
-    capabilities = capabilities,
     flags = {
       -- allow_incremental_sync = true,
       debounce_text_changes = 500, -- In ms
