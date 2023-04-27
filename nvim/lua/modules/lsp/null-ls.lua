@@ -16,6 +16,18 @@ local xo_opts = {
 
 local dprint_opts = {
   condition = with_root_file("dprint.json"),
+  filetypes = {
+    "javascript",
+    "javascriptreact",
+    "typescript",
+    "typescriptreact",
+    "json",
+    "markdown",
+    "toml",
+    "rust",
+    "roslyn",
+    "css",
+  },
   diagnostics_format = "[#{c}] #{m} (#{s})",
 }
 
