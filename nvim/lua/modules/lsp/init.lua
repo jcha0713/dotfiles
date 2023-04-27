@@ -156,7 +156,7 @@ local on_attach = function(client, bufnr)
   -- u.buf_map("n", "<Leader>td", ":LspTypeDef<CR>", nil, bufnr)
   u.buf_map(
     "n",
-    "<leader>td",
+    "<leader>gy",
     "<cmd>TroubleToggle lsp_type_definitions<CR>",
     nil,
     bufnr
