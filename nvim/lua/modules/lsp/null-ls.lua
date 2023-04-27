@@ -24,6 +24,7 @@ local sources = {
   b.formatting.nimpretty,
   b.code_actions.xo.with(xo_opts),
   b.diagnostics.xo.with(xo_opts),
+  b.code_actions.gitsigns,
   b.formatting.stylua,
   b.formatting.gofmt,
   b.formatting.goimports,
