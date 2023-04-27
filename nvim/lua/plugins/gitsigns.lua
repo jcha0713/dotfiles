@@ -20,11 +20,11 @@ return {
         follow_files = true,
       },
       attach_to_untracked = true,
-      current_line_blame = false, -- Toggle with `:Gitsigns toggle_current_line_blame`
+      current_line_blame = true, -- Toggle with `:Gitsigns toggle_current_line_blame`
       current_line_blame_opts = {
         virt_text = true,
         virt_text_pos = "eol", -- 'eol' | 'overlay' | 'right_align'
-        delay = 1000,
+        delay = 500,
         ignore_whitespace = false,
       },
       current_line_blame_formatter = "<author>, <author_time:%Y-%m-%d> - <summary>",
@@ -75,24 +75,52 @@ return {
         end, { expr = true })
 
         -- Actions
-        map({ "n", "v" }, "<leader>hs", ":Gitsigns stage_hunk<CR>")
-        map({ "n", "v" }, "<leader>hr", ":Gitsigns reset_hunk<CR>")
-        map("n", "<leader>hS", gs.stage_buffer)
-        map("n", "<leader>hu", gs.undo_stage_hunk)
-        map("n", "<leader>hR", gs.reset_buffer)
-        map("n", "<leader>hp", gs.preview_hunk)
+        map(
+          { "n", "v" },
+          "<leader>hs",
+          ":Gitsigns stage_hunk<CR>",
+          { desc = "Stage hunk" }
+        )
+        map({ "n", "v" }, "<leader>hr", ":Gitsigns reset_hunk<CR>", {
+          desc = "Reset hunk at cursor",
+        })
+        map(
+          "n",
+          "<leader>hS",
+          gs.stage_buffer,
+          { desc = "Stage all hunks in buffer" }
+        )
+        map(
+          "n",
+          "<leader>hu",
+          gs.undo_stage_hunk,
+          { desc = "Undo last stage hunk" }
+        )
+        map(
+          "n",
+          "<leader>hR",
+          gs.reset_buffer,
+          { desc = "Reset all hunks in buffer" }
+        )
+        map("n", "<leader>hp", gs.preview_hunk, { desc = "Preview hunk" })
         map("n", "<leader>hb", function()
           gs.blame_line({ full = true })
-        end)
-        map("n", "<leader>tb", gs.toggle_current_line_blame)
-        map("n", "<leader>hd", gs.diffthis)
+        end, { desc = "Run git blame on current line" })
+        map("n", "<leader>hd", gs.diffthis, { desc = "Do vimdiff on file" })
         map("n", "<leader>hD", function()
           gs.diffthis("~")
-        end)
-        map("n", "<leader>td", gs.toggle_deleted)
+        end, { desc = "Do vimdiff on file against HEAD" })
+        map("n", "<leader>htd", gs.toggle_deleted, {
+          desc = "Toggle show_deleted",
+        })
 
         -- Text object
-        map({ "o", "x" }, "ih", ":<C-U>Gitsigns select_hunk<CR>")
+        map(
+          { "o", "x" },
+          "ih",
+          ":<C-U>Gitsigns select_hunk<CR>",
+          { desc = "Select hunk" }
+        )
       end,
     })
   end,
