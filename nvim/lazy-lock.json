@@ -34,6 +34,7 @@
   "nabla.nvim": { "branch": "master", "commit": "8c143ad2b3ab3b8ffbd51e238ccfcbd246452a7e" },
   "neodev.nvim": { "branch": "main", "commit": "fe48362be179b5705edcbcb947c1d84b263d5698" },
   "neogen": { "branch": "main", "commit": "353c5ef8e51c14445cc85666d4d09e4cf98598b2" },
+  "neogit": { "branch": "master", "commit": "69a6ca7c41b023ebf9cad70778e227b3209b40c4" },
   "nim.nvim": { "branch": "master", "commit": "87afde2ae995723e0338e1851c3b3c1cbd81d955" },
   "nlsp-settings.nvim": { "branch": "main", "commit": "32aa12da328258f2dccb15d327c26a8d21d9f4bd" },
   "nui.nvim": { "branch": "main", "commit": "ecd9def93891b9260b15b5fcef542eaabf4145c9" },
