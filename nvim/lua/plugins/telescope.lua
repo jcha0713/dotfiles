@@ -62,6 +62,11 @@ return {
       desc = "Telescope live grep",
     },
     {
+      "<leader>gs",
+      ":Telescope grep_string<CR>",
+      desc = "Telescope grep string",
+    },
+    {
       "<leader>fh",
       ":Telescope help_tags<CR>",
       desc = "Telescope find help",
