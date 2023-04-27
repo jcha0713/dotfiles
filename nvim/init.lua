@@ -40,3 +40,5 @@ require("modules.options")
 require("modules.autocmd")
 require("modules.globals")
 require("themes")
+
+require("cmp-tw2css").setup()
