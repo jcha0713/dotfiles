@@ -221,12 +221,11 @@ local servers = {
   "pyright",
   "rust_analyzer",
   "solang",
-  "sourcekit",
   "lua_ls",
   "svelte",
   "tailwindcss",
   "tsserver",
-  "unocss",
+  -- "unocss",
 }
 
 for _, server_name in ipairs(servers) do
