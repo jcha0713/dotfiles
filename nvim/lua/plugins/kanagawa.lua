@@ -30,6 +30,7 @@ return {
           CmpCursorLine = { bg = "#a390a2", fg = "#171717" },
           CmpItemKindVariable = { fg = colors.oniViolet },
           CmpItemKindField = { fg = colors.surimiOrange },
+          GitSignsCurrentLineBlame = { fg = "#a8a29e" },
         }
       end,
     })
