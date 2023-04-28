@@ -92,19 +92,6 @@ return {
     end,
   },
 
-  -- diffview.nvim: git diff view
-  {
-    "sindrets/diffview.nvim",
-    dependencies = "nvim-lua/plenary.nvim",
-    keys = {
-      { "<leader>dvo", ":DiffviewOpen<CR>", "open diffview" },
-      { "<leader>dvc", ":DiffviewClose<CR>", "close diffview" },
-    },
-    config = function()
-      require("diffview").setup({})
-    end,
-  },
-  --
   -- trouble.nvim: error fix using quickfix list
   {
     "folke/trouble.nvim",
