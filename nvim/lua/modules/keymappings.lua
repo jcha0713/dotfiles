@@ -36,7 +36,7 @@ map("v", "<C-k>", ":m '<-2<CR>gv=gv")
 map("n", "vv", "<S-v>")
 
 -- Grammar checking in the terminal(using gramma)
-map("n", "<leader>gc", ":term gramma check %<cr>", { desc = "Check grammar" })
+map("n", "<leader>cg", ":term gramma check %<cr>", { desc = "Check grammar" })
 
 -- LspRestart
 map("n", "<leader>rs", ":LspRestart<CR>:e<CR>", { desc = "Restart LSP" })
