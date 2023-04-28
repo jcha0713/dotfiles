@@ -1,6 +1,5 @@
 return {
   "TimUntersberger/neogit",
-  config = true,
   keys = {
     {
       "<leader>gg",
@@ -8,4 +7,11 @@ return {
       desc = "Open Neogit",
     },
   },
+  config = function()
+    require("neogit").setup({
+      integrations = {
+        diffview = true,
+      },
+    })
+  end,
 }
