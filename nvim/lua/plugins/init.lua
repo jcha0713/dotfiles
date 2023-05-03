@@ -319,4 +319,9 @@ return {
       })
     end,
   },
+
+  {
+    "gleam-lang/gleam.vim",
+    ft = "gleam",
+  },
 }

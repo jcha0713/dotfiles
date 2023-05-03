@@ -77,7 +77,7 @@ local lsp_formatting = function(bufnr)
   lsp.buf.format({
     bufnr = bufnr,
     filter = function(client)
-      if client.name == "rust_analyzer" then
+      if client.name == "rust_analyzer" or "gleam" then
         return true
       end
 
@@ -212,6 +212,7 @@ local servers = {
   "cssls",
   -- "cssmodules_ls",
   "eslint",
+  "gleam",
   "gopls",
   "html",
   "jsonls",
