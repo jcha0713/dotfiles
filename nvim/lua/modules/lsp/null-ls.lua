@@ -27,6 +27,7 @@ local dprint_opts = {
     "rust",
     "roslyn",
     "css",
+    "html",
   },
   diagnostics_format = "[#{c}] #{m} (#{s})",
 }
