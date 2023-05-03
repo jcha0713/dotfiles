@@ -35,6 +35,9 @@ local picker_opt = {
   lsp_references = {
     theme = "cursor",
   },
+  lsp_definitions = {
+    theme = "cursor",
+  },
 }
 
 return {
@@ -88,6 +91,11 @@ return {
       "<leader>lr",
       ":Telescope lsp_references<CR>",
       desc = "Telescope lsp references",
+    },
+    {
+      "<leader>ld",
+      ":Telescope lsp_definitions<CR>",
+      desc = "Telescope lsp definitions",
     },
   },
   config = function()
