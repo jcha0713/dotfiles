@@ -77,7 +77,7 @@ local lsp_formatting = function(bufnr)
   lsp.buf.format({
     bufnr = bufnr,
     filter = function(client)
-      if client.name == "rust_analyzer" or "gleam" then
+      if client.name == "rust_analyzer" or client.name == "gleam" then
         return true
       end
 
