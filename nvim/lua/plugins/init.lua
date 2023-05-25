@@ -289,6 +289,9 @@ return {
           accept = "<C-c>",
         },
       },
+      filetypes = {
+        go = false,
+      },
     },
     config = function(_, opts)
       require("copilot").setup(opts)
