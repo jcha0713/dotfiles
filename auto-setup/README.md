@@ -1,0 +1,4 @@
+- hammerspoon
+- nvm
+- lf
+- tea

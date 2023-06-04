@@ -8,12 +8,15 @@
 !karabiner/
 !lf/
 !wezterm/
+!auto-setup
+!.zshrc
 
 !hammerspoon/**
 !nvim/**
 !karabiner/**
 !lf/**
 !wezterm/**
+!auto-setup/**
 
 # but ignore again
 nvim/friendly-snippets/
