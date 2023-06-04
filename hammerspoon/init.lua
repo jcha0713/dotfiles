@@ -13,6 +13,14 @@ hyper.bind({ "shift" }, "s", nil, function()
   hs.spotify.playpause()
 end)
 
+hyper.bind({ "shift" }, "m", nil, function()
+  hs.application.launchOrFocus("Messages")
+end)
+
+hyper.bind({ "shift" }, "d", nil, function()
+  hs.application.launchOrFocus("Discord")
+end)
+
 local secret = require("secret")
 secret.init(".secret.json")
 

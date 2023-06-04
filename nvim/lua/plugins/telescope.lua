@@ -12,10 +12,10 @@ local ignore_files = {
   "package%-lock.json",
   "lazy%-lock.json",
   "%.svg",
-  "%.png",
-  "%.jpeg",
-  "%.jpg",
-  "%.webp",
+  -- "%.png",
+  -- "%.jpeg",
+  -- "%.jpg",
+  -- "%.webp",
   "%.ico",
   "data/lua%-language%-server",
   ".DS_Store",
@@ -46,6 +46,8 @@ return {
     "nvim-lua/plenary.nvim",
     "folke/trouble.nvim",
     "BurntSushi/ripgrep",
+    "nvim-lua/popup.nvim",
+    "nvim-telescope/telescope-media-files.nvim",
   },
   cmd = "Telescope",
   keys = {
@@ -168,5 +170,7 @@ return {
         },
       },
     })
+
+    require("telescope").load_extension("media_files")
   end,
 }

@@ -115,7 +115,7 @@ return {
 
   {
     "notjedi/nvim-rooter.lua",
-    event = "CursorMoved",
+    event = "BufEnter",
     config = function()
       require("nvim-rooter").setup()
     end,

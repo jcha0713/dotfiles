@@ -40,7 +40,7 @@ local sources = {
   b.code_actions.gitsigns,
   b.formatting.stylua,
   b.formatting.gofmt,
-  b.formatting.goimports,
+  -- b.formatting.goimports,
   b.formatting.dprint.with(dprint_opts),
   -- b.formatting.prettier.with({
   --   prefer_local = "node_modules/.bin",

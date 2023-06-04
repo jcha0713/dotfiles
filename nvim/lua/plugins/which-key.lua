@@ -21,12 +21,15 @@ return {
       },
     })
 
-    local keymaps = {
-      mode = { "n", "v" },
+    wk.register({
+      ["<leader>"] = {
+        z = {
+          name = "+zettlekasten",
+        },
+      },
+
       ["]"] = { name = "+next" },
       ["["] = { name = "+prev" },
-    }
-
-    wk.register(keymaps)
+    })
   end,
 }
