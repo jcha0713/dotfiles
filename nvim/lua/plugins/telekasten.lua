@@ -1,19 +1,59 @@
 local keys = {
-  { "<leader><leader>z", ":lua require('telekasten').panel()<CR>" },
-  { "<leader>zfn", ":lua require('telekasten').find_notes()<CR>" },
-  { "<leader>zz", ":lua require('telekasten').follow_link()<CR>" },
-  { "<leader>zT", ":lua require('telekasten').goto_today()<CR>" },
-  { "<leader>zW", ":lua require('telekasten').goto_thisweek()<CR>" },
-  { "<leader>zn", ":lua require('telekasten').new_note()<CR>" },
-  { "<leader>zl", ":lua require('telekasten').insert_link()<CR>" },
-  { "<leader>zc", ":lua require('telekasten').show_calendar()<CR>" },
-  { "<leader>zC", ":CalendarT<CR>" },
+  {
+    "<leader><leader>z",
+    ":lua require('telekasten').panel()<CR>",
+    desc = "Open telekasten command menu",
+  },
+  {
+    "<leader>zfn",
+    ":lua require('telekasten').find_notes()<CR>",
+    desc = "Find notes",
+  },
+  {
+    "<leader>zz",
+    ":lua require('telekasten').follow_link()<CR>",
+    desc = "Follow link under cursor",
+  },
+  {
+    "<leader>zT",
+    ":lua require('telekasten').goto_today()<CR>",
+    desc = "Go to today's note",
+  },
+  {
+    "<leader>zW",
+    ":lua require('telekasten').goto_thisweek()<CR>",
+    desc = "Go to this week's note",
+  },
+  {
+    "<leader>zn",
+    ":lua require('telekasten').new_note()<CR>",
+    desc = "Create new telekasten note",
+  },
+  {
+    "<leader>zl",
+    ":lua require('telekasten').insert_link()<CR>",
+    desc = "Insert link under cursor",
+  },
+  {
+    "<leader>zc",
+    ":lua require('telekasten').show_calendar()<CR>",
+    desc = "Show calendar",
+  },
+  { "<leader>zC", ":CalendarT<CR>", desc = "Open calender in fullscreen" },
+  {
+    "<leader>zfm",
+    ":lua require('telekasten').browse_media()<CR>",
+    desc = "browse media files",
+  },
 }
 
 return {
   "renerocksai/telekasten.nvim",
   keys = keys,
-  dependencies = "renerocksai/calendar-vim",
+  dependencies = {
+    "renerocksai/calendar-vim",
+    "nvim-telescope/telescope.nvim",
+  },
   config = function()
     local home = vim.fn.expand(
       "~/Library/Mobile Documents/iCloud~md~obsidian/Documents/zettelkasten"
@@ -37,7 +77,9 @@ return {
       -- image (sub)dir for pasting
       -- dir name (absolute path or subdir name)
       -- or nil if pasted images shouldn't go into a special subdir
-      image_subdir = "img",
+      image_subdir = vim.fn.expand(
+        "~/Library/Mobile Documents/iCloud~md~obsidian/Documents/zettelkasten/img"
+      ),
 
       -- markdown file extension
       extension = ".md",
@@ -164,7 +206,7 @@ return {
       -- how to preview media files
       -- "telescope-media-files" if you have telescope-media-files.nvim installed
       -- "catimg-previewer" if you have catimg installed
-      media_previewer = "catimg-previewer",
+      media_previewer = "telescope-media-files",
 
       -- A customizable fallback handler for urls.
       follow_url_fallback = nil,
