@@ -193,12 +193,13 @@ local on_attach = function(client, bufnr)
     })
   end
 
-  require("lsp_signature").on_attach({
-    bind = true, -- This is mandatory, otherwise border config won't get registered.
-    handler_opts = {
-      border = "rounded",
-    },
-  }, bufnr)
+  -- hide until https://github.com/ray-x/lsp_signature.nvim/issues/276 is fixed
+  -- require("lsp_signature").on_attach({
+  --   bind = true, -- This is mandatory, otherwise border config won't get registered.
+  --   handler_opts = {
+  --     border = "rounded",
+  --   },
+  -- }, bufnr)
 
   require("illuminate").on_attach(client)
 end
