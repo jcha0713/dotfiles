@@ -327,4 +327,9 @@ return {
     "gleam-lang/gleam.vim",
     ft = "gleam",
   },
+  {
+    "j-hui/fidget.nvim",
+    tag = "legacy",
+    event = "LspAttach",
+  },
 }

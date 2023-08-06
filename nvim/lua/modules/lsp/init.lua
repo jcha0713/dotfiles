@@ -163,6 +163,7 @@ local on_attach = function(client, bufnr)
   u.map("v", "<leader>ca", ":LspRangeCodeAction<CR>")
   u.map("n", "<leader>fr", "<cmd>TroubleToggle lsp_references<CR>")
   u.map("n", "<leader>rr", ":RustRun<CR>")
+  u.map("i", "<C-s>", "<cmd>lua vim.lsp.buf.signature_help()<CR>")
 
   if client.name == "tsserver" then
     client.server_capabilities.documentFormattingProvider = false
