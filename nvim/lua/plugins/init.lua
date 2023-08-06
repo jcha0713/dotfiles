@@ -280,13 +280,13 @@ return {
 
   {
     dir = "~/jhcha/dev/2023/project/copilot.lua",
-    event = "BufRead",
+    event = "InsertEnter",
     build = ":Copilot auth",
     opts = {
       suggestion = {
         auto_trigger = true,
         keymap = {
-          accept = "<C-c>",
+          accept = false,
         },
       },
       filetypes = {
