@@ -32,6 +32,9 @@ require("lazy").setup("plugins", {
       },
     },
   },
+  ui = {
+    border = "rounded",
+  },
 })
 
 require("modules.utils")
