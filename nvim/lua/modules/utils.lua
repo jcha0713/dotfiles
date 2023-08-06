@@ -27,7 +27,6 @@ function utils.opt(scope, key, value)
 end
 
 function utils.map(mode, lhs, rhs, opts)
-  -- api.nvim_set_keymap(mode, lhs, rhs, get_map_options(opts))
   vim.keymap.set(mode, lhs, rhs, get_map_options(opts))
 end
 
@@ -45,12 +44,8 @@ function utils.buf_map(mode, target, source, opts, bufnr)
   )
 end
 
-function utils.command(name, fn)
-  vim.cmd(string.format("command! %s %s", name, fn))
-end
-
-function utils.lua_command(name, fn)
-  utils.command(name, "lua " .. fn)
+function utils.lua_command(name, command)
+  vim.api.nvim_create_user_command(name, "lua " .. command, {})
 end
 
 function utils.some(tbl, cb)

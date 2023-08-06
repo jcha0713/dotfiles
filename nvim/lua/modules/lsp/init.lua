@@ -147,36 +147,22 @@ local on_attach = function(client, bufnr)
     "LspRangeCodeAction",
     "require('cosmic-ui').range_code_actions()"
   )
+  u.lua_command("LspSignatureHelp", "vim.lsp.buf.signature_help()")
 
   -- bindings
-  u.buf_map("n", "gD", ":LspDec<CR>", nil, bufnr)
-  -- u.buf_map("n", "gd", ":LspDef<CR>", nil, bufnr)
-  u.buf_map("n", "gd", "<cmd>TroubleToggle lsp_definitions<CR>", nil, bufnr)
-  u.buf_map("n", "<Leader>rn", ":LspRename<CR>", nil, bufnr)
-  -- u.buf_map("n", "<Leader>td", ":LspTypeDef<CR>", nil, bufnr)
-  u.buf_map(
-    "n",
-    "<leader>gy",
-    "<cmd>TroubleToggle lsp_type_definitions<CR>",
-    nil,
-    bufnr
-  )
-  u.buf_map("n", "H", ":LspHover<CR>", nil, bufnr)
-  u.buf_map("n", "dk", ":LspDiagPrev<CR>", nil, bufnr)
-  u.buf_map("n", "dj", ":LspDiagNext<CR>", nil, bufnr)
-  u.buf_map("n", "da", ":LspDiagOpen<CR>", nil, bufnr)
-  u.buf_map("n", "<Leader>dl", ":LspDiagLine<CR>", nil, bufnr)
-  u.buf_map("n", "<leader>ca", ":LspCodeAction<CR>", nil, bufnr)
-  -- u.buf_map("n", "<leader>fr", ":LspFindRef<CR>", nil, bufnr)
-  u.buf_map(
-    "n",
-    "<leader>fr",
-    "<cmd>TroubleToggle lsp_references<CR>",
-    nil,
-    bufnr
-  )
-  u.buf_map("v", "<leader>ca", ":LspRangeCodeAction<CR>", nil, bufnr)
-  u.buf_map("n", "<leader>rr", ":RustRun<CR>", nil, bufnr)
+  u.map("n", "gD", ":LspDec<CR>")
+  u.map("n", "gd", "<cmd>TroubleToggle lsp_definitions<CR>")
+  u.map("n", "<Leader>rn", ":LspRename<CR>")
+  u.map("n", "<leader>gy", "<cmd>TroubleToggle lsp_type_definitions<CR>")
+  u.map("n", "H", ":LspHover<CR>")
+  u.map("n", "dk", ":LspDiagPrev<CR>")
+  u.map("n", "dj", ":LspDiagNext<CR>")
+  u.map("n", "da", ":LspDiagOpen<CR>")
+  u.map("n", "<Leader>dl", ":LspDiagLine<CR>")
+  u.map("n", "<leader>ca", ":LspCodeAction<CR>")
+  u.map("v", "<leader>ca", ":LspRangeCodeAction<CR>")
+  u.map("n", "<leader>fr", "<cmd>TroubleToggle lsp_references<CR>")
+  u.map("n", "<leader>rr", ":RustRun<CR>")
 
   if client.name == "tsserver" then
     client.server_capabilities.documentFormattingProvider = false
