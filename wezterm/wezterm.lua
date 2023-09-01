@@ -14,7 +14,7 @@ wezterm.on("update-right-status", function(window, pane)
 end)
 
 return {
-  color_scheme = "kanagawa-dark",
+  color_scheme = "Arthur",
   enable_tab_bar = false,
   force_reverse_video_cursor = true,
   window_background_opacity = 1,
