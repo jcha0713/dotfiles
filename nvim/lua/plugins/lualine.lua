@@ -2,7 +2,7 @@ return {
   "nvim-lualine/lualine.nvim",
   lazy = false,
   dependencies = {
-    { "kyazdani42/nvim-web-devicons" } 
+    { "kyazdani42/nvim-web-devicons" },
   },
   config = function()
     local lualine = require("lualine")
@@ -31,7 +31,7 @@ return {
     lualine.setup({
       options = {
         icons_enabled = true,
-        theme = "kanagawa",
+        -- theme = "kanagawa",
         -- section_separators = "",
         section_separators = { left = "", right = "" },
         component_separators = "",

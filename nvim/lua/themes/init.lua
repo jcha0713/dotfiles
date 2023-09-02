@@ -37,6 +37,6 @@
 -- vim.cmd([[highlight! SearchBoxMatch guibg=#9393e2 guifg=#000000]])
 
 -- highlight for winbar
-vim.cmd([[highlight! WinBar guifg=#a390a2]])
-
-vim.cmd([[hi TreesitterContext guibg=#272834]])
+vim.api.nvim_set_hl(0, "WinBar", { fg = "#a390a2" })
+vim.api.nvim_set_hl(0, "TreesitterContext", { bg = "#272834" })
+vim.api.nvim_set_hl(0, "Visual", { bg = "#272834" })
