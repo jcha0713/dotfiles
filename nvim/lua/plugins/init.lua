@@ -42,10 +42,10 @@ return {
     dependencies = { "hrsh7th/nvim-cmp", "tzachar/fuzzy.nvim" },
   },
 
-  {
-    "HiPhish/nvim-ts-rainbow2",
-    event = "VeryLazy",
-  },
+  -- {
+  --   "HiPhish/nvim-ts-rainbow2",
+  --   event = "VeryLazy",
+  -- },
 
   -- playground for treesitter
   {
@@ -331,5 +331,16 @@ return {
     "j-hui/fidget.nvim",
     tag = "legacy",
     event = "LspAttach",
+  },
+  {
+    "sourcegraph/sg.nvim",
+    event = "VeryLazy",
+    dependencies = { "nvim-lua/plenary.nvim" },
+
+    -- If you have a recent version of lazy.nvim, you don't need to add this!
+    build = "nvim -l build/init.lua",
+    keys = {
+      { "<leader>sg", ":SourcegraphSearch<CR>", desc = "Sourcegraph Search" },
+    },
   },
 }

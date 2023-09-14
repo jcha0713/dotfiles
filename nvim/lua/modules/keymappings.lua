@@ -26,7 +26,7 @@ map("n", "Y", "y$")
 map("n", "<CR>", "o<ESC>k")
 
 -- source lua file
-map("n", "<leader>s", ":luafile %<CR>")
+map("n", "<leader><leader>s", ":luafile %<CR>")
 
 -- move line
 map("v", "<C-j>", ":m '>+1<CR>gv=gv")
