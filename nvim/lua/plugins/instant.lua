@@ -6,13 +6,13 @@ return {
   end,
   keys = {
     {
-      "<leader><leader>ss",
+      "<leader><leader>is",
       "<cmd>InstantStartServer<cr>",
       desc = "Start Instant Server",
     },
 
     {
-      "<leader><leader>st",
+      "<leader><leader>is",
       "<cmd>InstantStopServer<cr>",
       desc = "Stop Instant Server",
     },

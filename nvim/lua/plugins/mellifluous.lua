@@ -6,7 +6,7 @@ return {
     require("mellifluous").setup({
       mellifluous = {
         neutral = true,
-        bg_contrast = "soft",
+        bg_contrast = "hard",
       },
       dim_inactive = false,
       color_set = "mellifluous",
@@ -16,7 +16,7 @@ return {
         folds = {},
         loops = {},
         functions = { italic = true },
-        keywords = { italic = true, undercurl = true },
+        keywords = { italic = true, bold = true },
         strings = {},
         variables = {},
         numbers = {},
