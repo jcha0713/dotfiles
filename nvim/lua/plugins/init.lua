@@ -191,18 +191,6 @@ return {
   --     require("plugins.react-extract")
   --   end,
   -- },
-  --
-
-  -- easy jumps
-  {
-    "ggandor/leap.nvim",
-    event = "BufRead",
-    config = function()
-      require("leap").add_default_mappings()
-
-      vim.api.nvim_set_hl(0, "LeapBackdrop", { link = "Comment" })
-    end,
-  },
 
   -- mdx
   { "jxnblk/vim-mdx-js", ft = "markdown" },
