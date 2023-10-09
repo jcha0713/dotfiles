@@ -162,7 +162,7 @@ local on_attach = function(client, bufnr)
   u.map("n", "<leader>ca", ":LspCodeAction<CR>")
   u.map("v", "<leader>ca", ":LspRangeCodeAction<CR>")
   u.map("n", "<leader>fr", "<cmd>TroubleToggle lsp_references<CR>")
-  u.map("n", "<leader>rr", ":RustRun<CR>")
+  u.map("n", "<leader>rr", ":RustRunnable<CR>")
   u.map("i", "<C-s>", "<cmd>lua vim.lsp.buf.signature_help()<CR>")
 
   if client.name == "tsserver" then
@@ -233,6 +233,11 @@ for _, server_name in ipairs(servers) do
           ["rust-analyzer"] = {
             checkOnSave = {
               command = "clippy",
+            },
+            hover = {
+              links = {
+                enable = false,
+              },
             },
           },
         },
