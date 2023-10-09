@@ -296,25 +296,10 @@ return {
   },
 
   {
-    "echasnovski/mini.animate",
-    version = false,
-    event = "VeryLazy",
-    config = function()
-      require("mini.animate").setup({
-        cursor = {
-          timing = require("mini.animate").gen_timing.linear({
-            duration = 150,
-            unit = "total",
-          }),
-        },
-      })
-    end,
-  },
-
-  {
     "gleam-lang/gleam.vim",
     ft = "gleam",
   },
+
   {
     "j-hui/fidget.nvim",
     tag = "legacy",
