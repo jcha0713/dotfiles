@@ -112,9 +112,9 @@ return {
           width = 0.90,
           prompt_position = "top",
           preview_cutoff = 120,
-          horizontal = { mirror = false },
+          horizontal = { mirror = false, preview_width = 0.55 },
           vertical = { mirror = false },
-          preview_width = 0.55,
+          -- preview_width = 0.55,
         },
         find_command = {
           "rg",

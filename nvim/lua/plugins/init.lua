@@ -299,11 +299,11 @@ return {
     "sourcegraph/sg.nvim",
     event = "VeryLazy",
     dependencies = { "nvim-lua/plenary.nvim" },
-
-    -- If you have a recent version of lazy.nvim, you don't need to add this!
-    build = "nvim -l build/init.lua",
     keys = {
       { "<leader>sg", ":SourcegraphSearch<CR>", desc = "Sourcegraph Search" },
+      { "<M-z>", ":CodyToggle<CR>", desc = "Cody Toggle" },
+      { "<M-c>", ":CodyChat<CR>", desc = "Cody Toggle" },
     },
   },
+
 }
