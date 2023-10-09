@@ -42,17 +42,6 @@ return {
     dependencies = { "hrsh7th/nvim-cmp", "tzachar/fuzzy.nvim" },
   },
 
-  -- {
-  --   "HiPhish/nvim-ts-rainbow2",
-  --   event = "VeryLazy",
-  -- },
-
-  -- playground for treesitter
-  {
-    "nvim-treesitter/playground",
-    cmd = "TSPlaygroundToggle",
-  },
-
   -- neogen: docstring generator
   {
     "danymat/neogen",
@@ -305,6 +294,7 @@ return {
     tag = "legacy",
     event = "LspAttach",
   },
+
   {
     "sourcegraph/sg.nvim",
     event = "VeryLazy",
