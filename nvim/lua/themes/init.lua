@@ -38,6 +38,6 @@
 
 -- highlight for winbar
 vim.api.nvim_set_hl(0, "WinBar", { fg = "#a390a2" })
-vim.api.nvim_set_hl(0, "TreesitterContext", { bg = "#272834" })
-vim.api.nvim_set_hl(0, "Visual", { bg = "#272834" })
-vim.api.nvim_set_hl(0, "Comment", { fg = "#525252" })
+-- vim.api.nvim_set_hl(0, "TreesitterContext", { bg = "#272834" })
+-- vim.api.nvim_set_hl(0, "Visual", { bg = "#272834" })
+-- vim.api.nvim_set_hl(0, "Comment", { fg = "#525252" })

@@ -7,6 +7,12 @@ return {
       mellifluous = {
         neutral = true,
         bg_contrast = "hard",
+        color_overrides = {
+          dark = {
+            comments = "#525252",
+            -- bg = "#1e1e1e",
+          },
+        },
       },
       dim_inactive = false,
       color_set = "mellifluous",
