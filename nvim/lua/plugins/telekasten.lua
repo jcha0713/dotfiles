@@ -70,7 +70,9 @@ return {
       auto_set_filetype = true,
 
       -- dir names for special notes (absolute path or subdir name)
-      dailies = home .. "/journal/" .. "daily",
+      dailies = home .. "/journal/daily/" .. os.date("%Y") .. "/" .. os.date(
+        "%m"
+      ),
       weeklies = home .. "/journal/" .. "weekly",
       templates = home .. "/" .. "templates",
 
