@@ -312,7 +312,7 @@ return {
     config = function()
       require("neodim").setup({
         refresh_delay = 75,
-        alpha = 0.75,
+        alpha = 0.5,
         blend_color = "#000000",
         hide = {
           underline = true,
