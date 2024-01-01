@@ -9,6 +9,8 @@ return {
       "*.rs",
       "*.go",
       "*.json",
+      "*.css",
+      "*.html",
     }
     local exclude_ft = {
       startify = true,
