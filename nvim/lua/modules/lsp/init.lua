@@ -206,6 +206,7 @@ local servers = {
   "jsonls",
   "nimls",
   "null-ls",
+  "marksman",
   "prismals",
   "pyright",
   "rust_analyzer",
