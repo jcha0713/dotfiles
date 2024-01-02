@@ -1,5 +1,5 @@
 return {
-  "L3MON4D3/Luasnip",
+  "L3MON4D3/LuaSnip",
   event = "InsertEnter",
   dependencies = {
     "MunifTanjim/nui.nvim",
