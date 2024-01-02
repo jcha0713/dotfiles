@@ -1,4 +1,5 @@
 local null_ls = require("null-ls")
+
 local nim_src = require("modules.lsp.nim_src")
 local b = null_ls.builtins
 
@@ -42,28 +43,8 @@ local sources = {
   b.formatting.gofmt,
   -- b.formatting.goimports,
   b.formatting.dprint.with(dprint_opts),
-  -- b.formatting.prettier.with({
-  --   prefer_local = "node_modules/.bin",
-  --   filetypes = {
-  --     "html",
-  --     "astro",
-  --     "json",
-  --     "jsonc",
-  --     "svelte",
-  --     "markdown",
-  --     "css",
-  --     "javascript",
-  --     "javascriptreact",
-  --     "typescript",
-  --     "typescriptreact",
-  --   },
-  -- }),
-  b.formatting.prettierd.with({
-    env = {
-      PRETTIERD_DEFAULT_CONFIG = vim.fn.expand(
-        "$HOME/.config/nvim/utils/linter-config/.prettierrc.json"
-      ),
-    },
+  b.formatting.prettier.with({
+    prefer_local = "node_modules/.bin",
     filetypes = {
       "html",
       "astro",
@@ -72,14 +53,34 @@ local sources = {
       "svelte",
       "markdown",
       "css",
-      "scss",
       "javascript",
       "javascriptreact",
-      "twig",
       "typescript",
       "typescriptreact",
     },
   }),
+  -- b.formatting.prettierd.with({
+  --   env = {
+  --     PRETTIERD_DEFAULT_CONFIG = vim.fn.expand(
+  --       "$HOME/.config/nvim/utils/linter-config/.prettierrc.json"
+  --     ),
+  --   },
+  --   filetypes = {
+  --     "html",
+  --     "astro",
+  --     "json",
+  --     "jsonc",
+  --     "svelte",
+  --     "markdown",
+  --     "css",
+  --     "scss",
+  --     "javascript",
+  --     "javascriptreact",
+  --     "twig",
+  --     "typescript",
+  --     "typescriptreact",
+  --   },
+  -- }),
   b.hover.dictionary,
 }
 
