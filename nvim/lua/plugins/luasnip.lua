@@ -71,9 +71,8 @@ return {
     local function get_menu_choices()
       local menu_choices = {}
 
-      for i, choice in ipairs(session.active_choice_node.choices) do
-        local item = choice:get_docstring()[1]
-        table.insert(menu_choices, Menu.item(item, { id = i }))
+      for i, choice in ipairs(ls.get_current_choices()) do
+        table.insert(menu_choices, Menu.item(choice, { id = i }))
       end
 
       return menu_choices
