@@ -27,7 +27,11 @@ return {
   },
   font_size = 18.4,
   line_height = 1.20,
-  font = wezterm.font("ComicCode Nerd Font"),
+  -- font = wezterm.font("ComicCode Nerd Font"),
+  font = wezterm.font_with_fallback({
+    "ComicCode Nerd Font",
+    "hesalche",
+  }),
   leader = { key = "a", mods = "CMD", timeout_milliseconds = 1000 },
   keys = {
     {
