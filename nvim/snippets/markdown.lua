@@ -15,4 +15,30 @@ local fmt = require("luasnip.extras.fmt").fmt
 return {
   s("q", { t("Q: ") }),
   s("a", { t("A: ") }),
+  s(
+    "project",
+    fmt(
+      [[
+        status: {}
+        due: {}
+        kind: {}
+        ]],
+      {
+        c(1, {
+          t("todo"),
+          t("in progress"),
+          t("done"),
+        }),
+        i(2, ""),
+        c(3, {
+          t("bug"),
+          t("cicd"),
+          t("documentation"),
+          t("feature"),
+          t("maintenance"),
+          t("style"),
+        }),
+      }
+    )
+  ),
 }

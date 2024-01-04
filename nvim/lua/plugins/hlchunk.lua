@@ -14,6 +14,7 @@ return {
     }
     local exclude_ft = {
       startify = true,
+      telekasten = true,
     }
     require("hlchunk").setup({
       indent = {

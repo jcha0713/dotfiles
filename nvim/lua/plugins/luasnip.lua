@@ -26,6 +26,7 @@ return {
       "typescriptreact",
       { "javascript", "typescript", "html" }
     )
+    ls.filetype_extend("telekasten", { "markdown" })
 
     -- load snippets from ~/.config/nvim/snippets directory
     require("luasnip.loaders.from_lua").load({

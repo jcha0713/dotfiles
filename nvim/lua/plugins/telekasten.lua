@@ -79,9 +79,7 @@ return {
       -- image (sub)dir for pasting
       -- dir name (absolute path or subdir name)
       -- or nil if pasted images shouldn't go into a special subdir
-      image_subdir = vim.fn.expand(
-        "~/Library/Mobile Documents/iCloud~md~obsidian/Documents/zettelkasten/img"
-      ),
+      image_subdir = home .. "/img",
 
       -- markdown file extension
       extension = ".md",
@@ -214,6 +212,7 @@ return {
       -- how to preview media files
       -- "telescope-media-files" if you have telescope-media-files.nvim installed
       -- "catimg-previewer" if you have catimg installed
+      -- media_previewer = "viu-previewer",
       media_previewer = "catimg-previewer",
 
       -- A customizable fallback handler for urls.
