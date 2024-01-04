@@ -194,9 +194,11 @@ return {
       {
         "<leader><leader>h",
         function()
-          require("duck").hatch("💕", 5)
-          require("duck").hatch("💕", 5)
-          require("duck").hatch("💕", 5)
+          require("duck").hatch("❄️", 5)
+          require("duck").hatch("❄️", 5)
+          require("duck").hatch("❄️", 5)
+          require("duck").hatch("❄️", 3)
+          require("duck").hatch("❄️", 3)
         end,
       },
     },
@@ -240,13 +242,13 @@ return {
 
   -- {
   --   "zbirenbaum/copilot.lua",
-  --   event = "BufRead",
+  --   event = "InsertEnter",
   --   build = ":Copilot auth",
   --   opts = {
   --     suggestion = {
   --       auto_trigger = true,
   --       keymap = {
-  --         accept = "<C-c>",
+  --         accept = false,
   --       },
   --     },
   --   },
@@ -255,35 +257,46 @@ return {
   --   end,
   -- },
 
-  {
-    dir = "~/jhcha/dev/2023/project/copilot.lua",
-    event = "InsertEnter",
-    build = ":Copilot auth",
-    opts = {
-      suggestion = {
-        auto_trigger = true,
-        keymap = {
-          accept = false,
-        },
-      },
-      filetypes = {
-        go = false,
-      },
-    },
-    config = function(_, opts)
-      require("copilot").setup(opts)
-    end,
-  },
+  -- {
+  --   dir = "~/jhcha/dev/2023/project/copilot.lua",
+  --   event = "InsertEnter",
+  --   build = ":Copilot auth",
+  --   opts = {
+  --     suggestion = {
+  --       auto_trigger = true,
+  --       keymap = {
+  --         accept = false,
+  --       },
+  --     },
+  --     filetypes = {
+  --       go = false,
+  --     },
+  --   },
+  --   config = function(_, opts)
+  --     require("copilot").setup(opts)
+  --   end,
+  -- },
+  --
+
+  -- {
+  --   "jcha0713/classy.nvim",
+  --   keys = {
+  --     { "<leader>ac", ":ClassyAddClass<CR>", desc = "Add class attr" },
+  --     { "<leader>dc", ":ClassyRemoveClass<CR>", desc = "Remove class attr" },
+  --     { "<leader>rc", ":ClassyResetClass<CR>", desc = "Reset class attr" },
+  --   },
+  -- },
 
   {
     "jcha0713/classy.nvim",
+    dir = "~/jhcha/dev/2022/project/classy",
+    dev = true,
     keys = {
       { "<leader>ac", ":ClassyAddClass<CR>", desc = "Add class attr" },
       { "<leader>dc", ":ClassyRemoveClass<CR>", desc = "Remove class attr" },
       { "<leader>rc", ":ClassyResetClass<CR>", desc = "Reset class attr" },
     },
   },
-
   {
     "gleam-lang/gleam.vim",
     ft = "gleam",
@@ -299,36 +312,37 @@ return {
     "sourcegraph/sg.nvim",
     event = "VeryLazy",
     dependencies = { "nvim-lua/plenary.nvim" },
+    config = true,
     keys = {
       { "<leader>sg", ":SourcegraphSearch<CR>", desc = "Sourcegraph Search" },
       { "<M-z>", ":CodyToggle<CR>", desc = "Cody Toggle" },
-      { "<M-c>", ":CodyChat<CR>", desc = "Cody Toggle" },
+      { "<M-c>", ":CodyChat<CR>", desc = "Cody Chat" },
     },
   },
 
-  {
-    "zbirenbaum/neodim",
-    event = "LspAttach",
-    config = function()
-      require("neodim").setup({
-        refresh_delay = 75,
-        alpha = 0.5,
-        blend_color = "#000000",
-        hide = {
-          underline = true,
-          virtual_text = true,
-          signs = true,
-        },
-        regex = {
-          "[uU]nused",
-          "[nN]ever [rR]ead",
-          "[nN]ot [rR]ead",
-        },
-        priority = 128,
-        disable = {},
-      })
-    end,
-  },
+  -- {
+  --   "zbirenbaum/neodim",
+  --   event = "LspAttach",
+  --   config = function()
+  --     require("neodim").setup({
+  --       refresh_delay = 75,
+  --       alpha = 0.5,
+  --       blend_color = "#000000",
+  --       hide = {
+  --         underline = true,
+  --         virtual_text = true,
+  --         signs = true,
+  --       },
+  --       regex = {
+  --         "[uU]nused",
+  --         "[nN]ever [rR]ead",
+  --         "[nN]ot [rR]ead",
+  --       },
+  --       priority = 128,
+  --       disable = {},
+  --     })
+  --   end,
+  -- },
 
   {
     "j-hui/fidget.nvim",

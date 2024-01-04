@@ -46,3 +46,4 @@ require("modules.globals")
 require("themes")
 
 require("cmp-tw2css").setup()
+require("classy").setup()
