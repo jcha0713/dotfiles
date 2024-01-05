@@ -16,6 +16,8 @@ vim.opt.rtp:prepend(lazypath)
 vim.g.mapleader = " "
 
 -- General settings
+require("modules.globals")
+
 require("lazy").setup("plugins", {
   defaults = { lazy = true },
   performance = {
@@ -42,7 +44,6 @@ require("modules.utils")
 require("modules.keymappings")
 require("modules.options")
 require("modules.autocmd")
-require("modules.globals")
 require("themes")
 
 require("cmp-tw2css").setup()

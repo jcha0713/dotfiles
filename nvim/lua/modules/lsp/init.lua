@@ -199,29 +199,7 @@ end
 -- Configure sumneko_lua to support neovim Lua runtime APIs
 require("neodev").setup()
 
-local servers = {
-  "astro",
-  "bashls",
-  "cssls",
-  -- "cssmodules_ls",
-  "eslint",
-  "gleam",
-  "gopls",
-  "html",
-  "jsonls",
-  "nimls",
-  "null-ls",
-  "marksman",
-  "prismals",
-  "pyright",
-  "rust_analyzer",
-  "solang",
-  "lua_ls",
-  "svelte",
-  "tailwindcss",
-  "tsserver",
-  -- "unocss",
-}
+local servers = vim.api.nvim_get_var("lsp_servers")
 
 for _, server_name in ipairs(servers) do
   if server_name == "rust_analyzer" then

@@ -1,6 +1,10 @@
 return {
   "neovim/nvim-lspconfig",
-  lazy = false,
+  -- lazy = false,
+  event = {
+    "BufReadPre",
+    "BufNewFile",
+  },
   dependencies = {
     "jose-elias-alvarez/null-ls.nvim",
     "jose-elias-alvarez/typescript.nvim",
