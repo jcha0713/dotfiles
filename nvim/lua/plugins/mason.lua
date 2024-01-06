@@ -19,8 +19,25 @@ return {
       },
     })
 
+    local tools = {}
+    local lsp_servers = vim.api.nvim_get_var("lsp_servers")
+    local linters = vim.api.nvim_get_var("lsp_linters")
+    local formatters = vim.api.nvim_get_var("lsp_formatters")
+    local extras = vim.api.nvim_get_var("extras")
+
+    local function add_values(src_table)
+      for _, value in ipairs(src_table) do
+          table.insert(tools, value)
+      end
+    end
+
+    add_values(lsp_servers)
+    add_values(linters)
+    add_values(formatters)
+    add_values(extras)
+
     mason_installer.setup({
-      ensure_installed = vim.api.nvim_get_var("lsp_servers"),
+      ensure_installed = tools
     })
   end,
 }

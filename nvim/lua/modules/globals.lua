@@ -11,7 +11,7 @@ api.nvim_set_var("lsp_servers", {
   "html",
   "jsonls",
   "nimls",
-  "null-ls",
+  -- "null-ls",
   "marksman",
   "prismals",
   "pyright",
@@ -24,12 +24,18 @@ api.nvim_set_var("lsp_servers", {
   -- "unocss",
 })
 
-api.nvim_set_var("linters", {
+api.nvim_set_var("lsp_linters", {
   "quick-lint-js",
+  "vale"
 })
 
-api.nvim_set_var("formatters", {
+api.nvim_set_var("lsp_formatters", {
   "dprint",
   "prettier",
   "stylua",
 })
+
+api.nvim_set_var("extras", {
+  "biome",
+})
+
