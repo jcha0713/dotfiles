@@ -26,16 +26,17 @@ api.nvim_set_var("lsp_servers", {
 
 api.nvim_set_var("lsp_linters", {
   "quick-lint-js",
-  "vale"
+  "vale",
 })
 
 api.nvim_set_var("lsp_formatters", {
   "dprint",
   "prettier",
+  "prettierd",
+  "shfmt",
   "stylua",
 })
 
 api.nvim_set_var("extras", {
   "biome",
 })
-

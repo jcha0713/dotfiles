@@ -52,84 +52,84 @@ win.default_opts = function(options)
   return opts
 end
 
-local eslint_disabled_buffers = {}
+-- local eslint_disabled_buffers = {}
+--
+-- -- track buffers that eslint can't format to use prettier instead
+-- lsp.handlers["textDocument/publishDiagnostics"] =
+--   function(_, result, ctx, config)
+--     local client = lsp.get_client_by_id(ctx.client_id)
+--     if not (client and client.name == "eslint") then
+--       goto done
+--     end
+--
+--     -- clinet is the ESLint server
+--     for _, diagnostic in ipairs(result.diagnostics) do
+--       if
+--         diagnostic.message:find("The file does not match your project config")
+--       then
+--         local bufnr = vim.uri_to_bufnr(result.uri)
+--         eslint_disabled_buffers[bufnr] = true
+--       end
+--     end
+--
+--     ::done::
+--     return lsp.diagnostic.on_publish_diagnostics(nil, result, ctx, config)
+--   end
 
--- track buffers that eslint can't format to use prettier instead
-lsp.handlers["textDocument/publishDiagnostics"] =
-  function(_, result, ctx, config)
-    local client = lsp.get_client_by_id(ctx.client_id)
-    if not (client and client.name == "eslint") then
-      goto done
-    end
-
-    -- clinet is the ESLint server
-    for _, diagnostic in ipairs(result.diagnostics) do
-      if
-        diagnostic.message:find("The file does not match your project config")
-      then
-        local bufnr = vim.uri_to_bufnr(result.uri)
-        eslint_disabled_buffers[bufnr] = true
-      end
-    end
-
-    ::done::
-    return lsp.diagnostic.on_publish_diagnostics(nil, result, ctx, config)
-  end
-
-local augroup = vim.api.nvim_create_augroup("LspFormatting", {})
-
-local lsp_formatting = function(bufnr)
-  lsp.buf.format({
-    bufnr = bufnr,
-    filter = function(client)
-      if client.name == "rust_analyzer" or client.name == "gleam" then
-        return true
-      end
-
-      if client.name == "null-ls" then
-        local clients = lsp.get_active_clients({ bufnr = bufnr })
-
-        local util = require("lspconfig.util")
-        local root_pattern = util.root_pattern
-        local files_to_search = { "dprint.json" }
-
-        local current_file = vim.api.nvim_buf_get_name(0)
-        local root_dir = root_pattern(unpack(files_to_search))(current_file)
-
-        if root_dir then
-          for _, file in ipairs(files_to_search) do
-            local file_path = root_dir .. "/" .. file
-            local file_exists = vim.loop.fs_stat(file_path) ~= nil
-            if file_exists then
-              require("null-ls").disable("prettierd")
-              break
-            end
-          end
-        end
-
-        local is_eslint_not_present = not u.some(
-          clients,
-          function(_, other_client)
-            return other_client.name == "eslint"
-              and not eslint_disabled_buffers[bufnr]
-          end
-        )
-
-        -- let me know if the formatting is done by null-ls
-        if is_eslint_not_present then
-          vim.api.nvim_echo({
-            {
-              "Formatting with null-ls",
-              "Comment",
-            },
-          }, true, {})
-        end
-
-        return is_eslint_not_present
-      end
-    end,
-  })
-end
+-- local augroup = vim.api.nvim_create_augroup("LspFormatting", {})
+--
+-- local lsp_formatting = function(bufnr)
+--   lsp.buf.format({
+--     bufnr = bufnr,
+--     filter = function(client)
+--       if client.name == "rust_analyzer" or client.name == "gleam" then
+--         return true
+--       end
+--
+--       if client.name == "null-ls" then
+--         local clients = lsp.get_active_clients({ bufnr = bufnr })
+--
+--         local util = require("lspconfig.util")
+--         local root_pattern = util.root_pattern
+--         local files_to_search = { "dprint.json" }
+--
+--         local current_file = vim.api.nvim_buf_get_name(0)
+--         local root_dir = root_pattern(unpack(files_to_search))(current_file)
+--
+--         if root_dir then
+--           for _, file in ipairs(files_to_search) do
+--             local file_path = root_dir .. "/" .. file
+--             local file_exists = vim.loop.fs_stat(file_path) ~= nil
+--             if file_exists then
+--               require("null-ls").disable("prettierd")
+--               break
+--             end
+--           end
+--         end
+--
+--         local is_eslint_not_present = not u.some(
+--           clients,
+--           function(_, other_client)
+--             return other_client.name == "eslint"
+--               and not eslint_disabled_buffers[bufnr]
+--           end
+--         )
+--
+--         -- let me know if the formatting is done by null-ls
+--         if is_eslint_not_present then
+--           vim.api.nvim_echo({
+--             {
+--               "Formatting with null-ls",
+--               "Comment",
+--             },
+--           }, true, {})
+--         end
+--
+--         return is_eslint_not_present
+--       end
+--     end,
+--   })
+-- end
 
 local on_attach = function(client, bufnr)
   -- commands
@@ -174,16 +174,16 @@ local on_attach = function(client, bufnr)
     client.server_capabilities.documentFormattingProvider = false
   end
 
-  if client.supports_method("textDocument/formatting") then
-    vim.api.nvim_clear_autocmds({ group = augroup, buffer = bufnr })
-    vim.api.nvim_create_autocmd("BufWritePre", {
-      group = augroup,
-      buffer = bufnr,
-      callback = function()
-        lsp_formatting(bufnr)
-      end,
-    })
-  end
+  -- if client.supports_method("textDocument/formatting") then
+  --   vim.api.nvim_clear_autocmds({ group = augroup, buffer = bufnr })
+  --   vim.api.nvim_create_autocmd("BufWritePre", {
+  --     group = augroup,
+  --     buffer = bufnr,
+  --     callback = function()
+  --       lsp_formatting(bufnr)
+  --     end,
+  --   })
+  -- end
 
   -- hide until https://github.com/ray-x/lsp_signature.nvim/issues/276 is fixed
   -- require("lsp_signature").on_attach({
