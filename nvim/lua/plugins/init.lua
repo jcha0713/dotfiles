@@ -301,13 +301,6 @@ return {
     "gleam-lang/gleam.vim",
     ft = "gleam",
   },
-
-  {
-    "j-hui/fidget.nvim",
-    tag = "legacy",
-    event = "LspAttach",
-  },
-
   {
     "sourcegraph/sg.nvim",
     event = "VeryLazy",
@@ -343,20 +336,6 @@ return {
   --     })
   --   end,
   -- },
-
-  {
-    "j-hui/fidget.nvim",
-    tag = "legacy",
-    event = "LspAttach",
-    config = function()
-      require("fidget").setup({
-        text = {
-          spinner = "bouncing_ball",
-          done = "😇",
-        },
-      })
-    end,
-  },
 
   {
     "lukas-reineke/headlines.nvim",
