@@ -63,11 +63,11 @@ return {
       home = home,
 
       -- if true, telekasten will be enabled when opening a note within the configured home
-      take_over_my_home = true,
+      take_over_my_home = false,
 
       -- auto-set telekasten filetype: if false, the telekasten filetype will not be used
       -- and thus the telekasten syntax will not be loaded either
-      auto_set_filetype = true,
+      auto_set_filetype = false,
 
       -- dir names for special notes (absolute path or subdir name)
       dailies = home .. "/journal/daily/" .. os.date("%Y") .. "/" .. os.date(
@@ -189,7 +189,7 @@ return {
       --     - same_as_current: put all new notes in the dir of the current note if
       --                        present or else in home
       --                        except for notes/with/subdirs/in/title.
-      new_note_location = "smart",
+      new_note_location = "prefer_home",
 
       -- should all links be updated when a file is renamed
       rename_update_links = true,
