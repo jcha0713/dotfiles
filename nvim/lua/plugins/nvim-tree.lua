@@ -1,5 +1,5 @@
 return {
-  "kyazdani42/nvim-tree.lua",
+  "nvim-tree/nvim-tree.lua",
   keys = {
     { "<C-n>", ":NvimTreeToggle<CR>", desc = "Open NvimTree" },
   },
