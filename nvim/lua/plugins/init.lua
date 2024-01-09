@@ -5,9 +5,6 @@ return {
   -- lua utils for neovim
   "nvim-lua/plenary.nvim",
 
-  -- vim-startify: start screen
-  { "mhinz/vim-startify", lazy = false },
-
   -- markdown-preview: preview for *.md
   {
     "iamcco/markdown-preview.nvim",
