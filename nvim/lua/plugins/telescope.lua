@@ -4,7 +4,7 @@ local ignore_files = {
   ".yarn/.*",
   ".neuron/*",
   "fonts/*",
-  "icons/*",
+  -- "icons/*",
   "images/*",
   "dist/*",
   "build/*",

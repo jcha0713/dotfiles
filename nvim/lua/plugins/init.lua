@@ -85,7 +85,7 @@ return {
   {
     "folke/trouble.nvim",
     event = "VeryLazy",
-    dependencies = "kyazdani42/nvim-web-devicons",
+    dependencies = "nvim-tree/nvim-web-devicons",
     config = function()
       vim.keymap.set("n", "<leader>tt", ":TroubleToggle<CR>")
       vim.keymap.set(

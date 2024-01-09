@@ -1,8 +1,8 @@
 return {
   "nvim-lualine/lualine.nvim",
-  lazy = false,
+  event = "VimEnter",
   dependencies = {
-    { "kyazdani42/nvim-web-devicons" },
+    { "nvim-tree/nvim-web-devicons" },
   },
   config = function()
     local lualine = require("lualine")
@@ -20,9 +20,8 @@ return {
       end
 
       -- add linter
-      local supported_linters = require("modules.lsp.null-ls").list_registered(
-        buf_ft
-      )
+      local supported_linters =
+        require("modules.lsp.null-ls").list_registered(buf_ft)
       vim.list_extend(buf_client_names, supported_linters)
 
       return "[" .. table.concat(buf_client_names, ", ") .. "]"
@@ -60,7 +59,14 @@ return {
         lualine_z = {},
       },
       tabline = {},
-      extensions = { "nvim-tree", "toggleterm" },
+      extensions = {
+        "nvim-tree",
+        "toggleterm",
+        "mason",
+        "lazy",
+        "oil",
+        "trouble",
+      },
     })
   end,
 }
