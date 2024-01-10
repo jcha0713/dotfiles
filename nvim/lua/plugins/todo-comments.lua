@@ -2,6 +2,7 @@ return {
   "folke/todo-comments.nvim",
   dependencies = "nvim-lua/plenary.nvim",
   event = "BufRead",
+  cmd = "TodoTelescope",
   config = function()
     require("todo-comments").setup({
       search = {
