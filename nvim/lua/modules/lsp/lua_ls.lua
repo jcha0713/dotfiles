@@ -32,6 +32,9 @@ M.setup = function(on_attach, capabilities)
         },
       },
     },
+              hint = {
+                enable = true,
+              },
   })
 end
 
