@@ -1,5 +1,6 @@
 return {
   "VonHeikemen/searchbox.nvim",
+  enabled = false,
   keys = {
     { "<M-/>", { ":SearchBoxIncSearch<CR>", mode = "x" } },
     { "<M-/>", ":SearchBoxIncSearch<CR>" },

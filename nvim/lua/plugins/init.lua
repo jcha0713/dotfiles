@@ -108,15 +108,15 @@ return {
   },
 
   -- searchbox.nvim: searchbox for searching and replacing words
-  {
-    "VonHeikemen/searchbox.nvim",
-    config = function()
-      require("plugins.searchbox")
-    end,
-    dependencies = {
-      { "MunifTanjim/nui.nvim" },
-    },
-  },
+  -- {
+  --   "VonHeikemen/searchbox.nvim",
+  --   config = function()
+  --     require("plugins.searchbox")
+  --   end,
+  --   dependencies = {
+  --     { "MunifTanjim/nui.nvim" },
+  --   },
+  -- },
 
   -- Latex in markdown
   {
@@ -206,6 +206,7 @@ return {
     end,
   },
 
+  -- TODO: fork and customize
   {
     "phaazon/mind.nvim",
     branch = "v2.2",
@@ -339,5 +340,53 @@ return {
     event = "VeryLazy",
     dependencies = "nvim-treesitter/nvim-treesitter",
     config = true, -- or `opts = {}`
+  },
+
+  {
+    "hedyhli/outline.nvim",
+    cmd = { "Outline", "OutlineOpen" },
+    keys = {
+      { "<leader>ol", ":Outline<CR>", desc = "Toggle outline" },
+    },
+    config = function()
+      require("outline").setup({
+        outline_items = {
+          show_symbol_lineno = true,
+          hide_cursor = true,
+        },
+        symbols = {
+          icons = {
+            File = { icon = "", hl = "@text.uri" },
+            Module = { icon = "", hl = "@namespace" },
+            Namespace = { icon = "", hl = "@namespace" },
+            Package = { icon = "", hl = "@namespace" },
+            Class = { icon = "", hl = "@type" },
+            Method = { icon = "ƒ", hl = "@method" },
+            Property = { icon = "", hl = "@method" },
+            Field = { icon = "", hl = "@field" },
+            Constructor = { icon = "", hl = "@constructor" },
+            Enum = { icon = "", hl = "@type" },
+            Interface = { icon = "", hl = "@type" },
+            Function = { icon = "", hl = "@function" },
+            Variable = { icon = "", hl = "@constant" },
+            Constant = { icon = "", hl = "@constant" },
+            String = { icon = "", hl = "@string" },
+            Number = { icon = "#", hl = "@number" },
+            Boolean = { icon = "", hl = "@boolean" },
+            Array = { icon = "", hl = "@constant" },
+            Object = { icon = "", hl = "@type" },
+            Key = { icon = "", hl = "@type" },
+            Null = { icon = "", hl = "@type" },
+            EnumMember = { icon = "", hl = "@field" },
+            Struct = { icon = "", hl = "@type" },
+            Event = { icon = "", hl = "@type" },
+            Operator = { icon = "", hl = "@operator" },
+            TypeParameter = { icon = "", hl = "@parameter" },
+            Component = { icon = "", hl = "@function" },
+            Fragment = { icon = "", hl = "@constant" },
+          },
+        },
+      })
+    end,
   },
 }
