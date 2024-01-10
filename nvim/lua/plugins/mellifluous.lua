@@ -47,6 +47,8 @@ return {
       },
       plugins = {
         cmp = true,
+        gitsigns = true,
+        semantic_tokens = true,
         nvim_tree = {
           enabled = true,
           show_root = true,
