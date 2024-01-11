@@ -1,6 +1,11 @@
 local wezterm = require("wezterm")
-local act = wezterm.action
 local mux = wezterm.mux
+local display = require("appearances")
+local fonts = require("typography")
+local keys = require("keybindings")
+local settings = require("settings")
+
+local config = {}
 
 wezterm.on("gui-startup", function(cmd)
   local tab, pane, window = mux.spawn_window(cmd or {})
@@ -13,121 +18,13 @@ wezterm.on("update-right-status", function(window, pane)
   window:set_right_status(window:active_workspace())
 end)
 
-return {
-  check_for_updates = false,
-  color_scheme = "Arthur",
-  enable_tab_bar = false,
-  force_reverse_video_cursor = true,
-  window_background_opacity = 1,
-  window_padding = {
-    left = 4,
-    right = 4,
-    top = 0,
-    bottom = 0,
-  },
-  font_size = 18.4,
-  line_height = 1.20,
-  -- font = wezterm.font("ComicCode Nerd Font"),
-  font = wezterm.font_with_fallback({
-    "ComicCode Nerd Font",
-    "hesalche",
-  }),
-  leader = { key = "a", mods = "CMD", timeout_milliseconds = 1000 },
-  keys = {
-    {
-      key = "f",
-      mods = "CMD",
-      action = act.ToggleFullScreen,
-    },
-    {
-      key = "l",
-      mods = "LEADER",
-      action = wezterm.action.ShowLauncher,
-    },
-    {
-      key = "t",
-      mods = "LEADER",
-      action = wezterm.action.ShowTabNavigator,
-    },
-    {
-      key = "LeftArrow",
-      mods = "LEADER",
-      action = wezterm.action.SwitchWorkspaceRelative(-1),
-    },
-    {
-      key = "RightArrow",
-      mods = "LEADER",
-      action = wezterm.action.SwitchWorkspaceRelative(1),
-    },
-    { key = "[", mods = "LEADER", action = act.ActivateTabRelative(-1) },
-    { key = "]", mods = "LEADER", action = act.ActivateTabRelative(1) },
-    {
-      key = "n",
-      mods = "LEADER",
-      action = act.PromptInputLine({
-        description = wezterm.format({
-          { Attribute = { Intensity = "Bold" } },
-          { Foreground = { AnsiColor = "Fuchsia" } },
-          { Text = "Enter name for new workspace" },
-        }),
-        action = wezterm.action_callback(function(window, pane, line)
-          if line then
-            local cwd = "~"
-            if line == "knot" then
-              cwd = "~/jhcha/dev/2023/project/knot"
-            end
-            if line == "blog" then
-              cwd = "~/jhcha/dev/2021/project/jhcha-blog"
-            end
-            window:perform_action(
-              act.SwitchToWorkspace({
-                name = line,
-                spawn = {
-                  args = {
-                    "zsh",
-                    "-c",
-                    "cd " .. cwd .. " && zsh",
-                  },
-                },
-              }),
-              pane
-            )
-          end
-        end),
-      }),
-    },
-    {
-      key = "w",
-      mods = "LEADER",
-      action = act.ShowLauncherArgs({
-        flags = "FUZZY|WORKSPACES",
-      }),
-    },
-    { key = " ", mods = "LEADER", action = wezterm.action.QuickSelect },
+if wezterm.config_builder then
+  config = wezterm.config_builder()
+end
 
-    -- split pane:
-    {
-      key = "|",
-      mods = "LEADER",
-      action = wezterm.action.SplitHorizontal({ domain = "CurrentPaneDomain" }),
-    },
-    {
-      key = "_",
-      mods = "LEADER",
-      action = wezterm.action.SplitVertical({ domain = "CurrentPaneDomain" }),
-    },
+display.set_display(config)
+fonts.set_fonts(config)
+keys.set_keys(config)
+settings.set_settings(config)
 
-    -- window movement:
-    { key = "h", mods = "ALT", action = act.ActivatePaneDirection("Left") },
-    { key = "j", mods = "ALT", action = act.ActivatePaneDirection("Down") },
-    { key = "k", mods = "ALT", action = act.ActivatePaneDirection("Up") },
-    { key = "l", mods = "ALT", action = act.ActivatePaneDirection("Right") },
-
-    -- close pane
-    {
-      key = "d",
-      mods = "LEADER",
-      action = act.CloseCurrentPane({ confirm = false }),
-    },
-  },
-}
+return config
