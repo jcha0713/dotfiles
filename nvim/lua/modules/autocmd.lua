@@ -55,3 +55,15 @@ autocmd("FileType", {
   end,
   group = no_comments,
 })
+
+-- TODO: temporary solution to run nph command
+-- delete later when it's not needed
+vim.api.nvim_create_augroup("AutoFormatting", { clear = true })
+vim.api.nvim_create_autocmd("BufWritePost", {
+  pattern = "*.nim",
+  group = "AutoFormatting",
+  callback = function()
+    local filename = vim.fn.expand("%:p")
+    vim.cmd("silent ! nph " .. filename)
+  end,
+})

@@ -71,6 +71,7 @@ return {
       svelt = { { "prettierd", "prettier" } },
       sh = { "shfmt" },
       lua = { "stylua" },
+      nim = { "nph" },
     },
     format_on_save = function(bufnr)
       return format_on_save(format_args, bufnr)
@@ -105,6 +106,12 @@ return {
           )[1]
         end,
       },
+    },
+    -- FIX: this does not work
+    nph = {
+      command = "nph",
+      args = { "." },
+      stdin = false,
     },
   },
   config = function(_, opts)
