@@ -9,6 +9,24 @@ return {
           done_icon = "😇",
         },
       },
+      notification = {
+        override_vim_notify = true,
+        view = {
+          stack_upwards = false,
+          group_separator = "===",
+          group_separator_hl = "String",
+        },
+        window = {
+          winblend = 8,
+          border = "rounded",
+          border_hl = "WinBar",
+        },
+      },
+      integration = {
+        ["nvim-tree"] = {
+          enable = true,
+        },
+      },
     })
   end,
 }
