@@ -73,7 +73,8 @@ return {
       dailies = home .. "/journal/daily/" .. os.date("%Y") .. "/" .. os.date(
         "%m"
       ),
-      weeklies = home .. "/journal/" .. "weekly",
+      -- weeklies = home .. "/journal/" .. "weekly",
+      weeklies = nil,
       templates = home .. "/" .. "templates",
 
       -- image (sub)dir for pasting
