@@ -201,7 +201,7 @@ local on_attach = function(client, bufnr)
 end
 
 -- Configure sumneko_lua to support neovim Lua runtime APIs
-require("neodev").setup()
+-- require("neodev").setup()
 
 local servers = vim.api.nvim_get_var("lsp_servers")
 
