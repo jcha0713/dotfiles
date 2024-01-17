@@ -43,3 +43,8 @@ vim.api.nvim_set_hl(0, "WinBar", { fg = "#a390a2" })
 -- vim.api.nvim_set_hl(0, "Comment", { fg = "#525252" })
 
 vim.api.nvim_set_hl(0, "GreetingQuote", { fg = "#a390a2", italic = true })
+
+-- use undercurl for errors
+vim.api.nvim_set_hl(0, "DiagnosticUnderlineError", {
+  undercurl = true,
+})
