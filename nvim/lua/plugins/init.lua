@@ -207,31 +207,31 @@ return {
   },
 
   -- TODO: fork and customize
-  {
-    "phaazon/mind.nvim",
-    branch = "v2.2",
-    keys = {
-      {
-        "<leader>mdm",
-        ":MindOpenMain<CR>",
-      },
-      {
-        "<leader>mdp",
-        function()
-          require("nvim-rooter").rooter()
-          require("mind").open_project(true)
-        end,
-      },
-      {
-        "<leader>mdc",
-        ":MindClose<CR>",
-      },
-    },
-    dependencies = { "nvim-lua/plenary.nvim" },
-    config = function()
-      require("mind").setup()
-    end,
-  },
+  -- {
+  --   "phaazon/mind.nvim",
+  --   branch = "v2.2",
+  --   keys = {
+  --     {
+  --       "<leader>mdm",
+  --       ":MindOpenMain<CR>",
+  --     },
+  --     {
+  --       "<leader>mdp",
+  --       function()
+  --         require("nvim-rooter").rooter()
+  --         require("mind").open_project(true)
+  --       end,
+  --     },
+  --     {
+  --       "<leader>mdc",
+  --       ":MindClose<CR>",
+  --     },
+  --   },
+  --   dependencies = { "nvim-lua/plenary.nvim" },
+  --   config = function()
+  --     require("mind").setup()
+  --   end,
+  -- },
 
   {
     "stevearc/dressing.nvim",
@@ -295,10 +295,12 @@ return {
       { "<leader>rc", ":ClassyResetClass<CR>", desc = "Reset class attr" },
     },
   },
-  {
-    "gleam-lang/gleam.vim",
-    ft = "gleam",
-  },
+
+  -- {
+  --   "gleam-lang/gleam.vim",
+  --   ft = "gleam",
+  -- },
+
   {
     "sourcegraph/sg.nvim",
     event = "VeryLazy",
