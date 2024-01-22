@@ -417,4 +417,14 @@ return {
     },
     config = true,
   },
+  {
+    "jcha0713/aider.nvim",
+    event = "VeryLazy",
+    dir = "~/jhcha/dev/2024/project/aider.nvim",
+    dev = true,
+    keys = {
+      { "<leader>oa", ":AiderOpen<CR>", desc = "Open Aider Window" },
+    },
+    config = true,
+  },
 }
