@@ -30,7 +30,11 @@ return {
     version = "*", -- Use for stability; omit to use `main` branch for the latest features
     event = "VeryLazy",
     config = function()
-      require("nvim-surround").setup({})
+      require("nvim-surround").setup({
+        keymaps = {
+          delete = "dp", -- ds is used by flash.nvim
+        },
+      })
     end,
   },
 
@@ -406,6 +410,15 @@ return {
       arg = "leetcode",
       lang = "javascript",
     },
+    keys = {
+      {
+        "<leader><leader>r",
+        ":Leet run<CR>",
+        {
+          desc = "Leetcode run",
+        },
+      },
+    },
   },
   {
     "pwntester/octo.nvim",
@@ -422,9 +435,15 @@ return {
     event = "VeryLazy",
     dir = "~/jhcha/dev/2024/project/aider.nvim",
     dev = true,
-    keys = {
-      { "<leader>oa", ":AiderOpen<CR>", desc = "Open Aider Window" },
-    },
-    config = true,
+    config = function()
+      require("aider").setup()
+
+      vim.api.nvim_set_keymap(
+        "n",
+        "<leader>oa",
+        ":AiderOpen<CR>",
+        { desc = "Open Aider Window" }
+      )
+    end,
   },
 }
