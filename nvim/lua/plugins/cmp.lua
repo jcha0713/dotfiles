@@ -1,3 +1,31 @@
+local cmp_kinds = {
+  Text = "  ",
+  Method = "  ",
+  Function = "  ",
+  Constructor = "  ",
+  Field = "  ",
+  Variable = "  ",
+  Class = "  ",
+  Interface = "  ",
+  Module = "  ",
+  Property = "  ",
+  Unit = "  ",
+  Value = "  ",
+  Enum = "  ",
+  Keyword = "  ",
+  Snippet = "  ",
+  Color = "  ",
+  File = "  ",
+  Reference = "  ",
+  Folder = "  ",
+  EnumMember = "  ",
+  Constant = "  ",
+  Struct = "  ",
+  Event = "  ",
+  Operator = "  ",
+  TypeParameter = "  ",
+}
+
 return {
   "hrsh7th/nvim-cmp",
   event = "InsertEnter",
@@ -13,7 +41,7 @@ return {
   },
   config = function()
     local cmp = require("cmp")
-    local lspkind = require("lspkind")
+    -- local lspkind = require("lspkind")
     local compare = require("cmp.config.compare")
 
     cmp.setup({
@@ -32,19 +60,45 @@ return {
         entries = { name = "custom", selection_order = "near_cursor" },
       },
       formatting = {
-        format = lspkind.cmp_format({
-          with_text = true,
-          maxwidth = math.floor(vim.api.nvim_win_get_width(0) / 2),
-          maxheight = math.floor(vim.api.nvim_win_get_height(0) / 3 * 2),
-          menu = {
-            nvim_lsp = "[LSP]",
-            fuzzy_buffer = "[Buf]",
-            ["cmp-tw2css"] = "[TailwindCSS]",
-            luasnip = "[Snip]",
-            look = "[Dict]",
+        -- https://github.com/hrsh7th/nvim-cmp/wiki/Menu-Appearance#menu-type
+        format = function(entry, vim_item)
+          -- add icons and kind
+          pcall(function()
+            local lspkind = require("lspkind")
+            vim_item.kind_symbol = (lspkind.symbolic or lspkind.get_symbol)(
+              vim_item.kind
+            )
+            vim_item.kind = (cmp_kinds[vim_item.kind] or "") .. vim_item.kind
+          end)
+
+          vim_item.menu = ({
+            fuzzy_buffer = "Buf",
+            ["cmp-tw2css"] = "TailwindCSS",
+            luasnip = "Snip",
+            look = "Dict",
             mkdnflow = "Note",
-          },
-        }),
+          })[entry.source.name] or string.format(
+            "%s",
+            entry.source.name
+          )
+
+          if entry.source.name == "nvim_lsp" then
+            local lspserver_name = nil
+            vim.print(entry:get_completion_item())
+            pcall(function()
+              lspserver_name = entry.source.source.client.name
+              vim_item.menu = lspserver_name
+            end)
+            local filename = vim.api.nvim_get_var("filenames")[lspserver_name]
+              or lspserver_name
+            local icon = require("nvim-web-devicons").get_icon(filename)
+            if icon then
+              vim_item.menu = icon .. " " .. vim_item.menu
+            end
+          end
+
+          return vim_item
+        end,
       },
       mapping = {
         ["<C-p>"] = cmp.mapping(cmp.mapping.select_prev_item(), { "i", "c" }),
