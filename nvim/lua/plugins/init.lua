@@ -1,7 +1,4 @@
 return {
-  -- neodev: For better lua lsp configuration
-  { "folke/neodev.nvim", ft = "lua" },
-
   -- lua utils for neovim
   "nvim-lua/plenary.nvim",
 

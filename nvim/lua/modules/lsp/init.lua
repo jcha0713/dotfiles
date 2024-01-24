@@ -200,9 +200,6 @@ local on_attach = function(client, bufnr)
   require("illuminate").on_attach(client)
 end
 
--- Configure sumneko_lua to support neovim Lua runtime APIs
--- require("neodev").setup()
-
 local servers = vim.api.nvim_get_var("lsp_servers")
 
 for _, server_name in ipairs(servers) do
