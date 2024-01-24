@@ -3,9 +3,34 @@ return {
   ft = { "markdown" },
   config = function()
     require("mkdnflow").setup({
+      modules = {
+        cmp = true,
+      },
+      links = {
+        style = "wiki",
+        name_is_source = true,
+        transform_explicit = function(input)
+          input = input:gsub(" ", "-")
+          return input
+        end,
+      },
+      new_file_template = {
+        use_template = true,
+        template = [[
+---
+date: {{ date }}
+tag: []
+---
+
+## See Also
+
+## Reference
+]],
+      },
       mappings = {
         MkdnEnter = false,
-        MkdnFollowLink = { "n", "<leader>fl" },
+        MkdnFollowLink = { { "n", "v" }, "<leader>fl" },
+        MkdnDestroyLink = { "n", "<leader>rl" },
 
         MkdnNextLink = false,
         MkdnPrevLink = false,

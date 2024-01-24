@@ -42,6 +42,7 @@ return {
             ["cmp-tw2css"] = "[TailwindCSS]",
             luasnip = "[Snip]",
             look = "[Dict]",
+            mkdnflow = "Note",
           },
         }),
       },
@@ -70,7 +71,6 @@ return {
       sources = cmp.config.sources({
         -- { name = "nvim_lsp", trigger_characters = { "-" } },
         { name = "nvim_lsp" },
-        { name = "cmp-tw2css" },
         {
           name = "fuzzy_buffer",
           keyword_length = 3,
@@ -81,6 +81,8 @@ return {
         {
           name = "luasnip",
         },
+        { name = "mkdnflow" },
+        { name = "cmp-tw2css" },
         {
           name = "look",
           keyword_length = 5,

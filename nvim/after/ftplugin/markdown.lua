@@ -7,4 +7,9 @@ require("luasnip/loaders/from_vscode").lazy_load({
   paths = { "~/.config/nvim/friendly-snippets/" },
 })
 
+api.nvim_create_autocmd(
+  "FileType",
+  { pattern = "markdown", command = "set awa" }
+)
+
 -- vim.opt_global.formatoptions = "aw"
