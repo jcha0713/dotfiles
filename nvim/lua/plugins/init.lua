@@ -135,8 +135,9 @@ return {
 
   -- Rust
   {
-    "simrat39/rust-tools.nvim",
-    ft = "rust",
+    "mrcjkb/rustaceanvim",
+    version = "^4", -- Recommended
+    ft = { "rust" },
   },
 
   -- Profiling
