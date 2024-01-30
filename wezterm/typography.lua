@@ -6,9 +6,14 @@ local font_rules = {
   {
     italic = true,
     intensity = "Normal",
-    font = wezterm.font({
-      family = "Monaspace Radon",
-      style = "Italic",
+    font = wezterm.font_with_fallback({
+      {
+        family = "Monaspace Radon",
+        style = "Italic",
+      },
+      {
+        family = "hesalche",
+      },
     }),
   },
 }
