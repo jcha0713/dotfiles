@@ -30,6 +30,8 @@ secret.init(".secret.json")
 -- hs.loadSpoon("EmmyLua")
 
 -- Config Reloading
-hs.notify.new({ title = "Hammerspoon", informativeText = "Config loaded" }):send()
+hs.notify
+  .new({ title = "Hammerspoon", informativeText = "Config loaded" })
+  :send()
 hs.loadSpoon("ReloadConfiguration")
 spoon.ReloadConfiguration:start()
