@@ -80,7 +80,7 @@ local on_attach = function(client, bufnr)
 
   -- bindings
   u.map("n", "gD", ":LspDec<CR>")
-  u.map("n", "gd", "<cmd>TroubleToggle lsp_definitions<CR>")
+  u.map("n", "gd", ":Telescope lsp_definitions<CR>")
   u.map("n", "<Leader>rn", ":LspRename<CR>")
   u.map("n", "<leader>gy", "<cmd>TroubleToggle lsp_type_definitions<CR>")
   u.map("n", "H", ":LspHover<CR>")

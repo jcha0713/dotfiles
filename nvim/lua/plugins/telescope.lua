@@ -94,11 +94,11 @@ return {
       ":Telescope lsp_references<CR>",
       desc = "Telescope lsp references",
     },
-    {
-      "<leader>ld",
-      ":Telescope lsp_definitions<CR>",
-      desc = "Telescope lsp definitions",
-    },
+    -- {
+    --   "<leader>ld",
+    --   ":Telescope lsp_definitions<CR>",
+    --   desc = "Telescope lsp definitions",
+    -- },
   },
   config = function()
     local actions = require("telescope.actions")
