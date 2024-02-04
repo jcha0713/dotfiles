@@ -6,11 +6,23 @@ return {
       modules = {
         cmp = true,
       },
+      -- directories with .obsidian file is a root
+      perspective = {
+        priority = "root",
+        root_tell = ".obsidian",
+      },
       links = {
-        style = "wiki",
         name_is_source = true,
         transform_explicit = function(input)
           input = input:gsub(" ", "-")
+          return input
+        end,
+        -- remove leading slash when following notes
+        transform_implicit = function(input)
+          if input:sub(1, 1) == "/" then
+            input = input.sub(input, 2)
+          end
+          vim.print(input)
           return input
         end,
       },
