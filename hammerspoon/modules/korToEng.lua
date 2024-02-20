@@ -1,11 +1,11 @@
 local M = {}
 local utils = require("utils")
-local inputEnglish = "com.apple.keylayout.ABC"
+local inputUSEnglish = "com.apple.keylayout.US"
 
 local changeSource = function()
   local inputSource = hs.keycodes.currentSourceID()
-  if not (inputSource == inputEnglish) then
-    hs.keycodes.currentSourceID(inputEnglish)
+  if not (inputSource == inputUSEnglish) then
+    hs.keycodes.currentSourceID(inputUSEnglish)
   end
   hs.eventtap.keyStroke({}, "escape")
 end
