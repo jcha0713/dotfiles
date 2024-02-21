@@ -58,9 +58,9 @@ return {
   opts = {
     formatters_by_ft = {
       astro = { { "prettierd", "prettier" } },
-      javascirpt = { { "prettierd", "prettier" } },
+      javascript = { { "biome", "prettierd", "prettier" } },
       typescript = { { "prettierd", "prettier" } },
-      javascirptreact = { { "prettierd", "prettier" } },
+      javascriptreact = { { "prettierd", "prettier" } },
       typescriptreact = { { "prettierd", "prettier" } },
       css = { { "prettierd", "prettier" } },
       html = { { "prettierd", "prettier" } },
