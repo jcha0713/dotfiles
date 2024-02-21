@@ -11,6 +11,11 @@ return {
           dark = {
             comments = "#525252",
             -- bg = "#1e1e1e",
+            -- https://gogh-co.github.io/Gogh/ - Arthur
+            red = "#CC5533",
+            yellow = "#FFA75D",
+            green = "#88AA22",
+            cyan = "#6495ED",
           },
         },
       },
