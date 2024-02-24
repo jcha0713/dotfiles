@@ -4,7 +4,7 @@ local M = {}
 
 M.set_display = function(config)
   config.check_for_updates = false
-  config.color_scheme = "Arthur"
+  config.color_scheme = "Arthur (Gogh)"
   config.enable_tab_bar = false
   config.force_reverse_video_cursor = true
   config.window_background_opacity = 1
