@@ -2,6 +2,11 @@ local M = {}
 
 local filepath = vim.fn.expand("%:p")
 
+--- run shell commands
+---@param cmd string[]
+---@param success_msg string | nil
+---@param on_exit function | nil
+---@return vim.SystemCompleted | vim.SystemObj
 local function run_command(cmd, success_msg, on_exit)
   success_msg = success_msg or "Command executed successfully"
 
@@ -20,13 +25,16 @@ local function run_command(cmd, success_msg, on_exit)
   return command
 end
 
+--- commit changes to git with AI generated message
+---@param sgpt_result vim.SystemCompleted
 local function handle_exit(sgpt_result)
   if sgpt_result.code == 1 then
     vim.print(sgpt_result.stderr)
   end
   if sgpt_result.code == 0 then
-    local commit_msg = sgpt_result.stdout
+    local commit_msg = sgpt_result.stdout:gsub("^%s*(.-)%s*$", "%1")
     local success_msg = "Changes committed successfully!"
+
     vim.schedule(function()
       local confirm = vim.fn.confirm(
         "Generated Message:\n================\n"
@@ -66,6 +74,7 @@ local function handle_exit(sgpt_result)
   end
 end
 
+--- generate AI commit messages using shell-gpt
 function M.generate_commit_message()
   if type(filepath) ~= "string" then
     return
