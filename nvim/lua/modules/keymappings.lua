@@ -111,3 +111,7 @@ vim.keymap.set("i", "<Tab>", function()
     )
   end
 end, { desc = "Super Tab" })
+
+map("n", "<leader><leader>c", function()
+  require("plugins.custom.auto_commit").generate_commit_message()
+end)
