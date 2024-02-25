@@ -8,7 +8,6 @@ local function handle_exit(sgpt_result)
   end
   if sgpt_result.code == 0 then
     vim.schedule(function()
-      -- TODO: implement EDIT
       local confirm = vim.fn.confirm(
         "Generated Message:\n================\n"
           .. sgpt_result.stdout
@@ -27,6 +26,25 @@ local function handle_exit(sgpt_result)
             ),
           })
           :wait()
+      elseif confirm == 2 then
+        vim.ui.input(
+          { prompt = "Edit commit message", default = sgpt_result.stdout },
+          function(input)
+            if input then
+              vim
+                .system({
+                  "sh",
+                  "-c",
+                  string.format(
+                    "git add '%s' && git commit -m '%s'",
+                    filename,
+                    input
+                  ),
+                })
+                :wait()
+            end
+          end
+        )
       end
     end)
   end
