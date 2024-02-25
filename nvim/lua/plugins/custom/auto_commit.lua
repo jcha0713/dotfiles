@@ -31,7 +31,7 @@ local function handle_exit(sgpt_result)
           { prompt = "Edit commit message", default = sgpt_result.stdout },
           function(input)
             if input then
-              vim
+              local commit_cmd = vim
                 .system({
                   "sh",
                   "-c",
@@ -42,6 +42,10 @@ local function handle_exit(sgpt_result)
                   ),
                 })
                 :wait()
+
+              if commit_cmd.code == 0 then
+                vim.notify("Successfully commited!", vim.log.levels.INFO, {})
+              end
             end
           end
         )
