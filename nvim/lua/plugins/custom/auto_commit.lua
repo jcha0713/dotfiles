@@ -53,22 +53,26 @@ local function handle_exit(sgpt_result)
           ),
         }, success_msg)
       elseif confirm == 2 then
-        vim.ui.input(
-          { prompt = "Edit commit message", default = commit_msg },
-          function(new_commit_msg)
-            if new_commit_msg then
-              run_command({
-                "sh",
-                "-c",
-                string.format(
-                  "git add '%s' && git commit -m '%s'",
-                  filepath,
-                  new_commit_msg
-                ),
-              }, success_msg)
-            end
+        vim.ui.input({
+          prompt = "Edit commit message",
+          default = commit_msg,
+        }, function(new_commit_msg)
+          if new_commit_msg == nil then
+            vim.notify("Commit aborted", vim.log.levels.WARN, {})
           end
-        )
+
+          if new_commit_msg then
+            run_command({
+              "sh",
+              "-c",
+              string.format(
+                "git add '%s' && git commit -m '%s'",
+                filepath,
+                new_commit_msg
+              ),
+            }, success_msg)
+          end
+        end)
       end
     end)
   end
@@ -89,18 +93,14 @@ function M.generate_commit_message()
       untracked_files_output.stdout,
       vim.fn.fnamemodify(filepath, ":t")
     )
-    local diff_cmd
-    if is_untracked then
-      diff_cmd = string.format(
-        "git diff --no-index -- /dev/null '%s' | sgpt 'Write a concise git commit message in under 80 characters for me'",
-        filepath
-      )
-    else
-      diff_cmd = string.format(
-        "git diff HEAD -- '%s' | sgpt 'Write a concise git commit message in under 80 characters for me'",
-        filepath
-      )
-    end
+
+    local diff_prefix = is_untracked and "--no-index -- /dev/null" or "HEAD"
+
+    local diff_cmd = string.format(
+      "git diff %s -- '%s' | sgpt 'Create a git commit message that begins with a main summary, capturing the essence of the changes in under 80 characters, followed by a detailed enumeration of all modifications in bullet points. This should encompass specific alterations, bug fixes, enhancements, or optimizations, detailing what was changed and why. No further explanation or description is required; only the commit message is to be returned.'",
+      diff_prefix,
+      filepath
+    )
 
     run_command({ "sh", "-c", diff_cmd }, nil, handle_exit)
   end
