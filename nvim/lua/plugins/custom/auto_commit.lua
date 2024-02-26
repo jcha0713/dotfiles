@@ -1,6 +1,16 @@
 local M = {}
 
+local commit_progress
 local filepath = vim.fn.expand("%:p")
+
+local function sgpt_progress(title, msg)
+  return require("fidget.progress").handle.create({
+    title = title,
+    message = msg,
+    lsp_client = { name = "AI" },
+    percentage = nil,
+  })
+end
 
 --- run shell commands
 ---@param cmd string[]
@@ -8,8 +18,6 @@ local filepath = vim.fn.expand("%:p")
 ---@param on_exit function | nil
 ---@return vim.SystemCompleted | vim.SystemObj
 local function run_command(cmd, success_msg, on_exit)
-  success_msg = success_msg or "Command executed successfully"
-
   if on_exit then
     return vim.system(cmd, { text = true }, on_exit)
   end
@@ -17,6 +25,7 @@ local function run_command(cmd, success_msg, on_exit)
   local command = vim.system(cmd, { text = true }):wait()
 
   if command.code == 0 then
+    success_msg = success_msg or "Command executed successfully"
     vim.notify(success_msg, vim.log.levels.INFO)
   else
     vim.notify(command.stderr, vim.log.levels.ERROR)
@@ -28,6 +37,7 @@ end
 --- commit changes to git with AI generated message
 ---@param sgpt_result vim.SystemCompleted
 local function handle_exit(sgpt_result)
+  commit_progress:finish()
   if sgpt_result.code == 1 then
     vim.print(sgpt_result.stderr)
   end
@@ -58,7 +68,7 @@ local function handle_exit(sgpt_result)
           default = commit_msg,
         }, function(new_commit_msg)
           if new_commit_msg == nil then
-            vim.notify("Commit aborted", vim.log.levels.WARN, {})
+            vim.notify("Commit aborted by user", vim.log.levels.WARN, {})
           end
 
           if new_commit_msg then
@@ -102,6 +112,7 @@ function M.generate_commit_message()
       filepath
     )
 
+    commit_progress = sgpt_progress("AI", "writing commit msg")
     run_command({ "sh", "-c", diff_cmd }, nil, handle_exit)
   end
 end
