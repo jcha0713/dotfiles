@@ -107,7 +107,7 @@ function M.generate_commit_message()
     local diff_prefix = is_untracked and "--no-index -- /dev/null" or "HEAD"
 
     local diff_cmd = string.format(
-      "git diff %s -- '%s' | sgpt 'Create a git commit message that begins with a main summary, capturing the essence of the changes in under 80 characters, followed by a detailed enumeration of all modifications in bullet points. This should encompass specific alterations, bug fixes, enhancements, or optimizations, detailing what was changed and why. No further explanation or description is required; only the commit message is to be returned.'",
+      "git diff --staged %s '%s' | sgpt 'Create a git commit message that begins with a main summary, capturing the essence of the changes in under 80 characters, followed by a detailed enumeration of all modifications in bullet points. This should encompass specific alterations, bug fixes, enhancements, or optimizations, detailing what was changed and why. No further explanation or description is required; only the commit message is to be returned.'",
       diff_prefix,
       filepath
     )
