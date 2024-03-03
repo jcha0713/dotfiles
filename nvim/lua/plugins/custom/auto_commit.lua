@@ -2,7 +2,11 @@ local M = {}
 
 local commit_progress
 local filepath = vim.fn.expand("%:p")
+local Component = require("modules.ui.base")
 
+--- create fidget progress handle
+---@param title string
+---@param msg string?
 local function sgpt_progress(title, msg)
   return require("fidget.progress").handle.create({
     title = title,
@@ -56,33 +60,35 @@ local function handle_exit(sgpt_result)
         run_command({
           "sh",
           "-c",
-          string.format(
-            "git add '%s' && git commit -m '%s'",
-            filepath,
-            commit_msg
-          ),
+          string.format("git commit -m '%s'", commit_msg),
         }, success_msg)
       elseif confirm == 2 then
-        vim.ui.input({
-          prompt = "Edit commit message",
-          default = commit_msg,
-        }, function(new_commit_msg)
-          if new_commit_msg == nil then
-            vim.notify("Commit aborted by user", vim.log.levels.WARN, {})
-          end
+        local commit_msg_tbl = {}
 
-          if new_commit_msg then
-            run_command({
-              "sh",
-              "-c",
-              string.format(
-                "git add '%s' && git commit -m '%s'",
-                filepath,
-                new_commit_msg
-              ),
-            }, success_msg)
-          end
-        end)
+        for line in commit_msg:gmatch("[^\n]+") do
+          local trimmed_line = vim.trim(line)
+          table.insert(commit_msg_tbl, trimmed_line)
+        end
+
+        local popup = Component(
+          { border = { text = { top = " Commit Message " } } },
+          {
+            default_text = commit_msg_tbl,
+            on_submit = function(new_commit_msg)
+              run_command({
+                "sh",
+                "-c",
+                string.format("git commit -m '%s'", new_commit_msg),
+              }, success_msg)
+            end,
+            on_abort = function()
+              vim.notify("Commit aborted by user", vim.log.levels.INFO, {})
+            end,
+          }
+        )
+        popup:mount()
+      else
+        vim.notify("Commit aborted by user", vim.log.levels.INFO, {})
       end
     end)
   end
