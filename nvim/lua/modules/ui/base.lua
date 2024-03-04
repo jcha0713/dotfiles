@@ -63,6 +63,13 @@ function Component:__set_mapping()
         self:submit()
       end,
     },
+    {
+      mode = "n",
+      from = "<Esc>",
+      to = function()
+        self:abort()
+      end,
+    },
   }
 
   for _, mapping in pairs(default_mapping) do
@@ -97,6 +104,15 @@ function Component:submit()
   local commit_msg_tbl = vim.api.nvim_buf_get_lines(self.bufnr, 0, -1, false)
   local commit_msg = table.concat(commit_msg_tbl, "\n")
   on_submit(commit_msg)
+  self:unmount()
+end
+
+function Component:abort()
+  local props = self:get_props()
+  local on_abort = if_nil(props.on_abort, function()
+    vim.notify("on_abort is not defined", vim.log.levels.WARN, {})
+  end)
+  on_abort()
   self:unmount()
 end
 
