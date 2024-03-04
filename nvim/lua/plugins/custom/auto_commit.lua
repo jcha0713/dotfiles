@@ -70,22 +70,22 @@ local function handle_exit(sgpt_result)
           table.insert(commit_msg_tbl, trimmed_line)
         end
 
-        local popup = Component(
-          { border = { text = { top = " Commit Message " } } },
-          {
-            default_text = commit_msg_tbl,
-            on_submit = function(new_commit_msg)
-              run_command({
-                "sh",
-                "-c",
-                string.format("git commit -m '%s'", new_commit_msg),
-              }, success_msg)
-            end,
-            on_abort = function()
-              vim.notify("Commit aborted by user", vim.log.levels.INFO, {})
-            end,
-          }
-        )
+        local popup = Component(nil, {
+          label = {
+            top = "Commit Message",
+          },
+          default_text = commit_msg_tbl,
+          on_submit = function(new_commit_msg)
+            run_command({
+              "sh",
+              "-c",
+              string.format("git commit -m '%s'", new_commit_msg),
+            }, success_msg)
+          end,
+          on_abort = function()
+            vim.notify("Commit aborted by user", vim.log.levels.INFO, {})
+          end,
+        })
         popup:mount()
       else
         vim.notify("Commit aborted by user", vim.log.levels.INFO, {})

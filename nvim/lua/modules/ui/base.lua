@@ -4,32 +4,44 @@ local to_macos_keys = require("modules.utils").to_macos_keys
 
 local Component = Popup:extend("Component")
 
-local default_options = {
-  enter = true,
-  focusable = true,
-  relative = "editor",
-  border = {
-    style = "single",
-    padding = { 2, 4 },
-    text = {
-      top = " Pop Up ",
-      bottom = " submit(" .. to_macos_keys("D CR") .. ") ",
-      bottom_align = "right",
+function Component:mergeOptions(userOptions)
+  local default_options = self:getDefaultOptions()
+  return vim.tbl_deep_extend("force", default_options, if_nil(userOptions, {}))
+end
+
+function Component:getDefaultOptions()
+  return {
+    enter = true,
+    focusable = true,
+    relative = "editor",
+    border = {
+      style = "single",
+      padding = { 2, 4 },
+      text = {
+        top = " Pop Up ",
+        bottom = " submit(" .. to_macos_keys("D CR") .. ") " .. "cancel(ESC) ",
+        bottom_align = "right",
+      },
     },
-  },
-  position = "50%",
-  size = { width = 60, height = 10 },
-  win_options = {
-    winhighlight = "Normal:Normal,FloatBorder:SpecialChar",
-  },
-  zindex = 100,
-}
+    position = "50%",
+    size = { width = 60, height = 10 },
+    win_options = {
+      winhighlight = "Normal:Normal,FloatBorder:SpecialChar",
+    },
+    zindex = 100,
+  }
+end
 
 function Component:init(options, props)
-  options = vim.tbl_deep_extend("force", default_options, if_nil(options, {}))
+  options = self:mergeOptions(options)
 
   props = if_nil(props, {})
   self.__props = props
+
+  if self.__props.label then
+    local paddedTopLabel = " " .. props.label.top .. " "
+    options.border.text.top = paddedTopLabel
+  end
 
   Component.super.init(self, options)
 end
