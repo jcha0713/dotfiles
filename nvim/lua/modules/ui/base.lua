@@ -1,4 +1,6 @@
 local Popup = require("nui.popup")
+local NuiText = require("nui.text")
+local NuiLine = require("nui.line")
 local if_nil = require("modules.utils").if_nil
 local to_macos_keys = require("modules.utils").to_macos_keys
 
@@ -10,16 +12,27 @@ function Component:mergeOptions(userOptions)
 end
 
 function Component:getDefaultOptions()
+  vim.api.nvim_set_hl(0, "NuiLabelSubmit", { fg = "#a390a2", bold = true })
+  vim.api.nvim_set_hl(0, "NuiLabelCancel", { fg = "#ee90a2" })
+  local top_label = NuiText(" Pop up ", "SpecialChar")
+  local bottom_label = NuiLine()
+  bottom_label:append(
+    " (" .. to_macos_keys("D CR") .. ")" .. " Submit ",
+    "NuiLabelSubmit"
+  )
+  bottom_label:append(" (esc)" .. " Cancel ", "NuiLabelCancel")
+
   return {
     enter = true,
     focusable = true,
     relative = "editor",
     border = {
-      style = "single",
+      style = "rounded",
       padding = { 2, 4 },
       text = {
-        top = " Pop Up ",
-        bottom = " submit(" .. to_macos_keys("D CR") .. ") " .. "cancel(ESC) ",
+        top = top_label,
+        top_align = "left",
+        bottom = bottom_label,
         bottom_align = "right",
       },
     },
