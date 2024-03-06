@@ -72,7 +72,7 @@ local function handle_exit(sgpt_result)
 
         local popup = Component(nil, {
           label = {
-            top = "Commit Message",
+            top = " Commit Message",
           },
           default_text = commit_msg_tbl,
           on_submit = function(new_commit_msg)
