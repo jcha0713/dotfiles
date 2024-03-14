@@ -59,7 +59,7 @@ return {
     formatters_by_ft = {
       astro = { { "prettierd", "prettier" } },
       javascript = { { "biome", "prettierd", "prettier" } },
-      typescript = { { "prettierd", "prettier" } },
+      typescript = { { "biome", "prettierd", "prettier" } },
       javascriptreact = { { "prettierd", "prettier" } },
       typescriptreact = { { "prettierd", "prettier" } },
       css = { { "prettierd", "prettier" } },
