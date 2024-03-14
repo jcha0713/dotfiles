@@ -6,57 +6,64 @@ M.setup = function(on_attach, capabilities)
   lspconfig.lua_ls.setup({
     on_attach = on_attach,
     capabilities = capabilities or {},
+    -- https://github.com/neovim/neovim/issues/27740
     on_init = function(client)
       local path = client.workspace_folders[1].name
       if
-        not vim.loop.fs_stat(path .. "/.luarc.json")
-        and not vim.loop.fs_stat(path .. "/.luarc.jsonc")
+        vim.loop.fs_stat(path .. "/.luarc.json")
+        or vim.loop.fs_stat(path .. "/.luarc.jsonc")
       then
-        client.config.settings =
-          vim.tbl_deep_extend("force", client.config.settings, {
-            Lua = {
-              completion = {
-                callSnippet = "Replace",
-              },
-              runtime = {
-                version = "LuaJIT",
-              },
-              diagnostics = {
-                globals = {
-                  "vim",
-                  "use",
-                  "describe",
-                  "it",
-                  "assert",
-                  "before_each",
-                  "after_each",
-                  "hs", -- hammerspoon
-                },
-              },
-              workspace = {
-                checkThirdParty = false,
-                preloadFileSize = 100000,
-                maxPreload = 10000,
-                library = {
-                  vim.env.VIMRUNTIME,
-                },
-                -- library = {
-                --   vim.api.nvim_get_runtime_file("", true),
-                -- },
-              },
-              hint = {
-                enable = true,
-              },
-            },
-          })
-
-        client.notify(
-          "workspace/didChangeConfiguration",
-          { settings = client.config.settings }
-        )
+        return
       end
-      return true
+
+      client.config.settings.Lua =
+        vim.tbl_deep_extend("force", client.config.settings.Lua, {
+          runtime = {
+            version = "LuaJIT",
+          },
+          -- Make the server aware of Neovim runtime files
+          workspace = {
+            checkThirdParty = false,
+            preloadFileSize = 100000,
+            maxPreload = 10000,
+            library = {
+              vim.env.VIMRUNTIME,
+              -- Depending on the usage, you might want to add additional paths here.
+              -- "${3rd}/luv/library"
+              -- "${3rd}/busted/library",
+            },
+            -- library = vim.api.nvim_get_runtime_file("", true)
+          },
+        })
+
+      client.notify(
+        "workspace/didChangeConfiguration",
+        { settings = client.config.settings }
+      )
     end,
+    settings = {
+      Lua = {
+        completion = {
+          callSnippet = "Replace",
+        },
+        diagnostics = {
+          globals = {
+            "vim",
+            "use",
+            "describe",
+            "it",
+            "assert",
+            "before_each",
+            "after_each",
+            "hs", -- hammerspoon
+          },
+        },
+
+        hint = {
+          enable = true,
+        },
+      },
+    },
   })
 end
 
