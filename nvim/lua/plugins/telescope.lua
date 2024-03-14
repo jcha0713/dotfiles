@@ -144,7 +144,7 @@ return {
         },
         layout_config = {
           width = 0.90,
-          prompt_position = "top",
+          prompt_position = "bottom",
           preview_cutoff = 120,
           horizontal = { mirror = false, preview_width = 0.55 },
           vertical = { mirror = false },
@@ -163,7 +163,7 @@ return {
         entry_prefix = "  ",
         initial_mode = "insert",
         selection_strategy = "reset",
-        sorting_strategy = "ascending",
+        sorting_strategy = "descending",
         layout_strategy = "horizontal",
         file_sorter = require("telescope.sorters").get_fuzzy_file,
         generic_sorter = require("telescope.sorters").get_generic_fuzzy_sorter,
