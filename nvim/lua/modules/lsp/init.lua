@@ -93,13 +93,16 @@ local on_attach = function(client, bufnr)
   u.map("n", "<leader>fr", "<cmd>TroubleToggle lsp_references<CR>")
   u.map("n", "<leader>rr", ":RustRunnable<CR>")
   u.map("i", "<C-s>", "<cmd>lua vim.lsp.buf.signature_help()<CR>")
+  u.map("n", "<leader>hi", function()
+    if client.server_capabilities.inlayHintProvider then
+      vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled(nil))
+    else
+      vim.notify("inlayHintProvider is not enabled", vim.log.levels.WARN, {})
+    end
+  end, { desc = "Toggle inlay hints" })
 
   if client.name == "tsserver" then
     client.server_capabilities.documentFormattingProvider = false
-  end
-
-  if client.server_capabilities.inlayHintProvider then
-    vim.lsp.inlay_hint.enable(0, true)
   end
 
   -- hide until https://github.com/ray-x/lsp_signature.nvim/issues/276 is fixed
