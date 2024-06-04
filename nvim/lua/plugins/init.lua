@@ -444,4 +444,13 @@ return {
       )
     end,
   },
+  {
+    "supermaven-inc/supermaven-nvim",
+    event = "BufEnter",
+    config = function()
+      require("supermaven-nvim").setup({
+        ignore_filetypes = { markdown = true, gleam = true },
+      })
+    end,
+  },
 }
