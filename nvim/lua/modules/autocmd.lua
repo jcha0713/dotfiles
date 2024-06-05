@@ -67,3 +67,23 @@ vim.api.nvim_create_autocmd("BufWritePost", {
     vim.cmd("silent ! nph " .. filename)
   end,
 })
+
+local disable_supermaven =
+  vim.api.nvim_create_augroup("DisableSupermaven", { clear = true })
+vim.api.nvim_create_autocmd("BufEnter", {
+  group = disable_supermaven,
+  callback = function()
+    local filepath = vim.fn.expand("%:h")
+
+    if type(filepath) ~= "string" then
+      filepath = filepath[0]
+    end
+
+    local splitted = vim.split(filepath, "/")
+
+    if splitted[#splitted] == "leetcode" then
+      vim.cmd("SupermavenStop")
+    end
+  end,
+})
+
