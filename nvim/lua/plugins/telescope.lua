@@ -144,7 +144,7 @@ return {
         },
         layout_config = {
           width = 0.90,
-          prompt_position = "bottom",
+          prompt_position = "top",
           preview_cutoff = 120,
           horizontal = { mirror = false, preview_width = 0.55 },
           vertical = { mirror = false },
@@ -163,7 +163,7 @@ return {
         entry_prefix = "  ",
         initial_mode = "insert",
         selection_strategy = "reset",
-        sorting_strategy = "descending",
+        sorting_strategy = "ascending",
         layout_strategy = "horizontal",
         file_sorter = require("telescope.sorters").get_fuzzy_file,
         generic_sorter = require("telescope.sorters").get_generic_fuzzy_sorter,
@@ -174,6 +174,8 @@ return {
         buffer_previewer_maker = require("telescope.previewers").buffer_previewer_maker,
         mappings = {
           i = {
+            -- ["<C-p>"] = actions.move_selection_next,
+            -- ["<C-n>"] = actions.move_selection_previous,
             ["<C-j>"] = actions.move_selection_next,
             ["<C-k>"] = actions.move_selection_previous,
             -- ["<C-q>"] = actions.smart_send_to_qflist + actions.open_qflist,
@@ -182,6 +184,8 @@ return {
             ["<CR>"] = actions.select_default + actions.center,
           },
           n = {
+            -- ["<C-p>"] = actions.move_selection_next,
+            -- ["<C-n>"] = actions.move_selection_previous,
             ["<C-j>"] = actions.move_selection_next,
             ["<C-k>"] = actions.move_selection_previous,
             -- ["<C-q>"] = actions.smart_send_to_qflist + actions.open_qflist,
