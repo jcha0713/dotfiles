@@ -10,7 +10,7 @@ return {
         },
       },
       notification = {
-        override_vim_notify = true,
+        override_vim_notify = false,
         view = {
           stack_upwards = false,
           group_separator = "===",
