@@ -8,11 +8,6 @@ local hyper = require("modules.hyper")
 hyper.bind({}, "r", nil, function()
   hs.reload()
 end)
-
-hyper.bind({ "shift" }, "s", nil, function()
-  hs.spotify.playpause()
-end)
-
 hyper.bind({ "shift" }, "m", nil, function()
   hs.application.launchOrFocus("Messages")
 end)
