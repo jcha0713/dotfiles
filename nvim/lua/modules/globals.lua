@@ -3,6 +3,7 @@ local api = vim.api
 api.nvim_set_var("lsp_servers", {
   "astro",
   "bashls",
+  "clangd",
   "cssls",
   -- "cssmodules_ls",
   -- "eslint",
