@@ -6,18 +6,15 @@ api.nvim_set_var("lsp_servers", {
   "clangd",
   "cssls",
   -- "cssmodules_ls",
-  -- "eslint",
   "gleam",
   "gopls",
   "html",
   "jsonls",
   "nimls",
-  -- "null-ls",
   "marksman",
   "prismals",
   "pyright",
   "rust_analyzer",
-  -- "solang",
   "lua_ls",
   "svelte",
   "tailwindcss",
@@ -47,7 +44,8 @@ api.nvim_set_var("filenames", {
 
 api.nvim_set_var("lsp_linters", {
   "quick-lint-js",
-  "vale",
+  -- "vale",
+  "eslint_d",
 })
 
 api.nvim_set_var("lsp_formatters", {
