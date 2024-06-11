@@ -1,30 +1,24 @@
 local M = {}
 
 M.winbar_filetype = {
-  "javascript",
-  "typescript",
-  "javascriptreact",
-  "typescriptreact",
   "astro",
-  "lua",
-  "json",
-  "html",
   "css",
+  "gleam",
+  "html",
+  "javascript",
+  "javascriptreact",
+  "json",
+  "lua",
   "markdown",
   "pug",
   "rust",
+  "typescript",
+  "typescriptreact",
 }
 
-local includes = function()
-  if vim.tbl_contains(M.winbar_filetype, vim.bo.filetype) then
-    return false
-  end
-  vim.opt_local.winbar = nil
-  return true
-end
-
 M.get_winbar = function()
-  if includes() then
+  if not vim.tbl_contains(M.winbar_filetype, vim.bo.filetype) then
+    vim.opt_local.winbar = nil
     return
   end
 
