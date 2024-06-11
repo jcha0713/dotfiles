@@ -27,7 +27,9 @@ return {
 
     local function add_values(src_table)
       for _, value in ipairs(src_table) do
+        if value ~= "gleam" then
           table.insert(tools, value)
+        end
       end
     end
 
@@ -37,7 +39,7 @@ return {
     add_values(extras)
 
     mason_installer.setup({
-      ensure_installed = tools
+      ensure_installed = tools,
     })
   end,
 }
