@@ -127,7 +127,14 @@ return {
       },
       sources = cmp.config.sources({
         -- { name = "nvim_lsp", trigger_characters = { "-" } },
-        { name = "nvim_lsp" },
+        {
+          name = "nvim_lsp",
+          option = {
+            markdown_oxide = {
+              keyword_pattern = [[\(\k\| \|\/\|#\)\+]],
+            },
+          },
+        },
         {
           name = "fuzzy_buffer",
           keyword_length = 3,

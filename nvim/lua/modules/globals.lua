@@ -11,7 +11,7 @@ api.nvim_set_var("lsp_servers", {
   "html",
   "jsonls",
   "nimls",
-  "marksman",
+  "markdown_oxide",
   "prismals",
   "pyright",
   "rust_analyzer",
