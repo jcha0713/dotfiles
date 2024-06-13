@@ -7,10 +7,10 @@ return {
         cmp = true,
       },
       -- directories with .obsidian file is a root
-      perspective = {
-        priority = "root",
-        root_tell = ".obsidian",
-      },
+      -- perspective = {
+      --   priority = "root",
+      --   root_tell = ".obsidian",
+      -- },
       links = {
         name_is_source = true,
         transform_explicit = function(input)
