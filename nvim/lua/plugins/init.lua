@@ -473,4 +473,12 @@ return {
       { "nvim-telescope/telescope-fzy-native.nvim" },
     },
   },
+
+  {
+    "vuki656/package-info.nvim",
+    ft = "json",
+    event = "VeryLazy",
+    requires = "MunifTanjim/nui.nvim",
+    config = true,
+  },
 }
