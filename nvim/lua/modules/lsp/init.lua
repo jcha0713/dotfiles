@@ -84,10 +84,10 @@ local on_attach = function(client, bufnr)
   u.lua_command("LspDec", "vim.lsp.buf.declaration()")
   u.lua_command("LspDef", "vim.lsp.buf.definition()")
   u.lua_command("LspFindRef", "vim.lsp.buf.references()")
-  u.lua_command("LspCodeAction", "require('cosmic-ui').code_actions()<cr>")
+  u.lua_command("LspCodeAction", "require('actions-preview').code_actions()")
   u.lua_command(
     "LspRangeCodeAction",
-    "require('cosmic-ui').range_code_actions()"
+    "require('actions-preview').code_actions()"
   )
   u.lua_command("LspSignatureHelp", "vim.lsp.buf.signature_help()")
 

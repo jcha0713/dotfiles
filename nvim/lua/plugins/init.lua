@@ -481,4 +481,16 @@ return {
     requires = "MunifTanjim/nui.nvim",
     config = true,
   },
+
+  {
+    "luckasRanarison/clear-action.nvim",
+    event = "VeryLazy",
+    config = true,
+  },
+
+  {
+    "aznhe21/actions-preview.nvim",
+    event = "VeryLazy",
+    config = true,
+  },
 }
