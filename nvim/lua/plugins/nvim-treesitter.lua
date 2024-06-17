@@ -25,8 +25,11 @@ return {
       ensure_installed = {
         "astro",
         "css",
+        "diff",
+        "gleam",
         "go",
         "html",
+        "bash",
         "http",
         "javascript",
         "json",
@@ -45,6 +48,7 @@ return {
         "tsx",
         "typescript",
         "query",
+        "vimdoc",
       },
       highlight = {
         enable = true,
