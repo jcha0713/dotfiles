@@ -1,12 +1,14 @@
 return {
   "ramojus/mellifluous.nvim",
   lazy = false,
+  enabled = false,
   priority = 1000,
   config = function()
     require("mellifluous").setup({
       mellifluous = {
         neutral = true,
-        bg_contrast = "hard",
+        -- bg_contrast = "hard",
+        bg_contrast = "soft",
         color_overrides = {
           dark = {
             comments = "#525252",
@@ -55,7 +57,7 @@ return {
         gitsigns = true,
         semantic_tokens = true,
         nvim_tree = {
-          enabled = true,
+          enabled = false,
           show_root = true,
         },
         telescope = {
