@@ -7,24 +7,16 @@ return {
   config = function()
     local lualine = require("lualine")
 
-    local function lsp_client()
-      local buf_ft = vim.bo.filetype
-      local buf_clients = vim.lsp.get_active_clients()
-      local buf_client_names = {}
-
-      -- add client
-      for _, client in pairs(buf_clients) do
-        if client.name == "eslint" then
-          table.insert(buf_client_names, client.name)
-        end
+    local function codeium_suggestions()
+      local codeium_status =
+        vim.trim(vim.api.nvim_call_function("codeium#GetStatusString", {}))
+      if codeium_status == "ON" then
+        return "󰚩"
+      elseif codeium_status == "*" then
+        return "󰔟"
+      else
+        return codeium_status
       end
-
-      -- add linter
-      local supported_linters =
-        require("modules.lsp.null-ls").list_registered(buf_ft)
-      vim.list_extend(buf_client_names, supported_linters)
-
-      return "[" .. table.concat(buf_client_names, ", ") .. "]"
     end
 
     lualine.setup({
@@ -43,7 +35,7 @@ return {
           "branch",
           "diff",
           { "diagnostics", sources = { "nvim_diagnostic" } },
-          { lsp_client },
+          { codeium_suggestions },
         },
         lualine_c = { "filename" },
         lualine_x = { "encoding", "fileformat", "filetype" },
