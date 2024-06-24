@@ -7,18 +7,6 @@ return {
   config = function()
     local lualine = require("lualine")
 
-    local function codeium_suggestions()
-      local codeium_status =
-        vim.trim(vim.api.nvim_call_function("codeium#GetStatusString", {}))
-      if codeium_status == "ON" then
-        return "󰚩"
-      elseif codeium_status == "*" then
-        return "󰔟"
-      else
-        return codeium_status
-      end
-    end
-
     lualine.setup({
       options = {
         icons_enabled = true,
@@ -35,7 +23,6 @@ return {
           "branch",
           "diff",
           { "diagnostics", sources = { "nvim_diagnostic" } },
-          { codeium_suggestions },
         },
         lualine_c = { "filename" },
         lualine_x = { "encoding", "fileformat", "filetype" },
