@@ -10,9 +10,9 @@ return {
       astro = { "eslint_d" },
       javascript = { "biomejs", "eslint_d" },
       typescript = { "biomejs", "eslint_d" },
-      javascriptreact = { "eslint_d" },
-      typescriptreact = { "eslint_d" },
-      markdown = { "vale" },
+      javascriptreact = { "biomejs", "eslint_d" },
+      typescriptreact = { "biomejs", "eslint_d" },
+      -- markdown = { "vale" },
     }
 
     local lint_augroup = vim.api.nvim_create_augroup("lint", {
