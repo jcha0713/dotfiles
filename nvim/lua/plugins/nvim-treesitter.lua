@@ -2,6 +2,9 @@ return {
   "nvim-treesitter/nvim-treesitter",
   build = ":TSUpdate",
   config = function()
+    -- LOOKUP: https://github.com/nvim-treesitter/nvim-treesitter/issues/655
+    vim.treesitter.language.register("bash", "zsh")
+
     local parser_configs =
       require("nvim-treesitter.parsers").get_parser_configs()
 
@@ -49,6 +52,7 @@ return {
         "typescript",
         "query",
         "vimdoc",
+        "yaml",
       },
       highlight = {
         enable = true,

@@ -2,17 +2,32 @@ return {
   -- lua utils for neovim
   "nvim-lua/plenary.nvim",
 
-  -- markdown-preview: preview for *.md
   {
     "iamcco/markdown-preview.nvim",
-    build = "cd app && npm install",
-    init = function()
-      vim.g.mkdp_filetypes = { "markdown" }
-    end,
+    cmd = { "MarkdownPreviewToggle", "MarkdownPreview", "MarkdownPreviewStop" },
     ft = { "markdown" },
-    keys = {
-      { "<leader>mp", ":MarkdownPreviewToggle<CR>", "preview md" },
-    },
+    build = function()
+      vim.fn["mkdp#util#install"]()
+    end,
+
+    config = function()
+      vim.keymap.set("n", "<leader>mp", "<cmd>MarkdownPreviewToggle<CR>")
+    end,
+  },
+
+  {
+    "wallpants/github-preview.nvim",
+    enabled = false,
+    cmd = { "GithubPreviewToggle" },
+    ft = { "markdown" },
+    event = "VeryLazy",
+    config = function(_, opts)
+      local gpreview = require("github-preview")
+      gpreview.setup(opts)
+
+      local fns = gpreview.fns
+      vim.keymap.set("n", "<leader>mp", fns.toggle)
+    end,
   },
 
   -- cmp-fuzzy-buffer: buffer source using fuzzy
@@ -29,6 +44,8 @@ return {
     config = function()
       require("nvim-surround").setup({
         keymaps = {
+          visual = "W",
+          visual_line = "gW",
           delete = "dp", -- ds is used by flash.nvim
         },
       })
@@ -64,8 +81,16 @@ return {
 
   -- nvim-colorizer: color label for hex codes
   {
-    "norcalli/nvim-colorizer.lua",
+    "NvChad/nvim-colorizer.lua",
     event = "VeryLazy",
+    config = function()
+      require("colorizer").setup({
+        user_default_options = {
+          names = false,
+          tailwind = true, -- Enable tailwind colors
+        },
+      })
+    end,
   },
 
   -- emmet-vim: support for emmet
@@ -108,17 +133,6 @@ return {
     end,
   },
 
-  -- searchbox.nvim: searchbox for searching and replacing words
-  -- {
-  --   "VonHeikemen/searchbox.nvim",
-  --   config = function()
-  --     require("plugins.searchbox")
-  --   end,
-  --   dependencies = {
-  --     { "MunifTanjim/nui.nvim" },
-  --   },
-  -- },
-
   -- Latex in markdown
   {
     "jbyuki/nabla.nvim",
@@ -136,7 +150,7 @@ return {
   -- Rust
   {
     "mrcjkb/rustaceanvim",
-    version = "^4", -- Recommended
+    version = "^5", -- Recommended
     ft = { "rust" },
   },
 
@@ -199,6 +213,7 @@ return {
           require("duck").hatch("❄️", 3)
           require("duck").hatch("❄️", 3)
         end,
+        desc = "Make it cuter",
       },
     },
     config = function()
@@ -290,7 +305,6 @@ return {
   {
     "jcha0713/classy.nvim",
     dir = "~/jhcha/dev/2022/project/classy",
-    dev = true,
     keys = {
       { "<leader>ac", ":ClassyAddClass<CR>", desc = "Add class attr" },
       { "<leader>dc", ":ClassyRemoveClass<CR>", desc = "Remove class attr" },
@@ -298,21 +312,9 @@ return {
     },
   },
 
-  -- {
-  --   "gleam-lang/gleam.vim",
-  --   ft = "gleam",
-  -- },
-
   {
-    "sourcegraph/sg.nvim",
-    event = "VeryLazy",
-    dependencies = { "nvim-lua/plenary.nvim" },
-    config = true,
-    keys = {
-      { "<leader>sg", ":SourcegraphSearch<CR>", desc = "Sourcegraph Search" },
-      { "<M-z>", ":CodyToggle<CR>", desc = "Cody Toggle" },
-      { "<M-c>", ":CodyChat<CR>", desc = "Cody Chat" },
-    },
+    "gleam-lang/gleam.vim",
+    ft = "gleam",
   },
 
   -- {
@@ -338,13 +340,38 @@ return {
   --     })
   --   end,
   -- },
-
   {
-    "lukas-reineke/headlines.nvim",
+    "MeanderingProgrammer/render-markdown.nvim",
     event = "VeryLazy",
-    dependencies = "nvim-treesitter/nvim-treesitter",
-    config = true, -- or `opts = {}`
+    dependencies = {
+      "nvim-treesitter/nvim-treesitter",
+      "nvim-tree/nvim-web-devicons",
+    }, -- if you prefer nvim-web-devicons
+    ---@module 'render-markdown'
+    ---@type render.md.UserConfig
+    opts = {},
   },
+
+  -- {
+  --   "lukas-reineke/headlines.nvim",
+  --   event = "VeryLazy",
+  --   dependencies = "nvim-treesitter/nvim-treesitter",
+  --   config = function()
+  --     require("headlines").setup({
+  --       markdown = {
+  --         fat_headline_lower_string = "▀",
+  --         bullets = { "󰎤", "󰎧", "󰎪", "󰎭", "󰎱" },
+  --         headline_highlights = {
+  --           "Headline1",
+  --           "Headline2",
+  --           "Headline3",
+  --           "Headline4",
+  --           "Headline5",
+  --         },
+  --       },
+  --     })
+  --   end,
+  -- },
 
   {
     "hedyhli/outline.nvim",
@@ -354,7 +381,11 @@ return {
     },
     config = function()
       require("outline").setup({
+        outline_window = {
+          focus_on_open = false,
+        },
         outline_items = {
+          show_symbol_details = false,
           show_symbol_lineno = true,
           hide_cursor = true,
         },
@@ -394,56 +425,50 @@ return {
     end,
   },
   {
-    "kawre/leetcode.nvim",
-    event = "BufEnter",
-    build = ":TSUpdate html",
-    dependencies = {
-      "nvim-telescope/telescope.nvim",
-      "nvim-lua/plenary.nvim", -- required by telescope
-      "MunifTanjim/nui.nvim",
-      "nvim-treesitter/nvim-treesitter",
-      "nvim-tree/nvim-web-devicons",
-    },
-    opts = {
-      arg = "leetcode",
-      lang = "javascript",
-    },
-    keys = {
-      {
-        "<leader><leader>r",
-        ":Leet run<CR>",
-        {
-          desc = "Leetcode run",
-        },
-      },
-    },
-  },
-  {
     "pwntester/octo.nvim",
     event = "VeryLazy",
-    requires = {
+    dependencies = {
       "nvim-lua/plenary.nvim",
       "nvim-telescope/telescope.nvim",
       "nvim-tree/nvim-web-devicons",
     },
-    config = true,
-  },
-  {
-    "jcha0713/aider.nvim",
-    event = "VeryLazy",
-    dir = "~/jhcha/dev/2024/project/aider.nvim",
-    dev = true,
     config = function()
-      require("aider").setup()
-
-      vim.api.nvim_set_keymap(
-        "n",
-        "<leader>oa",
-        ":AiderOpen<CR>",
-        { desc = "Open Aider Window" }
-      )
+      require("octo").setup({
+        suppress_missing_scope = {
+          project_v2 = true,
+        },
+      })
     end,
   },
+  -- {
+  --   "sidebar-nvim/sidebar.nvim",
+  --   event = { "BufReadPre", "BufNewFile" },
+  --   keys = {
+  --     {
+  --       "<leader><leader>s",
+  --       ":SidebarNvimToggle<CR>",
+  --       desc = "Toggle Sidebar",
+  --     },
+  --   },
+  --   config = function()
+  --     require("sidebar-nvim").setup({
+  --       bindings = {
+  --         ["q"] = function()
+  --           require("sidebar-nvim").close()
+  --         end,
+  --         -- ["t"] = function()
+  --         --   require("sidebar-nvim.builtin.todos").toggle_all()
+  --         -- end,
+  --       },
+  --       sections = { "todos", "diagnostics" },
+  --       todos = {
+  --         icon = "",
+  --         ignored_paths = { "~" },
+  --       },
+  --     })
+  --   end,
+  -- },
+
   {
     "supermaven-inc/supermaven-nvim",
     event = "BufEnter",
@@ -454,11 +479,62 @@ return {
     end,
   },
   {
+    "otavioschwanck/telescope-cmdline-word.nvim",
+    event = "BufEnter",
+    opts = {
+      add_mappings = true, -- add <tab> mapping automatically
+    },
+  },
+  {
+    "jcha0713/backseat.nvim",
+    event = "VeryLazy",
+    dir = "~/jhcha/dev/2024/project/backseat.nvim",
+    keys = {
+      {
+        mode = "v",
+        "<leader><leader>p",
+        ":Backseat<CR>",
+        desc = "Send Backseat request",
+      },
+    },
+    config = function()
+      require("backseat").setup({
+        openai_model_id = "gpt-3.5-turbo", --gpt-4 (If you do not have access to a model, it says "The model does not exist")
+      })
+    end,
+  },
+  {
+    "David-Kunz/gen.nvim",
+    event = "VeryLazy",
+    opts = {
+      display_mode = "split",
+      show_prompt = true,
+    },
+  },
+
+  {
+    "napisani/nvim-github-codesearch",
+    event = "VeryLazy",
+    build = "make",
+    config = function()
+      local gh_search = require("nvim-github-codesearch")
+
+      gh_search.setup({
+        use_telescope = true,
+      })
+
+      vim.keymap.set("n", "<leader>ghs", function()
+        gh_search.prompt()
+      end)
+    end,
+  },
+
+  {
     "danielfalk/smart-open.nvim",
     branch = "0.2.x",
     keys = {
       {
-        "<leader><leader>o",
+        "gs",
         function()
           require("telescope").extensions.smart_open.smart_open()
         end,

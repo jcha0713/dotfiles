@@ -2,22 +2,13 @@ return {
   "shellRaining/hlchunk.nvim",
   event = { "UIEnter" },
   config = function()
-    local support_ft = {
-      "*.js",
-      "*.ts",
-      "*.lua",
-      "*.rs",
-      "*.go",
-      "*.json",
-      "*.css",
-      "*.html",
-    }
+    local support_ft = { "*.*" }
     local exclude_ft = {
       startify = true,
       telekasten = true,
     }
     require("hlchunk").setup({
-      indent = {
+      line_num = {
         enable = false,
         support_filetypes = support_ft,
       },
@@ -26,6 +17,7 @@ return {
         support_filetypes = support_ft,
       },
       chunk = {
+        enable = true,
         chars = {
           horizontal_line = "─",
           vertical_line = "│",

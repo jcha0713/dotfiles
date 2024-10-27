@@ -99,11 +99,6 @@ return {
         },
         { type = "padding", val = 1 },
         startify.button("n", "  New file", ":ene <BAR> startinsert <CR>"),
-        startify.button(
-          "c",
-          "󰸗  Show Calendar",
-          ":lua require('telekasten').show_calendar()<CR>"
-        ),
         startify.button("l", "󱊒  Open Lazy", ":Lazy<CR>"),
         startify.button(
           "p",
@@ -130,7 +125,7 @@ return {
         { type = "padding", val = 1 },
 
         startify.button("f", "󰈞  Find Files", ":Telescope find_files<CR>"),
-        startify.button("r", "󱇻  Recent Files", ":Telescope oldfiles<CR>"),
+        startify.button("s", "󱇻  Smart Open", ":Telescope smart_open<CR>"),
         startify.button("t", "  Todos", ":TodoTelescope<CR>"),
       },
     }

@@ -21,7 +21,7 @@ return {
           HopNextKey = { fg = "#ff9900" },
           HopNextKey1 = { fg = "#ff9900" },
           HopNextKey2 = { fg = "#ff9900" },
-          -- TelescopeBorder = { bg = "#181820" },
+          TelescopeBorder = { bg = "#181820" },
           WinSeparator = { fg = "#727169" },
           rainbowcol1 = { fg = "#DE6647" },
           rainbowcol2 = { fg = "#FF6185" },

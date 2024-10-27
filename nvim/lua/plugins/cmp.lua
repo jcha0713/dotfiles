@@ -45,18 +45,16 @@ return {
     local compare = require("cmp.config.compare")
 
     cmp.setup({
-      completion = {
-        completeopt = "menu,menuone,noinsert",
-      },
+      -- completion = {
+      --   completeopt = "menu,menuone,noinsert",
+      -- },
       snippet = {
         expand = function(args)
           require("luasnip").lsp_expand(args.body)
         end,
       },
       window = {
-        completion = cmp.config.window.bordered({
-          -- winhighlight = "CursorLine:CmpCursorLine",
-        }),
+        completion = cmp.config.window.bordered(),
         documentation = cmp.config.window.bordered(),
       },
       view = {
@@ -87,7 +85,6 @@ return {
 
           if entry.source.name == "nvim_lsp" then
             local lspserver_name = nil
-            vim.print(entry:get_completion_item())
             pcall(function()
               lspserver_name = entry.source.source.client.name
               vim_item.menu = lspserver_name
