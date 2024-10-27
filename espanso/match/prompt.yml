@@ -1,0 +1,3 @@
+matches:
+  - trigger: ":>grammar"
+    replace: "Fix any grammar mistakes in the following text:"

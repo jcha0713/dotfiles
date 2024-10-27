@@ -9,21 +9,21 @@
 # it gets replaced by the "replace" string.
 matches:
   # Print the current date
-  - trigger: ":date"
+  - trigger: ":>date"
     replace: "{{date}}"
     vars:
       - name: date
         type: date
         params:
           format: "%Y-%m-%d"
-  - trigger: ":now"
+  - trigger: ":>now"
     replace: "{{time}}"
     vars:
       - name: time
         type: date
         params:
           format: "%Y-%m-%d %H:%M"
-  - trigger: ":template-new"
+  - trigger: ":>template-new"
     replace: |
       ---
       date: {{date}}
@@ -37,8 +37,8 @@ matches:
       - name: date
         type: match
         params:
-          trigger: ":date"
-  - trigger: ":mkdn-link"
+          trigger: ":>date"
+  - trigger: ":>mkdn-link"
     replace: "{{link}}"
     vars:
       - name: link
