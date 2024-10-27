@@ -75,8 +75,6 @@ map("n", "<Leader>x", ":bd<CR>", { desc = "Close buffer" })
 map("n", "<leader>to", ":tabnew<CR>", { desc = "Open new tab" })
 map("n", "<leader>ts", ":tab split<CR>", { desc = "Split tab" })
 map("n", "<leader>tc", ":tabclose<CR>", { desc = "Close tab" })
-map("n", "]t", ":tabnext<CR>", { desc = "Next tab" })
-map("n", "[t", ":tabprevious<CR>", { desc = "Previous tab" })
 
 -- set break points for undos
 map("i", ",", ",<C-g>u")
@@ -114,4 +112,4 @@ end, { desc = "Super Tab" })
 
 map("n", "<leader><leader>c", function()
   require("plugins.custom.auto_commit").generate_commit_message()
-end)
+end, { desc = "Generate commit messages with AI" })

@@ -23,15 +23,15 @@ local orig_util_open_floating_preview = lsp.util.open_floating_preview
 ---@diagnostic disable-next-line: duplicate-set-field
 function lsp.util.open_floating_preview(contents, syntax, opts, ...)
   opts = opts or {}
-  opts.border = opts.border or border
+  -- opts.border = opts.border or border
+  opts.border = "rounded"
   opts.max_width = opts.max_width or 80
   return orig_util_open_floating_preview(contents, syntax, opts, ...)
 end
 
 vim.diagnostic.config({
   float = {
-    source = "always",
-    show_header = true,
+    source = true,
   },
   virtual_text = false,
   signs = {
@@ -52,12 +52,6 @@ vim.diagnostic.config({
   update_in_insert = false,
   severity_sort = false,
 })
-
-local signs = { Error = "", Warn = "", Hint = "", Info = "" }
-for type, icon in pairs(signs) do
-  local hl = "DiagnosticSign" .. type
-  vim.fn.sign_define(hl, { text = icon .. " ", texthl = hl, numhl = hl })
-end
 
 local win = require("lspconfig.ui.windows")
 local _default_opts = win.default_opts
@@ -104,7 +98,6 @@ local on_attach = function(client, bufnr)
   u.map("n", "<leader>ca", ":LspCodeAction<CR>")
   u.map("v", "<leader>ca", ":LspRangeCodeAction<CR>")
   u.map("n", "<leader>fr", "<cmd>TroubleToggle lsp_references<CR>")
-  u.map("n", "<leader>rr", ":RustRunnable<CR>")
   u.map("i", "<C-s>", "<cmd>lua vim.lsp.buf.signature_help()<CR>")
   u.map("n", "<leader>hi", function()
     if client.server_capabilities.inlayHintProvider then
@@ -113,6 +106,10 @@ local on_attach = function(client, bufnr)
       vim.notify("inlayHintProvider is not enabled", vim.log.levels.WARN, {})
     end
   end, { desc = "Toggle inlay hints" })
+
+  -- rust
+  u.map("n", "<leader>rr", ":RustRunnable<CR>")
+  u.map("n", "<leader>ro", ":RustLsp openDocs<CR>")
 
   if client.name == "tsserver" then
     client.server_capabilities.documentFormattingProvider = false
@@ -125,8 +122,6 @@ local on_attach = function(client, bufnr)
   --     border = "rounded",
   --   },
   -- }, bufnr)
-
-  require("illuminate").on_attach(client)
 end
 
 local servers = vim.api.nvim_get_var("lsp_servers")

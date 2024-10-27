@@ -11,8 +11,7 @@ vim.opt.foldcolumn = "0"
 vim.opt.foldlevel = 99
 vim.opt.foldlevelstart = 99
 vim.opt.foldenable = true
-vim.opt.guicursor =
-  "n-v-c-sm:hor25,i-ci-ve:ver25,r-cr-o:block,n:blinkwait800-blinkon300blinkoff300" -- change cursor shape
+-- vim.opt.guicursor = "n:blinkwait800-blinkon300blinkoff300" -- change cursor shape
 vim.opt.hlsearch = false -- no highlight for searching
 vim.opt.ignorecase = true -- ignore case in search patterns
 vim.opt.linebreak = true -- wrap long lines
@@ -26,6 +25,7 @@ vim.opt.relativenumber = false -- relative line nubers
 vim.opt.shiftwidth = indent -- number of spaces to use for indenting
 vim.opt.showbreak = "…"
 vim.opt.showmatch = true -- jump to the matching bracket when inserted
+vim.opt.signcolumn = "auto:2"
 vim.opt.smartcase = true -- ignore case if the search pattern contains uppercase letters
 vim.opt.smartindent = true -- smart autoindent when starting a new line
 vim.opt.smarttab = true -- <BS> deletes a shiftwidth worth of spaces
