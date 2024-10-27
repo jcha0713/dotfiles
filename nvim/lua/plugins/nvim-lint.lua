@@ -19,14 +19,6 @@ return {
       clear = true,
     })
 
-    local function find_root_directory(file_name)
-      local file_path = vim.fn.findfile(file_name, ".;")
-      if file_path == "" then
-        return nil
-      end
-      return vim.fn.fnamemodify(file_path, ":h")
-    end
-
     vim.api.nvim_create_autocmd({
       "BufEnter",
       "BufWritePost",
@@ -35,13 +27,21 @@ return {
     }, {
       group = lint_augroup,
       callback = function()
-        local root_directory = find_root_directory("biome.json")
+        if
+          vim.bo.filetype == "javascript" or vim.bo.filetype == "typescript"
+        then
+          local root_directory =
+            require("utils").find_root_directory("biome.json")
 
-        if root_directory then
-          lint.try_lint("biomejs")
-        else
-          lint.try_lint()
+          if root_directory then
+            lint.try_lint("biomejs")
+          end
+
+          return
         end
+
+        pcall(require, "lint.try_lint")
+        -- lint.try_lint()
       end,
     })
   end,
