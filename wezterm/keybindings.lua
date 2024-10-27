@@ -102,6 +102,24 @@ M.set_keys = function(config)
       mods = "LEADER",
       action = act.CloseCurrentPane({ confirm = false }),
     },
+    -- cmd+o: gt(next tab)
+    -- cmd+i: gT(prev tab)
+    {
+      key = "i",
+      mods = "CMD",
+      action = act.Multiple({
+        act.SendKey({ key = "g" }),
+        act.SendKey({ key = "t" }),
+      }),
+    },
+    {
+      key = "o",
+      mods = "CMD",
+      action = act.Multiple({
+        act.SendKey({ key = "g" }),
+        act.SendKey({ key = "T" }),
+      }),
+    },
   }
 end
 
