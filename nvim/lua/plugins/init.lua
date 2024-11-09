@@ -512,22 +512,22 @@ return {
     },
   },
 
-  {
-    "napisani/nvim-github-codesearch",
-    event = "VeryLazy",
-    build = "make",
-    config = function()
-      local gh_search = require("nvim-github-codesearch")
-
-      gh_search.setup({
-        use_telescope = true,
-      })
-
-      vim.keymap.set("n", "<leader>ghs", function()
-        gh_search.prompt()
-      end)
-    end,
-  },
+  -- {
+  --   "napisani/nvim-github-codesearch",
+  --   event = "VeryLazy",
+  --   build = "make",
+  --   config = function()
+  --     local gh_search = require("nvim-github-codesearch")
+  --
+  --     gh_search.setup({
+  --       use_telescope = true,
+  --     })
+  --
+  --     vim.keymap.set("n", "<leader>ghs", function()
+  --       gh_search.prompt()
+  --     end)
+  --   end,
+  -- },
 
   {
     "danielfalk/smart-open.nvim",
