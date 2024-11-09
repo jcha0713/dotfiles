@@ -11,6 +11,7 @@
 !auto-setup
 !.zshrc
 !espanso/
+!nix/
 
 !hammerspoon/**
 !nvim/**
@@ -19,6 +20,7 @@
 !wezterm/**
 !auto-setup/**
 !espanso/**
+!nix/**
 
 # but ignore again
 nvim/friendly-snippets/
