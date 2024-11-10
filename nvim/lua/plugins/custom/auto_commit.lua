@@ -123,4 +123,24 @@ function M.generate_commit_message()
   end
 end
 
+function M.do_empty_commit()
+  local popup = Component(nil, {
+    label = {
+      top = " Commit Message",
+    },
+    on_submit = function(new_commit_msg)
+      run_command({
+        "sh",
+        "-c",
+        string.format("git commit --allow-empty -m 'TODO: %s'", new_commit_msg),
+      }, "Successfully committed empty commit!")
+    end,
+    on_abort = function()
+      vim.notify("Commit aborted by user", vim.log.levels.INFO, {})
+    end,
+  })
+
+  popup:mount()
+end
+
 return M
