@@ -5,22 +5,24 @@
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
     nix-darwin.url = "github:LnL7/nix-darwin";
     nix-darwin.inputs.nixpkgs.follows = "nixpkgs";
-    neovim-nightly-overlay.url = "github:nix-community/neovim-nightly-overlay";
+    # neovim-nightly-overlay.url = "github:nix-community/neovim-nightly-overlay";
+    neovim-nix.url = "github:tirimia/neovim-nix";
   };
 
-  outputs = inputs@{ self, nix-darwin, nixpkgs, neovim-nightly-overlay, ... }:
+  outputs = inputs@{ self, nix-darwin, nixpkgs, neovim-nix, ... }:
   let
-    overlays = [
-      inputs.neovim-nightly-overlay.overlays.default
-    ];
+    # overlays = [
+    #   inputs.neovim-nightly-overlay.overlays.default
+    # ];
 
     configuration = { pkgs, ... }: {
-      nixpkgs.overlays = overlays;
+      # nixpkgs.overlays = overlays;
 
       # List packages installed in system profile. To search by name, run:
       # $ nix-env -qaP | grep wget
       environment.systemPackages = [ 
-        pkgs.neovim
+        # pkgs.neovim
+        inputs.neovim-nix.packages.${pkgs.system}.bob
         pkgs.bat
         pkgs.fd
         pkgs.ripgrep
@@ -38,12 +40,12 @@
         pkgs.git-absorb
 
         # GUI apps
-        pkgs.arc-browser
-        pkgs.discord
-        pkgs.aldente
-        pkgs._1password-gui
-        pkgs.mos
-        pkgs.raycast
+        # pkgs.arc-browser
+        # pkgs.discord
+        # pkgs.aldente
+        # pkgs._1password-gui
+        # pkgs.mos
+        # pkgs.raycast
       ];
 
       # Auto upgrade nix package and the daemon service.
