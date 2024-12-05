@@ -569,4 +569,11 @@ return {
     event = "VeryLazy",
     config = true,
   },
+
+  {
+    "grapp-dev/nui-components.nvim",
+    dependencies = {
+      "MunifTanjim/nui.nvim",
+    },
+  },
 }

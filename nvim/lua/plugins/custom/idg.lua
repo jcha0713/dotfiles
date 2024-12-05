@@ -16,6 +16,9 @@ local tbl = require("sqlite.tbl")
 local db_path = vim.fn.stdpath("data") .. "/idg.db"
 local strftime = sqlite_db.lib.strftime
 
+-- nui-components for rendering ui
+local n = require("nui-components")
+
 -- Table schema
 ---@class Todos
 ---@field id number: unique identifier
@@ -115,32 +118,66 @@ end
 
 M.create_todo = function()
   local db = get_db()
-  local Component = require("modules.ui.base")
 
-  local popup = Component(nil, {
-    label = {
-      top = " Commit Message",
-    },
-    on_submit = function(new_commit_msg)
-      run_command({
-        "sh",
-        "-c",
-        string.format("git commit --allow-empty -m 'TODO: %s'", new_commit_msg),
-      }, "Successfully committed empty commit!")
-
-      db:insert("todos", {
-        commit_hash = vim.fn.system("git rev-parse HEAD"):gsub("\n", ""),
-        message = [[TODO: ]] .. new_commit_msg,
-        repository = vim.fn.getcwd(),
-        branch = vim.fn.system("git branch --show-current"):gsub("\n", ""),
-      })
-    end,
-    on_abort = function()
-      vim.notify("Commit aborted by user", vim.log.levels.INFO, {})
-    end,
+  local renderer = n.create_renderer({
+    width = 60,
+    height = 10,
   })
 
-  popup:mount()
+  local signal = n.create_signal({
+    new_commit_msg = "",
+  })
+
+  local commit_input = function()
+    local to_macos_keys = require("modules.utils").to_macos_keys
+
+    return n.form(
+      {
+        id = "form",
+        submit_key = "<D-CR>",
+        on_submit = function()
+          local new_commit_msg = signal.new_commit_msg:get_value()
+
+          run_command({
+            "sh",
+            "-c",
+            string.format(
+              "git commit --allow-empty -m 'TODO: %s'",
+              new_commit_msg
+            ),
+          }, "Successfully committed empty commit!")
+
+          db:insert("todos", {
+            commit_hash = vim.fn.system("git rev-parse HEAD"):gsub("\n", ""),
+            message = [[TODO: ]] .. new_commit_msg,
+            repository = vim.fn.getcwd(),
+            branch = vim.fn.system("git branch --show-current"):gsub("\n", ""),
+          })
+
+          renderer:close()
+        end,
+      },
+      n.text_input({
+        autofocus = true,
+        autoresize = true,
+        size = 1,
+        border_label = " Commit Message",
+        placeholder = "Define your next goal here",
+        on_change = function(value, _component)
+          signal.new_commit_msg = value
+        end,
+        on_mount = function(component)
+          component:set_border_text(
+            "bottom",
+            " (" .. to_macos_keys("D CR") .. ")" .. " Submit ",
+            "right"
+          )
+        end,
+      })
+    )
+  end
+
+  renderer:render(commit_input)
 end
 
 M.create_fixup = function()
