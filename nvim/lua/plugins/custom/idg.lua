@@ -71,8 +71,13 @@ local function get_db()
     fixups = {
       id = true,
       commit_hash = { type = "text", required = true },
+      description = { type = "text" },
       created_at = { type = "date", default = strftime("%s", "now") },
-      todo_id = { type = "number", reference = "todos.id" },
+      todo = {
+        type = "integer",
+        reference = "todos.id",
+        on_delete = "cascade",
+      },
       ensure = true,
     },
   })
@@ -185,6 +190,7 @@ M.create_fixup = function()
 
   local signal = n.create_signal({
     selected = nil,
+    description = "",
   })
 
   local renderer = n.create_renderer({
@@ -220,35 +226,75 @@ M.create_fixup = function()
   end
 
   local fixup_input = function()
-    return n.select({
-      autofocus = true,
-      border_label = " Fixup",
-      selected = signal.selected,
-      data = todos_to_data(todos),
-      multiselect = false,
-      on_select = function(nodes)
-        signal.selected = nodes
+    local to_macos_keys = require("modules.utils").to_macos_keys
 
-        run_command({
-          "sh",
-          "-c",
-          string.format("git commit --fixup '%s'", nodes.id),
-        }, "Successfully committed fixup commit!")
+    vim.api.nvim_set_hl(
+      0,
+      "NuiComponentsSelectOptionSelected",
+      { fg = "#ee90a2" }
+    )
 
-        -- id = true,
-        -- commit_hash = { type = "text", required = true },
-        -- created_at = { type = "date", default = strftime("%s", "now") },
-        -- todo_id = { type = "number", reference = "todos.id" },
+    return n.form(
+      {
+        id = "fixup",
+        submit_key = "<D-CR>",
+        on_submit = function()
+          local selected_commit = signal.selected:get_value()
+          local description = signal.description:get_value()
 
-        db:insert("fixups", {
-          commit_hash = vim.fn.system("git rev-parse HEAD"):gsub("\n", ""),
-          created_at = strftime("%s", "now"),
-          todo_id = signal.selected.id,
-        })
+          run_command({
+            "sh",
+            "-c",
+            string.format("git commit --fixup '%s'", selected_commit.id),
+          }, "Successfully committed fixup commit!")
 
-        renderer:close()
-      end,
-    })
+          db:insert("fixups", {
+            commit_hash = vim.fn.system("git rev-parse HEAD"):gsub("\n", ""),
+            description = description,
+            created_at = strftime("%s", "now"),
+            todo = selected_commit.id,
+          })
+
+          renderer:close()
+        end,
+      },
+      n.select({
+        autofocus = true,
+        border_label = " Fixup",
+        selected = signal.selected,
+        is_focusable = true,
+        data = todos_to_data(todos),
+        multiselect = false,
+        on_select = function(nodes)
+          local selected = signal.selected:get_value()
+
+          if selected == nil or nodes.id ~= selected.id then
+            signal.selected = nodes
+          else
+            signal.selected = nil
+          end
+        end,
+        on_unmont = function()
+          signal.selected = nil
+        end,
+      }),
+      n.text_input({
+        autoresize = true,
+        is_focusable = true,
+        size = 1,
+        border_label = "Description",
+        on_change = function(value, _component)
+          signal.description = value
+        end,
+        on_mount = function(component)
+          component:set_border_text(
+            "bottom",
+            " (" .. to_macos_keys("D CR") .. ")" .. " Submit ",
+            "right"
+          )
+        end,
+      })
+    )
   end
 
   renderer:render(fixup_input)
