@@ -71,7 +71,6 @@ local function get_db()
     fixups = {
       id = true,
       commit_hash = { type = "text", required = true },
-      message = { type = "text" },
       created_at = { type = "date", default = strftime("%s", "now") },
       todo_id = { type = "number", reference = "todos.id" },
       ensure = true,
@@ -160,7 +159,7 @@ M.create_todo = function()
       n.text_input({
         autofocus = true,
         autoresize = true,
-        size = 1,
+        size = 5,
         border_label = " Commit Message",
         placeholder = "Define your next goal here",
         on_change = function(value, _component)
@@ -184,7 +183,75 @@ M.create_fixup = function()
   local db = get_db()
   local todos = db:select("todos", { where = { completed_at == nil } })
 
-  print(vim.inspect(todos))
+  local signal = n.create_signal({
+    selected = nil,
+  })
+
+  local renderer = n.create_renderer({
+    width = 100,
+    height = 10,
+  })
+
+  local todos_to_data = function(todos)
+    if not todos then
+      return {}
+    end
+
+    if type(todos) ~= "table" then
+      return {}
+    end
+
+    local data = {}
+
+    for _, todo in ipairs(todos) do
+      local goal = todo.message:match("^TODO:%s*(.+)$")
+
+      if goal then
+        local option =
+          n.option(string.sub(todo.commit_hash, 1, 7) .. [[ - ]] .. goal, {
+            id = todo.commit_hash,
+          })
+
+        table.insert(data, option)
+      end
+    end
+
+    return data
+  end
+
+  local fixup_input = function()
+    return n.select({
+      autofocus = true,
+      border_label = " Fixup",
+      selected = signal.selected,
+      data = todos_to_data(todos),
+      multiselect = false,
+      on_select = function(nodes)
+        signal.selected = nodes
+
+        run_command({
+          "sh",
+          "-c",
+          string.format("git commit --fixup '%s'", nodes.id),
+        }, "Successfully committed fixup commit!")
+
+        -- id = true,
+        -- commit_hash = { type = "text", required = true },
+        -- created_at = { type = "date", default = strftime("%s", "now") },
+        -- todo_id = { type = "number", reference = "todos.id" },
+
+        db:insert("fixups", {
+          commit_hash = vim.fn.system("git rev-parse HEAD"):gsub("\n", ""),
+          created_at = strftime("%s", "now"),
+          todo_id = signal.selected.id,
+        })
+
+        renderer:close()
+      end,
+    })
+  end
+
+  renderer:render(fixup_input)
 end
 
 function M.setup(opts)
