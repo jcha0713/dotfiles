@@ -236,6 +236,123 @@ M.create_fixup = function()
   renderer:render(fixup_input)
 end
 
+M.squash = function()
+  local signal = n.create_signal({
+    selected = nil,
+  })
+
+  local renderer = n.create_renderer({
+    width = 100,
+    height = 10,
+  })
+
+  local todos_to_data = function()
+    local todos = fetch_todos()
+
+    local data = {}
+
+    for _, todo in ipairs(todos) do
+      -- TODO: display number of fixups
+      local option = n.option(
+        string.sub(todo.commit_hash, 1, 7) .. [[ - ]] .. todo.message,
+        {
+          id = todo.commit_hash,
+          message = todo.message,
+          body = todo.body,
+        }
+      )
+
+      table.insert(data, option)
+    end
+
+    return data
+  end
+
+  local squash_input = function()
+    local to_macos_keys = require("modules.utils").to_macos_keys
+
+    vim.api.nvim_set_hl(
+      0,
+      "NuiComponentsSelectOptionSelected",
+      { fg = "#ee90a2" }
+    )
+
+    return n.form(
+      {
+        id = "squash",
+        submit_key = "<D-CR>",
+        on_submit = function()
+          local selected = signal.selected:get_value()
+
+          local function rebase(popup)
+            local cli_args = popup:get_arguments()
+            require("neogit.lib.git.rebase").rebase_interactive(
+              popup.state.env.commit_hash,
+              cli_args
+            )
+          end
+
+          local function create_custom_popup()
+            local popup = require("neogit.lib.popup")
+            local p = popup
+              .builder()
+              :name("IDG Squash")
+              :switch("s", "autosquash", "Autosquash", {
+                enabled = true,
+              })
+              :switch("S", "autostash", "Autostash", {
+                enabled = true,
+              })
+              :action("r", "Rebase", rebase)
+              :env({
+                commit_hash = selected.id,
+              })
+              :build()
+
+            p:show()
+
+            return p
+          end
+
+          create_custom_popup()
+
+          renderer:close()
+        end,
+      },
+      n.select({
+        autofocus = true,
+        border_label = " Squash",
+        selected = signal.selected,
+        size = 10,
+        is_focusable = true,
+        data = todos_to_data(),
+        multiselect = false,
+        on_select = function(nodes)
+          local selected = signal.selected:get_value()
+
+          if selected == nil or nodes.id ~= selected.id then
+            signal.selected = nodes
+          else
+            signal.selected = nil
+          end
+        end,
+        on_mount = function(component)
+          component:set_border_text(
+            "bottom",
+            " (" .. to_macos_keys("D CR") .. ")" .. " Submit ",
+            "right"
+          )
+        end,
+        on_unmount = function()
+          signal.selected = nil
+        end,
+      })
+    )
+  end
+
+  renderer:render(squash_input)
+end
+
 M.get_last_todo = function()
   local todos = fetch_todos()
 
@@ -251,6 +368,7 @@ function M.setup(opts)
 
   vim.api.nvim_create_user_command("IDGTodo", M.create_todo, {})
   vim.api.nvim_create_user_command("IDGFixup", M.create_fixup, {})
+  vim.api.nvim_create_user_command("IDGSquash", M.squash, {})
 end
 
 return M
