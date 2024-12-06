@@ -180,6 +180,7 @@ M.create_fixup = function()
         autofocus = true,
         border_label = " Fixup",
         selected = signal.selected,
+        size = 10,
         is_focusable = true,
         data = todos_to_data(),
         multiselect = false,
