@@ -287,7 +287,7 @@ M.squash = function()
           local function rebase(popup)
             local cli_args = popup:get_arguments()
             require("neogit.lib.git.rebase").rebase_interactive(
-              popup.state.env.commit_hash,
+              popup.state.env.commit_hash .. "^",
               cli_args
             )
           end
