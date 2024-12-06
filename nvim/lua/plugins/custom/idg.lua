@@ -117,7 +117,7 @@ M.create_fixup = function()
   local signal = n.create_signal({
     selected = nil,
     original_message = "",
-    new_message = "",
+    description = "",
     is_todo = false,
   })
 
@@ -161,15 +161,15 @@ M.create_fixup = function()
         submit_key = "<D-CR>",
         on_submit = function()
           local original_message = signal.original_message:get_value()
-          local new_message = signal.new_message:get_value()
+          local description = signal.description:get_value()
 
           run_command({
             "sh",
             "-c",
             string.format(
-              "git commit -m 'fixup! %s :: %s'",
+              "git commit -m 'fixup! %s' -m '%s'",
               original_message,
-              new_message
+              description
             ),
           }, "Successfully committed fixup commit!")
 
@@ -191,6 +191,7 @@ M.create_fixup = function()
             signal.original_message = nodes.message
           else
             signal.selected = nil
+            signal.original_message = nodes.message
           end
         end,
         on_unmount = function()
@@ -201,9 +202,9 @@ M.create_fixup = function()
         autoresize = true,
         is_focusable = true,
         size = 1,
-        border_label = "New message",
+        border_label = "Additional message",
         on_change = function(value, _component)
-          signal.new_message = value
+          signal.description = value
         end,
         on_mount = function(component)
           component:set_border_text(
