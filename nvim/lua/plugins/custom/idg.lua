@@ -1,103 +1,6 @@
 -- idg.lua: Intention-Driven Git Integration for Neovim
 local M = {}
 
-local has_sqlite, sqlite = pcall(require, "sqlite")
-
-if not has_sqlite then
-  error(
-    "IDG requires sqlite.lua (https://github.com/kkharji/sqlite.lua) "
-      .. tostring(sqlite)
-  )
-end
-
--- SQLite database connection for storing and managing TODOs
-local sqlite_db = require("sqlite.db")
-local tbl = require("sqlite.tbl")
-local db_path = vim.fn.stdpath("data") .. "/idg.db"
-local strftime = sqlite_db.lib.strftime
-
--- nui-components for rendering ui
-local n = require("nui-components")
-
--- Table schema
----@class Todos
----@field id number: unique identifier
----@field commit_hash string: commit hash
----@field message string: commit message
----@field created_at number: timestamp of creation
----@field completed_at number: timestamp of completion
----@field repository string: path to repository
----@field branch string: current branch
-
----@class Fixups
----@field id number: unique identifier
----@field commit_hash string: commit hash
----@field message string: commit message
----@field created_at number: timestamp of creation
----@field todo_id number: id of associated todo
-
--- Database
----@class TodoTbl: sqlite_tbl
----@class FixupTbl: sqlite_tbl
-
----@class IDGDB: sqlite_db
----@field todos TodoTbl
----@field fixups FixupTbl
-
--- Store database connection at module level
-M.db = nil
-
--- Lazy database initialization
-local function get_db()
-  -- Return existing connection if we have one
-  if M.db and M.db:isopen() then
-    return M.db
-  end
-
-  -- Initialize database connection
-  M.db = sqlite_db:extend({
-    uri = db_path,
-    opts = { keep_open = true },
-    todos = {
-      id = true,
-      commit_hash = { type = "text", required = true },
-      message = { type = "text" },
-      created_at = { type = "date", default = strftime("%s", "now") },
-      completed_at = { type = "date" },
-      repository = { type = "text" },
-      branch = { type = "text" },
-      ensure = true,
-    },
-    fixups = {
-      id = true,
-      commit_hash = { type = "text", required = true },
-      description = { type = "text" },
-      created_at = { type = "date", default = strftime("%s", "now") },
-      todo = {
-        type = "integer",
-        reference = "todos.id",
-        on_delete = "cascade",
-      },
-      ensure = true,
-    },
-  })
-
-  -- Verify database is working
-  if not M.db:exists("todos") then
-    error("Failed to initialize database")
-  end
-
-  return M.db
-end
-
--- Cleanup function to close database connection
-local function cleanup()
-  if M.db and M.db:isopen() then
-    M.db:close()
-    M.db = nil
-  end
-end
-
 --- run shell commands
 ---@param cmd string[]
 ---@param success_msg string | nil
@@ -120,9 +23,42 @@ local function run_command(cmd, success_msg, on_exit)
   return command
 end
 
-M.create_todo = function()
-  local db = get_db()
+---@class Todo
+---@field commit_hash string
+---@field message string
 
+---@return Todo[]
+local fetch_todos = function()
+  local todos = {}
+
+  local result = run_command({
+    "sh",
+    "-c",
+    "git log --grep='^TODO:' --grep='^fixup!' --format='%H %s' --reverse",
+  })
+
+  if result.code ~= 0 then
+    vim.notify(result.stderr, vim.log.levels.ERROR)
+    return {}
+  end
+
+  for line in result.stdout:gmatch("[^\r\n]+") do
+    local commit_hash, message = line:match("(%w+)%s+(.*)")
+    if commit_hash and message then
+      table.insert(todos, {
+        commit_hash = commit_hash,
+        message = message,
+      })
+    end
+  end
+
+  return todos
+end
+
+-- nui-components for rendering ui
+local n = require("nui-components")
+
+M.create_todo = function()
   local renderer = n.create_renderer({
     width = 60,
     height = 10,
@@ -151,13 +87,6 @@ M.create_todo = function()
             ),
           }, "Successfully committed empty commit!")
 
-          db:insert("todos", {
-            commit_hash = vim.fn.system("git rev-parse HEAD"):gsub("\n", ""),
-            message = [[TODO: ]] .. new_commit_msg,
-            repository = vim.fn.getcwd(),
-            branch = vim.fn.system("git branch --show-current"):gsub("\n", ""),
-          })
-
           renderer:close()
         end,
       },
@@ -185,9 +114,6 @@ M.create_todo = function()
 end
 
 M.create_fixup = function()
-  local db = get_db()
-  local todos = db:select("todos", { where = { completed_at == nil } })
-
   local signal = n.create_signal({
     selected = nil,
     description = "",
@@ -198,28 +124,20 @@ M.create_fixup = function()
     height = 10,
   })
 
-  local todos_to_data = function(todos)
-    if not todos then
-      return {}
-    end
-
-    if type(todos) ~= "table" then
-      return {}
-    end
+  local todos_to_data = function()
+    local todos = fetch_todos()
 
     local data = {}
 
     for _, todo in ipairs(todos) do
-      local goal = todo.message:match("^TODO:%s*(.+)$")
+      local option = n.option(
+        string.sub(todo.commit_hash, 1, 7) .. [[ - ]] .. todo.message,
+        {
+          id = todo.commit_hash,
+        }
+      )
 
-      if goal then
-        local option =
-          n.option(string.sub(todo.commit_hash, 1, 7) .. [[ - ]] .. goal, {
-            id = todo.commit_hash,
-          })
-
-        table.insert(data, option)
-      end
+      table.insert(data, option)
     end
 
     return data
@@ -248,13 +166,6 @@ M.create_fixup = function()
             string.format("git commit --fixup '%s'", selected_commit.id),
           }, "Successfully committed fixup commit!")
 
-          db:insert("fixups", {
-            commit_hash = vim.fn.system("git rev-parse HEAD"):gsub("\n", ""),
-            description = description,
-            created_at = strftime("%s", "now"),
-            todo = selected_commit.id,
-          })
-
           renderer:close()
         end,
       },
@@ -263,7 +174,7 @@ M.create_fixup = function()
         border_label = " Fixup",
         selected = signal.selected,
         is_focusable = true,
-        data = todos_to_data(todos),
+        data = todos_to_data(),
         multiselect = false,
         on_select = function(nodes)
           local selected = signal.selected:get_value()
@@ -274,7 +185,7 @@ M.create_fixup = function()
             signal.selected = nil
           end
         end,
-        on_unmont = function()
+        on_unmount = function()
           signal.selected = nil
         end,
       }),
@@ -303,12 +214,6 @@ end
 function M.setup(opts)
   opts = opts or {}
 
-  -- Register cleanup when Neovim exits
-  vim.api.nvim_create_autocmd("VimLeavePre", {
-    callback = cleanup,
-  })
-
-  -- Register commands
   vim.api.nvim_create_user_command("IDGTodo", M.create_todo, {})
   vim.api.nvim_create_user_command("IDGFixup", M.create_fixup, {})
 end
