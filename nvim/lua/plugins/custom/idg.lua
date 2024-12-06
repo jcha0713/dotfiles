@@ -26,6 +26,7 @@ end
 ---@class Todo
 ---@field commit_hash string
 ---@field message string
+---@field body string
 
 ---@return Todo[]
 local fetch_todos = function()
@@ -34,7 +35,7 @@ local fetch_todos = function()
   local result = run_command({
     "sh",
     "-c",
-    "git log --grep='^TODO:' --grep='^fixup!' --format='%H %s' --reverse",
+    "git log --grep='^TODO:' --grep='^fixup!' --format='%H %s|||%b' --reverse",
   })
 
   if result.code ~= 0 then
@@ -43,11 +44,12 @@ local fetch_todos = function()
   end
 
   for line in result.stdout:gmatch("[^\r\n]+") do
-    local commit_hash, message = line:match("(%w+)%s+(.*)")
+    local commit_hash, message, body = line:match("(%w+)%s+(.*)|||(.*)")
     if commit_hash and message then
       table.insert(todos, {
         commit_hash = commit_hash,
         message = message,
+        body = body,
       })
     end
   end
@@ -137,6 +139,7 @@ M.create_fixup = function()
         {
           id = todo.commit_hash,
           message = todo.message,
+          body = todo.body,
         }
       )
 
