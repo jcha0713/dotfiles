@@ -292,7 +292,7 @@ M.squash = function()
             )
           end
 
-          local function create_custom_popup()
+          local function open_rebase_popup()
             local popup = require("neogit.lib.popup")
             local p = popup
               .builder()
@@ -314,7 +314,7 @@ M.squash = function()
             return p
           end
 
-          create_custom_popup()
+          open_rebase_popup()
 
           renderer:close()
         end,
