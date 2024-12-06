@@ -116,7 +116,9 @@ end
 M.create_fixup = function()
   local signal = n.create_signal({
     selected = nil,
-    description = "",
+    original_message = "",
+    new_message = "",
+    is_todo = false,
   })
 
   local renderer = n.create_renderer({
@@ -134,6 +136,7 @@ M.create_fixup = function()
         string.sub(todo.commit_hash, 1, 7) .. [[ - ]] .. todo.message,
         {
           id = todo.commit_hash,
+          message = todo.message,
         }
       )
 
@@ -157,13 +160,17 @@ M.create_fixup = function()
         id = "fixup",
         submit_key = "<D-CR>",
         on_submit = function()
-          local selected_commit = signal.selected:get_value()
-          local description = signal.description:get_value()
+          local original_message = signal.original_message:get_value()
+          local new_message = signal.new_message:get_value()
 
           run_command({
             "sh",
             "-c",
-            string.format("git commit --fixup '%s'", selected_commit.id),
+            string.format(
+              "git commit -m 'fixup! %s :: %s'",
+              original_message,
+              new_message
+            ),
           }, "Successfully committed fixup commit!")
 
           renderer:close()
@@ -181,6 +188,7 @@ M.create_fixup = function()
 
           if selected == nil or nodes.id ~= selected.id then
             signal.selected = nodes
+            signal.original_message = nodes.message
           else
             signal.selected = nil
           end
@@ -193,9 +201,9 @@ M.create_fixup = function()
         autoresize = true,
         is_focusable = true,
         size = 1,
-        border_label = "Description",
+        border_label = "New message",
         on_change = function(value, _component)
-          signal.description = value
+          signal.new_message = value
         end,
         on_mount = function(component)
           component:set_border_text(
