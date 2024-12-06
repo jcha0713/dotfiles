@@ -23,19 +23,23 @@ local function run_command(cmd, success_msg, on_exit)
   return command
 end
 
----@class Todo
+---@class Commit
 ---@field commit_hash string
 ---@field message string
 ---@field body string
 
----@return Todo[]
-local fetch_todos = function()
-  local todos = {}
+---@param grep_pattern string
+---@return Commit[]
+local fetch_commits = function(grep_pattern)
+  local commits = {}
 
   local result = run_command({
     "sh",
     "-c",
-    "git log --grep='^TODO:' --grep='^fixup!' --format='%H %s|||%b' --reverse",
+    string.format(
+      "git log --grep='%s' --format='%%H %%s|||%%b' --reverse",
+      grep_pattern
+    ),
   })
 
   if result.code ~= 0 then
@@ -46,7 +50,7 @@ local fetch_todos = function()
   for line in result.stdout:gmatch("[^\r\n]+") do
     local commit_hash, message, body = line:match("(%w+)%s+(.*)|||(.*)")
     if commit_hash and message then
-      table.insert(todos, {
+      table.insert(commits, {
         commit_hash = commit_hash,
         message = message,
         body = body,
@@ -54,7 +58,15 @@ local fetch_todos = function()
     end
   end
 
-  return todos
+  return commits
+end
+
+local fetch_fixups = function()
+  return fetch_commits("^fixup!")
+end
+
+local fetch_todos = function()
+  return fetch_commits("^TODO:")
 end
 
 -- nui-components for rendering ui
