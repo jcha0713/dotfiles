@@ -224,6 +224,16 @@ M.create_fixup = function()
   renderer:render(fixup_input)
 end
 
+M.get_last_todo = function()
+  local todos = fetch_todos()
+
+  if #todos == 0 then
+    return nil
+  end
+
+  return todos[#todos]
+end
+
 function M.setup(opts)
   opts = opts or {}
 
