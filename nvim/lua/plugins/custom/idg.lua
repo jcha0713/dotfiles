@@ -303,6 +303,19 @@ M.squash = function()
               :switch("S", "autostash", "Autostash", {
                 enabled = true,
               })
+              :option(
+                "x",
+                "exec",
+                string.format(
+                  "git commit --amend -m \"$(git log --format=%%B -n1 | sed 's/TODO: //')\""
+                ),
+                "Remove TODO prefix from commit message",
+                {
+                  key_prefix = "-",
+                  separator = " ",
+                  enabled = true,
+                }
+              )
               :action("r", "Rebase", rebase)
               :env({
                 commit_hash = selected.id,
