@@ -35,6 +35,16 @@ return {
       },
     }
 
+    local function check_todo()
+      local last_todo = require("plugins.custom.idg").get_last_todo()
+
+      if last_todo then
+        return last_todo.message
+      else
+        return "WARNING: NO GOAL HAS BEEN SET!"
+      end
+    end
+
     local sections = {
       lualine_a = {
         { "mode", separator = { left = "" }, right_padding = 2 },
@@ -47,43 +57,19 @@ return {
       lualine_c = {
         "filename",
       },
-      lualine_x = { "encoding", "fileformat", "filetype" },
-      lualine_y = {},
+      lualine_x = {
+        "encoding",
+        "fileformat",
+        "filetype",
+        { separator = { left = "" } },
+      },
+      lualine_y = {
+        check_todo,
+      },
       lualine_z = {
         { "location", separator = { right = "" }, left_padding = 2 },
       },
     }
-
-    local function no_goal()
-      return "WARNING: NO GOAL HAS BEEN SET!"
-    end
-
-    local no_goal_sections = {
-      lualine_a = {
-        { "mode", separator = { left = "" }, right_padding = 2 },
-      },
-      lualine_b = { "filename" },
-      lualine_c = { nil },
-      lualine_x = { nil },
-      lualine_y = { nil },
-      lualine_z = {
-        {
-          no_goal,
-          separator = { left = "", right = "" },
-          left_padding = 2,
-        },
-      },
-    }
-
-    local get_sections = function()
-      local last_todo = require("plugins.custom.idg").get_last_todo()
-
-      if last_todo then
-        return sections
-      else
-        return no_goal_sections
-      end
-    end
 
     lualine.setup({
       options = {
@@ -94,7 +80,7 @@ return {
         always_divide_middle = true,
         globalstatus = true,
       },
-      sections = get_sections(),
+      sections = sections,
       inactive_sections = {
         lualine_a = {},
         lualine_b = {},

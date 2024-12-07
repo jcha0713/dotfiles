@@ -101,6 +101,8 @@ M.create_todo = function()
             ),
           }, "Successfully committed empty commit!")
 
+          require("lualine").refresh()
+
           renderer:close()
         end,
       },
@@ -328,6 +330,8 @@ M.squash = function()
           end
 
           open_rebase_popup()
+
+          require("lualine").refresh()
 
           renderer:close()
         end,
