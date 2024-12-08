@@ -48,4 +48,4 @@ require("themes")
 
 require("cmp-tw2css").setup()
 require("classy").setup()
-require("./lua/plugins/custom/idg").setup()
+require("plugins.custom.idg").setup()
