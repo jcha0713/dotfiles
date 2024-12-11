@@ -48,4 +48,4 @@ require("themes")
 
 require("cmp-tw2css").setup()
 require("classy").setup()
-require("plugins.custom.idg").setup()
+require("modules.custom")

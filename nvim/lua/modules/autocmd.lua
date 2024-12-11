@@ -29,21 +29,6 @@ autocmd("FileType", {
   group = qf,
 })
 
--- attach winbar
-local winbar = augroup("winbar", { clear = true })
-autocmd({
-  "CursorMoved",
-  "BufWinEnter",
-  "BufFilePost",
-  "InsertEnter",
-  "BufWritePost",
-}, {
-  callback = function()
-    require("plugins.custom.winbar").get_winbar()
-  end,
-  group = winbar,
-})
-
 -- don't auto insert comments when starting a newline
 local no_comments = augroup("no_comments", { clear = true })
 autocmd("FileType", {

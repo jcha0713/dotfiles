@@ -108,9 +108,9 @@ vim.keymap.set("i", "<Tab>", function()
 end, { desc = "Super Tab" })
 
 map("n", "<leader><leader>c", function()
-  require("plugins.custom.auto_commit").generate_commit_message()
+  require("modules.custom.auto_commit").generate_commit_message()
 end, { desc = "Generate commit messages with AI" })
 
 map("n", "<leader>ge", function()
-  require("plugins.custom.auto_commit").do_empty_commit()
+  require("modules.custom.auto_commit").do_empty_commit()
 end, { desc = "Generate empty commit message" })

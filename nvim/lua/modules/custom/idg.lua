@@ -1,4 +1,9 @@
 -- idg.lua: Intention-Driven Git Integration for Neovim
+
+-- TODO: organize custom modules and load them all at one place
+-- TODO: search through todo comments and display them when creating a new todo
+-- TODO: set global winbar that shows the number of todos and a warning if there are no todos
+
 local M = {}
 
 --- run shell commands
@@ -101,7 +106,7 @@ M.create_todo = function()
             ),
           }, "Successfully committed empty commit!")
 
-          require("lualine").refresh()
+          require("modules.custom.winbar").update_winbar()
 
           renderer:close()
         end,
@@ -331,7 +336,7 @@ M.squash = function()
 
           open_rebase_popup()
 
-          require("lualine").refresh()
+          require("modules.custom.winbar").update_winbar()
 
           renderer:close()
         end,
