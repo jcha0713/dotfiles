@@ -57,6 +57,15 @@ M.setup = function()
       M.get_winbar()
     end,
   })
+
+  vim.api.nvim_create_autocmd({ "BufLeave", "BufWinLeave" }, {
+    pattern = ".git/rebase-merge/git-rebase-todo",
+    callback = function()
+      vim.defer_fn(function()
+        M.update_winbar()
+      end, 300)
+    end,
+  })
 end
 
 return M
