@@ -35,42 +35,6 @@ return {
       },
     }
 
-    local function check_todo()
-      local last_todo = require("plugins.custom.idg").get_last_todo()
-
-      if last_todo then
-        return last_todo.message
-      else
-        return "WARNING: NO GOAL HAS BEEN SET!"
-      end
-    end
-
-    local sections = {
-      lualine_a = {
-        { "mode", separator = { left = "" }, right_padding = 2 },
-      },
-      lualine_b = {
-        "branch",
-        "diff",
-        { "diagnostics", sources = { "nvim_diagnostic" } },
-      },
-      lualine_c = {
-        "filename",
-      },
-      lualine_x = {
-        "encoding",
-        "fileformat",
-        "filetype",
-        { separator = { left = "" } },
-      },
-      lualine_y = {
-        check_todo,
-      },
-      lualine_z = {
-        { "location", separator = { right = "" }, left_padding = 2 },
-      },
-    }
-
     lualine.setup({
       options = {
         icons_enabled = true,
@@ -80,7 +44,29 @@ return {
         always_divide_middle = true,
         globalstatus = true,
       },
-      sections = sections,
+      sections = {
+        lualine_a = {
+          { "mode", separator = { left = "" }, right_padding = 2 },
+        },
+        lualine_b = {
+          "branch",
+          "diff",
+          { "diagnostics", sources = { "nvim_diagnostic" } },
+        },
+        lualine_c = {
+          "filename",
+        },
+        lualine_x = {},
+        lualine_y = {
+          "encoding",
+          "fileformat",
+          "filetype",
+          { separator = { left = "" } },
+        },
+        lualine_z = {
+          { "location", separator = { right = "" }, left_padding = 2 },
+        },
+      },
       inactive_sections = {
         lualine_a = {},
         lualine_b = {},
