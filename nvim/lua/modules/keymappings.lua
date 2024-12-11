@@ -22,9 +22,6 @@ map("n", "<C-w>>", "5<C-w>>")
 -- yank from cursor to the end of the line
 map("n", "Y", "y$")
 
--- insert a newline
-map("n", "<CR>", "o<ESC>k")
-
 -- source lua file
 map("n", "<leader><leader>s", ":luafile %<CR>")
 
