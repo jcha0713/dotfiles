@@ -1,6 +1,7 @@
 local M = {}
 
 M.winbar_filetype = {
+  "alpha",
   "astro",
   "css",
   "gleam",
@@ -26,7 +27,13 @@ end
 
 M.get_winbar = function()
   if not vim.tbl_contains(M.winbar_filetype, vim.bo.filetype) then
-    vim.opt_local.winbar = nil
+    vim.opt_local.winbar = ""
+    return
+  end
+
+  local winbar = vim.api.nvim_get_option_value("winbar", { scope = "local" })
+
+  if winbar ~= "" then
     return
   end
 
@@ -52,14 +59,18 @@ M.update_winbar = function(value)
 end
 
 M.setup = function()
+  local group = vim.api.nvim_create_augroup("winbar", { clear = true })
+
   vim.api.nvim_create_autocmd({ "BufEnter", "BufWinEnter" }, {
+    group = group,
     callback = function()
       M.get_winbar()
     end,
   })
 
   vim.api.nvim_create_autocmd({ "BufLeave", "BufWinLeave" }, {
-    pattern = ".git/rebase-merge/git-rebase-todo",
+    group = group,
+    pattern = { ".git/rebase-merge/git-rebase-todo" },
     callback = function()
       vim.defer_fn(function()
         M.update_winbar()
