@@ -114,3 +114,10 @@ end, { desc = "Generate commit messages with AI" })
 map("n", "<leader>ge", function()
   require("modules.custom.auto_commit").do_empty_commit()
 end, { desc = "Generate empty commit message" })
+
+map(
+  "n",
+  "yc",
+  "yygccp",
+  { desc = "Comment current line and paste", remap = true }
+)
