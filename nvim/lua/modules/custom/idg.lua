@@ -45,7 +45,7 @@ local fetch_commits = function(grep_pattern)
       "git log --grep='%s' --format='%%H %%s|||%%b' --reverse",
       grep_pattern
     ),
-  })
+  }, "TODO commits fetched!")
 
   if result.code ~= 0 then
     vim.notify(result.stderr, vim.log.levels.ERROR)
