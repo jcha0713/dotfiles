@@ -300,6 +300,11 @@ M.squash = function()
         on_submit = function()
           local selected = signal.selected:get_value()
 
+          if selected == nil then
+            vim.notify("Please select a target commit!", vim.log.levels.ERROR)
+            return
+          end
+
           local function rebase(popup)
             local cli_args = popup:get_arguments()
             require("neogit.lib.git.rebase").rebase_interactive(
