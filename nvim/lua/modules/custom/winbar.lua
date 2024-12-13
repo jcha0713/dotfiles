@@ -68,7 +68,7 @@ M.setup = function()
     end,
   })
 
-  vim.api.nvim_create_autocmd({ "BufLeave", "BufWinLeave" }, {
+  vim.api.nvim_create_autocmd({ "BufWritePost" }, {
     group = group,
     pattern = { ".git/rebase-merge/git-rebase-todo" },
     callback = function()
