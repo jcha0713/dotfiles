@@ -18,11 +18,28 @@ M.winbar_filetype = {
 }
 
 local function check_todo()
-  local right_align = "%="
   local last_todo = require("modules.custom.idg").get_last_todo()
 
-  local message = last_todo and last_todo.message or "NO GOAL HAS BEEN SET!"
-  return string.format("%s %s ", right_align, message)
+  -- nf-md-chec/close
+  local message = last_todo and " " .. last_todo.message
+    or "󰳦 NO GOAL HAS BEEN SET!"
+  return string.format("%s ", message)
+end
+
+local function get_message(value)
+  local content = value or check_todo()
+
+  local right_align = "%="
+  local modified = " %-m"
+  local file_name = "%f"
+
+  return string.format(
+    [[  %s %s%s %s  ]],
+    content,
+    right_align,
+    modified,
+    file_name
+  )
 end
 
 M.get_winbar = function()
@@ -37,22 +54,20 @@ M.get_winbar = function()
     return
   end
 
-  local status_ok, _ = pcall(
-    vim.api.nvim_set_option_value,
-    "winbar",
-    check_todo(),
-    { scope = "local" }
-  )
+  local message = get_message()
+
+  local status_ok, _ =
+    pcall(vim.api.nvim_set_option_value, "winbar", message, { scope = "local" })
   if not status_ok then
     return
   end
 end
 
 M.update_winbar = function(value)
-  value = value or check_todo()
+  local message = get_message(value)
 
   local status_ok, _ =
-    pcall(vim.api.nvim_set_option_value, "winbar", value, { scope = "local" })
+    pcall(vim.api.nvim_set_option_value, "winbar", message, { scope = "local" })
   if not status_ok then
     return
   end

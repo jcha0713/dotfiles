@@ -9,16 +9,18 @@ return {
         neutral = true,
         -- bg_contrast = "hard",
         bg_contrast = "soft",
-        color_overrides = {
-          dark = {
-            comments = "#525252",
-            -- bg = "#1e1e1e",
-            -- https://gogh-co.github.io/Gogh/ - Arthur
-            red = "#CC5533",
-            yellow = "#FFA75D",
-            green = "#88AA22",
-            cyan = "#6495ED",
-          },
+        highlight_overrides = {
+          dark = function(highlighter, colors)
+            highlighter.set("WinBar", {
+              fg = colors.green,
+              bg = colors.bg:darkened(2),
+            })
+
+            highlighter.set("WinBarNC", {
+              fg = colors.fg:darkened(50),
+              bg = colors.bg,
+            })
+          end,
         },
       },
       dim_inactive = false,

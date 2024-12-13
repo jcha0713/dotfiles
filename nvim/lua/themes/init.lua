@@ -1,9 +1,4 @@
--- vim.cmd.colorscheme("oldworld")
-
 local THEME_COLOR = "#a390a2"
-
--- highlight for winbar
-vim.api.nvim_set_hl(0, "WinBar", { fg = THEME_COLOR })
 
 vim.api.nvim_set_hl(0, "GreetingQuote", { fg = THEME_COLOR, italic = true })
 
@@ -12,9 +7,9 @@ vim.api.nvim_set_hl(0, "DiagnosticUnderlineError", {
   undercurl = true,
 })
 
-vim.api.nvim_set_hl(0, "Visual", {
-  bg = "#333333",
-})
+-- vim.api.nvim_set_hl(0, "Visual", {
+--   bg = "#333333",
+-- })
 
 vim.api.nvim_set_hl(
   0,
@@ -27,7 +22,5 @@ vim.api.nvim_set_hl(
   "@markup.strong.markdown_inline",
   { fg = THEME_COLOR, bold = true, default = true }
 )
-
-vim.api.nvim_set_hl(0, "WinBarNC", { bg = nil, link = "Comment" })
 
 vim.api.nvim_set_hl(0, "MiniCursorwordCurrent", { link = "Visual" })
