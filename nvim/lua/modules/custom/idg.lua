@@ -187,6 +187,13 @@ M.create_fixup = function()
           local original_message = signal.original_message:get_value()
           local description = signal.description:get_value()
 
+          local selected = signal.selected:get_value()
+
+          if selected == nil then
+            vim.notify("Please select a fixup commit!", vim.log.levels.ERROR)
+            return
+          end
+
           run_command({
             "sh",
             "-c",
