@@ -36,6 +36,10 @@ end
 local fetch_commits = function(grep_pattern)
   local commits = {}
 
+  if vim.fn.finddir(".git") == "" then
+    return {}
+  end
+
   local result = run_command({
     "sh",
     "-c",
