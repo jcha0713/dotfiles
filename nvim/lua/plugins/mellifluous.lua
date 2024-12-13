@@ -1,7 +1,7 @@
 return {
   "ramojus/mellifluous.nvim",
   lazy = false,
-  enabled = false,
+  enabled = true,
   priority = 1000,
   config = function()
     require("mellifluous").setup({
