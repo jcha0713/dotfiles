@@ -108,9 +108,8 @@ M.create_todo = function()
             ),
           }, "Successfully committed empty commit!")
 
-          require("modules.custom.winbar").update_winbar()
-
           renderer:close()
+          require("modules.custom.winbar").update_winbar()
         end,
       },
       n.text_input({
