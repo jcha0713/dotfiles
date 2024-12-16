@@ -82,12 +82,33 @@ local n = require("nui-components")
 M.create_todo = function()
   local renderer = n.create_renderer({
     width = 60,
-    height = 10,
+    height = 20,
   })
 
   local signal = n.create_signal({
+    selected = nil,
+    original_message = "",
     new_commit_msg = "",
   })
+
+  local fixups_to_data = function()
+    local fixups = fetch_fixups()
+
+    for _, todo in ipairs(fixups) do
+      local option = n.option(
+        string.sub(todo.commit_hash, 1, 7) .. [[ - ]] .. todo.message,
+        {
+          id = todo.commit_hash,
+          message = todo.message,
+          body = todo.body,
+        }
+      )
+
+      table.insert(data, option)
+    end
+
+    return data
+  end
 
   local commit_input = function()
     local to_macos_keys = require("modules.utils").to_macos_keys
@@ -112,10 +133,37 @@ M.create_todo = function()
           require("modules.custom.winbar").update_winbar()
         end,
       },
+      n.select({
+        autofocus = true,
+        border_label = " Todos",
+        selected = signal.selected,
+        flex = 1,
+        size = 3,
+        is_focusable = true,
+        data = fixups_to_data(),
+        multiselect = false,
+        on_select = function(nodes)
+          local selected = signal.selected:get_value()
+
+          if selected == nil or nodes.id ~= selected.id then
+            signal.selected = nodes
+            signal.original_message = nodes.message
+          else
+            signal.selected = nil
+            signal.original_message = nodes.message
+          end
+        end,
+        should_skip_item = function(node, is_separator)
+          return is_separator
+        end,
+        on_unmount = function()
+          signal.selected = nil
+        end,
+      }),
       n.text_input({
         autofocus = true,
         autoresize = true,
-        flex = 1,
+        size = 3,
         border_label = " Commit Message",
         placeholder = "Define your next goal here",
         on_change = function(value, _component)
@@ -171,12 +219,6 @@ M.create_fixup = function()
 
   local fixup_input = function()
     local to_macos_keys = require("modules.utils").to_macos_keys
-
-    vim.api.nvim_set_hl(
-      0,
-      "NuiComponentsSelectOptionSelected",
-      { fg = "#ee90a2" }
-    )
 
     return n.form(
       {
