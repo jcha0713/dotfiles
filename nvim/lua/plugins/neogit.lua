@@ -30,7 +30,7 @@ return {
   },
   config = function()
     require("neogit").setup({
-      disable_commit_confirmation = true,
+      graph_style = "kitty",
       integrations = {
         diffview = true,
       },
