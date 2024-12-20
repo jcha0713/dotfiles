@@ -58,10 +58,16 @@ map("n", "vgh", "v^", { desc = "Select to first character in line" })
 map("n", "vgl", "v$", { desc = "Select to last character in line" })
 
 -- better window movement
-map("n", "<BS>", "<C-w>h")
-map("n", "<C-j>", "<C-w>j")
-map("n", "<C-k>", "<C-w>k")
-map("n", "<C-l>", "<C-w>l")
+-- map("n", "<BS>", "<C-w>h")
+-- map("n", "<C-j>", "<C-w>j")
+-- map("n", "<C-k>", "<C-w>k")
+-- map("n", "<C-l>", "<C-w>l")
+
+-- testing treewalker
+map("n", "<C-j>", ":Treewalker Down<CR>")
+map("n", "<C-k>", ":Treewalker Up<CR>")
+map("n", "<C-h>", ":Treewalker Left<CR>")
+map("n", "<C-l>", ":Treewalker Right<CR>")
 
 -- Switch buffers
 map("n", "]b", ":bnext<CR>", { desc = "Next buffer" })

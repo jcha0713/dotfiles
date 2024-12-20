@@ -576,4 +576,13 @@ return {
       "MunifTanjim/nui.nvim",
     },
   },
+
+  {
+    "aaronik/treewalker.nvim",
+    event = "VeryLazy",
+    opts = {
+      highlight = true,
+    },
+  },
+
 }
