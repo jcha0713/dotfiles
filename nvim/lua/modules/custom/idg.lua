@@ -94,6 +94,7 @@ M.create_todo = function()
   local fixups_to_data = function()
     local fixups = fetch_fixups()
 
+    local data = {}
 
     for _, todo in ipairs(fixups) do
       local option = n.option(
