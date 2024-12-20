@@ -19,7 +19,6 @@ return {
         window = {
           winblend = 8,
           border = "rounded",
-          border_hl = "WinBar",
         },
       },
       integration = {
