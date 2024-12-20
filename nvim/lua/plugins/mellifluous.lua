@@ -11,11 +11,6 @@ return {
         bg_contrast = "soft",
         highlight_overrides = {
           dark = function(highlighter, colors)
-            highlighter.set("WinBar", {
-              fg = colors.green,
-              bg = colors.bg:darkened(2),
-            })
-
             highlighter.set("WinBarNC", {
               fg = colors.fg:darkened(50),
               bg = colors.bg,

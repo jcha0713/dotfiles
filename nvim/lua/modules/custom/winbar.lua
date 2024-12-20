@@ -17,12 +17,30 @@ M.winbar_filetype = {
   "typescriptreact",
 }
 
+local colors = require("mellifluous.colors").get_colors()
+local highlighter = require("mellifluous.utils.highlighter")
+
 local function check_todo()
   local last_todo = require("modules.custom.idg").get_last_todo()
 
-  -- nf-md-chec/close
+  -- TODO: move this to right place
+  if last_todo == "" or last_todo == nil then
+    highlighter.set("WinBar", {
+      bg = colors.red:darkened(12),
+      fg = colors.fg:darkened(100),
+    })
+  else
+    highlighter.set("WinBar", {
+      bg = colors.bg:lightened(15),
+      fg = colors.purple:lightened(10),
+    })
+  end
+
+  highlighter.apply_all()
+
+  -- nf-oct
   local message = last_todo and " " .. last_todo.message
-    or "󰳦 NO GOAL HAS BEEN SET!"
+    or "('~`;) NO TODO HAS BEEN SET!"
   return string.format("%s ", message)
 end
 
