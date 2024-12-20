@@ -13,20 +13,21 @@ return {
       black = "#080808",
       white = "#c6c6c6",
       red = "#ff5189",
-      violet = "#d183e8",
+      violet = "#a9a1e1",
       grey = "#303030",
     }
 
     local bubbles_theme = {
       normal = {
-        a = { fg = colors.black, bg = colors.violet },
-        b = { fg = colors.white, bg = colors.grey },
+        -- a = { fg = colors.black, bg = colors.violet },
+        a = "LualineNormalPrimary",
+        b = "LualineNormalSecondary",
         c = { fg = colors.white },
       },
 
-      insert = { a = { fg = colors.black, bg = colors.blue } },
-      visual = { a = { fg = colors.black, bg = colors.cyan } },
-      replace = { a = { fg = colors.black, bg = colors.red } },
+      insert = { a = "LualineInsert" },
+      visual = { a = "LualineVisual" },
+      replace = { a = "LualineReplace" },
 
       inactive = {
         a = { fg = colors.white, bg = colors.black },

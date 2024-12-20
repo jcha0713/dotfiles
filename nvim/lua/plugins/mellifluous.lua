@@ -15,6 +15,43 @@ return {
               fg = colors.fg:darkened(50),
               bg = colors.bg,
             })
+
+            highlighter.set("NuiComponentsSelectOptionSelected", {
+              fg = colors.red,
+            })
+
+            highlighter.set("NuiComponentsSelectSeparator", {
+              fg = colors.yellow,
+            })
+
+            highlighter.set("ColorColumn", {
+              bg = colors.bg:lightened(5),
+            })
+
+            highlighter.set("LualineNormalPrimary", {
+              bg = colors.purple,
+              fg = colors.fg:darkened(100),
+            })
+
+            highlighter.set("LualineNormalSecondary", {
+              bg = colors.bg:lightened(10),
+              fg = colors.fg,
+            })
+
+            highlighter.set("LualineInsert", {
+              bg = colors.blue,
+              fg = colors.fg:darkened(100),
+            })
+
+            highlighter.set("LualineVisual", {
+              bg = colors.green,
+              fg = colors.fg:darkened(100),
+            })
+
+            highlighter.set("LualineReplace", {
+              bg = colors.red,
+              fg = colors.fg:darkened(100),
+            })
           end,
         },
       },
