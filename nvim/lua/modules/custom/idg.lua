@@ -94,6 +94,7 @@ M.create_todo = function()
   local fixups_to_data = function()
     local fixups = fetch_fixups()
 
+
     for _, todo in ipairs(fixups) do
       local option = n.option(
         string.sub(todo.commit_hash, 1, 7) .. [[ - ]] .. todo.message,
@@ -135,7 +136,7 @@ M.create_todo = function()
       },
       n.select({
         autofocus = true,
-        border_label = " Todos",
+        border_label = " Fixups",
         selected = signal.selected,
         flex = 1,
         size = 3,
@@ -147,14 +148,11 @@ M.create_todo = function()
 
           if selected == nil or nodes.id ~= selected.id then
             signal.selected = nodes
-            signal.original_message = nodes.message
+            signal.new_commit_msg = nodes.message
           else
             signal.selected = nil
-            signal.original_message = nodes.message
+            signal.new_commit_msg = nodes.message
           end
-        end,
-        should_skip_item = function(node, is_separator)
-          return is_separator
         end,
         on_unmount = function()
           signal.selected = nil
@@ -166,6 +164,9 @@ M.create_todo = function()
         size = 3,
         border_label = " Commit Message",
         placeholder = "Define your next goal here",
+        hidden = signal.selected:map(function(value)
+          return value ~= nil
+        end),
         on_change = function(value, _component)
           signal.new_commit_msg = value
         end,
