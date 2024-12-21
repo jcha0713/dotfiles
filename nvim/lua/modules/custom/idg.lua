@@ -79,7 +79,15 @@ end
 -- nui-components for rendering ui
 local n = require("nui-components")
 
-M.create_todo = function()
+M.create_todo_with_comment = function(opts)
+  local todo_line =
+    vim.api.nvim_buf_get_lines(0, opts.line1 - 1, opts.line2, false)
+  local todo_content = todo_line[1]:match("TODO:%s*(.+)")
+
+  M.create_todo(todo_content)
+end
+
+M.create_todo = function(todo_content)
   local renderer = n.create_renderer({
     width = 60,
     height = 20,
@@ -90,6 +98,10 @@ M.create_todo = function()
     original_message = "",
     new_commit_msg = "",
   })
+
+  if todo_content ~= nil then
+    signal.new_commit_msg = todo_content
+  end
 
   local fixups_to_data = function()
     local fixups = fetch_fixups()
@@ -165,6 +177,7 @@ M.create_todo = function()
         size = 3,
         border_label = " Commit Message",
         placeholder = "Define your next goal here",
+        value = signal.new_commit_msg,
         hidden = signal.selected:map(function(value)
           return value ~= nil
         end),
@@ -446,6 +459,11 @@ function M.setup(opts)
   vim.api.nvim_create_user_command("IDGTodo", M.create_todo, {})
   vim.api.nvim_create_user_command("IDGFixup", M.create_fixup, {})
   vim.api.nvim_create_user_command("IDGSquash", M.squash, {})
+  vim.api.nvim_create_user_command(
+    "IDGTodoComment",
+    M.create_todo_with_comment,
+    { range = "%" }
+  )
 end
 
 return M
