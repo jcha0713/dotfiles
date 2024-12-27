@@ -94,34 +94,11 @@ M.create_todo = function(todo_content)
   })
 
   local signal = n.create_signal({
-    selected = nil,
-    original_message = "",
     new_commit_msg = "",
   })
 
   if todo_content ~= nil then
     signal.new_commit_msg = todo_content
-  end
-
-  local fixups_to_data = function()
-    local fixups = fetch_fixups()
-
-    local data = {}
-
-    for _, todo in ipairs(fixups) do
-      local option = n.option(
-        string.sub(todo.commit_hash, 1, 7) .. [[ - ]] .. todo.message,
-        {
-          id = todo.commit_hash,
-          message = todo.message,
-          body = todo.body,
-        }
-      )
-
-      table.insert(data, option)
-    end
-
-    return data
   end
 
   local commit_input = function()
@@ -147,30 +124,6 @@ M.create_todo = function(todo_content)
           require("modules.custom.winbar").update_winbar()
         end,
       },
-      n.select({
-        autofocus = true,
-        border_label = " Fixups",
-        selected = signal.selected,
-        flex = 1,
-        size = 3,
-        is_focusable = true,
-        data = fixups_to_data(),
-        multiselect = false,
-        on_select = function(nodes)
-          local selected = signal.selected:get_value()
-
-          if selected == nil or nodes.id ~= selected.id then
-            signal.selected = nodes
-            signal.new_commit_msg = nodes.message
-          else
-            signal.selected = nil
-            signal.new_commit_msg = nodes.message
-          end
-        end,
-        on_unmount = function()
-          signal.selected = nil
-        end,
-      }),
       n.text_input({
         autofocus = true,
         autoresize = true,
