@@ -84,6 +84,10 @@ M.create_todo_with_comment = function(opts)
     vim.api.nvim_buf_get_lines(0, opts.line1 - 1, opts.line2, false)
   local todo_content = todo_line[1]:match("TODO:%s*(.+)")
 
+  if todo_content == "" then
+    todo_content = nil
+  end
+
   M.create_todo(todo_content)
 end
 
@@ -97,8 +101,10 @@ M.create_todo = function(todo_content)
     new_commit_msg = "",
   })
 
-  if todo_content ~= nil then
+  if todo_content ~= nil and type(todo_content) == "string" then
     signal.new_commit_msg = todo_content
+  else
+    signal.new_commit_msg = ""
   end
 
   local commit_input = function()
