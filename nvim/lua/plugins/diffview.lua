@@ -9,6 +9,11 @@ return {
       desc = "Diffview -> compare with origin/main",
     },
     { "<leader>gdc", ":DiffviewClose<CR>", desc = "Close diffview" },
+    {
+      "<leader>gdh",
+      ":DiffviewFileHistory %<CR>",
+      desc = "Open File Git History",
+    },
   },
   config = function()
     require("diffview").setup({})
