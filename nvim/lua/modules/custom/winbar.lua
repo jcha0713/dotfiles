@@ -1,7 +1,6 @@
 local M = {}
 
 M.winbar_filetype = {
-  "alpha",
   "astro",
   "css",
   "gleam",
