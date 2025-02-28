@@ -15,6 +15,7 @@
 
   outputs = inputs@{ self, nix-darwin, nixpkgs, home-manager, neovim-nix, ... }:
   let
+    username = "jcha0713";
     # overlays = [
     #   inputs.neovim-nightly-overlay.overlays.default
     # ];
@@ -82,7 +83,7 @@
         {
           home-manager.useGlobalPkgs = true;
           home-manager.useUserPackages = true;
-          home-manager.users.jcha0713 = import ./home.nix;
+          home-manager.users.${username} = import ./home.nix;
         }
       ];
     };
