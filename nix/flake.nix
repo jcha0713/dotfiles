@@ -5,11 +5,15 @@
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
     nix-darwin.url = "github:LnL7/nix-darwin";
     nix-darwin.inputs.nixpkgs.follows = "nixpkgs";
+    home-manager = {
+      url = "github:nix-community/home-manager";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     # neovim-nightly-overlay.url = "github:nix-community/neovim-nightly-overlay";
     neovim-nix.url = "github:tirimia/neovim-nix";
   };
 
-  outputs = inputs@{ self, nix-darwin, nixpkgs, neovim-nix, ... }:
+  outputs = inputs@{ self, nix-darwin, nixpkgs, home-manager, neovim-nix, ... }:
   let
     # overlays = [
     #   inputs.neovim-nightly-overlay.overlays.default
@@ -21,26 +25,14 @@
       # List packages installed in system profile. To search by name, run:
       # $ nix-env -qaP | grep wget
       environment.systemPackages = [ 
+        pkgs.home-manager
         # pkgs.neovim
         inputs.neovim-nix.packages.${pkgs.system}.bob
-        pkgs.bat
-        pkgs.fd
-        pkgs.ripgrep
-        pkgs.fzf
+        pkgs.aerospace
         pkgs.docker
         pkgs.docker-compose
-        pkgs.fnm
-        pkgs.pnpm
-        pkgs.lazygit
-        pkgs.git
-        pkgs.gh
-        pkgs.rustup
-        pkgs.discordo
-        pkgs.gleam
-        pkgs.git-absorb
 
         # GUI apps
-        # pkgs.arc-browser
         # pkgs.discord
         # pkgs.aldente
         # pkgs._1password-gui
@@ -80,9 +72,19 @@
   in
   {
     # Build darwin flake using:
-    # $ darwin-rebuild build --flake .#simple
+    # $ darwin-rebuild build --flake .#jcha_16
     darwinConfigurations."jcha_16" = nix-darwin.lib.darwinSystem {
-      modules = [ configuration ];
+      modules = [ 
+        configuration
+
+        # Home Manager module
+        home-manager.darwinModules.home-manager
+        {
+          home-manager.useGlobalPkgs = true;
+          home-manager.useUserPackages = true;
+          home-manager.users.jcha0713 = import ./home.nix;
+        }
+      ];
     };
 
     # Expose the package set, including overlays, for convenience.
