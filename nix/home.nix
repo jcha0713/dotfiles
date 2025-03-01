@@ -21,6 +21,7 @@
 
       # GUI
       aldente mos raycast
+      discord
     ];
   };
   

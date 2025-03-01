@@ -69,7 +69,13 @@
             # The platform the configuration will be used on.
             nixpkgs.hostPlatform = system;
 
-            nixpkgs.config.allowUnfree = true;
+            nixpkgs.config.allowUnfreePredicate = 
+              pkg: builtins.elem (pkgs.lib.getName pkg) [
+                "aldente"
+                "mos"
+                "raycast"
+                "discord"
+              ];
           })
 
           # Home Manager module
