@@ -20,8 +20,7 @@
       rustup gleam
 
       # GUI
-      aldente _1password-gui mos
-      raycast
+      aldente mos raycast
     ];
   };
   

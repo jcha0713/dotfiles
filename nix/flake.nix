@@ -38,13 +38,6 @@
         pkgs.aerospace
         pkgs.docker
         pkgs.docker-compose
-
-        # GUI apps
-        # pkgs.discord
-        # pkgs.aldente
-        # pkgs._1password-gui
-        # pkgs.mos
-        # pkgs.raycast
       ];
 
       # Auto upgrade nix package and the daemon service.
