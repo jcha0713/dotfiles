@@ -21,6 +21,12 @@
     # ];
 
     configuration = { pkgs, ... }: {
+      users = {
+        users.${username} = {
+          home = "/Users/${username}";
+          name = "${username}";
+        };
+      };
       # nixpkgs.overlays = overlays;
 
       # List packages installed in system profile. To search by name, run:
