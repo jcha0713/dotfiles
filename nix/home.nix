@@ -1,4 +1,4 @@
-{ pkgs, ... }: 
+{ pkgs, system, ... }: 
 
 {
   programs.home-manager.enable = true;

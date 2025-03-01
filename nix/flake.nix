@@ -20,71 +20,78 @@
     #   inputs.neovim-nightly-overlay.overlays.default
     # ];
 
-    configuration = { pkgs, ... }: {
-      users = {
-        users.${username} = {
-          home = "/Users/${username}";
-          name = "${username}";
-        };
+    createDarwinSystem = { system, hostname }: 
+      nix-darwin.lib.darwinSystem {
+        inherit system;
+        specialArgs = { inherit inputs username system; };
+        modules = [
+          ({ pkgs, system, ... }: {
+            users = {
+              users.${username} = {
+                home = "/Users/${username}";
+                name = "${username}";
+              };
+            };
+            # nixpkgs.overlays = overlays;
+
+            # List packages installed in system profile. To search by name, run:
+            # $ nix-env -qaP | grep wget
+            environment.systemPackages = [ 
+              pkgs.home-manager
+              # pkgs.neovim
+              inputs.neovim-nix.packages.${pkgs.system}.bob
+              pkgs.aerospace
+              pkgs.docker
+              pkgs.docker-compose
+            ];
+
+            # Auto upgrade nix package and the daemon service.
+            services.nix-daemon.enable = true;
+            # nix.package = pkgs.nix;
+
+            # Necessary for using flakes on this system.
+            nix.settings.experimental-features = "nix-command flakes";
+
+            # https://github.com/LnL7/nix-darwin/issues/740
+            nix.settings.extra-nix-path = "nixpkgs=flake:nixpkgs";
+
+            # Create /etc/zshrc that loads the nix-darwin environment.
+            programs.zsh.enable = true;  # default shell on catalina
+            # programs.fish.enable = true;
+
+            # Set Git commit hash for darwin-version.
+            system.configurationRevision = self.rev or self.dirtyRev or null;
+
+            # Used for backwards compatibility, please read the changelog before changing.
+            # $ darwin-rebuild changelog
+            system.stateVersion = 5;
+
+            # The platform the configuration will be used on.
+            nixpkgs.hostPlatform = system;
+
+            nixpkgs.config.allowUnfree = true;
+          })
+
+          # Home Manager module
+          home-manager.darwinModules.home-manager
+          {
+            home-manager.useGlobalPkgs = true;
+            home-manager.useUserPackages = true;
+            home-manager.users.${username} = import ./home.nix;
+            home-manager.extraSpecialArgs = { inherit system; };
+          }
+        ];
       };
-      # nixpkgs.overlays = overlays;
-
-      # List packages installed in system profile. To search by name, run:
-      # $ nix-env -qaP | grep wget
-      environment.systemPackages = [ 
-        pkgs.home-manager
-        # pkgs.neovim
-        inputs.neovim-nix.packages.${pkgs.system}.bob
-        pkgs.aerospace
-        pkgs.docker
-        pkgs.docker-compose
-      ];
-
-      # Auto upgrade nix package and the daemon service.
-      services.nix-daemon.enable = true;
-      # nix.package = pkgs.nix;
-
-      # Necessary for using flakes on this system.
-      nix.settings.experimental-features = "nix-command flakes";
-
-      # https://github.com/LnL7/nix-darwin/issues/740
-      nix.settings.extra-nix-path = "nixpkgs=flake:nixpkgs";
-
-      # Create /etc/zshrc that loads the nix-darwin environment.
-      programs.zsh.enable = true;  # default shell on catalina
-      # programs.fish.enable = true;
-
-      # Set Git commit hash for darwin-version.
-      system.configurationRevision = self.rev or self.dirtyRev or null;
-
-      # Used for backwards compatibility, please read the changelog before changing.
-      # $ darwin-rebuild changelog
-      system.stateVersion = 5;
-
-      # The platform the configuration will be used on.
-      nixpkgs.hostPlatform = "x86_64-darwin";
-
-      nixpkgs.config.allowUnfree = true;
-
-      # https://discourse.nixos.org/t/zsh-compinit-warning-on-every-shell-session/22735/6
-      programs.zsh.enableCompletion = false;
-    };
   in
   {
-    # Build darwin flake using:
-    # $ darwin-rebuild build --flake .#jcha_16
-    darwinConfigurations."jcha_16" = nix-darwin.lib.darwinSystem {
-      modules = [ 
-        configuration
+    darwinConfigurations."jcha_16" = createDarwinSystem {
+      system = "x86_64-darwin";
+      hostname = "jcha_16";
+    };
 
-        # Home Manager module
-        home-manager.darwinModules.home-manager
-        {
-          home-manager.useGlobalPkgs = true;
-          home-manager.useUserPackages = true;
-          home-manager.users.${username} = import ./home.nix;
-        }
-      ];
+    darwinConfigurations."jcha_mini" = createDarwinSystem {
+      system = "aarch64-darwin";
+      hostname = "jcha_mini";
     };
 
     # Expose the package set, including overlays, for convenience.
