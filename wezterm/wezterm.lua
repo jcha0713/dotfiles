@@ -9,7 +9,11 @@ local config = {}
 
 wezterm.on("gui-startup", function(cmd)
   local tab, pane, window = mux.spawn_window(cmd or {})
-  -- window:gui_window():maximize()
+  local daily_pane = pane:split({
+    size = 0.1,
+  })
+  daily_pane:send_text("env NVIM_MODE=zk zk daily\n")
+
   -- open wezterm in fullscreen mode
   window:gui_window():toggle_fullscreen()
 end)
