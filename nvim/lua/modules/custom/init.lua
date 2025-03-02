@@ -1,6 +1,7 @@
 local plugins = {
   "winbar",
   "idg",
+  "fetch_title",
 }
 
 if vim.g.nvim_mode == "zk" then
