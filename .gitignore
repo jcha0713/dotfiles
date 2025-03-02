@@ -12,6 +12,7 @@
 !.zshrc
 !espanso/
 !nix/
+!makefile
 
 !hammerspoon/**
 !nvim/**
