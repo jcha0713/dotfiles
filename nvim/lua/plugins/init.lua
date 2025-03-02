@@ -1,6 +1,6 @@
 return {
   -- lua utils for neovim
-  "nvim-lua/plenary.nvim",
+  { "nvim-lua/plenary.nvim", branch = "master" },
 
   {
     "iamcco/markdown-preview.nvim",
@@ -205,7 +205,9 @@ return {
     "tamton-aquib/duck.nvim",
     keys = {
       {
-        "<leader><leader>h",
+        -- for the talk
+        -- "<leader><leader>h",
+        "<Home>",
         function()
           require("duck").hatch("❄️", 5)
           require("duck").hatch("❄️", 5)
@@ -435,7 +437,7 @@ return {
     config = function()
       require("octo").setup({
         suppress_missing_scope = {
-          project_v2 = true,
+          projects_v2 = true,
         },
       })
     end,
@@ -473,9 +475,13 @@ return {
     "supermaven-inc/supermaven-nvim",
     event = "BufEnter",
     config = function()
+      local api = require("supermaven-nvim.api")
+
       require("supermaven-nvim").setup({
         ignore_filetypes = { markdown = true, gleam = true },
       })
+
+      api.stop()
     end,
   },
   {
@@ -585,4 +591,23 @@ return {
     },
   },
 
+  -- {
+  --   "vim-fall/fall.vim",
+  --   event = "VeryLazy",
+  --   dependencies = {
+  --     "vim-denops/denops.vim",
+  --   },
+  --   config = function()
+  --     local opts = { noremap = true, silent = true }
+  --     vim.keymap.set("c", "<C-n>", "<Plug>(fall-list-next)", opts)
+  --     vim.keymap.set("c", "<C-p>", "<Plug>(fall-list-prev)", opts)
+  --     vim.keymap.set("c", "<Tab>", "<Plug>(fall-action-select)", opts)
+  --   end,
+  -- },
+
+  {
+    "moyiz/git-dev.nvim",
+    event = "VeryLazy",
+    opts = {},
+  },
 }
