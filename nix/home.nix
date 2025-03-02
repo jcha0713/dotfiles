@@ -29,7 +29,7 @@
 
       # GUI
       aldente mos raycast
-      discord
+      discord espanso
     ];
   };
   
