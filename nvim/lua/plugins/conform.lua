@@ -70,6 +70,7 @@ return {
       jsonc = { { "prettierd", "prettier" } },
       svelt = { { "prettierd", "prettier" } },
       sh = { "shfmt" },
+      zsh = { "shfmt" },
       lua = { "stylua" },
       nim = { "nph" },
     },
