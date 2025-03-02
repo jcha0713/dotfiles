@@ -13,7 +13,7 @@ M.set_keys = function(config)
       action = act.ToggleFullScreen,
     },
     {
-      key = "l",
+      key = "p",
       mods = "LEADER",
       action = wezterm.action.ShowLauncher,
     },
@@ -90,11 +90,18 @@ M.set_keys = function(config)
       action = wezterm.action.SplitVertical({ domain = "CurrentPaneDomain" }),
     },
 
+    -- toggle pane zoom state
+    {
+      key = "z",
+      mods = "LEADER",
+      action = wezterm.action.TogglePaneZoomState,
+    },
+
     -- window movement:
-    { key = "h", mods = "ALT", action = act.ActivatePaneDirection("Left") },
-    { key = "j", mods = "ALT", action = act.ActivatePaneDirection("Down") },
-    { key = "k", mods = "ALT", action = act.ActivatePaneDirection("Up") },
-    { key = "l", mods = "ALT", action = act.ActivatePaneDirection("Right") },
+    { key = "h", mods = "LEADER", action = act.ActivatePaneDirection("Left") },
+    { key = "j", mods = "LEADER", action = act.ActivatePaneDirection("Down") },
+    { key = "k", mods = "LEADER", action = act.ActivatePaneDirection("Up") },
+    { key = "l", mods = "LEADER", action = act.ActivatePaneDirection("Right") },
 
     -- close pane
     {
