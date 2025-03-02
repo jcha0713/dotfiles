@@ -1,4 +1,5 @@
 vim.g.ts_highlight_lua = true
+vim.g.nvim_mode = vim.env.NVIM_MODE or "default"
 
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not vim.loop.fs_stat(lazypath) then

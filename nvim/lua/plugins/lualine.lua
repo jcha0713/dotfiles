@@ -1,5 +1,6 @@
 return {
   "nvim-lualine/lualine.nvim",
+  enabled = vim.g.nvim_mode ~= "zk",
   event = "VimEnter",
   dependencies = {
     { "nvim-tree/nvim-web-devicons" },
