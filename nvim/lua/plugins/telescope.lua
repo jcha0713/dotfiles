@@ -44,7 +44,7 @@ return {
   "nvim-telescope/telescope.nvim",
   dependencies = {
     "nvim-lua/plenary.nvim",
-    "folke/trouble.nvim",
+    -- "folke/trouble.nvim",
     "BurntSushi/ripgrep",
     "nvim-lua/popup.nvim",
     "nvim-telescope/telescope-media-files.nvim",
@@ -102,7 +102,7 @@ return {
   },
   config = function()
     local actions = require("telescope.actions")
-    local trouble = require("trouble.providers.telescope")
+    -- local trouble = require("trouble.providers.telescope")
 
     require("telescope").setup({
       pickers = picker_opt,
@@ -178,8 +178,8 @@ return {
             -- ["<C-n>"] = actions.move_selection_previous,
             ["<C-j>"] = actions.move_selection_next,
             ["<C-k>"] = actions.move_selection_previous,
-            -- ["<C-q>"] = actions.smart_send_to_qflist + actions.open_qflist,
-            ["<C-q>"] = trouble.open_with_trouble,
+            ["<C-q>"] = actions.smart_send_to_qflist + actions.open_qflist,
+            -- ["<C-q>"] = trouble.open_with_trouble,
             ["<esc>"] = actions.close,
             ["<CR>"] = actions.select_default + actions.center,
           },
@@ -188,8 +188,8 @@ return {
             -- ["<C-n>"] = actions.move_selection_previous,
             ["<C-j>"] = actions.move_selection_next,
             ["<C-k>"] = actions.move_selection_previous,
-            -- ["<C-q>"] = actions.smart_send_to_qflist + actions.open_qflist,
-            ["<C-q>"] = trouble.open_with_trouble,
+            ["<C-q>"] = actions.smart_send_to_qflist + actions.open_qflist,
+            -- ["<C-q>"] = trouble.open_with_trouble,
           },
         },
       },
