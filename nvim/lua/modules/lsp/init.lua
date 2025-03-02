@@ -149,3 +149,20 @@ for _, server_name in ipairs(servers) do
   require(server).setup(on_attach, capabilities)
   ::continue::
 end
+
+local lspconfig = require("lspconfig")
+local config = require("lspconfig.configs")
+
+if not config.task then
+  config.task = {
+    default_config = {
+      cmd = {
+        "haja-lsp", -- linked via `bun link`
+      },
+      root_dir = lspconfig.util.root_pattern(".git"),
+      filetypes = { "markdown" },
+    },
+  }
+end
+
+require("modules.lsp.task").setup(on_attach, capabilities)
