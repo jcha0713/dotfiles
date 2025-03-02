@@ -26,6 +26,7 @@ M.set_fonts = function(config)
     { family = "Flog Symbols", scale = 1.003 },
     "ComicCode Nerd Font",
     "hesalche",
+    "PlemolJP Console NF",
   })
   config.font_rules = font_rules
 end
