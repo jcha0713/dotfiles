@@ -10,6 +10,7 @@ M.set_display = function(config)
   config.default_cursor_style = "BlinkingBlock"
   config.force_reverse_video_cursor = true
   config.window_background_opacity = 1
+  config.window_decorations = "RESIZE"
   config.window_padding = {
     left = 4,
     right = 0,
