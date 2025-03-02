@@ -43,6 +43,7 @@
               pkgs.aerospace
               pkgs.docker
               pkgs.docker-compose
+              pkgs.wezterm
             ];
 
             # Auto upgrade nix package and the daemon service.
