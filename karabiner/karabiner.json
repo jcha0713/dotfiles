@@ -75,22 +75,6 @@
                         ]
                     },
                     {
-                        "description": "ctrl h for BS",
-                        "manipulators": [
-                            {
-                                "from": {
-                                    "key_code": "h",
-                                    "modifiers": {
-                                        "mandatory": ["left_control"],
-                                        "optional": ["any"]
-                                    }
-                                },
-                                "to": [{ "key_code": "delete_or_backspace" }],
-                                "type": "basic"
-                            }
-                        ]
-                    },
-                    {
                         "description": "Right command i for open bracket",
                         "manipulators": [
                             {
