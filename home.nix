@@ -10,6 +10,7 @@
 
     file = {
       ".zshrc".source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/dotfiles/config/zsh/.zshrc";
+
     };
 
     # Add some basic packages to be managed by Home Manager instead of system-wide
@@ -35,7 +36,9 @@
       recursive = true;
     };
     nvim = {
-      source = ./config/nvim;
+      source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/dotfiles/config/nvim";
+      recursive = true;
+    };
     wezterm = {
       source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/dotfiles/config/wezterm";
       recursive = true;
