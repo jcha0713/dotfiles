@@ -8,6 +8,10 @@
     # Don't change this value after setting it
     stateVersion = "23.11";
 
+    sessionVariables = {
+      LIBSQLITE = "${pkgs.sqlite.out}/lib/libsqlite3.dylib";
+    };
+
     file = {
       ".zshrc".source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/dotfiles/config/zsh/.zshrc";
 
@@ -23,6 +27,7 @@
       git gh git-absorb
       fnm pnpm deno
       rustup gleam tree-sitter
+      sqlite
 
       # GUI
       aldente mos raycast
