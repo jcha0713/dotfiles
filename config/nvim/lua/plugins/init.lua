@@ -306,6 +306,7 @@ return {
 
   {
     "jcha0713/classy.nvim",
+    enabled = false,
     dir = "~/jhcha/dev/2022/project/classy",
     keys = {
       { "<leader>ac", ":ClassyAddClass<CR>", desc = "Add class attr" },
@@ -493,6 +494,7 @@ return {
   },
   {
     "jcha0713/backseat.nvim",
+    enabled = false,
     event = "VeryLazy",
     dir = "~/jhcha/dev/2024/project/backseat.nvim",
     keys = {

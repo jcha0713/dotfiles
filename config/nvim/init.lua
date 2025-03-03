@@ -48,5 +48,4 @@ require("modules.autocmd")
 require("themes")
 
 require("cmp-tw2css").setup()
-require("classy").setup()
 require("modules.custom")
