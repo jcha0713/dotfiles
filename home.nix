@@ -34,6 +34,10 @@
       source = ./config/espanso;
       recursive = true;
     };
+    nvim = {
+      source = ./config/nvim;
+      recursive = true;
+    };
   };
 
   programs.git = {
