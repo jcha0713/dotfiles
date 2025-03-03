@@ -40,6 +40,9 @@
     wezterm = {
       source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/dotfiles/config/wezterm";
     };
+    karabiner = {
+      source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/dotfiles/config/karabiner";
+    };
   };
 
   programs.neovim = {
