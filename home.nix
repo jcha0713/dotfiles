@@ -43,6 +43,9 @@
     karabiner = {
       source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/dotfiles/config/karabiner";
     };
+    aerospace = {
+      source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/dotfiles/config/aerospace";
+    };
   };
 
   programs.neovim = {
