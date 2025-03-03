@@ -32,7 +32,7 @@
 
   xdg.configFile = {
     espanso = {
-      source = ./config/espanso;
+      source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/dotfiles/config/espanso";
     };
     nvim = {
       source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/dotfiles/config/nvim";
