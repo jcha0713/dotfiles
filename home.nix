@@ -10,7 +10,6 @@
 
     file = {
       ".zshrc".source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/dotfiles/config/zsh/.zshrc";
-      "foo.txt".text = "bar";
     };
 
     # Add some basic packages to be managed by Home Manager instead of system-wide
@@ -28,6 +27,13 @@
       aldente mos raycast
       discord espanso
     ];
+  };
+
+  xdg.configFile = {
+    espanso = {
+      source = ./config/espanso;
+      recursive = true;
+    };
   };
 
   programs.git = {

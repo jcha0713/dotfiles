@@ -1,0 +1,47 @@
+# espanso match file
+
+# For a complete introduction, visit the official docs at: https://espanso.org/docs/
+
+# You can use this file to define the base matches (aka snippets)
+# that will be available in every application when using espanso.
+
+# Matches are substitution rules: when you type the "trigger" string
+# it gets replaced by the "replace" string.
+matches:
+  # Print the current date
+  - trigger: ":>date"
+    replace: "{{date}}"
+    vars:
+      - name: date
+        type: date
+        params:
+          format: "%Y-%m-%d"
+  - trigger: ":>now"
+    replace: "{{time}}"
+    vars:
+      - name: time
+        type: date
+        params:
+          format: "%Y-%m-%d %H:%M"
+  - trigger: ":>template-new"
+    replace: |
+      ---
+      date: {{date}}
+      tags: []
+      ---
+
+      ## See Also
+
+      ## Reference
+    vars:
+      - name: date
+        type: match
+        params:
+          trigger: ":>date"
+  - trigger: ":>mkdn-link"
+    replace: "{{link}}"
+    vars:
+      - name: link
+        type: shell
+        params:
+          cmd: pbpaste | sgpt -c "Please create a Markdown-formatted hyperlink using the provided URL, assigning it the most suitable descriptive name"
