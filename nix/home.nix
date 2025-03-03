@@ -3,10 +3,6 @@
 {
   programs.home-manager.enable = true;
 
-  programs.zsh = {
-    enable = true;
-  };
-
   home = {
     # The home.stateVersion is similar to system.stateVersion in your main config
     # Don't change this value after setting it
@@ -37,6 +33,15 @@
     enable = true;
     userName = "jcha0713";
     userEmail = "joocha0713@gmail.com";
+  };
+
+  
+  programs.zsh = {
+    enable = true;
+    ohMyZsh = {
+      enable = true;
+      theme = "robbyrussell";
+    };
   };
 }
 
