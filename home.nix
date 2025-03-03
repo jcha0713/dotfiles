@@ -22,7 +22,7 @@
       # Development tools
       git gh git-absorb
       fnm pnpm deno
-      rustup gleam
+      rustup gleam tree-sitter
 
       # GUI
       aldente mos raycast
