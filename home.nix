@@ -37,12 +37,15 @@
     };
     nvim = {
       source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/dotfiles/config/nvim";
-      recursive = true;
     };
     wezterm = {
       source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/dotfiles/config/wezterm";
       recursive = true;
     };
+  };
+
+  programs.neovim = {
+    enable = true;
   };
 
   programs.git = {
