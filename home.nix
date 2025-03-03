@@ -25,7 +25,7 @@
 
       # GUI
       aldente mos raycast
-      discord espanso
+      discord espanso wezterm
     ];
   };
 
@@ -36,6 +36,8 @@
     };
     nvim = {
       source = ./config/nvim;
+    wezterm = {
+      source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/dotfiles/config/wezterm";
       recursive = true;
     };
   };
