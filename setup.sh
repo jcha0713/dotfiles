@@ -8,9 +8,12 @@ if ! command -v nix &>/dev/null; then
   echo "Installing Nix"
 
   sh <(curl -L https://nixos.org/nix/install)
-else
-  echo "Nix is already installed"
+
+  echo "Nix installation complete. Please run this script again after restarting your terminal."
+  exit 0
 fi
+
+echo "Nix is available, continuing with setup..."
 
 REPO_URL="https://github.com/jcha0713/dotfiles.git"
 CONFIG_DIR="$HOME/dotfiles/"
