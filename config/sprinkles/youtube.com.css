@@ -1,0 +1,48 @@
+#columns > :last-child {
+  transition: 0.3s;
+  opacity: 0;
+}
+
+#columns > :last-child:hover {
+  opacity: 100;
+}
+
+ytd-comments .ytd-comments {
+  transition: 0.3s;
+  opacity: 0;
+}
+
+ytd-comments .ytd-comments:hover {
+  opacity: 100;
+}
+
+/* .style-scope.ytd-rich-grid-renderer {
+  --ytd-rich-grid-items-per-row: 4;
+} */
+
+#chips {
+  display: flex !important;
+  flex-direction: row !important;
+  transform: none !important;
+  width: auto !important;
+}
+
+#chips > yt-chip-cloud-chip-renderer {
+  display: none !important;
+}
+
+#chips > yt-chip-cloud-chip-renderer[chip-shape-data*="All"],
+#chips > yt-chip-cloud-chip-renderer[chip-shape-data*="Watched"],
+#chips > yt-chip-cloud-chip-renderer[chip-shape-data*="New to you"] {
+  display: flex !important;
+}
+
+#chips > yt-chip-cloud-chip-renderer[chip-shape-data*="All"] {
+  order: 1 !important;
+}
+#chips > yt-chip-cloud-chip-renderer[chip-shape-data*="Watched"] {
+  order: 2 !important;
+}
+#chips > yt-chip-cloud-chip-renderer[chip-shape-data*="New to you"] {
+  order: 3 !important;
+}
