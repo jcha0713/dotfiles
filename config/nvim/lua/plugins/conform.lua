@@ -14,6 +14,21 @@ local format_args = {
   lsp_fallback = "fallback",
 }
 
+-- https://github.com/stevearc/conform.nvim/blob/master/doc/recipes.md#run-the-first-available-formatter-followed-by-more-formatters
+---@param bufnr integer
+---@param ... string
+---@return string
+local function first(bufnr, ...)
+  local conform = require("conform")
+  for i = 1, select("#", ...) do
+    local formatter = select(i, ...)
+    if conform.get_formatter_info(formatter, bufnr).available then
+      return formatter
+    end
+  end
+  return select(1, ...)
+end
+
 local format_on_save = function(args, bufnr)
   local bufname = vim.api.nvim_buf_get_name(bufnr)
 
@@ -70,7 +85,9 @@ return {
       typescriptreact = { "prettierd", "prettier" },
       css = { "prettierd", "prettier" },
       html = { "prettierd", "prettier" },
-      markdown = { "prettierd", "prettier", "injected" },
+      markdown = function(bufnr)
+        return { first(bufnr, "prettierd", "prettier"), "injected" }
+      end,
       yaml = { "prettierd", "prettier" },
       json = { "prettierd", "prettier" },
       jsonc = { "prettierd", "prettier" },
@@ -81,6 +98,7 @@ return {
       nim = { "nph" },
       nix = { "injected" },
     },
+    stop_after_first = true,
     default_format_opts = {
       lsp_format = "fallback",
     },
