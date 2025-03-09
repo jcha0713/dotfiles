@@ -51,6 +51,9 @@
     aerospace = {
       source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/dotfiles/config/aerospace";
     };
+    sprinkles = {
+      source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/dotfiles/config/sprinkles";
+    };
   };
 
   programs.neovim = {
