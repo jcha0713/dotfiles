@@ -20,7 +20,7 @@
     packages = with pkgs; [
       bat fd ripgrep
       fzf bottom lazygit
-      zk circumflex
+      zk circumflex darwin.trash
 
       # Development tools
       git gh git-absorb
