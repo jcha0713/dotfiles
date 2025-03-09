@@ -12,10 +12,9 @@
       LIBSQLITE = "${pkgs.sqlite.out}/lib/libsqlite3.dylib";
     };
 
-    file = {
-      ".zshrc".source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/dotfiles/config/zsh/.zshrc";
-
-    };
+    # file = {
+    #   ".zshrc".source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/dotfiles/config/zsh/.zshrc";
+    # };
 
     # Add some basic packages to be managed by Home Manager instead of system-wide
     packages = with pkgs; [
@@ -68,6 +67,10 @@
 
   programs.zsh = {
     enable = true;
+    enableCompletion = true;  
+    autosuggestion.enable = true;
+    syntaxHighlighting.enable = true;
+    shellAliases = import ./config/zsh/aliases.nix;
   };
 }
 
