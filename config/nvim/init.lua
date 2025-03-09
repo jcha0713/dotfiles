@@ -49,3 +49,5 @@ require("themes")
 
 require("cmp-tw2css").setup()
 require("modules.custom")
+
+vim.lsp.set_log_level("DEBUG")
