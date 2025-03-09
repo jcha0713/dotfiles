@@ -1,0 +1,47 @@
+/* data-testid="sidebarColumn" */
+[data-testid="sidebarColumn"] {
+  display: none;
+}
+
+/* data-testid="primaryColumn" */
+[data-testid="primaryColumn"] {
+  max-width: inherit;
+}
+
+/* data-testid="tweet" */
+[data-testid="tweet"] {
+  opacity: 0.5;
+  transition: opacity 0.5s ease-in-out;
+
+  &:hover {
+    opacity: 1;
+  }
+}
+
+/* data-testid="GrokDrawer" */
+[data-testid="GrokDrawer"] {
+  display: none;
+}
+
+/* role="banner" */
+[role="banner"] {
+  opacity: 0.5;
+  transition: opacity 0.5s ease-in-out;
+
+  &:hover {
+    opacity: 1;
+  }
+}
+
+.r-1ye8kvj {
+  max-width: inherit;
+}
+
+[aria-label="Communities"],
+[aria-label="Lists"],
+[aria-label="Premium"],
+[aria-label="Verified Orgs"],
+[aria-label="Jobs"],
+[aria-label="Grok"] {
+  display: none;
+}
