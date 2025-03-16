@@ -52,6 +52,11 @@ return {
               bg = colors.red,
               fg = colors.fg:darkened(100),
             })
+
+            highlighter.set("LspSignatureActiveParameter", {
+              bg = colors.red,
+              fg = colors.fg:darkened(100),
+            })
           end,
         },
       },
