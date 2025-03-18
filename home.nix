@@ -71,6 +71,13 @@
     autosuggestion.enable = true;
     syntaxHighlighting.enable = true;
     shellAliases = import ./config/zsh/aliases.nix;
+    oh-my-zsh = {
+      enable = true;
+      theme = "kolo";
+    };
+    initExtra = /* zsh */ ''
+      eval "$(fnm env --use-on-cd --shell zsh)"
+    '';
   };
 }
 
