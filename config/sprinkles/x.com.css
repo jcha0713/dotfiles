@@ -33,7 +33,7 @@
   }
 }
 
-.r-1ye8kvj {
+:is([data-testid="primaryColumn"]) .r-1ye8kvj {
   max-width: inherit;
 }
 
