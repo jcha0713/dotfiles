@@ -1,4 +1,4 @@
-{ config, pkgs, system, ... }:
+{ config, pkgs, ... }:
 
 {
   programs.home-manager.enable = true;
@@ -11,6 +11,14 @@
     sessionVariables = {
       LIBSQLITE = "${pkgs.sqlite.out}/lib/libsqlite3.dylib";
     };
+
+    activation.installWeztermTerminfo = ''
+      echo "Installing WezTerm terminfo..."
+      tempfile=$(mktemp)
+      ${pkgs.curl}/bin/curl -o $tempfile https://raw.githubusercontent.com/wezterm/wezterm/main/termwiz/data/wezterm.terminfo
+      ${pkgs.ncurses}/bin/tic -x -o ~/.terminfo $tempfile
+      rm $tempfile
+    '';
 
     # file = {
     #   ".zshrc".source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/dotfiles/config/zsh/.zshrc";
@@ -26,7 +34,7 @@
       git gh git-absorb
       fnm pnpm deno
       rustup gleam tree-sitter
-      sqlite
+      sqlite curl ncurses
 
       # GUI
       aldente mos raycast
