@@ -2,6 +2,7 @@ local plugins = {
   "winbar",
   "idg",
   "fetch_title",
+  "clipboard",
 }
 
 if vim.g.nvim_mode == "zk" then

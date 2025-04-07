@@ -2,7 +2,7 @@ local indent = 2 -- num of spaces for indentation
 
 vim.opt.autoindent = true -- auto indent when starting a new line
 vim.opt.breakindent = true -- wrapped line is visually indented
-vim.opt.clipboard = "unnamed,unnamedplus"
+vim.opt.clipboard = "unnamedplus"
 vim.opt.conceallevel = 0
 vim.opt.completeopt = { "menu", "menuone", "noinsert", "noselect" } -- options for insert mode completion
 vim.opt.cursorline = true -- highlight the line of the cursor
