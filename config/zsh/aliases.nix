@@ -18,4 +18,5 @@
   gho = "gh browse";
 
   rm = "trash";
+  eas = "npx eas-cli@latest";
 }
