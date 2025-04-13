@@ -29,12 +29,14 @@
       bat fd ripgrep
       fzf bottom lazygit
       zk circumflex darwin.trash
+      catimg wakeonlan
 
       # Development tools
       git gh git-absorb
       fnm pnpm deno
       rustup gleam tree-sitter
       sqlite curl ncurses
+      tailscale
 
       # GUI
       aldente mos raycast
