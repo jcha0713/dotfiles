@@ -29,7 +29,7 @@
       bat fd ripgrep
       fzf bottom lazygit
       zk circumflex darwin.trash
-      catimg wakeonlan
+      catimg wakeonlan tree
 
       # Development tools
       git gh git-absorb
@@ -88,6 +88,30 @@
     initExtra = /* zsh */ ''
       eval "$(fnm env --use-on-cd --shell zsh)"
     '';
+  };
+
+  programs.fzf = let
+    fdCommand = "fd --exclude '.git' --exclude 'node_modules' --exclude 'lua-language-server'";
+  in {
+    enable = true;
+    enableZshIntegration = true;
+    defaultCommand = fdCommand;
+    defaultOptions = [
+      "--height 80%"
+      "--preview-window=right,60%,border-rounded"
+      "--layout reverse"
+      "--border rounded"
+      "--margin 1"
+      "--bind ctrl-d:preview-page-down,ctrl-u:preview-page-up"
+    ];
+    fileWidgetCommand = "${fdCommand} --type f";
+    fileWidgetOptions = [
+      "--preview 'bat --line-range :500 {}'"
+    ];
+    changeDirWidgetCommand = "${fdCommand} --type d";
+    changeDirWidgetOptions = [
+      "--preview 'tree -C {} | head -100'"
+    ];
   };
 }
 
