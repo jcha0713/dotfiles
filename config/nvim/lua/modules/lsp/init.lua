@@ -165,4 +165,4 @@ if not config.task then
   }
 end
 
-require("modules.lsp.task").setup(on_attach, capabilities)
+-- require("modules.lsp.task").setup(on_attach, capabilities)
