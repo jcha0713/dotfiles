@@ -80,6 +80,9 @@
     enableCompletion = true;  
     autosuggestion.enable = true;
     syntaxHighlighting.enable = true;
+    sessionVariables = {
+      EDITOR = "nvim";
+    };
     shellAliases = import ./config/zsh/aliases.nix;
     oh-my-zsh = {
       enable = true;
@@ -87,6 +90,8 @@
     };
     initExtra = /* zsh */ ''
       eval "$(fnm env --use-on-cd --shell zsh)"
+
+      source ${config.home.homeDirectory}/dotfiles/config/zsh/zk.zsh
     '';
   };
 
