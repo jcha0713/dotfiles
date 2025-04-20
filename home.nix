@@ -28,9 +28,20 @@
     packages = with pkgs; [
       bat fd ripgrep
       fzf bottom lazygit
-      zk circumflex darwin.trash
+      circumflex darwin.trash
       catimg wakeonlan tree
       nap
+
+      (zk.overrideAttrs (oldAttrs: {
+        version = "0.15.0";
+        src = fetchFromGitHub {
+          owner = "zk-org";
+          repo = "zk";
+          rev = "0.15.0";
+          sha256 = "sha256-aFpn3luIp5tMp9jpBxVCmU+IU9eJg3/5UZFIklauFjI=";
+        };
+
+      }))
 
       # Development tools
       git gh git-absorb
