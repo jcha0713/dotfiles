@@ -1,5 +1,5 @@
 # zk
-export ZK_NOTEBOOK_DIR="$HOME/jhcha/note"
+export ZK_NOTEBOOK_DIR="$HOME/note"
 alias note="yazi $ZK_NOTEBOOK_DIR"
 
 function capture() {
