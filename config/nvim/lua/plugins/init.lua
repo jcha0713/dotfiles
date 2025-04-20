@@ -295,26 +295,6 @@ return {
   -- },
   --
 
-  -- {
-  --   "jcha0713/classy.nvim",
-  --   keys = {
-  --     { "<leader>ac", ":ClassyAddClass<CR>", desc = "Add class attr" },
-  --     { "<leader>dc", ":ClassyRemoveClass<CR>", desc = "Remove class attr" },
-  --     { "<leader>rc", ":ClassyResetClass<CR>", desc = "Reset class attr" },
-  --   },
-  -- },
-
-  {
-    "jcha0713/classy.nvim",
-    enabled = false,
-    dir = "~/jhcha/dev/2022/project/classy",
-    keys = {
-      { "<leader>ac", ":ClassyAddClass<CR>", desc = "Add class attr" },
-      { "<leader>dc", ":ClassyRemoveClass<CR>", desc = "Remove class attr" },
-      { "<leader>rc", ":ClassyResetClass<CR>", desc = "Reset class attr" },
-    },
-  },
-
   {
     "gleam-lang/gleam.vim",
     ft = "gleam",
