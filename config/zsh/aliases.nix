@@ -4,6 +4,7 @@
   # ============================
   dot = "cd ~/dotfiles";
   nt = "cd $ZK_NOTEBOOK_DIR/";
+  nv = "cd ~/dotfiles/config/nvim";
 
   # ============================
   # nix
