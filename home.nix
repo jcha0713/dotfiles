@@ -31,18 +31,7 @@
       fzf bottom lazygit
       circumflex darwin.trash
       catimg wakeonlan tree
-      nap
-
-      (zk.overrideAttrs (oldAttrs: {
-        version = "0.15.0";
-        src = fetchFromGitHub {
-          owner = "zk-org";
-          repo = "zk";
-          rev = "0.15.0";
-          sha256 = "sha256-aFpn3luIp5tMp9jpBxVCmU+IU9eJg3/5UZFIklauFjI=";
-        };
-
-      }))
+      nap zk
 
       # Development tools
       git gh git-absorb
