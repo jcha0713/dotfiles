@@ -157,7 +157,7 @@ function homework() {
       fi
 
       for file in "${files[@]}"; do
-        mv "$ZK_NOTEBOOK_DIR/$file" "$dest_dir/"
+        mv $file "$dest_dir/"
         echo "✓ Moved $(basename "$file") to $dest_dir/$(basename "$file")"
       done
 
