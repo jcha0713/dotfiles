@@ -89,3 +89,78 @@ function project() {
   # zk
   zk new --title=$project_name --extra project=$project_name --no-input "$project_path"
 }
+
+function homework() {
+  if ! which fzf >/dev/null 2>&1; then
+    echo "fzf is not installed, please install it first to do your homework"
+    return 1
+  fi
+
+  local captures_dir="${1:-$ZK_NOTEBOOK_DIR/captures}"
+  local root_dir="$ZK_NOTEBOOK_DIR"
+
+  if [[ -z "$(ls -A "$captures_dir" 2>/dev/null)" ]]; then
+    echo "No more homework left. Good job!"
+    return 0
+  fi
+
+  local tmp_exit_file=$(mktemp)
+  local exit_binds=(
+    --bind="ctrl-q:execute(echo 1 > $tmp_exit_file)+cancel"
+    --bind="ctrl-c:execute(echo 1 > $tmp_exit_file)+cancel"
+    --bind="esc:execute(echo 1 > $tmp_exit_file)+cancel"
+  )
+
+  while true; do
+    local files_count=$(zk list --quiet --format '{{path}}' "$captures_dir" | wc -l)
+
+    if [[ $files_count -eq 0 ]]; then
+      echo "Homework is done. Well done!"
+      break
+    fi
+
+    echo "You have $files_count note(s) left to process."
+
+    local file_paths=$(
+      zk list --quiet --format '{{abs-path}}' "$captures_dir" |
+        fzf --multi --preview "bat --color=always {}" \
+          "${exit_binds[@]}"
+    )
+
+    local files=("${(f)file_paths}")
+
+    if [[ -s "$tmp_exit_file" ]]; then
+      rm "$tmp_exit_file"
+      echo "Do your homework more frequently."
+      return 0
+    fi
+
+    local dest_dir=$(
+      find "$root_dir" -type d -not -path "*/\.*" |
+        grep -v "$captures_dir" |
+        fzf --height 90% --layout=reverse --prompt="Move to: " \
+          --header="Enter: select, CTRL-E: create new directory" \
+          --bind="ctrl-e:print-query" \
+          "${exit_binds[@]}"
+    )
+
+    if [[ -s "$tmp_exit_file" ]]; then
+      rm "$tmp_exit_file"
+      echo "Do your homework more frequently."
+      return 0
+    fi
+
+    if [[ -n $dest_dir ]]; then
+      if [[ ! -d "$dest_dir" ]]; then
+        echo "Creating new directory: $dest_dir"
+        mkdir -p "$dest_dir"
+      fi
+
+      for file in "${files[@]}"; do
+        mv "$ZK_NOTEBOOK_DIR/$file" "$dest_dir/"
+        echo "✓ Moved $(basename "$file") to $dest_dir/$(basename "$file")"
+      done
+
+    fi
+  done
+}
