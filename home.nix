@@ -32,6 +32,7 @@
       circumflex darwin.trash
       catimg wakeonlan tree
       nap zk yazi
+      fx
 
       # Development tools
       git gh git-absorb
