@@ -31,7 +31,7 @@
       fzf bottom lazygit
       circumflex darwin.trash
       catimg wakeonlan tree
-      nap zk
+      nap zk yazi
 
       # Development tools
       git gh git-absorb
