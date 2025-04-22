@@ -95,6 +95,17 @@
 
       source ${config.home.homeDirectory}/dotfiles/config/zsh/zk.zsh
     '';
+    plugins = [
+        {
+          name = "vi-mode";
+          src = pkgs.zsh-vi-mode;
+          file = "share/zsh-vi-mode/zsh-vi-mode.plugin.zsh";
+        }
+      ];
+  };
+
+  programs.zoxide = {
+    enable = true;
   };
 
   programs.fzf = let
