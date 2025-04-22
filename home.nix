@@ -10,6 +10,7 @@
 
     sessionVariables = {
       LIBSQLITE = "${pkgs.sqlite.out}/lib/libsqlite3.dylib";
+      LANG = "en_US.UTF-8";
     };
 
     activation.installWeztermTerminfo = ''
