@@ -38,6 +38,9 @@ local picker_opt = {
   lsp_definitions = {
     theme = "cursor",
   },
+  lsp_document_symbols = {
+    theme = "cursor",
+  },
 }
 
 return {
@@ -94,11 +97,11 @@ return {
       ":Telescope lsp_references<CR>",
       desc = "Telescope lsp references",
     },
-    -- {
-    --   "<leader>ld",
-    --   ":Telescope lsp_definitions<CR>",
-    --   desc = "Telescope lsp definitions",
-    -- },
+    {
+      "<leader>sm",
+      ":Telescope lsp_document_symbols<CR>",
+      desc = "Telescope lsp definitions",
+    },
   },
   config = function()
     local actions = require("telescope.actions")
