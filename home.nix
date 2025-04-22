@@ -11,6 +11,7 @@
     sessionVariables = {
       LIBSQLITE = "${pkgs.sqlite.out}/lib/libsqlite3.dylib";
       LANG = "en_US.UTF-8";
+      ZVM_INIT_MODE="sourcing"; # SEE: https://github.com/jeffreytse/zsh-vi-mode/issues/277
     };
 
     activation.installWeztermTerminfo = ''
@@ -97,12 +98,12 @@
       source ${config.home.homeDirectory}/dotfiles/config/zsh/zk.zsh
     '';
     plugins = [
-        {
-          name = "vi-mode";
-          src = pkgs.zsh-vi-mode;
-          file = "share/zsh-vi-mode/zsh-vi-mode.plugin.zsh";
-        }
-      ];
+      {
+        name = "vi-mode";
+        src = pkgs.zsh-vi-mode;
+        file = "share/zsh-vi-mode/zsh-vi-mode.plugin.zsh";
+      }
+    ];
   };
 
   programs.zoxide = {
