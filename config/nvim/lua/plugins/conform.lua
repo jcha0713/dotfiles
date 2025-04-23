@@ -92,8 +92,6 @@ return {
       json = { "prettierd", "prettier" },
       jsonc = { "prettierd", "prettier" },
       svelt = { "prettierd", "prettier" },
-      sh = { "shfmt" },
-      zsh = { "shfmt" },
       lua = { "stylua" },
       nim = { "nph" },
       nix = { "injected" },
