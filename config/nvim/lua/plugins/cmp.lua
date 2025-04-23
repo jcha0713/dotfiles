@@ -97,7 +97,7 @@ return {
             end
           end
 
-          return vim_item
+          return require("nvim-highlight-colors").format(entry, vim_item)
         end,
       },
       mapping = {

@@ -79,16 +79,14 @@ return {
     version = "*",
   },
 
-  -- nvim-colorizer: color label for hex codes
   {
-    "NvChad/nvim-colorizer.lua",
+    "brenoprata10/nvim-highlight-colors",
     event = "VeryLazy",
     config = function()
-      require("colorizer").setup({
-        user_default_options = {
-          names = false,
-          tailwind = true, -- Enable tailwind colors
-        },
+      require("nvim-highlight-colors").setup({
+        render = "virtual",
+        virtual_symbol = "█",
+        enable_tailwind = true,
       })
     end,
   },
