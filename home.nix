@@ -110,6 +110,18 @@ in
       eval "$(fnm env --use-on-cd --shell zsh)"
 
       source ${config.home.homeDirectory}/dotfiles/config/zsh/zk.zsh
+
+      # bind <C-n> to yazi(y)
+      bindkey -s '^n' 'y\n'
+
+      function y() {
+        local tmp="$(mktemp -t "yazi-cwd.XXXXXX")"
+        yazi "$@" --cwd-file="$tmp"
+        if cwd="$(cat -- "$tmp")" && [ -n "$cwd" ] && [ "$cwd" != "$PWD" ]; then
+          cd -- "$cwd"
+        fi
+        rm -f -- "$tmp"
+      }
     '';
     plugins = [
       {
