@@ -1,5 +1,19 @@
 { config, pkgs, ... }:
 
+let
+  flexoki = pkgs.fetchFromGitHub {
+      owner = "gosxrgxx";
+      repo = "flexoki-light.yazi";
+      rev = "main";
+      sha256 = "sha256-5dlD4CvLwpSA2XJJtm562vAyZfsKWQGdbwkQJuXj5Jk=";
+  };
+  everforest = pkgs.fetchFromGitHub {
+      owner = "Chromium-3-Oxide";
+      repo = "everforest-medium.yazi";
+      rev = "main";
+      sha256 = "sha256-FXg++wVSGrJZnYodzkS4eVIeQE1xm8o0urnoInqfP5g=";
+  };
+in
 {
   programs.home-manager.enable = true;
 
@@ -132,6 +146,33 @@
     changeDirWidgetOptions = [
       "--preview 'tree -C {} | head -100'"
     ];
+  };
+
+  programs.yazi = {
+    enable = true;
+    settings = {
+      manager = {
+        sort_dir_first = true;
+        ratio = [
+          1
+          2
+          5
+        ];
+      };
+      preview = {
+        wrap = "yes";
+      };
+    };
+    theme = {
+      flavor = {
+        light = "flexoki";
+        dark = "everforest";
+      };
+    };
+    flavors = {
+      flexoki = flexoki;
+      everforest = everforest;
+    };
   };
 }
 
