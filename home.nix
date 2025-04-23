@@ -33,7 +33,7 @@
       circumflex darwin.trash
       catimg wakeonlan tree
       nap zk yazi
-      fx
+      fx zsh-autosuggestions
 
       # Development tools
       git gh git-absorb
