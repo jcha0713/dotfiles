@@ -41,11 +41,6 @@ map("n", "<leader>rs", ":LspRestart<CR>:e<CR>", { desc = "Restart LSP" })
 -- global yank
 map("n", "gy", "ggyG", { desc = "Yank all lines in file" })
 
--- quickfix
--- map("n", "Q", ":cw<CR>")
-map("n", "]c", ":cn<CR>")
-map("n", "[c", ":cp<CR>")
-
 -- F and L for first and last character movement
 -- and now tesing gh and gl
 map("n", "gh", "^", { desc = "Move to first character in line" })
