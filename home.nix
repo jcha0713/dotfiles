@@ -54,7 +54,7 @@ in
       fnm pnpm deno
       rustup gleam tree-sitter
       sqlite curl ncurses
-      tailscale
+      tailscale colima
 
       # GUI
       aldente mos raycast
