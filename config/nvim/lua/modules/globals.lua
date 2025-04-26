@@ -6,6 +6,7 @@ api.nvim_set_var("lsp_servers", {
   "clangd",
   "cssls",
   -- "cssmodules_ls",
+  "emmet_language_server",
   "gleam",
   "html",
   "jsonls",

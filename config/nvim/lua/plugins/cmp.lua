@@ -66,6 +66,8 @@ return {
           -- add icons and kind
           pcall(function()
             local lspkind = require("lspkind")
+            vim_item = require("nvim-highlight-colors").format(entry, vim_item)
+
             vim_item.kind_symbol = (lspkind.symbolic or lspkind.get_symbol)(
               vim_item.kind
             )
@@ -97,7 +99,7 @@ return {
             end
           end
 
-          return require("nvim-highlight-colors").format(entry, vim_item)
+          return vim_item
         end,
       },
       mapping = {
