@@ -569,6 +569,7 @@ return {
     event = "VeryLazy",
     opts = {
       highlight = true,
+      highlight_duration = 400,
     },
   },
 

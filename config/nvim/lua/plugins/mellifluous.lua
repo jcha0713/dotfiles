@@ -57,6 +57,10 @@ return {
               bg = colors.red,
               fg = colors.fg:darkened(100),
             })
+
+            highlighter.set("CursorLine", {
+              bg = colors.bg:lightened(5),
+            })
           end,
         },
       },

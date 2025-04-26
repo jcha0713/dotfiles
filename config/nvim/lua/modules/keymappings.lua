@@ -59,10 +59,10 @@ map("n", "vgl", "v$", { desc = "Select to last character in line" })
 -- map("n", "<C-l>", "<C-w>l")
 
 -- testing treewalker
-map("n", "<C-j>", ":Treewalker Down<CR>")
-map("n", "<C-k>", ":Treewalker Up<CR>")
-map("n", "<C-h>", ":Treewalker Left<CR>")
-map("n", "<C-l>", ":Treewalker Right<CR>")
+map("n", "<C-j>", ":Treewalker Down<CR>zz")
+map("n", "<C-k>", ":Treewalker Up<CR>zz")
+map("n", "<C-h>", ":Treewalker Left<CR>zz")
+map("n", "<C-l>", ":Treewalker Right<CR>zz")
 
 -- Switch buffers
 map("n", "]b", ":bnext<CR>", { desc = "Next buffer" })
