@@ -33,6 +33,7 @@ return {
   -- cmp-fuzzy-buffer: buffer source using fuzzy
   {
     "tzachar/cmp-fuzzy-buffer",
+    event = "VeryLazy",
     dependencies = { "hrsh7th/nvim-cmp", "tzachar/fuzzy.nvim" },
   },
 
