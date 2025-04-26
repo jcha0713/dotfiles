@@ -28,6 +28,10 @@ in
       ZVM_INIT_MODE="sourcing"; # SEE: https://github.com/jeffreytse/zsh-vi-mode/issues/277
     };
 
+    sessionPath = [
+      "/Users/jcha0713/.local/share/bob/nvim-bin"
+    ];
+
     activation.installWeztermTerminfo = ''
       echo "Installing WezTerm terminfo..."
       tempfile=$(mktemp)
@@ -83,9 +87,9 @@ in
     };
   };
 
-  programs.neovim = {
-    enable = true;
-  };
+  # programs.neovim = {
+  #   enable = true;
+  # };
 
   programs.git = {
     enable = true;
