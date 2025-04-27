@@ -59,6 +59,7 @@ in
       rustup gleam tree-sitter
       sqlite curl ncurses
       tailscale colima bun
+      go
 
       # GUI
       aldente mos raycast
