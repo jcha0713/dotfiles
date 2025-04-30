@@ -100,7 +100,7 @@ return {
     {
       "<leader>sm",
       ":Telescope lsp_document_symbols<CR>",
-      desc = "Telescope lsp definitions",
+      desc = "Telescope document symbols",
     },
   },
   config = function()
