@@ -72,6 +72,7 @@
                 "mos"
                 "raycast"
                 "discord"
+                "1password-cli"
               ];
           })
 

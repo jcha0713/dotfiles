@@ -59,7 +59,7 @@ in
       rustup gleam tree-sitter
       sqlite curl ncurses
       tailscale colima bun
-      go
+      go _1password-cli
 
       # GUI
       aldente mos raycast
@@ -87,10 +87,6 @@ in
       source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/dotfiles/config/sprinkles";
     };
   };
-
-  # programs.neovim = {
-  #   enable = true;
-  # };
 
   programs.git = {
     enable = true;
