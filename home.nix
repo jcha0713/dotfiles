@@ -60,6 +60,7 @@ in
       sqlite curl ncurses
       tailscale colima bun
       go _1password-cli
+      erlang_27
 
       # GUI
       aldente mos raycast
