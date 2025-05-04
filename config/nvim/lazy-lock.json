@@ -38,6 +38,7 @@
   "mason-tool-installer.nvim": { "branch": "main", "commit": "c1fbdcb0d8d1295314f1612c4a247253e70299d9" },
   "mason.nvim": { "branch": "main", "commit": "49ff59aded1047a773670651cfa40e76e63c6377" },
   "mellifluous.nvim": { "branch": "main", "commit": "0335c142272783a35ed6e54a185391240cff71df" },
+  "mini.align": { "branch": "main", "commit": "8d5f3254a4c25fdfd26b7467d2372f5deed3a78c" },
   "mini.cursorword": { "branch": "main", "commit": "7d1b38a17834acbbc4feff8e42aedc4ed0c6ff06" },
   "mkdnflow.nvim": { "branch": "main", "commit": "4c8890890426d57f20fc6d459c7631e0bbb50975" },
   "nabla.nvim": { "branch": "master", "commit": "27a6ea9ed7452bb9e0b19eb0942b5bcf7d051b2f" },

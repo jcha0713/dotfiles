@@ -614,4 +614,13 @@ return {
     event = "VeryLazy",
     enabled = vim.fn.has("nvim-0.10.0") == 1,
   },
+
+  {
+    "echasnovski/mini.align",
+    version = "*",
+    event = "VeryLazy",
+    config = function()
+      require("mini.align").setup()
+    end,
+  },
 }
