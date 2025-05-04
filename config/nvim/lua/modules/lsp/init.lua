@@ -92,19 +92,22 @@ local on_attach = function(client, bufnr)
   u.lua_command("LspSignatureHelp", "vim.lsp.buf.signature_help()")
 
   -- bindings
+  -- hover H -> K
+  -- rename <leader>rn -> grn
+  -- code_actions <leader>ca -> gra
+  -- reference <leader>fr -> grr
+  -- implementation none -> gri
+  -- signature_help <C-s> -> <C-s>
   u.map("n", "gD", ":LspDec<CR>")
   u.map("n", "gd", ":Telescope lsp_definitions<CR>")
-  u.map("n", "<Leader>rn", ":LspRename<CR>")
+  u.map("n", "gic", ":Telescope lsp_incoming_calls<CR>")
+  u.map("n", "goc", ":Telescope lsp_outgoing_calls<CR>")
   u.map("n", "<leader>gy", "<cmd>TroubleToggle lsp_type_definitions<CR>")
   u.map("n", "H", ":LspHover<CR>")
   u.map("n", "dk", ":LspDiagPrev<CR>")
   u.map("n", "dj", ":LspDiagNext<CR>")
   u.map("n", "da", ":LspDiagOpen<CR>")
   u.map("n", "<Leader>dl", ":LspDiagLine<CR>")
-  u.map("n", "<leader>ca", ":LspCodeAction<CR>")
-  u.map("v", "<leader>ca", ":LspRangeCodeAction<CR>")
-  u.map("n", "<leader>fr", "<cmd>TroubleToggle lsp_references<CR>")
-  u.map("i", "<C-s>", "<cmd>lua vim.lsp.buf.signature_help()<CR>")
   u.map("n", "<leader>hi", function()
     if client.server_capabilities.inlayHintProvider then
       vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled(nil))
