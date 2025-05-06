@@ -2,16 +2,16 @@
 
 let
   flexoki = pkgs.fetchFromGitHub {
-      owner = "gosxrgxx";
-      repo = "flexoki-light.yazi";
-      rev = "main";
-      sha256 = "sha256-5dlD4CvLwpSA2XJJtm562vAyZfsKWQGdbwkQJuXj5Jk=";
+    owner = "gosxrgxx";
+    repo = "flexoki-light.yazi";
+    rev = "main";
+    sha256 = "sha256-5dlD4CvLwpSA2XJJtm562vAyZfsKWQGdbwkQJuXj5Jk=";
   };
   everforest = pkgs.fetchFromGitHub {
-      owner = "Chromium-3-Oxide";
-      repo = "everforest-medium.yazi";
-      rev = "main";
-      sha256 = "sha256-FXg++wVSGrJZnYodzkS4eVIeQE1xm8o0urnoInqfP5g=";
+    owner = "Chromium-3-Oxide";
+    repo = "everforest-medium.yazi";
+    rev = "main";
+    sha256 = "sha256-FXg++wVSGrJZnYodzkS4eVIeQE1xm8o0urnoInqfP5g=";
   };
 in
 {
@@ -25,7 +25,7 @@ in
     sessionVariables = {
       LIBSQLITE = "${pkgs.sqlite.out}/lib/libsqlite3.dylib";
       LANG = "en_US.UTF-8";
-      ZVM_INIT_MODE="sourcing"; # SEE: https://github.com/jeffreytse/zsh-vi-mode/issues/277
+      ZVM_INIT_MODE = "sourcing"; # SEE: https://github.com/jeffreytse/zsh-vi-mode/issues/277
     };
 
     sessionPath = [
@@ -46,12 +46,22 @@ in
 
     # Add some basic packages to be managed by Home Manager instead of system-wide
     packages = with pkgs; [
-      bat fd ripgrep
-      fzf bottom lazygit
-      circumflex darwin.trash
-      catimg wakeonlan tree
-      nap zk yazi
-      fx zsh-autosuggestions
+      bat
+      fd
+      ripgrep
+      fzf
+      bottom
+      lazygit
+      circumflex
+      darwin.trash
+      catimg
+      wakeonlan
+      tree
+      nap
+      zk
+      yazi
+      fx
+      zsh-autosuggestions
       (nb.overrideAttrs (oldAttrs: {
         version = "7.17.0";
         src = fetchFromGitHub {
@@ -63,17 +73,32 @@ in
       }))
 
       # Development tools
-      git gh git-absorb
-      fnm pnpm deno
-      rustup gleam tree-sitter
-      sqlite curl ncurses
-      tailscale colima bun
-      go _1password-cli
+      git
+      gh
+      git-absorb
+      fnm
+      pnpm
+      deno
+      rustup
+      gleam
+      tree-sitter
+      sqlite
+      curl
+      ncurses
+      tailscale
+      colima
+      bun
+      go
+      _1password-cli
       erlang_27
 
       # GUI
-      aldente mos raycast
-      discord espanso wezterm
+      aldente
+      mos
+      raycast
+      discord
+      espanso
+      wezterm
     ];
   };
 
@@ -106,7 +131,7 @@ in
 
   programs.zsh = {
     enable = true;
-    enableCompletion = true;  
+    enableCompletion = true;
     autosuggestion.enable = true;
     syntaxHighlighting.enable = true;
     sessionVariables = {
@@ -117,23 +142,24 @@ in
       enable = true;
       theme = "kolo";
     };
-    initExtra = /* zsh */ ''
-      eval "$(fnm env --use-on-cd --shell zsh)"
+    initExtra = # zsh
+      ''
+        eval "$(fnm env --use-on-cd --shell zsh)"
 
-      source ${config.home.homeDirectory}/dotfiles/config/zsh/zk.zsh
+        source ${config.home.homeDirectory}/dotfiles/config/zsh/zk.zsh
 
-      # bind <C-n> to yazi(y)
-      bindkey -s '^n' 'y\n'
+        # bind <C-n> to yazi(y)
+        bindkey -s '^n' 'y\n'
 
-      function y() {
-        local tmp="$(mktemp -t "yazi-cwd.XXXXXX")"
-        yazi "$@" --cwd-file="$tmp"
-        if cwd="$(cat -- "$tmp")" && [ -n "$cwd" ] && [ "$cwd" != "$PWD" ]; then
-          cd -- "$cwd"
-        fi
-        rm -f -- "$tmp"
-      }
-    '';
+        function y() {
+          local tmp="$(mktemp -t "yazi-cwd.XXXXXX")"
+          yazi "$@" --cwd-file="$tmp"
+          if cwd="$(cat -- "$tmp")" && [ -n "$cwd" ] && [ "$cwd" != "$PWD" ]; then
+            cd -- "$cwd"
+          fi
+          rm -f -- "$tmp"
+        }
+      '';
     plugins = [
       {
         name = "vi-mode";
@@ -147,29 +173,31 @@ in
     enable = true;
   };
 
-  programs.fzf = let
-    fdCommand = "fd --exclude '.git' --exclude 'node_modules' --exclude 'lua-language-server'";
-  in {
-    enable = true;
-    enableZshIntegration = true;
-    defaultCommand = fdCommand;
-    defaultOptions = [
-      "--height 80%"
-      "--preview-window=right,60%,border-rounded"
-      "--layout reverse"
-      "--border rounded"
-      "--margin 1"
-      "--bind ctrl-d:preview-page-down,ctrl-u:preview-page-up"
-    ];
-    fileWidgetCommand = "${fdCommand} --type f";
-    fileWidgetOptions = [
-      "--preview 'bat --line-range :500 {}'"
-    ];
-    changeDirWidgetCommand = "${fdCommand} --type d";
-    changeDirWidgetOptions = [
-      "--preview 'tree -C {} | head -100'"
-    ];
-  };
+  programs.fzf =
+    let
+      fdCommand = "fd --exclude '.git' --exclude 'node_modules' --exclude 'lua-language-server'";
+    in
+    {
+      enable = true;
+      enableZshIntegration = true;
+      defaultCommand = fdCommand;
+      defaultOptions = [
+        "--height 80%"
+        "--preview-window=right,60%,border-rounded"
+        "--layout reverse"
+        "--border rounded"
+        "--margin 1"
+        "--bind ctrl-d:preview-page-down,ctrl-u:preview-page-up"
+      ];
+      fileWidgetCommand = "${fdCommand} --type f";
+      fileWidgetOptions = [
+        "--preview 'bat --line-range :500 {}'"
+      ];
+      changeDirWidgetCommand = "${fdCommand} --type d";
+      changeDirWidgetOptions = [
+        "--preview 'tree -C {} | head -100'"
+      ];
+    };
 
   programs.yazi = {
     enable = true;
@@ -198,4 +226,3 @@ in
     };
   };
 }
-

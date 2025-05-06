@@ -38,6 +38,7 @@
             # $ nix-env -qaP | grep wget
             environment.systemPackages = [ 
               pkgs.home-manager
+              pkgs.nixfmt-rfc-style
               # pkgs.neovim
               inputs.neovim-nix.packages.${pkgs.system}.bob
               pkgs.aerospace

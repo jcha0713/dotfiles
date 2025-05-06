@@ -94,7 +94,7 @@ return {
       svelt = { "prettierd", "prettier" },
       lua = { "stylua" },
       nim = { "nph" },
-      nix = { "injected" },
+      nix = { "nixfmt" },
     },
     stop_after_first = true,
     default_format_opts = {
