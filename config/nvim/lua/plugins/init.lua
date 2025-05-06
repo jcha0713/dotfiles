@@ -3,15 +3,13 @@ return {
   { "nvim-lua/plenary.nvim", branch = "master" },
 
   {
-    "iamcco/markdown-preview.nvim",
-    cmd = { "MarkdownPreviewToggle", "MarkdownPreview", "MarkdownPreviewStop" },
-    ft = { "markdown" },
-    build = function()
-      vim.fn["mkdp#util#install"]()
-    end,
-
+    "toppair/peek.nvim",
+    event = { "VeryLazy" },
+    build = "deno task --quiet build:fast",
     config = function()
-      vim.keymap.set("n", "<leader>mp", "<cmd>MarkdownPreviewToggle<CR>")
+      require("peek").setup()
+      vim.api.nvim_create_user_command("PeekOpen", require("peek").open, {})
+      vim.api.nvim_create_user_command("PeekClose", require("peek").close, {})
     end,
   },
 
