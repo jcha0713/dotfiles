@@ -61,6 +61,10 @@ return {
             highlighter.set("CursorLine", {
               bg = colors.bg:lightened(5),
             })
+
+            highlighter.set("RenderMarkdownCode", {
+              bg = colors.bg:darkened(50),
+            })
           end,
         },
       },

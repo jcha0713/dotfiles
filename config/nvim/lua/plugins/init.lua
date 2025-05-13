@@ -101,27 +101,6 @@ return {
     end,
   },
 
-  -- trouble.nvim: error fix using quickfix list
-  {
-    "folke/trouble.nvim",
-    event = "VeryLazy",
-    dependencies = "nvim-tree/nvim-web-devicons",
-    config = function()
-      vim.keymap.set("n", "<leader>tt", ":TroubleToggle<CR>")
-      vim.keymap.set(
-        "n",
-        "<leader>wd",
-        ":TroubleToggle workspace_diagnostics<CR>"
-      )
-      vim.keymap.set(
-        "n",
-        "<leader>dd",
-        ":TroubleToggle document_diagnostics<CR>"
-      )
-      vim.keymap.set("n", "Q", ":TroubleToggle quickfix<CR>")
-    end,
-  },
-
   {
     "notjedi/nvim-rooter.lua",
     event = "BufEnter",
@@ -317,39 +296,6 @@ return {
   --       },
   --       priority = 128,
   --       disable = {},
-  --     })
-  --   end,
-  -- },
-  {
-    "MeanderingProgrammer/render-markdown.nvim",
-    event = "BufEnter",
-    ft = { "markdown" },
-    dependencies = {
-      "nvim-treesitter/nvim-treesitter",
-      "nvim-tree/nvim-web-devicons",
-    }, -- if you prefer nvim-web-devicons
-    ---@module 'render-markdown'
-    ---@type render.md.UserConfig
-    opts = {},
-  },
-
-  -- {
-  --   "lukas-reineke/headlines.nvim",
-  --   event = "VeryLazy",
-  --   dependencies = "nvim-treesitter/nvim-treesitter",
-  --   config = function()
-  --     require("headlines").setup({
-  --       markdown = {
-  --         fat_headline_lower_string = "▀",
-  --         bullets = { "󰎤", "󰎧", "󰎪", "󰎭", "󰎱" },
-  --         headline_highlights = {
-  --           "Headline1",
-  --           "Headline2",
-  --           "Headline3",
-  --           "Headline4",
-  --           "Headline5",
-  --         },
-  --       },
   --     })
   --   end,
   -- },
@@ -600,9 +546,12 @@ return {
 
   {
     "Sebastian-Nielsen/better-type-hover",
+    event = "VeryLazy",
     ft = { "typescript", "typescriptreact" },
     config = function()
-      require("better-type-hover").setup()
+      require("better-type-hover").setup({
+        openTypeDocKeymap = "K",
+      })
     end,
   },
 
@@ -619,6 +568,27 @@ return {
     event = "VeryLazy",
     config = function()
       require("mini.align").setup()
+    end,
+  },
+
+  {
+    "lewis6991/hover.nvim",
+    event = "LspAttach",
+    config = function()
+      require("hover").setup({
+        init = function()
+          require("hover.providers.lsp")
+        end,
+        preview_opts = {
+          border = "rounded",
+        },
+        vim.keymap.set(
+          "n",
+          "K",
+          require("hover").hover,
+          { desc = "hover.nvim" }
+        ),
+      })
     end,
   },
 }
