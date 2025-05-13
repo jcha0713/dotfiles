@@ -92,6 +92,7 @@ in
       go
       _1password-cli
       erlang_27
+      janet
 
       # GUI
       aldente
