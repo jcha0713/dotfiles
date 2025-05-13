@@ -12,7 +12,7 @@ api.nvim_set_var("lsp_servers", {
   "html",
   "jsonls",
   "nil_ls",
-  "markdown_oxide",
+  "zk",
   "prismals",
   "pyright",
   "rust_analyzer",
