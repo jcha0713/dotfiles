@@ -26,6 +26,7 @@ in
       LIBSQLITE = "${pkgs.sqlite.out}/lib/libsqlite3.dylib";
       LANG = "en_US.UTF-8";
       ZVM_INIT_MODE = "sourcing"; # SEE: https://github.com/jeffreytse/zsh-vi-mode/issues/277
+      ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE = "fg=#737246";
     };
 
     sessionPath = [
