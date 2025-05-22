@@ -165,3 +165,8 @@ shift-down = ['volume set 0', 'mode main']
 3 = 'main'
 4 = 'main'
 5 = 'secondary'
+
+[[on-window-detected]]
+if.app-id = 'app.zen-browser.zen'
+if.window-title-regex-substring = 'Picture-in-Picture'
+run = ['layout floating']
