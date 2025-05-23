@@ -66,6 +66,9 @@ local format_on_save = function(args, bufnr)
   return format_args,
     function(err)
       if err then
+        if type(err) == "table" then
+          err = err.message
+        end
         vim.notify(err, vim.log.levels.WARN, { title = fmt_info })
       end
       msg_handle:finish()
