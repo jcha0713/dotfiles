@@ -572,23 +572,10 @@ return {
   },
 
   {
-    "lewis6991/hover.nvim",
-    event = "LspAttach",
-    config = function()
-      require("hover").setup({
-        init = function()
-          require("hover.providers.lsp")
-        end,
-        preview_opts = {
-          border = "rounded",
-        },
-        vim.keymap.set(
-          "n",
-          "K",
-          require("hover").hover,
-          { desc = "hover.nvim" }
-        ),
-      })
-    end,
+    "dmmulroy/tsc.nvim",
+    event = "VeryLazy",
+    opts = {
+      use_trouble_qflist = true,
+    },
   },
 }
