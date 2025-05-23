@@ -11,9 +11,9 @@ return {
   opts = {
     code = {
       width = "block",
-      left_margin = 0.5,
-      left_pad = 0.2,
-      right_pad = 0.2,
+      left_pad = 2,
+      right_pad = 4,
+      border = "thin",
     },
   },
 }

@@ -54,8 +54,7 @@ return {
             })
 
             highlighter.set("LspSignatureActiveParameter", {
-              bg = colors.red,
-              fg = colors.fg:darkened(100),
+              fg = colors.blue,
             })
 
             highlighter.set("CursorLine", {
