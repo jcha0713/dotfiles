@@ -63,6 +63,7 @@ in
       yazi
       fx
       zsh-autosuggestions
+      w3m
       (nb.overrideAttrs (oldAttrs: {
         version = "7.17.0";
         src = fetchFromGitHub {
@@ -93,6 +94,7 @@ in
       _1password-cli
       erlang_27
       janet
+      pipx
 
       # GUI
       aldente
