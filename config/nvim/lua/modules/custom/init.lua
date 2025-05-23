@@ -1,6 +1,6 @@
 local plugins = {
-  "winbar",
-  "idg",
+  -- "winbar",
+  -- "idg",
   "fetch_title",
   "clipboard",
 }
