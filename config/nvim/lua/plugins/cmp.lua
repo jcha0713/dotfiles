@@ -58,7 +58,7 @@ return {
         documentation = cmp.config.window.bordered(),
       },
       view = {
-        entries = { name = "custom", selection_order = "near_cursor" },
+        entries = { name = "custom", selection_order = "top_down" },
       },
       formatting = {
         -- https://github.com/hrsh7th/nvim-cmp/wiki/Menu-Appearance#menu-type
@@ -114,14 +114,13 @@ return {
         }),
       },
       sorting = {
-        priority_weight = 2,
+        priority_weight = 1.0,
         comparators = {
           compare.offset,
-          compare.exact,
           compare.score,
+          compare.exact,
           compare.recently_used,
           compare.kind,
-          compare.order,
         },
       },
       sources = cmp.config.sources({
