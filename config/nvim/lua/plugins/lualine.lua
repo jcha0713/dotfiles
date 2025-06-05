@@ -8,34 +8,34 @@ return {
   config = function()
     local lualine = require("lualine")
 
-    local colors = {
-      blue = "#80a0ff",
-      cyan = "#79dac8",
-      black = "#080808",
-      white = "#c6c6c6",
-      red = "#ff5189",
-      violet = "#a9a1e1",
-      grey = "#303030",
-    }
-
-    local bubbles_theme = {
-      normal = {
-        -- a = { fg = colors.black, bg = colors.violet },
-        a = "LualineNormalPrimary",
-        b = "LualineNormalSecondary",
-        c = { fg = colors.white },
-      },
-
-      insert = { a = "LualineInsert" },
-      visual = { a = "LualineVisual" },
-      replace = { a = "LualineReplace" },
-
-      inactive = {
-        a = { fg = colors.white, bg = colors.black },
-        b = { fg = colors.white, bg = colors.black },
-        c = { fg = colors.white },
-      },
-    }
+    -- local colors = {
+    --   blue = "#80a0ff",
+    --   cyan = "#79dac8",
+    --   black = "#080808",
+    --   white = "#c6c6c6",
+    --   red = "#ff5189",
+    --   violet = "#a9a1e1",
+    --   grey = "#303030",
+    -- }
+    --
+    -- local bubbles_theme = {
+    --   normal = {
+    --     -- a = { fg = colors.black, bg = colors.violet },
+    --     a = "LualineNormalPrimary",
+    --     b = "LualineNormalSecondary",
+    --     c = { fg = colors.white },
+    --   },
+    --
+    --   insert = { a = "LualineInsert" },
+    --   visual = { a = "LualineVisual" },
+    --   replace = { a = "LualineReplace" },
+    --
+    --   inactive = {
+    --     a = { fg = colors.white, bg = colors.black },
+    --     b = { fg = colors.white, bg = colors.black },
+    --     c = { fg = colors.white },
+    --   },
+    -- }
 
     lualine.setup({
       options = {
