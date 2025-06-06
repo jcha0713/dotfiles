@@ -125,6 +125,9 @@ in
     sprinkles = {
       source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/dotfiles/config/sprinkles";
     };
+    "yazi/flavors/kenso-zen.yazi" = {
+      source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/dotfiles/config/yazi/flavors/kenso-zen.yazi";
+    };
   };
 
   programs.git = {
@@ -224,13 +227,8 @@ in
     };
     theme = {
       flavor = {
-        light = "flexoki";
-        dark = "everforest";
+        use = "kanso-zen";
       };
-    };
-    flavors = {
-      flexoki = flexoki;
-      everforest = everforest;
     };
   };
 }
