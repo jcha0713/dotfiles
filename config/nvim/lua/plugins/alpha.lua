@@ -111,7 +111,6 @@ return {
         },
         { type = "padding", val = 1 },
         startify.button("n", "  New file", ":ene <BAR> startinsert <CR>"),
-        startify.button("l", "󱊒  Open Lazy", ":Lazy<CR>"),
         startify.button(
           "p",
           "󱓓  Edit Plugins",
@@ -138,6 +137,7 @@ return {
 
         startify.button("f", "󰈞  Find Files", ":Telescope find_files<CR>"),
         startify.button("s", "󱇻  Smart Open", ":Telescope smart_open<CR>"),
+        startify.button("o", "󱇻  Recent Files", ":Telescope oldfiles<CR>"),
         startify.button("t", "  Todos", ":TodoTelescope<CR>"),
       },
     }
@@ -145,9 +145,9 @@ return {
     startify.config.layout = {
       header,
       { type = "padding", val = 2 },
-      basic,
-      { type = "padding", val = 1 },
       search,
+      { type = "padding", val = 1 },
+      basic,
     }
 
     alpha.setup(startify.config)

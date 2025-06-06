@@ -1,5 +1,4 @@
 return {
-  -- lua utils for neovim
   { "nvim-lua/plenary.nvim", branch = "master" },
 
   {
@@ -14,28 +13,11 @@ return {
   },
 
   {
-    "wallpants/github-preview.nvim",
-    enabled = false,
-    cmd = { "GithubPreviewToggle" },
-    ft = { "markdown" },
-    event = "VeryLazy",
-    config = function(_, opts)
-      local gpreview = require("github-preview")
-      gpreview.setup(opts)
-
-      local fns = gpreview.fns
-      vim.keymap.set("n", "<leader>mp", fns.toggle)
-    end,
-  },
-
-  -- cmp-fuzzy-buffer: buffer source using fuzzy
-  {
     "tzachar/cmp-fuzzy-buffer",
     event = "VeryLazy",
     dependencies = { "hrsh7th/nvim-cmp", "tzachar/fuzzy.nvim" },
   },
 
-  -- nvim-surround: nvim version of vim-surround
   {
     "kylechui/nvim-surround",
     version = "*", -- Use for stability; omit to use `main` branch for the latest features
@@ -51,12 +33,6 @@ return {
     end,
   },
 
-  {
-    "tzachar/fuzzy.nvim",
-    dependencies = { "hrsh7th/nvim-cmp", "tzachar/fuzzy.nvim" },
-  },
-
-  -- neogen: docstring generator
   {
     "danymat/neogen",
     dependencies = "nvim-treesitter/nvim-treesitter",
@@ -90,7 +66,6 @@ return {
     end,
   },
 
-  -- emmet-vim: support for emmet
   {
     "mattn/emmet-vim",
     event = "BufEnter",
@@ -102,44 +77,11 @@ return {
   },
 
   {
-    "notjedi/nvim-rooter.lua",
-    event = "BufEnter",
-    config = function()
-      require("nvim-rooter").setup()
-    end,
-  },
-
-  -- Latex in markdown
-  {
-    "jbyuki/nabla.nvim",
-    ft = { "markdown" },
-    keys = {
-      {
-        "<leader>ma",
-        function()
-          require("nabla").enable_virt()
-        end,
-      },
-    },
-  },
-
-  -- Rust
-  {
     "mrcjkb/rustaceanvim",
     version = "^5", -- Recommended
     ft = { "rust" },
   },
 
-  -- Profiling
-  {
-    "dstein64/vim-startuptime",
-    cmd = "StartupTime",
-    init = function()
-      vim.g.startuptime_tries = 10
-    end,
-  },
-
-  -- crates.io
   {
     "saecki/crates.nvim",
     event = { "BufRead Cargo.toml" },
@@ -147,17 +89,6 @@ return {
     dependencies = { "nvim-lua/plenary.nvim" },
     config = function()
       require("crates").setup()
-    end,
-  },
-
-  -- cosmic-ui
-  {
-    "CosmicNvim/cosmic-ui",
-    dependencies = { "MunifTanjim/nui.nvim", "nvim-lua/plenary.nvim" },
-    config = function()
-      require("cosmic-ui").setup({
-        border_style = "rounded",
-      })
     end,
   },
 
@@ -169,37 +100,6 @@ return {
   --     require("plugins.react-extract")
   --   end,
   -- },
-
-  -- mdx
-  { "jxnblk/vim-mdx-js", ft = "markdown" },
-
-  -- nim
-  { "alaviss/nim.nvim", ft = "nim" },
-
-  -- just for fun
-  {
-    "tamton-aquib/duck.nvim",
-    keys = {
-      {
-        -- for the talk
-        -- "<leader><leader>h",
-        "<Home>",
-        function()
-          require("duck").hatch("❄️", 5)
-          require("duck").hatch("❄️", 5)
-          require("duck").hatch("❄️", 5)
-          require("duck").hatch("❄️", 3)
-          require("duck").hatch("❄️", 3)
-        end,
-        desc = "Make it cuter",
-      },
-    },
-    config = function()
-      vim.keymap.set("n", "<leader><leader>r", function()
-        require("duck").cook()
-      end)
-    end,
-  },
 
   -- TODO: fork and customize
   -- {
@@ -229,76 +129,9 @@ return {
   -- },
 
   {
-    "stevearc/dressing.nvim",
-    event = "VeryLazy",
-  },
-
-  -- {
-  --   "zbirenbaum/copilot.lua",
-  --   event = "InsertEnter",
-  --   build = ":Copilot auth",
-  --   opts = {
-  --     suggestion = {
-  --       auto_trigger = true,
-  --       keymap = {
-  --         accept = false,
-  --       },
-  --     },
-  --   },
-  --   config = function(_, opts)
-  --     require("copilot").setup(opts)
-  --   end,
-  -- },
-
-  -- {
-  --   dir = "~/jhcha/dev/2023/project/copilot.lua",
-  --   event = "InsertEnter",
-  --   build = ":Copilot auth",
-  --   opts = {
-  --     suggestion = {
-  --       auto_trigger = true,
-  --       keymap = {
-  --         accept = false,
-  --       },
-  --     },
-  --     filetypes = {
-  --       go = false,
-  --     },
-  --   },
-  --   config = function(_, opts)
-  --     require("copilot").setup(opts)
-  --   end,
-  -- },
-  --
-
-  {
     "gleam-lang/gleam.vim",
     ft = "gleam",
   },
-
-  -- {
-  --   "zbirenbaum/neodim",
-  --   event = "LspAttach",
-  --   config = function()
-  --     require("neodim").setup({
-  --       refresh_delay = 75,
-  --       alpha = 0.5,
-  --       blend_color = "#000000",
-  --       hide = {
-  --         underline = true,
-  --         virtual_text = true,
-  --         signs = true,
-  --       },
-  --       regex = {
-  --         "[uU]nused",
-  --         "[nN]ever [rR]ead",
-  --         "[nN]ot [rR]ead",
-  --       },
-  --       priority = 128,
-  --       disable = {},
-  --     })
-  --   end,
-  -- },
 
   {
     "hedyhli/outline.nvim",
@@ -352,51 +185,6 @@ return {
     end,
   },
   {
-    "pwntester/octo.nvim",
-    event = "VeryLazy",
-    dependencies = {
-      "nvim-lua/plenary.nvim",
-      "nvim-telescope/telescope.nvim",
-      "nvim-tree/nvim-web-devicons",
-    },
-    config = function()
-      require("octo").setup({
-        suppress_missing_scope = {
-          projects_v2 = true,
-        },
-      })
-    end,
-  },
-  -- {
-  --   "sidebar-nvim/sidebar.nvim",
-  --   event = { "BufReadPre", "BufNewFile" },
-  --   keys = {
-  --     {
-  --       "<leader><leader>s",
-  --       ":SidebarNvimToggle<CR>",
-  --       desc = "Toggle Sidebar",
-  --     },
-  --   },
-  --   config = function()
-  --     require("sidebar-nvim").setup({
-  --       bindings = {
-  --         ["q"] = function()
-  --           require("sidebar-nvim").close()
-  --         end,
-  --         -- ["t"] = function()
-  --         --   require("sidebar-nvim.builtin.todos").toggle_all()
-  --         -- end,
-  --       },
-  --       sections = { "todos", "diagnostics" },
-  --       todos = {
-  --         icon = "",
-  --         ignored_paths = { "~" },
-  --       },
-  --     })
-  --   end,
-  -- },
-
-  {
     "supermaven-inc/supermaven-nvim",
     event = "BufEnter",
     config = function()
@@ -414,33 +202,6 @@ return {
     event = "BufEnter",
     opts = {
       add_mappings = true, -- add <tab> mapping automatically
-    },
-  },
-  {
-    "jcha0713/backseat.nvim",
-    enabled = false,
-    event = "VeryLazy",
-    dir = "~/jhcha/dev/2024/project/backseat.nvim",
-    keys = {
-      {
-        mode = "v",
-        "<leader><leader>p",
-        ":Backseat<CR>",
-        desc = "Send Backseat request",
-      },
-    },
-    config = function()
-      require("backseat").setup({
-        openai_model_id = "gpt-3.5-turbo", --gpt-4 (If you do not have access to a model, it says "The model does not exist")
-      })
-    end,
-  },
-  {
-    "David-Kunz/gen.nvim",
-    event = "VeryLazy",
-    opts = {
-      display_mode = "split",
-      show_prompt = true,
     },
   },
 
@@ -491,12 +252,6 @@ return {
   },
 
   {
-    "luckasRanarison/clear-action.nvim",
-    event = "VeryLazy",
-    config = true,
-  },
-
-  {
     "aznhe21/actions-preview.nvim",
     event = "VeryLazy",
     config = true,
@@ -517,20 +272,6 @@ return {
       highlight_duration = 400,
     },
   },
-
-  -- {
-  --   "vim-fall/fall.vim",
-  --   event = "VeryLazy",
-  --   dependencies = {
-  --     "vim-denops/denops.vim",
-  --   },
-  --   config = function()
-  --     local opts = { noremap = true, silent = true }
-  --     vim.keymap.set("c", "<C-n>", "<Plug>(fall-list-next)", opts)
-  --     vim.keymap.set("c", "<C-p>", "<Plug>(fall-list-prev)", opts)
-  --     vim.keymap.set("c", "<Tab>", "<Plug>(fall-action-select)", opts)
-  --   end,
-  -- },
 
   {
     "moyiz/git-dev.nvim",
