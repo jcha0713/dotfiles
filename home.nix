@@ -170,6 +170,15 @@ in
           fi
           rm -f -- "$tmp"
         }
+
+        function Resume {
+          fg
+          zle push-input
+          BUFFER=""
+          zle accept-line
+        }
+        zle -N Resume
+        bindkey "^Z" Resume
       '';
     plugins = [
       {
