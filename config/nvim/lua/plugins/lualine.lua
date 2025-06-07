@@ -40,9 +40,9 @@ return {
     lualine.setup({
       options = {
         icons_enabled = true,
-        theme = bubbles_theme,
+        -- theme = bubbles_theme,
         component_separators = "",
-        section_separators = { left = "", right = "" },
+        section_separators = { left = "", right = "" },
         always_divide_middle = true,
         globalstatus = true,
       },
