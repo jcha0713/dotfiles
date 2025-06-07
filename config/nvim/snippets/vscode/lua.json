@@ -1,0 +1,1 @@
+{"lazy plugins":{"prefix":"lazy plugins","body":["{","  \"${1:path}\",","  event = \"VeryLazy\",","  config = function()","    $0","  end","}"]}}

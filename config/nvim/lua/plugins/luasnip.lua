@@ -30,7 +30,11 @@ return {
 
     -- load snippets from ~/.config/nvim/snippets directory
     require("luasnip.loaders.from_lua").load({
-      paths = "~/.config/nvim/snippets",
+      paths = vim.fn.stdpath("config") .. "/snippets",
+    })
+
+    require("luasnip.loaders.from_vscode").lazy_load({
+      paths = vim.fn.stdpath("config") .. "/snippets/vscode",
     })
 
     -- loading friendly snippets
