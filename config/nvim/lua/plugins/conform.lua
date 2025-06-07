@@ -1,13 +1,13 @@
 -- many lines taken from https://github.com/Quitlox/dotfiles/blob/ee780039dfddae1c1c10b5c5662f80ffae8d4b01/private_dot_config/exact_nvim/exact_lua/exact_quitlox/exact_plugins/exact_ide/exact_lsp/formatting.lua
 
-local init_msg_progress = function(title, msg)
-  return require("fidget.progress").handle.create({
-    title = title,
-    message = msg,
-    lsp_client = { name = "conform" }, -- the fake lsp client name
-    percentage = nil, -- skip percentage field
-  })
-end
+-- local init_msg_progress = function(title, msg)
+--   return require("fidget.progress").handle.create({
+--     title = title,
+--     message = msg,
+--     lsp_client = { name = "conform" }, -- the fake lsp client name
+--     percentage = nil, -- skip percentage field
+--   })
+-- end
 
 local format_args = {
   timeout_ms = 3000,
@@ -61,7 +61,7 @@ local format_on_save = function(args, bufnr)
   end
 
   local fmt_info = "fmt: " .. formatter_name
-  local msg_handle = init_msg_progress(fmt_info)
+  -- local msg_handle = init_msg_progress(fmt_info)
 
   return format_args,
     function(err)
@@ -71,7 +71,7 @@ local format_on_save = function(args, bufnr)
         end
         vim.notify(err, vim.log.levels.WARN, { title = fmt_info })
       end
-      msg_handle:finish()
+      -- msg_handle:finish()
     end
 end
 
