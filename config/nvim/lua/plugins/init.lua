@@ -342,4 +342,12 @@ return {
       use_trouble_qflist = true,
     },
   },
+
+  {
+    "axkirillov/unified.nvim",
+    event = "VeryLazy",
+    config = function()
+      require("unified").setup()
+    end,
+  },
 }
