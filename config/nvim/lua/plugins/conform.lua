@@ -82,8 +82,12 @@ return {
   opts = {
     formatters_by_ft = {
       astro = { "prettierd", "prettier" },
-      javascript = { "biome", "prettierd", "prettier" },
-      typescript = { "biome", "prettierd", "prettier" },
+      javascript = function(bufnr)
+        return { first(bufnr, "biome", "prettierd", "prettier") }
+      end,
+      typescript = function(bufnr)
+        return { first(bufnr, "biome", "prettierd", "prettier") }
+      end,
       javascriptreact = { "prettierd", "prettier" },
       typescriptreact = { "prettierd", "prettier" },
       css = { "prettierd", "prettier" },
