@@ -32,6 +32,7 @@ in
 
     sessionPath = [
       "/Users/jcha0713/.local/share/bob/nvim-bin"
+      "~/.pnpm"
     ];
 
     activation.installWeztermTerminfo = ''
