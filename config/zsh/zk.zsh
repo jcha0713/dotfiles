@@ -18,7 +18,7 @@ function get_project_name() {
 
     if [ -z "$project_name" ]; then
       # Fallback to local repo name if no remote exists
-      project_name=$(basename $(dirname $(git rev-parse --show-toplevel)))
+      project_name=$(basename  $(git rev-parse --show-toplevel))
     fi
   else
     echo "Error: Please provide a project name or run from within a git repository"
