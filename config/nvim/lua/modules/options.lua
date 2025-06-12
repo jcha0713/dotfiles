@@ -1,17 +1,19 @@
 local indent = 2 -- num of spaces for indentation
 
+-- vim.opt.guicursor = "n:blinkwait800-blinkon300blinkoff300" -- change cursor shape
+vim.opt.winborder = "rounded"
 vim.opt.autoindent = true -- auto indent when starting a new line
 vim.opt.breakindent = true -- wrapped line is visually indented
 vim.opt.clipboard = "unnamedplus"
-vim.opt.conceallevel = 0
 vim.opt.completeopt = { "menu", "menuone", "noinsert", "noselect" } -- options for insert mode completion
+vim.opt.conceallevel = 0
 vim.opt.cursorline = true -- highlight the line of the cursor
+vim.opt.dictionary:append({ "/usr/share/dict/words" })
 vim.opt.expandtab = true -- use spaces to insert a tab
 vim.opt.foldcolumn = "0"
+vim.opt.foldenable = true
 vim.opt.foldlevel = 99
 vim.opt.foldlevelstart = 99
-vim.opt.foldenable = true
--- vim.opt.guicursor = "n:blinkwait800-blinkon300blinkoff300" -- change cursor shape
 vim.opt.hlsearch = false -- no highlight for searching
 vim.opt.ignorecase = true -- ignore case in search patterns
 vim.opt.linebreak = true -- wrap long lines
@@ -36,5 +38,3 @@ vim.opt.timeoutlen = 200 -- how long to wait for a keymap sequence to complete
 vim.opt.updatetime = 250 -- for hover
 vim.opt.wildignorecase = true -- ignore case for paths or directories
 vim.opt.wildmenu = true -- <Tab> to invoke completion above the command-line
-
-vim.opt.dictionary:append({ "/usr/share/dict/words" })
