@@ -7,17 +7,6 @@ local capabilities = vim.tbl_deep_extend(
   require("cmp_nvim_lsp").default_capabilities()
 )
 
-local border = {
-  { "╭", "FloatBorder" },
-  { "─", "FloatBorder" },
-  { "╮", "FloatBorder" },
-  { "│", "FloatBorder" },
-  { "╯", "FloatBorder" },
-  { "─", "FloatBorder" },
-  { "╰", "FloatBorder" },
-  { "│", "FloatBorder" },
-}
-
 local orig_util_open_floating_preview = lsp.util.open_floating_preview
 
 ---@diagnostic disable-next-line: duplicate-set-field
@@ -33,7 +22,9 @@ vim.diagnostic.config({
   float = {
     source = true,
   },
-  virtual_text = false,
+  virtual_lines = {
+    current_line = true,
+  },
   signs = {
     text = {
       [vim.diagnostic.severity.ERROR] = "",
@@ -124,14 +115,6 @@ local on_attach = function(client, bufnr)
   if client.name == "tsserver" then
     client.server_capabilities.documentFormattingProvider = false
   end
-
-  -- hide until https://github.com/ray-x/lsp_signature.nvim/issues/276 is fixed
-  -- require("lsp_signature").on_attach({
-  --   bind = true, -- This is mandatory, otherwise border config won't get registered.
-  --   handler_opts = {
-  --     border = "rounded",
-  --   },
-  -- }, bufnr)
 end
 
 local servers = vim.api.nvim_get_var("lsp_servers")
