@@ -181,6 +181,9 @@ in
         }
         zle -N Resume
         bindkey "^Z" Resume
+
+        setopt PROMPT_SUBST
+        RPROMPT='%(1j.⏸ %j.)'  # Shows job count when jobs exist
       '';
     plugins = [
       {
