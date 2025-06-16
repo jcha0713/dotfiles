@@ -34,6 +34,11 @@ return {
       integrations = {
         diffview = true,
       },
+      sections = {
+        recent = {
+          folded = false,
+        },
+      },
     })
   end,
 }
