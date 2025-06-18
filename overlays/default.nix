@@ -1,7 +1,7 @@
 self: super: {
   bun = super.bun.overrideAttrs (
     import ./packages/bun.nix {
-      inherit (super) fetchurl;
+      inherit (super) fetchurl stdenv;
     }
   );
 
