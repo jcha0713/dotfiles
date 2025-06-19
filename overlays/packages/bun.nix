@@ -12,7 +12,18 @@ let
     };
   };
 in
-(oldAttrs: {
-  version = "1.2.16";
-  src = fetchurl (sources.${system});
-})
+(
+  oldAttrs:
+  {
+    version = "1.2.16";
+    src = fetchurl sources.${system};
+  }
+  // (
+    if system == "x86_64-darwin" then
+      {
+        sourceRoot = "bun-darwin-x64";
+      }
+    else
+      { }
+  )
+)
