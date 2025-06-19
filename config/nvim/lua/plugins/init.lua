@@ -335,4 +335,12 @@ return {
       require("unified").setup()
     end,
   },
+
+  {
+    "MagicDuck/grug-far.nvim",
+    event = "VeryLazy",
+    config = function()
+      require("grug-far").setup({})
+    end,
+  },
 }
