@@ -49,53 +49,43 @@ in
 
     # Add some basic packages to be managed by Home Manager instead of system-wide
     packages = with pkgs; [
+      _1password-cli
       bat
-      fd
-      ripgrep
-      fzf
-      bottom
-      lazygit
-      circumflex
-      darwin.trash
       catimg
-      wakeonlan
-      tree
-      nap
-      zk
-      yazi
+      colima
+      curl
+      darwin.trash
+      fd
+      fnm
       fx
-      zsh-autosuggestions
-      w3m
-      nb
-
-      # Development tools
-      git
       gh
       git-absorb
-      fnm
-      pnpm
-      deno
-      rustup
-      gleam
-      tree-sitter
-      sqlite
-      curl
+      nap
+      nb
       ncurses
-      tailscale
-      colima
-      bun
-      go
-      _1password-cli
-      erlang_27
-      janet
       pipx
+      ripgrep
+      rustup
+      sqlite
+      tailscale
+      tree
+      tree-sitter
+      wakeonlan
+      zk
+      zsh-autosuggestions
+
+      # TUI
+      bottom
+      circumflex
+      lazygit
+      w3m
 
       # GUI
       aldente
-      mos
-      raycast
       discord
       espanso
+      mos
+      raycast
       wezterm
     ];
   };
@@ -151,7 +141,7 @@ in
       ''
         eval "$(fnm env --use-on-cd --shell zsh)"
 
-        source ${config.home.homeDirectory}/dotfiles/config/zsh/zk.zsh
+        source ${config.home.homeDirectory}/dotfiles/config/zsh/*.zsh
 
         # bind <C-n> to yazi(y)
         bindkey -s '^n' 'y\n'
