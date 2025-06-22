@@ -176,6 +176,9 @@ in
 
         setopt PROMPT_SUBST
         RPROMPT='%(1j.⏸ %j.)'  # Shows job count when jobs exist
+
+        # direnv (https://direnv.net/docs/hook.html)
+        eval "$(direnv hook zsh)"
       '';
     plugins = [
       {
@@ -237,4 +240,6 @@ in
       };
     };
   };
+
+  programs.direnv.enable = true;
 }
