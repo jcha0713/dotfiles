@@ -141,7 +141,8 @@ in
       ''
         eval "$(fnm env --use-on-cd --shell zsh)"
 
-        source ${config.home.homeDirectory}/dotfiles/config/zsh/*.zsh
+        source ${config.home.homeDirectory}/dotfiles/config/zsh/zk.zsh
+        source ${config.home.homeDirectory}/dotfiles/config/zsh/functions.zsh
 
         # bind <C-n> to yazi(y)
         bindkey -s '^n' 'y\n'
