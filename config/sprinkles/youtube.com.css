@@ -31,18 +31,9 @@ ytd-comments .ytd-comments:hover {
   display: none !important;
 }
 
-#chips > yt-chip-cloud-chip-renderer[chip-shape-data*="All"],
-#chips > yt-chip-cloud-chip-renderer[chip-shape-data*="Watched"],
-#chips > yt-chip-cloud-chip-renderer[chip-shape-data*="New to you"] {
+#chips > yt-chip-cloud-chip-renderer:first-child,
+#chips > yt-chip-cloud-chip-renderer:nth-last-child(1),
+#chips > yt-chip-cloud-chip-renderer:nth-last-child(2),
+#chips > yt-chip-cloud-chip-renderer:nth-last-child(3) {
   display: flex !important;
-}
-
-#chips > yt-chip-cloud-chip-renderer[chip-shape-data*="All"] {
-  order: 1 !important;
-}
-#chips > yt-chip-cloud-chip-renderer[chip-shape-data*="Watched"] {
-  order: 2 !important;
-}
-#chips > yt-chip-cloud-chip-renderer[chip-shape-data*="New to you"] {
-  order: 3 !important;
 }
