@@ -22,9 +22,7 @@ vim.diagnostic.config({
   float = {
     source = true,
   },
-  virtual_lines = {
-    current_line = true,
-  },
+  virtual_lines = false,
   signs = {
     text = {
       [vim.diagnostic.severity.ERROR] = "",
