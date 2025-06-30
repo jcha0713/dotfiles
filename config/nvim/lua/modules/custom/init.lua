@@ -3,6 +3,7 @@ local plugins = {
   -- "idg",
   "fetch_title",
   "clipboard",
+  "nix_shell",
 }
 
 if vim.g.nvim_mode == "zk" then
