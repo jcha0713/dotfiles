@@ -53,6 +53,7 @@ in
       colima
       curl
       darwin.trash
+      deno
       fd
       fnm
       fx
