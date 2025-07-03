@@ -88,8 +88,12 @@ return {
       typescript = function(bufnr)
         return { first(bufnr, "biome", "prettierd", "prettier") }
       end,
-      javascriptreact = { "prettierd", "prettier" },
-      typescriptreact = { "prettierd", "prettier" },
+      javascriptreact = function(bufnr)
+        return { first(bufnr, "biome", "prettierd", "prettier") }
+      end,
+      typescriptreact = function(bufnr)
+        return { first(bufnr, "biome", "prettierd", "prettier") }
+      end,
       css = { "prettierd", "prettier" },
       html = { "prettierd", "prettier" },
       markdown = function(bufnr)
