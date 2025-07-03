@@ -1,5 +1,6 @@
 return {
   "sindrets/diffview.nvim",
+  event = "VeryLazy",
   dependencies = "nvim-lua/plenary.nvim",
   keys = {
     { "<leader>gdo", ":DiffviewOpen<CR>", desc = "Open diffview" },
