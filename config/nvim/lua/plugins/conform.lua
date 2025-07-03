@@ -83,16 +83,16 @@ return {
     formatters_by_ft = {
       astro = { "prettierd", "prettier" },
       javascript = function(bufnr)
-        return { first(bufnr, "biome", "prettierd", "prettier") }
+        return { first(bufnr, "biome-check", "prettierd", "prettier") }
       end,
       typescript = function(bufnr)
-        return { first(bufnr, "biome", "prettierd", "prettier") }
+        return { first(bufnr, "biome-check", "prettierd", "prettier") }
       end,
       javascriptreact = function(bufnr)
-        return { first(bufnr, "biome", "prettierd", "prettier") }
+        return { first(bufnr, "biome-check", "prettierd", "prettier") }
       end,
       typescriptreact = function(bufnr)
-        return { first(bufnr, "biome", "prettierd", "prettier") }
+        return { first(bufnr, "biome-check", "prettierd", "prettier") }
       end,
       css = { "prettierd", "prettier" },
       html = { "prettierd", "prettier" },
