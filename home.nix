@@ -27,12 +27,10 @@ in
       LANG = "en_US.UTF-8";
       ZVM_INIT_MODE = "sourcing"; # SEE: https://github.com/jeffreytse/zsh-vi-mode/issues/277
       ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE = "fg=#737246";
-      PNPM_HOME = "~/.pnpm";
     };
 
     sessionPath = [
       "/Users/jcha0713/.local/share/bob/nvim-bin"
-      "~/.pnpm"
     ];
 
     activation.installWeztermTerminfo = ''
