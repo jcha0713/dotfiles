@@ -51,6 +51,7 @@ in
       bat
       catimg
       colima
+      comma
       curl
       darwin.trash
       deno
