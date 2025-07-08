@@ -1,3 +1,9 @@
+let
+  deltaThemes = builtins.fetchurl {
+    url = "https://raw.githubusercontent.com/dandavison/delta/main/themes.gitconfig";
+    sha256 = "sha256:1pkqd36ls3cc6xgycd6sawpnwvgbchs54dkgg007algkhqxv7wch";
+  };
+in
 {
   programs.git = {
     enable = true;
@@ -12,12 +18,17 @@
       dlog = "-c diff.external=difft log --ext-diff";
       dshow = "-c diff.external=difft show --ext-diff";
       ddiff = "-c diff.external=difft diff";
+
+      dside = "-c delta.features='arctic-fox side-by-side' diff";
     };
     ignores = [
       ".envrc"
       ".direnv"
     ];
     extraConfig = {
+      include = {
+        path = deltaThemes;
+      };
       status.showUntrackedFiles = "all";
       init.defaultBranch = "main";
       column.ui = "auto";
@@ -26,6 +37,9 @@
       diff = {
         algorithm = "histogram";
         colorMoved = "plain";
+      };
+      merge = {
+        conflictStyle = "zdiff3";
       };
       push = {
         followTags = true;
@@ -51,15 +65,11 @@
     delta = {
       enable = true;
       options = {
-        decorations = {
-          commit-decoration-style = "bold yellow box ul";
-          file-decoration-style = "none";
-          file-style = "bold yellow ul";
-        };
-        features = "decorations";
-        whitespace-error-style = "22 reverse";
+        features = "arctic-fox";
+        line-numbers = true;
+        hyperlinks = true;
+        # side-by-side = true;
       };
-
     };
   };
 }

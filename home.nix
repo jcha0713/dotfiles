@@ -77,7 +77,6 @@ in
       # TUI
       bottom
       circumflex
-      lazygit
       w3m
 
       # GUI
@@ -227,4 +226,15 @@ in
   };
 
   programs.direnv.enable = true;
+  programs.lazygit = {
+    enable = true;
+    settings = {
+      git = {
+        paging = {
+          colorArg = "always";
+          pager = "delta --dark --paging=never";
+        };
+      };
+    };
+  };
 }
