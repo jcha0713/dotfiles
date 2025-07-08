@@ -7,6 +7,11 @@
       undo = "reset HEAD~1 --mixed";
       st = "status -s";
       l = "log --oneline --graph --all";
+
+      # difftastic
+      dlog = "-c diff.external=difft log --ext-diff";
+      dshow = "-c diff.external=difft show --ext-diff";
+      ddiff = "-c diff.external=difft diff";
     };
     ignores = [
       ".envrc"
@@ -31,6 +36,17 @@
       help.autocorrect = "prompt";
       commit.verbose = true;
       pull.rebase = true;
+
+      # SSH URL rewriting
+      url."git@github.com:" = {
+        insteadOf = "https://github.com/";
+      };
+      url."git@gitlab.com:" = {
+        insteadOf = "https://gitlab.com/";
+      };
+      url."git@bitbucket.org:" = {
+        insteadOf = "https://bitbucket.org/";
+      };
     };
     delta = {
       enable = true;
