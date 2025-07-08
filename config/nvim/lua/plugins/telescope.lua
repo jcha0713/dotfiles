@@ -22,6 +22,17 @@
 --   "/EmmyLua.spoon/annotations/*",
 -- }
 
+local ignore = {
+  "node_modules/.*",
+  ".yarn/.*",
+  "dist/*",
+  "build/*",
+  "yarn.lock",
+  "package%-lock.json",
+  "pnpm.lock",
+  "bun.lock",
+}
+
 local picker_opt = {
   defaults = {
     file_ignore_patterns = {},
@@ -40,6 +51,9 @@ local picker_opt = {
   },
   lsp_document_symbols = {
     theme = "cursor",
+  },
+  lsp_dynamic_workspace_symbols = {
+    file_ignore_patterns = ignore,
   },
 }
 
@@ -101,6 +115,11 @@ return {
       "<leader>sm",
       ":Telescope lsp_document_symbols<CR>",
       desc = "Telescope document symbols",
+    },
+    {
+      "<leader>ws",
+      ":Telescope lsp_dynamic_workspace_symbols<CR>",
+      desc = "Telescope workspace document symbols",
     },
   },
   config = function()
