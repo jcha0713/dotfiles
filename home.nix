@@ -114,6 +114,9 @@ in
     "yazi/flavors/kenso-zen.yazi" = {
       source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/dotfiles/config/yazi/flavors/kenso-zen.yazi";
     };
+    opencode = {
+      source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/dotfiles/config/opencode";
+    };
   };
 
   imports = [
