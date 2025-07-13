@@ -1,0 +1,27 @@
+-- initialize modules
+
+-- https://www.hammerspoon.org/docs/hs.ipc.html
+require("hs.ipc")
+
+local modules = require("modules")
+modules.init()
+
+local hyper = require("modules.hyper")
+
+hyper.bind({}, "r", nil, function()
+  hs.reload()
+end)
+hyper.bind({ "shift" }, "m", nil, function()
+  hs.application.launchOrFocus("Messages")
+end)
+
+hyper.bind({ "shift" }, "d", nil, function()
+  hs.application.launchOrFocus("Discord")
+end)
+
+-- Config Reloading
+hs.notify
+  .new({ title = "Hammerspoon", informativeText = "Config loaded" })
+  :send()
+hs.loadSpoon("ReloadConfiguration")
+spoon.ReloadConfiguration:start()

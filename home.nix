@@ -108,6 +108,9 @@ in
     sprinkles = {
       source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/dotfiles/config/sprinkles";
     };
+    hammerspoon = {
+      source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/dotfiles/config/hammerspoon";
+    };
     "yazi/flavors/kenso-zen.yazi" = {
       source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/dotfiles/config/yazi/flavors/kenso-zen.yazi";
     };
