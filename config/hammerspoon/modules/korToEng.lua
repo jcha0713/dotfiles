@@ -1,6 +1,6 @@
 local M = {}
 local utils = require("utils")
-local inputUSEnglish = "com.apple.keylayout.US"
+local inputUSEnglish = "com.apple.keylayout.ABC"
 
 local changeSource = function()
   local inputSource = hs.keycodes.currentSourceID()
