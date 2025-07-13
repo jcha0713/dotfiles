@@ -1,7 +1,6 @@
 local M = {}
 
 local modules = {
-  "hyper",
   "korToEng",
 }
 
