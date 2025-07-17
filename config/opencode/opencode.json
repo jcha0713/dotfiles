@@ -1,4 +1,18 @@
 {
   "$schema": "https://opencode.ai/config.json",
-  "theme": "kanagawa"
+  "layout": "stretch",
+  "theme": "kanagawa",
+  "mode": {
+    "document": {
+      "prompt": "{file:./prompts/document.txt}",
+      "tools": {
+        "write": true,
+        "edit": true,
+        "bash": true,
+        "read": true,
+        "grep": true,
+        "glob": true
+      }
+    }
+  }
 }
