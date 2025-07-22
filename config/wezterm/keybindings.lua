@@ -45,23 +45,9 @@ M.set_keys = function(config)
         }),
         action = wezterm.action_callback(function(window, pane, line)
           if line then
-            local cwd = "~"
-            if line == "knot" then
-              cwd = "~/jhcha/dev/2023/project/knot"
-            end
-            if line == "blog" then
-              cwd = "~/jhcha/dev/2021/project/jhcha-blog"
-            end
             window:perform_action(
               act.SwitchToWorkspace({
                 name = line,
-                spawn = {
-                  args = {
-                    "zsh",
-                    "-c",
-                    "cd " .. cwd .. " && zsh",
-                  },
-                },
               }),
               pane
             )
