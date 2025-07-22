@@ -19,7 +19,7 @@
   "flash.nvim": { "branch": "main", "commit": "34c7be146a91fec3555c33fe89c7d643f6ef5cf1" },
   "fuzzy.nvim": { "branch": "master", "commit": "68608f6a232f7e73ccf81437bf12108128f15bd4" },
   "git-dev.nvim": { "branch": "master", "commit": "f8894349d04b2d922f2d170c5d66db729236d86f" },
-  "gitsigns.nvim": { "branch": "main", "commit": "731b581428ec6c1ccb451b95190ebbc6d7006db7" },
+  "gitsigns.nvim": { "branch": "main", "commit": "0cb5a7753d3c4b8e9cfdc9d88d9110cb8d4b1544" },
   "gleam.vim": { "branch": "main", "commit": "d2f6d0b0399ab6d76b4a17b77ffec590fb2ec1c2" },
   "grug-far.nvim": { "branch": "main", "commit": "1a85fba510c6086b396be5a3c7c77ab32829d7df" },
   "hlargs.nvim": { "branch": "main", "commit": "752927d9ebf753802bd4788e53c67a21b8e255cc" },
@@ -79,7 +79,7 @@
   "ts-comments.nvim": { "branch": "main", "commit": "1bd9d0ba1d8b336c3db50692ffd0955fe1bb9f0c" },
   "tsc.nvim": { "branch": "main", "commit": "5bd25bb5c399b6dc5c00392ade6ac6198534b53a" },
   "typescript-tools.nvim": { "branch": "master", "commit": "3c501d7c7f79457932a8750a2a1476a004c5c1a9" },
-  "unified.nvim": { "branch": "main", "commit": "020610abdead2a9e953fa4dafc404da27394a84e" },
+  "unified.nvim": { "branch": "main", "commit": "5831251be3a4d552f15a32565fe1a3f07c6a4a94" },
   "which-key.nvim": { "branch": "main", "commit": "0099511294f16b81c696004fa6a403b0ae61f7a0" },
   "yazi.nvim": { "branch": "main", "commit": "e2ddbaa88ec61d0b96e3d53ba851b0e7a0b36f14" }
 }

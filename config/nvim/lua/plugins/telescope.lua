@@ -102,11 +102,6 @@ return {
     { "<leader>cm", ":Telescope commands<CR>", desc = "Telescope commands" },
     { "<leader>km", ":Telescope keymaps<CR>", desc = "Telescope keymaps" },
     {
-      "<leader>rg",
-      ":Telescope registers<CR>",
-      desc = "Telescope registers",
-    },
-    {
       "<leader>lr",
       ":Telescope lsp_references<CR>",
       desc = "Telescope lsp references",

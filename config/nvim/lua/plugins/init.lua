@@ -337,14 +337,6 @@ return {
   },
 
   {
-    "MagicDuck/grug-far.nvim",
-    event = "VeryLazy",
-    config = function()
-      require("grug-far").setup({})
-    end,
-  },
-
-  {
     "developedbyed/marko.nvim",
     event = "VeryLazy",
     config = function()
