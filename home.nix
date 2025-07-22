@@ -136,7 +136,7 @@ in
       enable = true;
       theme = "kolo";
     };
-    initExtra = # zsh
+    initContent = # zsh
       ''
         eval "$(fnm env --use-on-cd --shell zsh)"
 
