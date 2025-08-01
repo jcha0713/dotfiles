@@ -1,6 +1,5 @@
 {
   "$schema": "https://opencode.ai/config.json",
-  "layout": "stretch",
   "theme": "kanagawa",
   "mode": {
     "document": {
@@ -28,6 +27,8 @@
     "review": {
       "prompt": "{file:./prompts/review.txt}",
       "tools": {
+        "write": false,
+        "edit": false,
         "bash": true,
         "list": true,
         "read": true,
@@ -36,6 +37,16 @@
         "todoread": true,
         "todowrite": true,
         "webfetch": true
+      }
+    }
+  },
+  "mcp": {
+    "context7": {
+      "type": "local",
+      "command": ["npx", "-y", "@upstash/context7-mcp"],
+      "enabled": true,
+      "environment": {
+        "PATH": "/Users/jcha0713/.local/share/fnm/node-versions/v23.0.0/installation/bin:/usr/local/bin:/bin"
       }
     }
   }
