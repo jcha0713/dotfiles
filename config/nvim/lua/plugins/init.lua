@@ -114,11 +114,6 @@ return {
   -- },
 
   {
-    "gleam-lang/gleam.vim",
-    ft = "gleam",
-  },
-
-  {
     "hedyhli/outline.nvim",
     cmd = { "Outline", "OutlineOpen" },
     keys = {
