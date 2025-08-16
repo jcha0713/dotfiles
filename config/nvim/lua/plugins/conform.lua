@@ -115,6 +115,9 @@ return {
       return format_on_save(format_args, bufnr)
     end,
     formatters = {
+      ["biome-check"] = {
+        require_cwd = true,
+      },
       prettierd = {
         env = {
           PRETTIERD_DEFAULT_CONFIG = vim.fn.stdpath("config")
