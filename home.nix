@@ -48,6 +48,7 @@ in
     # Add some basic packages to be managed by Home Manager instead of system-wide
     packages = with pkgs; [
       _1password-cli
+      ast-grep
       bat
       catimg
       colima
