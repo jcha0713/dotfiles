@@ -1,14 +1,23 @@
 local M = {}
 
+local commit_progress_key
 local filepath = vim.fn.expand("%:p")
 local Component = require("modules.ui.base")
 
---- show progress notification
+--- show progress notification with fidget
 ---@param title string
 ---@param msg string?
+---@return string key for the notification
 local function claude_progress(title, msg)
-  local message = title .. (msg and (": " .. msg) or "")
-  vim.notify(message, vim.log.levels.INFO)
+  local message = msg or "working..."
+  local key = "claude_commit_" .. os.time()
+
+  require("fidget").notify(message, vim.log.levels.INFO, {
+    annote = title,
+    key = key,
+  })
+
+  return key
 end
 
 --- run shell commands
@@ -36,19 +45,25 @@ end
 --- commit changes to git with AI generated message
 ---@param claude_result vim.SystemCompleted
 local function handle_exit(claude_result)
+  -- Finish the progress notification
+  if commit_progress_key then
+    require("fidget").notify(nil, nil, { key = commit_progress_key })
+    commit_progress_key = nil
+  end
+
   if claude_result.code == 1 then
     vim.print(claude_result.stderr)
   end
   if claude_result.code == 0 then
-    local commit_msg = claude_result.stdout:gsub("^%s*(.-)%s*$", "%1")
+    local commit_msg = claude_result.stdout:gsub("^%s*", ""):gsub("%s*$", "")
     local success_msg = "Changes committed successfully!"
 
     vim.schedule(function()
       local commit_msg_tbl = {}
 
-      for line in commit_msg:gmatch("[^\n]+") do
-        local trimmed_line = vim.trim(line)
-        table.insert(commit_msg_tbl, trimmed_line)
+      -- Split by lines but preserve empty lines for proper spacing
+      for line in (commit_msg .. "\n"):gmatch("([^\n]*)\n") do
+        table.insert(commit_msg_tbl, line)
       end
 
       local popup = Component(nil, {
@@ -91,12 +106,12 @@ function M.generate_commit_message()
     local diff_prefix = is_untracked and "--no-index -- /dev/null" or "HEAD"
 
     local diff_cmd = string.format(
-      "git diff --staged %s '%s' | claude -p 'You are a git commit message generator. Output ONLY the raw commit message text, nothing else. No explanations, no markdown, no prefixes like \"Based on\" or \"Here is\". Format: concise summary under 80 characters. Use bullet points sparingly - only add them when the main message truly needs extra details for clarity. Most commits should be just the main message. When adding bullet points, include a blank newline between the main message and description. Example output: \"fix: resolve authentication bug\" or \"add: user profile feature\\n\\n- implement avatar upload\\n- add profile validation\"' --output-format text",
+      "git diff --staged %s '%s' | claude -p 'You are a git commit message generator. Output ONLY the raw commit message text, nothing else. No explanations, no markdown, no prefixes. Format: concise summary under 80 characters. IMPORTANT: Do not use bullet points unless for complex code changes.' --output-format text",
       diff_prefix,
       filepath
     )
 
-    claude_progress("Claude", "writing commit msg")
+    commit_progress_key = claude_progress("Claude", "writing commit msg")
     run_command({ "sh", "-c", diff_cmd }, nil, handle_exit)
   end
 end

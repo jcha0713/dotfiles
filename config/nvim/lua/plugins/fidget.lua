@@ -1,6 +1,5 @@
 return {
   "j-hui/fidget.nvim",
-  enabled = false,
   event = "LspAttach",
   config = function()
     require("fidget").setup({
@@ -11,7 +10,7 @@ return {
         },
       },
       notification = {
-        override_vim_notify = true,
+        override_vim_notify = false,
         view = {
           stack_upwards = false,
           group_separator = "===",
@@ -19,6 +18,9 @@ return {
         },
         window = {
           winblend = 8,
+          align = "top",
+          x_padding = 1,
+          y_padding = 1,
           border = "rounded",
         },
       },
