@@ -91,7 +91,7 @@ function M.generate_commit_message()
     local diff_prefix = is_untracked and "--no-index -- /dev/null" or "HEAD"
 
     local diff_cmd = string.format(
-      "git diff --staged %s '%s' | claude -p 'Create a clean git commit message that begins with a concise summary under 80 characters, followed by one or two bullet points of changes. Do not mention co-authorship, generation details, or any AI involvement. Focus only on what was changed and why. Return only the commit message with no additional commentary or explanations.' --output-format text",
+      "git diff --staged %s '%s' | claude -p 'You are a git commit message generator. Output ONLY the raw commit message text, nothing else. No explanations, no markdown, no prefixes like \"Based on\" or \"Here is\". Format: concise summary under 80 characters. Use bullet points sparingly - only add them when the main message truly needs extra details for clarity. Most commits should be just the main message. When adding bullet points, include a blank newline between the main message and description. Example output: \"fix: resolve authentication bug\" or \"add: user profile feature\\n\\n- implement avatar upload\\n- add profile validation\"' --output-format text",
       diff_prefix,
       filepath
     )
