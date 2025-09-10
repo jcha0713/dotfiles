@@ -344,4 +344,25 @@ return {
       })
     end,
   },
+
+  {
+    "kosayoda/nvim-lightbulb",
+    event = "VeryLazy",
+    config = function()
+      require("nvim-lightbulb").setup({
+        autocmd = { enabled = true },
+        sign = {
+          enabled = false,
+        },
+        status_text = {
+          enabled = true,
+          -- Text to set if a lightbulb is available.
+          text = "💡",
+          lens_text = "🔎",
+          -- Text to set if a lightbulb is unavailable.
+          text_unavailable = "",
+        },
+      })
+    end,
+  },
 }

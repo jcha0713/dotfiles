@@ -8,39 +8,13 @@ return {
   config = function()
     local lualine = require("lualine")
 
-    -- local colors = {
-    --   blue = "#80a0ff",
-    --   cyan = "#79dac8",
-    --   black = "#080808",
-    --   white = "#c6c6c6",
-    --   red = "#ff5189",
-    --   violet = "#a9a1e1",
-    --   grey = "#303030",
-    -- }
-    --
-    -- local bubbles_theme = {
-    --   normal = {
-    --     -- a = { fg = colors.black, bg = colors.violet },
-    --     a = "LualineNormalPrimary",
-    --     b = "LualineNormalSecondary",
-    --     c = { fg = colors.white },
-    --   },
-    --
-    --   insert = { a = "LualineInsert" },
-    --   visual = { a = "LualineVisual" },
-    --   replace = { a = "LualineReplace" },
-    --
-    --   inactive = {
-    --     a = { fg = colors.white, bg = colors.black },
-    --     b = { fg = colors.white, bg = colors.black },
-    --     c = { fg = colors.white },
-    --   },
-    -- }
+    local function get_actions()
+      return require("nvim-lightbulb").get_status_text()
+    end
 
     lualine.setup({
       options = {
         icons_enabled = true,
-        -- theme = bubbles_theme,
         component_separators = "",
         section_separators = { left = "", right = "" },
         always_divide_middle = true,
@@ -58,7 +32,7 @@ return {
         lualine_c = {
           "filename",
         },
-        lualine_x = {},
+        lualine_x = { get_actions },
         lualine_y = {
           "encoding",
           "fileformat",
