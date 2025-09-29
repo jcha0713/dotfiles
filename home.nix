@@ -74,6 +74,7 @@ in
       wakeonlan
       zk
       zsh-autosuggestions
+      cloudflared
 
       # TUI
       bottom
@@ -82,7 +83,6 @@ in
 
       # GUI
       aldente
-      discord
       espanso
       mos
       raycast
