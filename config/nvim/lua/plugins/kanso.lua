@@ -1,6 +1,7 @@
 return {
   "webhooked/kanso.nvim",
   lazy = false,
+  enabled = true,
   priority = 1000,
 
   config = function()
@@ -11,7 +12,7 @@ return {
             fg = colors.palette.zenBlue1,
           },
           WinSeparator = {
-            fg = colors.palette.zenBlue2,
+            fg = colors.palette.zenBg3,
           },
         }
       end,
