@@ -7,25 +7,27 @@ in
 {
   programs.git = {
     enable = true;
-    userName = "jcha0713";
-    userEmail = "joocha0713@gmail.com";
-    aliases = {
-      undo = "reset HEAD~1 --mixed";
-      st = "status -s";
-      l = "log --oneline --graph --all";
-
-      # difftastic
-      dlog = "-c diff.external=difft log --ext-diff";
-      dshow = "-c diff.external=difft show --ext-diff";
-      ddiff = "-c diff.external=difft diff";
-
-      dside = "-c delta.features='arctic-fox side-by-side' diff";
-    };
     ignores = [
       ".envrc"
       ".direnv"
     ];
-    extraConfig = {
+    settings = {
+      user = {
+        name = "jcha0713";
+        email = "joocha0713@gmail.com";
+      };
+      alias = {
+        undo = "reset HEAD~1 --mixed";
+        st = "status -s";
+        l = "log --oneline --graph --all";
+
+        # difftastic
+        dlog = "-c diff.external=difft log --ext-diff";
+        dshow = "-c diff.external=difft show --ext-diff";
+        ddiff = "-c diff.external=difft diff";
+
+        dside = "-c delta.features='arctic-fox side-by-side' diff";
+      };
       include = {
         path = deltaThemes;
       };
@@ -59,17 +61,22 @@ in
         insteadOf = "https://gitlab.com/";
       };
       url."git@bitbucket.org:" = {
+        insteadOf = "https://gitlab.com/";
+      };
+      url."git@bitbucket.org:" = {
         insteadOf = "https://bitbucket.org/";
       };
     };
-    delta = {
-      enable = true;
-      options = {
-        features = "arctic-fox";
-        line-numbers = true;
-        hyperlinks = true;
-        # side-by-side = true;
-      };
+  };
+
+  programs.delta = {
+    enable = true;
+    enableGitIntegration = true;
+    options = {
+      features = "arctic-fox";
+      line-numbers = true;
+      hyperlinks = true;
+      # side-by-side = true;
     };
   };
 }
