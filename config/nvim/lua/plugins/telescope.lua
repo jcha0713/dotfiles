@@ -40,9 +40,6 @@ local picker_opt = {
   registers = {
     theme = "cursor",
   },
-  live_grep = {
-    theme = "ivy",
-  },
   lsp_references = {
     theme = "cursor",
   },
