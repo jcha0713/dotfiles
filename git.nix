@@ -61,9 +61,6 @@ in
         insteadOf = "https://gitlab.com/";
       };
       url."git@bitbucket.org:" = {
-        insteadOf = "https://gitlab.com/";
-      };
-      url."git@bitbucket.org:" = {
         insteadOf = "https://bitbucket.org/";
       };
     };
