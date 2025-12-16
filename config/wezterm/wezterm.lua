@@ -1,5 +1,4 @@
 local wezterm = require("wezterm")
-local mux = wezterm.mux
 local display = require("appearances")
 local fonts = require("typography")
 local keys = require("keybindings")
