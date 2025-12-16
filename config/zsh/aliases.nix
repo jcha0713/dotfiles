@@ -11,7 +11,7 @@
   # ============================
   nixc = "nvim ~/dotfiles/flake.nix";
   hm = "nvim ~/dotfiles/home.nix";
-  
+
   # ============================
   # git
   # ============================
@@ -20,4 +20,5 @@
 
   rm = "trash";
   eas = "npx eas-cli@latest";
+  claude = "/Users/jcha0713/.claude/local/claude";
 }
