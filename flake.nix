@@ -53,8 +53,9 @@
                 environment.systemPackages = [
                   pkgs.home-manager
                   pkgs.nixfmt-rfc-style
-                  # pkgs.neovim
-                  inputs.neovim-nix.packages.${pkgs.system}.bob
+                  pkgs.neovim
+                  # FIXME: bob from neovim-nix fails with apple_sdk_11_0 error
+                  # inputs.neovim-nix.packages.${pkgs.system}.bob
                   pkgs.aerospace
                   pkgs.docker
                   pkgs.docker-compose
