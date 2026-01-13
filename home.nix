@@ -168,6 +168,11 @@ in
         setopt PROMPT_SUBST
         RPROMPT='%(1j.⏸ %j.)'  # Shows job count when jobs exist
 
+        # POKE CLI API
+        if [ -e "$HOME"/.config/env/poke ]; then
+          export POKE=$(cat "$HOME"/.config/env/poke)
+        fi
+
         # direnv (https://direnv.net/docs/hook.html)
         eval "$(direnv hook zsh)"
       '';
