@@ -75,6 +75,7 @@ in
       zk
       zsh-autosuggestions
       cloudflared
+      pm2
 
       # TUI
       bottom
@@ -175,6 +176,9 @@ in
 
         # direnv (https://direnv.net/docs/hook.html)
         eval "$(direnv hook zsh)"
+
+        # bird CLI secrets (local, not tracked by git)
+        [[ -f ~/.bird_secrets ]] && source ~/.bird_secrets
       '';
     plugins = [
       {

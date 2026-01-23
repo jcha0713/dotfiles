@@ -59,7 +59,6 @@
                   pkgs.aerospace
                   pkgs.docker
                   pkgs.docker-compose
-                  pkgs.wezterm
                 ];
 
                 # Necessary for using flakes on this system.

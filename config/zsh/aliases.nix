@@ -15,10 +15,9 @@
   # ============================
   # git
   # ============================
-  lg = "lazygit";
   gho = "gh browse";
 
   rm = "trash";
   eas = "npx eas-cli@latest";
-  claude = "/Users/jcha0713/.claude/local/claude";
+  imsg = "~/dev/sandbox/imsg/bin/imsg";
 }
