@@ -183,7 +183,7 @@ select.on(SelectRenderableEvents.ITEM_SELECTED, (index, option) => {
   handleSelection(option)
 })
 
-select.on(SelectRenderableEvents.HIGHLIGHT_CHANGED, (index, option) => {
+select.on(SelectRenderableEvents.SELECTION_CHANGED, (index, option) => {
   showPreview(option)
 })
 ```

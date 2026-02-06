@@ -179,9 +179,9 @@ function ResponsiveLayout() {
   const dimensions = useTerminalDimensions()
   
   return (
-    <box flexDirection={dimensions.width > 80 ? "row" : "column"}>
-      <text>Width: {dimensions.width}</text>
-      <text>Height: {dimensions.height}</text>
+    <box flexDirection={dimensions().width > 80 ? "row" : "column"}>
+      <text>Width: {dimensions().width}</text>
+      <text>Height: {dimensions().height}</text>
     </box>
   )
 }

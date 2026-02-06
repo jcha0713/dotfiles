@@ -221,7 +221,7 @@ select.on(SelectRenderableEvents.ITEM_SELECTED, (index, option) => {
 })
 
 // Called when navigating with arrow keys
-select.on(SelectRenderableEvents.HIGHLIGHT_CHANGED, (index, option) => {
+select.on(SelectRenderableEvents.SELECTION_CHANGED, (index, option) => {
   console.log("Browsing:", option.name)
   showPreview(option)
 })
@@ -231,7 +231,7 @@ select.focus()  // Navigate with up/down/j/k, select with enter
 
 **Event distinction:**
 - `ITEM_SELECTED` - Enter key pressed, user confirms selection
-- `HIGHLIGHT_CHANGED` - Arrow keys, user navigating/browsing options
+- `SELECTION_CHANGED` - Arrow keys, user navigating/browsing options
 
 ### TabSelectRenderable
 
@@ -257,7 +257,7 @@ tabs.on(TabSelectRenderableEvents.ITEM_SELECTED, (index, option) => {
 })
 
 // Called when navigating with arrow keys
-tabs.on(TabSelectRenderableEvents.HIGHLIGHT_CHANGED, (index, option) => {
+tabs.on(TabSelectRenderableEvents.SELECTION_CHANGED, (index, option) => {
   console.log("Browsing tab:", option.name)
 })
 
@@ -266,7 +266,7 @@ tabs.focus()  // Navigate with left/right/[/], select with enter
 
 **Event distinction** (same as SelectRenderable):
 - `ITEM_SELECTED` - Enter key pressed, user confirms tab
-- `HIGHLIGHT_CHANGED` - Arrow keys, user navigating tabs
+- `SELECTION_CHANGED` - Arrow keys, user navigating tabs
 
 ### ScrollBoxRenderable
 
@@ -332,20 +332,6 @@ const canvas = new FrameBufferRenderable(renderer, {
 canvas.frameBuffer.fillRect(10, 5, 20, 8, RGBA.fromHex("#FF0000"))
 canvas.frameBuffer.drawText("Custom", 12, 7, RGBA.fromHex("#FFFFFF"))
 canvas.frameBuffer.setCell(x, y, char, fg, bg)
-```
-
-### GroupRenderable
-
-Invisible container for grouping.
-
-```typescript
-import { GroupRenderable } from "@opentui/core"
-
-const group = new GroupRenderable(renderer, {
-  id: "group",
-  flexDirection: "row",
-  gap: 2,
-})
 ```
 
 ## Constructs (VNode API)

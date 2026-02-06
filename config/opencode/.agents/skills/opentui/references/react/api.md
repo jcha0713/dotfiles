@@ -18,16 +18,6 @@ const root = createRoot(renderer)
 root.render(<App />)
 ```
 
-### render(element, config?) [Deprecated]
-
-> Use `createRoot(renderer).render(node)` instead.
-
-```tsx
-// Deprecated
-import { render } from "@opentui/react"
-render(<App />)
-```
-
 ## Hooks
 
 ### useRenderer()
@@ -234,7 +224,7 @@ function AnimatedBox() {
   // Colors
   backgroundColor="#1a1a2e"
   
-  // Layout (see layout/README.md)
+  // Layout (see layout/REFERENCE.md)
   flexDirection="row"
   justifyContent="center"
   alignItems="center"

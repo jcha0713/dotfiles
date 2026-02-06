@@ -256,7 +256,7 @@ Default keybindings:
 select.on(SelectRenderableEvents.ITEM_SELECTED, (index, option) => {
   // Called when Enter is pressed
 })
-select.on(SelectRenderableEvents.HIGHLIGHT_CHANGED, (index, option) => {
+select.on(SelectRenderableEvents.SELECTION_CHANGED, (index, option) => {
   // Called when navigating with arrow keys
 })
 ```

@@ -4,7 +4,7 @@ The foundational library for building terminal user interfaces. Provides an impe
 
 ## Overview
 
-OpenTUI Core runs on V8 via Bun with native Zig bindings for performance-critical operations:
+OpenTUI Core runs on Bun with native Zig bindings for performance-critical operations:
 - **Renderer**: Manages terminal output, input events, and the rendering loop
 - **Renderables**: Hierarchical UI building blocks with Yoga layout
 - **Constructs**: Declarative wrappers for composing Renderables
@@ -137,9 +137,9 @@ bun run build
 
 ## See Also
 
-- [React](../react/README.md) - React reconciler for declarative TUI
-- [Solid](../solid/README.md) - Solid reconciler for declarative TUI
-- [Layout](../layout/README.md) - Yoga/Flexbox layout system
-- [Components](../components/README.md) - Component reference by category
-- [Keyboard](../keyboard/README.md) - Input handling and shortcuts
-- [Testing](../testing/README.md) - Test renderer and snapshots
+- [React](../react/REFERENCE.md) - React reconciler for declarative TUI
+- [Solid](../solid/REFERENCE.md) - Solid reconciler for declarative TUI
+- [Layout](../layout/REFERENCE.md) - Yoga/Flexbox layout system
+- [Components](../components/REFERENCE.md) - Component reference by category
+- [Keyboard](../keyboard/REFERENCE.md) - Input handling and shortcuts
+- [Testing](../testing/REFERENCE.md) - Test renderer and snapshots

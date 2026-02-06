@@ -379,7 +379,7 @@ function ResponsiveLayout() {
   const dims = useTerminalDimensions()
   
   return (
-    <box flexDirection={dims.width > 80 ? "row" : "column"}>
+    <box flexDirection={dims().width > 80 ? "row" : "column"}>
       <box flexGrow={1}>
         <text>Panel 1</text>
       </box>

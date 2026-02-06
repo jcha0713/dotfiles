@@ -70,11 +70,11 @@ The `DOM` lib is needed for React types. OpenTUI's JSX types extend React's.
   "dependencies": {
     "@opentui/core": "latest",
     "@opentui/react": "latest",
-    "react": "^18.0.0"
+    "react": ">=19.0.0"
   },
   "devDependencies": {
     "@types/bun": "latest",
-    "@types/react": "^18.0.0",
+    "@types/react": ">=19.0.0",
     "typescript": "latest"
   }
 }
@@ -288,10 +288,10 @@ Ensure `jsxImportSource` is set:
 
 ### React Version Mismatch
 
-Ensure React 18+:
+Ensure React 19+:
 
 ```bash
-bun install react@^18.0.0 @types/react@^18.0.0
+bun install react@19 @types/react@19
 ```
 
 ### Module Resolution Errors

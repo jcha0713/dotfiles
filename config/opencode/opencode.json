@@ -1,53 +1,65 @@
 {
   "$schema": "https://opencode.ai/config.json",
-  "theme": "kanagawa",
+  "keybinds": {
+    "messages_half_page_down": "ctrl+d",
+    "messages_half_page_up": "ctrl+u"
+  },
   "mode": {
-    "document": {
-      "prompt": "{file:./prompts/document.txt}",
-      "tools": {
-        "write": true,
-        "edit": true,
-        "bash": true,
-        "read": true,
-        "grep": true,
-        "glob": true,
-        "webfetch": true
-      }
-    },
     "commit": {
       "prompt": "{file:./prompts/commit.txt}",
       "tools": {
         "bash": true,
-        "list": true,
-        "read": true,
+        "glob": true,
         "grep": true,
-        "glob": true
+        "list": true,
+        "read": true
+      }
+    },
+    "document": {
+      "prompt": "{file:./prompts/document.txt}",
+      "tools": {
+        "bash": true,
+        "edit": true,
+        "glob": true,
+        "grep": true,
+        "read": true,
+        "webfetch": true,
+        "write": true
       }
     },
     "review": {
       "prompt": "{file:./prompts/review.txt}",
       "tools": {
-        "write": false,
-        "edit": false,
         "bash": true,
+        "edit": false,
+        "glob": true,
+        "grep": true,
         "list": true,
         "read": true,
-        "grep": true,
-        "glob": true,
         "todoread": true,
         "todowrite": true,
-        "webfetch": true
+        "webfetch": true,
+        "write": false
       }
     }
   },
-  "mcp": {
-    "context7": {
-      "type": "local",
-      "command": ["npx", "-y", "@upstash/context7-mcp"],
-      "enabled": true,
-      "environment": {
-        "PATH": "/Users/jcha0713/.local/share/fnm/node-versions/v23.0.0/installation/bin:/usr/local/bin:/bin"
+  "provider": {
+    "ollama": {
+      "models": {
+        "qwen3-coder-next:cloud": {
+          "_launch": true,
+          "name": "qwen3-coder-next:cloud"
+        }
+      },
+      "name": "Ollama (local)",
+      "npm": "@ai-sdk/openai-compatible",
+      "options": {
+        "baseURL": "http://127.0.0.1:11434/v1"
       }
     }
+  },
+  "theme": "kanagawa",
+  "tui": {
+    "scroll_speed": 2
   }
 }

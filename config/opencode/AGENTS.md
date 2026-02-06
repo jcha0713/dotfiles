@@ -2,20 +2,23 @@
 
 ## Core Development Principles
 
-### 1. Documentation-First Development
+- Whenever a search requires syntax-aware or structural matching, default to ast-grep.
+- Use rg/grep only when searching for plain text or ast-grep does not support the language.
+
+### Documentation-First Development
 
 - **Always consult the latest official documentation** before implementing any library, framework, or language feature
 - **Verify API usage** through official sources before writing code or providing technical guidance
 - When in doubt about syntax, methods, or parameters, research first, implement second
 
-### 2. Never Invent APIs or Syntax
+### Never Invent APIs or Syntax
 
 - **Do not create non-existing functions, methods, or syntax** under any circumstances
 - **When uncertain about implementation details, ASK** rather than guessing or inventing
 - If documentation is unclear or conflicting, seek clarification before proceeding
 - Better to pause for verification than to implement incorrectly
 
-### 3. Test-Driven Development
+### Test-Driven Development
 
 - **Write tests before implementing features** as the default approach
 - **Exceptions permitted only when:**
@@ -25,7 +28,7 @@
 - **After implementation, verify ALL functionality** (new and existing features work correctly)
 - **Iterate until all tests pass** - no exceptions
 
-### 4. Verification Protocol
+### Verification Protocol
 
 Before any code commit:
 

@@ -226,23 +226,6 @@ scrollbox.scrollBy(10)          // Scroll relative
 scrollbox.scrollToBottom()      // Scroll to end
 ```
 
-## GroupRenderable (Core)
-
-An invisible container for grouping elements:
-
-```typescript
-const group = new GroupRenderable(renderer, {
-  id: "section",
-  flexDirection: "row",
-  gap: 2,
-})
-
-group.add(child1)
-group.add(child2)
-```
-
-Use when you need layout without visual borders/background.
-
 ## Composition Patterns
 
 ### Card Component
