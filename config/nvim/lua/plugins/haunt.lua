@@ -8,7 +8,7 @@ return {
     virt_text_hl = "HauntAnnotation",
     annotation_prefix = " 󰆉 ",
     line_hl = nil,
-    virt_text_pos = "eol",
+    virt_text_pos = "overlay",
     data_dir = nil,
     picker_keys = {
       delete = { key = "d", mode = { "n" } },
