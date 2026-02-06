@@ -176,8 +176,14 @@ in
         # direnv (https://direnv.net/docs/hook.html)
         eval "$(direnv hook zsh)"
 
+        # opencode
+        export PATH=/Users/jcha0713/.opencode/bin:$PATH
+
         # bird CLI secrets (local, not tracked by git)
         [[ -f ~/.bird_secrets ]] && source ~/.bird_secrets
+
+        export PATH="$HOME/dev/active/sol-translate/target/release:$PATH"
+        export PATH="$HOME/dev/sandbox/sol/target/release:$PATH"
       '';
     plugins = [
       {
