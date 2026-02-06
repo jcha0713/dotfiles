@@ -86,7 +86,6 @@ in
       aldente
       espanso
       mos
-      raycast
       wezterm
     ];
   };

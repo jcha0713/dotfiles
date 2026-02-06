@@ -86,7 +86,6 @@
                   builtins.elem (pkgs.lib.getName pkg) [
                     "aldente"
                     "mos"
-                    "raycast"
                     "discord"
                     "1password-cli"
                   ];
