@@ -122,3 +122,10 @@ map(
   "yygccp",
   { desc = "Comment current line and paste", remap = true }
 )
+
+map(
+  "n",
+  "<leader>do",
+  ":DiffOrig<CR>",
+  { desc = "Comment current line and paste", remap = true }
+)
