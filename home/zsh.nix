@@ -46,6 +46,11 @@
 
         # direnv (https://direnv.net/docs/hook.html)
         eval "$(direnv hook zsh)"
+
+        # fzf keybindings (must be after zsh-vi-mode)
+        if (( $+commands[fzf] )); then
+          source ${pkgs.fzf}/share/fzf/key-bindings.zsh
+        fi
       '';
     plugins = [
       {
