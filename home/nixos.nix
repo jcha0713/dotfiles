@@ -3,6 +3,7 @@
 {
   imports = [
     ./common.nix
+    ./zsh.nix
   ];
 
   home.username = "joohoon";
@@ -12,12 +13,10 @@
   # Let Home Manager install and manage itself
   programs.home-manager.enable = true;
 
-  # Shell aliases
-  programs.bash = {
-    enable = true;
-    shellAliases = {
-      switch = "cd ~/dotfiles && sudo nixos-rebuild switch --flake .#think";
-    };
+  # NixOS-specific zsh additions
+  programs.zsh.shellAliases = {
+    switch = "cd ~/dotfiles && sudo nixos-rebuild switch --flake .#think";
+    nix-switch = "cd ~/dotfiles && sudo nixos-rebuild switch --flake .#think";
   };
 
   # Symlink dotfiles from the repo

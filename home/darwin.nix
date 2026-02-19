@@ -116,79 +116,28 @@ in
 
   imports = [
     ./common.nix
+    ./zsh.nix
   ];
 
-  programs.zsh = {
-    enable = true;
-    enableCompletion = true;
-    autosuggestion.enable = true;
-    syntaxHighlighting.enable = true;
-    sessionVariables = {
-      EDITOR = "nvim";
-    };
-    shellAliases = import ./config/zsh/aliases.nix;
-    oh-my-zsh = {
-      enable = true;
-      theme = "kolo";
-    };
-    initContent = # zsh
-      ''
-        eval "$(fnm env --use-on-cd --shell zsh)"
+  # Platform-specific zsh additions for macOS
+  programs.zsh.initContent =
+    # zsh
+    ''
+      eval "$(fnm env --use-on-cd --shell zsh)"
 
-        source ${config.home.homeDirectory}/dotfiles/config/zsh/zk.zsh
-        source ${config.home.homeDirectory}/dotfiles/config/zsh/functions.zsh
+      # POKE CLI API
+      if [ -e "$HOME"/.config/env/poke ]; then
+        export POKE=$(cat "$HOME"/.config/env/poke)
+      fi
 
-        # bind <C-n> to yazi(y)
-        bindkey -s '^n' 'y\n'
+      # opencode
+      export PATH=/Users/jcha0713/.opencode/bin:$PATH
 
-        function y() {
-          local tmp="$(mktemp -t "yazi-cwd.XXXXXX")"
-          yazi "$@" --cwd-file="$tmp"
-          if cwd="$(cat -- "$tmp")" && [ -n "$cwd" ] && [ "$cwd" != "$PWD" ]; then
-            cd -- "$cwd"
-          fi
-          rm -f -- "$tmp"
-        }
+      # bird CLI secrets (local, not tracked by git)
+      [[ -f ~/.bird_secrets ]] && source ~/.bird_secrets
 
-        function Resume {
-          fg
-          zle push-input
-          BUFFER=""
-          zle accept-line
-        }
-        zle -N Resume
-        bindkey "^Z" Resume
+      export PATH="$HOME/dev/active/sol-translate/target/release:$PATH"
+      export PATH="$HOME/dev/sandbox/sol/target/release:$PATH"
+    '';
 
-        setopt PROMPT_SUBST
-        RPROMPT='%(1j.⏸ %j.)'  # Shows job count when jobs exist
-
-        # POKE CLI API
-        if [ -e "$HOME"/.config/env/poke ]; then
-          export POKE=$(cat "$HOME"/.config/env/poke)
-        fi
-
-        # direnv (https://direnv.net/docs/hook.html)
-        eval "$(direnv hook zsh)"
-
-        # opencode
-        export PATH=/Users/jcha0713/.opencode/bin:$PATH
-
-        # bird CLI secrets (local, not tracked by git)
-        [[ -f ~/.bird_secrets ]] && source ~/.bird_secrets
-
-        export PATH="$HOME/dev/active/sol-translate/target/release:$PATH"
-        export PATH="$HOME/dev/sandbox/sol/target/release:$PATH"
-      '';
-    plugins = [
-      {
-        name = "vi-mode";
-        src = pkgs.zsh-vi-mode;
-        file = "share/zsh-vi-mode/zsh-vi-mode.plugin.zsh";
-      }
-    ];
-  };
-
-  # yazi, fzf, zoxide, delta, lazygit are configured in common.nix
-
-  programs.direnv.enable = true;
 }
