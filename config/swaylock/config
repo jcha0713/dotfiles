@@ -1,0 +1,42 @@
+# Swaylock configuration with visual feedback
+
+# Show indicator ring
+indicator
+indicator-radius=100
+indicator-thickness=10
+
+# Colors (Catppuccin Mocha theme)
+ring-color=cba6f7
+ring-ver-color=89b4fa
+ring-wrong-color=f38ba8
+ring-clear-color=a6e3a1
+
+# Inside colors
+inside-color=313244
+inside-ver-color=313244
+inside-wrong-color=313244
+inside-clear-color=313244
+
+# Line colors
+line-color=00000000
+line-ver-color=00000000
+line-wrong-color=00000000
+line-clear-color=00000000
+
+# Text colors
+text-color=cdd6f4
+text-ver-color=89b4fa
+text-wrong-color=f38ba8
+text-clear-color=a6e3a1
+
+# Background
+# color=1e1e2e
+
+# Show caps lock indicator
+show-caps-lock-indicator
+
+# Show keyboard layout
+show-keyboard-layout
+
+# Show failed attempts
+show-failed-attempts

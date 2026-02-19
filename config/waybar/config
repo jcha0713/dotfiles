@@ -1,0 +1,19 @@
+{
+  "layer": "top",
+  "position": "top",
+  "height": 30,
+  "modules-left": ["niri/workspaces", "niri/window"],
+  "modules-center": ["clock"],
+  "modules-right": ["network", "battery", "pulseaudio", "tray"],
+  "niri/workspaces": { "format": "{name}" },
+  "clock": { "format": "{:%Y-%m-%d %H:%M}" },
+  "battery": {
+    "format": "{capacity}% {icon}",
+    "format-charging": "{capacity}% 󱐋",
+    "format-icons": ["󰁺", "󰁻", "󰁼", "󰁽", "󰁾", "󰁿", "󰂀", "󰂁", "󰂂", "󰁹"],
+    "tooltip-format": "{timeTo}"
+  },
+  "network": { "format-wifi": "{essid}" },
+  "pulseaudio": { "format": "{volume}%" },
+  "tray": { "spacing": 10 }
+}
