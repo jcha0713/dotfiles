@@ -1,6 +1,10 @@
 { config, pkgs, dotfilesPath, ... }:
 
 {
+  imports = [
+    ./common.nix
+  ];
+
   home.username = "joohoon";
   home.homeDirectory = "/home/joohoon";
   home.stateVersion = "25.05";
@@ -30,7 +34,7 @@
   };
 
   # User packages (NixOS-specific, mostly Wayland related)
-  # Common packages should eventually move to home/common.nix
+  # Common packages (ripgrep, fzf, bat, delta, lazygit, zoxide) are in common.nix
   home.packages = with pkgs; [
     swaylock-effects
     swayidle

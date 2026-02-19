@@ -46,17 +46,16 @@ in
     # };
 
     # Add some basic packages to be managed by Home Manager instead of system-wide
+    # Common packages (ripgrep, bat, fd, lazygit, fzf, delta, zoxide) are in common.nix
     packages = with pkgs; [
       _1password-cli
       ast-grep
-      bat
       catimg
       colima
       comma
       curl
       darwin.trash
       deno
-      fd
       fnm
       fx
       gh
@@ -65,7 +64,6 @@ in
       nb
       ncurses
       pipx
-      ripgrep
       rustup
       sqlite
       tailscale
@@ -121,7 +119,7 @@ in
   };
 
   imports = [
-    ./git.nix
+    ./common.nix
   ];
 
   programs.zsh = {
@@ -194,35 +192,7 @@ in
     ];
   };
 
-  programs.zoxide = {
-    enable = true;
-  };
-
-  programs.fzf =
-    let
-      fdCommand = "fd --exclude '.git' --exclude 'node_modules' --exclude 'lua-language-server'";
-    in
-    {
-      enable = true;
-      enableZshIntegration = true;
-      defaultCommand = fdCommand;
-      defaultOptions = [
-        "--height 80%"
-        "--preview-window=right,60%,border-rounded"
-        "--layout reverse"
-        "--border rounded"
-        "--margin 1"
-        "--bind ctrl-d:preview-page-down,ctrl-u:preview-page-up"
-      ];
-      fileWidgetCommand = "${fdCommand} --type f";
-      fileWidgetOptions = [
-        "--preview 'bat --line-range :500 {}'"
-      ];
-      changeDirWidgetCommand = "${fdCommand} --type d";
-      changeDirWidgetOptions = [
-        "--preview 'tree -C {} | head -100'"
-      ];
-    };
+  # fzf, zoxide, delta, lazygit are configured in common.nix
 
   programs.yazi = {
     enable = true;
@@ -246,16 +216,6 @@ in
     };
   };
 
+  # direnv and lazygit are configured in common.nix
   programs.direnv.enable = true;
-  programs.lazygit = {
-    enable = true;
-    settings = {
-      git = {
-        paging = {
-          colorArg = "always";
-          pager = "delta --dark --paging=never";
-        };
-      };
-    };
-  };
 }
