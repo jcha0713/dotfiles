@@ -35,6 +35,7 @@
           {
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
+            home-manager.backupFileExtension = "backup";
             home-manager.users.joohoon = ./home/nixos.nix;
             home-manager.extraSpecialArgs = {
               dotfilesPath = "/home/joohoon/dotfiles";
