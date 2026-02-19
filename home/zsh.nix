@@ -56,7 +56,7 @@ in
           bindkey -M viins '^R' fzf-history-widget
           bindkey -M vicmd '^R' fzf-history-widget
           # Remove from precmd so it only runs once
-          precmd_functions=(${precmd_functions:#__fzf_ctrl_r_fix})
+          precmd_functions=(''${precmd_functions:#__fzf_ctrl_r_fix})
         }
         precmd_functions+=(__fzf_ctrl_r_fix)
       '';
