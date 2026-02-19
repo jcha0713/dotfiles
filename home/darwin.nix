@@ -188,30 +188,7 @@ in
     ];
   };
 
-  # fzf, zoxide, delta, lazygit are configured in common.nix
+  # yazi, fzf, zoxide, delta, lazygit are configured in common.nix
 
-  programs.yazi = {
-    enable = true;
-    settings = {
-      mgr = {
-        sort_dir_first = true;
-        ratio = [
-          1
-          2
-          5
-        ];
-      };
-      preview = {
-        wrap = "yes";
-      };
-    };
-    theme = {
-      flavor = {
-        use = "kanso-zen";
-      };
-    };
-  };
-
-  # direnv and lazygit are configured in common.nix
   programs.direnv.enable = true;
 }

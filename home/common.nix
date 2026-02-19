@@ -117,4 +117,23 @@ in
   programs.lazygit = {
     enable = true;
   };
+
+  # TUI file manager
+  programs.yazi = {
+    enable = true;
+    settings = {
+      mgr = {
+        sort_dir_first = true;
+        ratio = [ 1 2 5 ];
+      };
+      preview = {
+        wrap = "yes";
+      };
+    };
+    theme = {
+      flavor = {
+        use = "kanso-zen";
+      };
+    };
+  };
 }
