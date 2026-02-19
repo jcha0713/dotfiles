@@ -52,7 +52,24 @@
         src = pkgs.zsh-vi-mode;
         file = "share/zsh-vi-mode/zsh-vi-mode.plugin.zsh";
       }
+      {
+        name = "fzf-zsh";
+        src = pkgs.fzf;
+        file = "share/fzf/completion.zsh";
+      }
+      {
+        name = "fzf-zsh-keybindings";
+        src = pkgs.fzf;
+        file = "share/fzf/key-bindings.zsh";
+      }
     ];
+
+    # Ensure fzf key bindings work with vi-mode
+    initExtra = ''
+      # Bind Ctrl+R to fzf history search (works in both insert and normal mode)
+      bindkey '^R' fzf-history-widget
+      bindkey -M vicmd '^R' fzf-history-widget
+    '';
   };
 
   programs.direnv.enable = true;
