@@ -59,7 +59,7 @@ in
           precmd_functions=(${precmd_functions:#__fzf_ctrl_r_fix})
         }
         precmd_functions+=(__fzf_ctrl_r_fix)
-      ''
+      '';
     plugins = [
       {
         name = "vi-mode";
