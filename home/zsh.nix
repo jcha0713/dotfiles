@@ -9,7 +9,7 @@
     sessionVariables = {
       EDITOR = "nvim";
     };
-    shellAliases = import ./config/zsh/aliases.nix;
+    shellAliases = import ../config/zsh/aliases.nix;
     oh-my-zsh = {
       enable = true;
       theme = "kolo";
