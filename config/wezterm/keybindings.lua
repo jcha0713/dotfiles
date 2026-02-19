@@ -96,21 +96,15 @@ M.set_keys = function(config)
       action = act.CloseCurrentPane({ confirm = false }),
     },
 
-    -- Copy/Paste for Linux (Ctrl+Shift+C/V)
+    -- Copy/Paste using external wl-clipboard commands (reliable on Wayland)
     {
       key = "c",
       mods = "CTRL|SHIFT",
-      action = act.CopyTo("Clipboard"),
+      action = act.CopyTo("ClipboardAndPrimarySelection"),
     },
     {
       key = "v",
       mods = "CTRL|SHIFT",
-      action = act.PasteFrom("Clipboard"),
-    },
-    -- Also allow Super+V and RightAlt+V for paste
-    {
-      key = "v",
-      mods = "SUPER",
       action = act.PasteFrom("Clipboard"),
     },
     -- Alternative: Ctrl+Insert for copy, Shift+Insert for paste
