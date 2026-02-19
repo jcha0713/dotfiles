@@ -271,8 +271,8 @@ layout {
 // Disabled: waybar is now started by systemd via home-manager
 // spawn-at-startup "waybar"
 
-// Start IBus for input method support
-spawn-at-startup "ibus-daemon" "--xim" "--panel" "disable"
+// Start kime for Korean input method support
+spawn-at-startup "kime"
 
 // To run a shell command (with variables, pipes, etc.), use spawn-sh-at-startup:
 // spawn-sh-at-startup "qs -c ~/source/qs/MyAwesomeShell"

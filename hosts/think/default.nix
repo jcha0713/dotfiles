@@ -90,23 +90,14 @@
   };
 
 
+  # Kime - Korean IME (replaces ibus)
   i18n.inputMethod = {
     enable = true;
-    type = "ibus";
-    ibus.engines = with pkgs.ibus-engines; [ hangul ];
+    type = "kime";
+    kime.config = {
+      indicator.icon_color = "White";
+    };
   };
-
-
-  environment.variables = {
-    GTK_IM_MODULE = "ibus";
-    QT_IM_MODULE = "ibus";
-    XMODIFIERS = "@im=ibus";
-    # Tell IBus it's running in a desktop session (prevents warning)
-    XDG_CURRENT_DESKTOP = "niri";
-  };
-
-  # Disable systemd ibus service - we start it from Niri
-  systemd.user.services.ibus-daemon.enable = false;
 
   # Enable the X11 windowing system.
   services.xserver.enable = true;
