@@ -113,9 +113,7 @@ in
     enable = true;
     settings = {
       git = {
-        pagers = [
-          "delta --dark --paging=never"
-        ];
+        pager = "delta --dark --paging=never";
       };
     };
   };
