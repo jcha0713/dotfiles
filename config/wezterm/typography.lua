@@ -19,15 +19,16 @@ local font_rules = {
 }
 
 M.set_fonts = function(config)
-  config.font_size = 18.4
+  -- config.font_size = 18.4
+  config.font_size = 17
   config.line_height = 1.20
-  config.font = wezterm.font_with_fallback({
-    -- HACK: Adding flog symbols changes the entire look for some reason. Let's scale up a bit to mimic the original look.
-    { family = "Flog Symbols", scale = 1.003 },
-    "ComicCode Nerd Font",
-    "hesalche",
-    "PlemolJP Console NF",
-  })
+  -- config.font = wezterm.font_with_fallback({
+  --   -- HACK: Adding flog symbols changes the entire look for some reason. Let's scale up a bit to mimic the original look.
+  --   { family = "Flog Symbols", scale = 1.003 },
+  --   "ComicCode Nerd Font",
+  --   "hesalche",
+  --   "PlemolJP Console NF",
+  -- })
   config.font_rules = font_rules
 end
 
