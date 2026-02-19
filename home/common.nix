@@ -5,7 +5,6 @@ let
     url = "https://raw.githubusercontent.com/dandavison/delta/main/themes.gitconfig";
     sha256 = "sha256:1pkqd36ls3cc6xgycd6sawpnwvgbchs54dkgg007algkhqxv7wch";
   };
-  fdCommand = "fd --exclude '.git' --exclude 'node_modules' --exclude 'lua-language-server'";
 in
 {
   # Git configuration
@@ -82,30 +81,6 @@ in
     curl
     ncurses
   ];
-
-  # fzf configuration
-  programs.fzf = {
-    enable = true;
-    enableBashIntegration = true;
-    enableZshIntegration = true;
-    defaultCommand = fdCommand;
-    defaultOptions = [
-      "--height 80%"
-      "--preview-window=right,60%,border-rounded"
-      "--layout reverse"
-      "--border rounded"
-      "--margin 1"
-      "--bind ctrl-d:preview-page-down,ctrl-u:preview-page-up"
-    ];
-    fileWidgetCommand = "${fdCommand} --type f";
-    fileWidgetOptions = [
-      "--preview 'bat --line-range :500 {}'"
-    ];
-    changeDirWidgetCommand = "${fdCommand} --type d";
-    changeDirWidgetOptions = [
-      "--preview 'tree -C {} | head -100'"
-    ];
-  };
 
   # Directory jumper
   programs.zoxide = {
