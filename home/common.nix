@@ -111,10 +111,5 @@ in
   # TUI git client
   programs.lazygit = {
     enable = true;
-    settings = {
-      git = {
-        pager = "delta --dark --paging=never";
-      };
-    };
   };
 }
