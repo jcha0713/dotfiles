@@ -242,6 +242,7 @@
     fuzzel
     waybar
     git
+    gcc  # C compiler for tree-sitter
   ])
   ++
   (with inputs.llm-agents.packages.${pkgs.system}; [
