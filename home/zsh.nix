@@ -8,6 +8,7 @@
     syntaxHighlighting.enable = true;
     sessionVariables = {
       EDITOR = "nvim";
+      ZVM_INIT_MODE = "sourcing"; # Required for zsh-vi-mode to work with fzf
     };
     shellAliases = import ../config/zsh/aliases.nix;
     oh-my-zsh = {
@@ -45,10 +46,6 @@
 
         # direnv (https://direnv.net/docs/hook.html)
         eval "$(direnv hook zsh)"
-
-        # Source fzf after vi-mode to ensure keybindings work
-        source ${pkgs.fzf}/share/fzf/completion.zsh
-        source ${pkgs.fzf}/share/fzf/key-bindings.zsh
       '';
     plugins = [
       {
