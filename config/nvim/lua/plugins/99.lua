@@ -10,6 +10,7 @@ return {
     local cwd = vim.uv.cwd()
     local basename = vim.fs.basename(cwd)
     _99.setup({
+      -- provider = _99.ClaudeCodeProvider,  -- default: OpenCodeProvider
       model = "opencode/kimi-k2.5-free",
       logger = {
         level = _99.DEBUG,
@@ -17,9 +18,8 @@ return {
         print_on_error = true,
       },
 
-      --- A new feature that is centered around tags
+      --- Completions: #rules and @files in the prompt buffer
       completion = {
-        --- Defaults to .cursor/rules
         -- I am going to disable these until i understand the
         -- problem better.  Inside of cursor rules there is also
         -- application rules, which means i need to apply these
@@ -39,7 +39,15 @@ return {
         --- ... the other rules in that dir ...
         ---
         custom_rules = {
-          "~/.claude/skills/",
+          "scratch/custom_rules/",
+        },
+
+        --- Configure @file completion (all fields optional, sensible defaults)
+        files = {
+          -- enabled = true,
+          -- max_file_size = 102400,     -- bytes, skip files larger than this
+          -- max_files = 5000,            -- cap on total discovered files
+          -- exclude = { ".env", ".env.*", "node_modules", ".git", ... },
         },
 
         --- What autocomplete do you use.  We currently only
@@ -57,15 +65,10 @@ return {
       --- /foo/AGENT.md
       --- assuming that /foo is project root (based on cwd)
       md_files = {
-        "~/.claude/CLAUDE.md",
-        "AGENT.md",
+        "AGENTS.md",
       },
     })
 
-    -- Create your own short cuts for the different types of actions
-    vim.keymap.set("n", "<leader>9f", function()
-      _99.fill_in_function()
-    end)
     -- take extra note that i have visual selection only in v mode
     -- technically whatever your last visual selection is, will be used
     -- so i have this set to visual mode so i dont screw up and use an
@@ -74,20 +77,12 @@ return {
     -- likely ill add a mode check and assert on required visual mode
     -- so just prepare for it now
     vim.keymap.set("v", "<leader>9v", function()
-      _99.visual_prompt()
+      _99.visual()
     end)
 
     --- if you have a request you dont want to make any changes, just cancel it
     vim.keymap.set("v", "<leader>9s", function()
       _99.stop_all_requests()
-    end)
-
-    --- Example: Using rules + actions for custom behaviors
-    --- Create a rule file like ~/.rules/debug.md that defines custom behavior.
-    --- For instance, a "debug" rule could automatically add printf statements
-    --- throughout a function to help debug its execution flow.
-    vim.keymap.set("n", "<leader>9fd", function()
-      _99.fill_in_function()
     end)
   end,
 }

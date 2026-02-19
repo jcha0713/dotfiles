@@ -375,6 +375,7 @@ return {
 
   {
     "sudo-tee/opencode.nvim",
+    enabled = false,
     event = "VeryLazy",
     config = function()
       require("opencode").setup({})
@@ -392,5 +393,32 @@ return {
       "hrsh7th/nvim-cmp",
       "nvim-telescope/telescope.nvim",
     },
+  },
+
+  {
+    dir = "~/.pi/agent/extensions/neovim",
+    event = "VeryLazy",
+    config = function()
+      require("pi-nvim").setup()
+
+      vim.keymap.set(
+        "n",
+        "<leader>po",
+        require("pi-nvim").open,
+        { desc = "Open Pi" }
+      )
+      vim.keymap.set(
+        "n",
+        "<leader>pc",
+        require("pi-nvim").close,
+        { desc = "Close Pi" }
+      )
+      vim.keymap.set(
+        "n",
+        "<leader>pp",
+        require("pi-nvim").toggle,
+        { desc = "Toggle Pi" }
+      )
+    end,
   },
 }
