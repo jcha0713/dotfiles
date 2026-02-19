@@ -54,6 +54,11 @@ in
         if (( $+commands[fzf] )); then
           source ${pkgs.fzf}/share/fzf/key-bindings.zsh
         fi
+
+        # Explicitly bind Ctrl+R for history search (override vi-mode defaults)
+        bindkey '^R' fzf-history-widget
+        bindkey -M viins '^R' fzf-history-widget
+        bindkey -M vicmd '^R' fzf-history-widget
       '';
     plugins = [
       {
