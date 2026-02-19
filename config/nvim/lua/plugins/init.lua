@@ -165,19 +165,6 @@ return {
     end,
   },
   {
-    "supermaven-inc/supermaven-nvim",
-    event = "BufEnter",
-    config = function()
-      local api = require("supermaven-nvim.api")
-
-      require("supermaven-nvim").setup({
-        ignore_filetypes = { markdown = true, gleam = true },
-      })
-
-      api.stop()
-    end,
-  },
-  {
     "otavioschwanck/telescope-cmdline-word.nvim",
     event = "BufEnter",
     opts = {
