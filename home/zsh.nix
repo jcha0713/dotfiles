@@ -11,7 +11,6 @@ in
     syntaxHighlighting.enable = true;
     sessionVariables = {
       EDITOR = "nvim";
-      ZVM_INIT_MODE = "sourcing"; # Required for zsh-vi-mode to work with fzf
     };
     shellAliases = import ../config/zsh/aliases.nix;
     oh-my-zsh = {
@@ -49,16 +48,6 @@ in
 
         # direnv (https://direnv.net/docs/hook.html)
         eval "$(direnv hook zsh)"
-
-        # fzf keybindings (must be after zsh-vi-mode)
-        if (( $+commands[fzf] )); then
-          source ${pkgs.fzf}/share/fzf/key-bindings.zsh
-        fi
-
-        # Explicitly bind Ctrl+R for history search (override vi-mode defaults)
-        bindkey '^R' fzf-history-widget
-        bindkey -M viins '^R' fzf-history-widget
-        bindkey -M vicmd '^R' fzf-history-widget
       '';
     plugins = [
       {
