@@ -16,7 +16,7 @@ if wezterm.config_builder then
 end
 
 display.set_display(config)
-fonts.set_fonts(config)
+-- fonts.set_fonts(config)
 keys.set_keys(config)
 settings.set_settings(config)
 ssh.set_ssh_domains(config)
