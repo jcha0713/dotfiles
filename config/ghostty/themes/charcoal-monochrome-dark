@@ -1,0 +1,28 @@
+# Charcoal Monochrome Dark Theme
+# Based on https://github.com/mubin-thinks/charcoal
+
+background = #120e08
+foreground = #b3976d
+cursor-color = #b3976d
+selection-background = #231b0e
+selection-foreground = #d1b994
+
+# Normal colors
+palette = 0=#120e08
+palette = 1=#b3976d
+palette = 2=#8c734e
+palette = 3=#b3976d
+palette = 4=#8c734e
+palette = 5=#655030
+palette = 6=#8c734e
+palette = 7=#b3976d
+
+# Bright colors
+palette = 8=#231b0e
+palette = 9=#d1b994
+palette = 10=#b3976d
+palette = 11=#d1b994
+palette = 12=#b3976d
+palette = 13=#8c734e
+palette = 14=#b3976d
+palette = 15=#d1b994

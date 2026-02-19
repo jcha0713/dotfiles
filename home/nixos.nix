@@ -45,6 +45,9 @@
     # Ghostty config
     ".config/ghostty/config".source =
       config.lib.file.mkOutOfStoreSymlink "${dotfilesPath}/config/ghostty/config";
+    # Ghostty themes
+    ".config/ghostty/themes".source =
+      config.lib.file.mkOutOfStoreSymlink "${dotfilesPath}/config/ghostty/themes";
   };
 
   # User packages (NixOS-specific, mostly Wayland related)
