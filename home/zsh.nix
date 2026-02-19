@@ -45,6 +45,11 @@
 
         # direnv (https://direnv.net/docs/hook.html)
         eval "$(direnv hook zsh)"
+
+        # Ensure fzf key bindings work with vi-mode
+        # Bind Ctrl+R to fzf history search (works in both insert and normal mode)
+        bindkey '^R' fzf-history-widget
+        bindkey -M vicmd '^R' fzf-history-widget
       '';
     plugins = [
       {
@@ -63,13 +68,6 @@
         file = "share/fzf/key-bindings.zsh";
       }
     ];
-
-    # Ensure fzf key bindings work with vi-mode
-    initExtra = ''
-      # Bind Ctrl+R to fzf history search (works in both insert and normal mode)
-      bindkey '^R' fzf-history-widget
-      bindkey -M vicmd '^R' fzf-history-widget
-    '';
   };
 
   programs.direnv.enable = true;
