@@ -107,10 +107,21 @@ M.set_keys = function(config)
       mods = "CTRL|SHIFT",
       action = act.PasteFrom("Clipboard"),
     },
-    -- Also allow Super+V for paste
+    -- Also allow Super+V and RightAlt+V for paste
     {
       key = "v",
       mods = "SUPER",
+      action = act.PasteFrom("Clipboard"),
+    },
+    -- Alternative: Ctrl+Insert for copy, Shift+Insert for paste
+    {
+      key = "Insert",
+      mods = "CTRL",
+      action = act.CopyTo("Clipboard"),
+    },
+    {
+      key = "Insert",
+      mods = "SHIFT",
       action = act.PasteFrom("Clipboard"),
     },
     -- cmd+o: gt(next tab)
