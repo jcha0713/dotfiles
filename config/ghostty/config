@@ -1,0 +1,5 @@
+# Ghostty configuration
+clipboard-read = allow
+clipboard-write = allow
+clipboard-trim-trailing-spaces = true
+clipboard-paste-protection = false

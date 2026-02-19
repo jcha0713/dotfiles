@@ -230,6 +230,7 @@
     # xclip
     wl-clipboard
     wezterm
+    ghostty
     tailscale
     discord
     fuzzel
