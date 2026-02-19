@@ -12,12 +12,17 @@ title = "Ghostty"
 window-padding-x = 4
 window-padding-y = 4
 
+# Hide tab bar and window decorations
+window-decoration = none
+
 # Font
-font-size = 11
+font-family = "ComicCode Nerd Font"
+font-style = "Regular"
+font-size = 14
 
 # Cursor
 cursor-style = "block"
-cursor-style-blink = false
+cursor-style-blink = true
 
 # Shell - use default shell from environment
 
