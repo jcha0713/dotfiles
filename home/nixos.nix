@@ -18,14 +18,14 @@
 
   # Symlink dotfiles from the repo
   # These configs are raw files you edit directly in ~/dotfiles/config/
-  xdg.configFile = {
-    "niri/config.kdl".source = 
+  home.file = {
+    ".config/niri/config.kdl".source = 
       config.lib.file.mkOutOfStoreSymlink "${dotfilesPath}/config/niri/config.kdl";
-    "waybar/config".source = 
+    ".config/waybar/config".source = 
       config.lib.file.mkOutOfStoreSymlink "${dotfilesPath}/config/waybar/config";
-    "waybar/style.css".source = 
+    ".config/waybar/style.css".source = 
       config.lib.file.mkOutOfStoreSymlink "${dotfilesPath}/config/waybar/style.css";
-    "swaylock/config".source = 
+    ".config/swaylock/config".source = 
       config.lib.file.mkOutOfStoreSymlink "${dotfilesPath}/config/swaylock/config";
   };
 
