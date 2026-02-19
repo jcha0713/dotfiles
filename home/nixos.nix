@@ -23,6 +23,7 @@
   # Symlink dotfiles from the repo
   # These configs are raw files you edit directly in ~/dotfiles/config/
   home.file = {
+    # NixOS-specific
     ".config/niri/config.kdl".source = 
       config.lib.file.mkOutOfStoreSymlink "${dotfilesPath}/config/niri/config.kdl";
     ".config/waybar/config".source = 
@@ -31,6 +32,12 @@
       config.lib.file.mkOutOfStoreSymlink "${dotfilesPath}/config/waybar/style.css";
     ".config/swaylock/config".source = 
       config.lib.file.mkOutOfStoreSymlink "${dotfilesPath}/config/swaylock/config";
+    
+    # Shared with Mac Mini
+    ".config/nvim".source = 
+      config.lib.file.mkOutOfStoreSymlink "${dotfilesPath}/config/nvim";
+    ".config/wezterm".source = 
+      config.lib.file.mkOutOfStoreSymlink "${dotfilesPath}/config/wezterm";
   };
 
   # User packages (NixOS-specific, mostly Wayland related)
