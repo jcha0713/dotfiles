@@ -19,8 +19,7 @@ font-size = 11
 cursor-style = "block"
 cursor-style-blink = false
 
-# Shell
-command = "zsh"
+# Shell - use default shell from environment
 
 # Keybindings
 keybind = ctrl+shift+c=copy_to_clipboard

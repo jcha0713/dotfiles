@@ -71,6 +71,7 @@ in
 
   # Common CLI tools (used by both NixOS and Darwin)
   home.packages = with pkgs; [
+    zsh
     ripgrep
     bat
     fd
