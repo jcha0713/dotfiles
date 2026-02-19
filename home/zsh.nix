@@ -48,7 +48,18 @@ in
 
         # direnv (https://direnv.net/docs/hook.html)
         eval "$(direnv hook zsh)"
-      '';
+
+        # Fix: Ensure fzf-history-widget is bound to Ctrl+R
+        # This runs once after zsh-vi-mode initializes
+        __fzf_ctrl_r_fix() {
+          bindkey '^R' fzf-history-widget
+          bindkey -M viins '^R' fzf-history-widget
+          bindkey -M vicmd '^R' fzf-history-widget
+          # Remove from precmd so it only runs once
+          precmd_functions=(${precmd_functions:#__fzf_ctrl_r_fix})
+        }
+        precmd_functions+=(__fzf_ctrl_r_fix)
+      ''
     plugins = [
       {
         name = "vi-mode";
