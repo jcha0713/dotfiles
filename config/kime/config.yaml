@@ -1,0 +1,21 @@
+# Kime Korean IME configuration
+# Reference: https://github.com/Riey/kime/blob/master/docs/CONFIGURATION.ko.md
+
+indicator:
+  icon_color: "White"
+
+# Default hangul input mode
+input_mode: Hangul
+
+# Keyboard layout: dubeolsik (두벌식)
+layout: dubeolsik
+
+# Toggle keys
+hotkeys:
+  - Hangul
+  - Alt_R
+  - Shift+space
+
+# Hanja conversion key
+hanja_keys:
+  - F9

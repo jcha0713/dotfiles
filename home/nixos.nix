@@ -38,6 +38,10 @@
       config.lib.file.mkOutOfStoreSymlink "${dotfilesPath}/config/nvim";
     ".config/wezterm".source = 
       config.lib.file.mkOutOfStoreSymlink "${dotfilesPath}/config/wezterm";
+    
+    # Kime Korean IME config
+    ".config/kime/config.yaml".source =
+      config.lib.file.mkOutOfStoreSymlink "${dotfilesPath}/config/kime/config.yaml";
   };
 
   # User packages (NixOS-specific, mostly Wayland related)
