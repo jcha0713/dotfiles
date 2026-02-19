@@ -95,6 +95,24 @@ M.set_keys = function(config)
       mods = "LEADER",
       action = act.CloseCurrentPane({ confirm = false }),
     },
+
+    -- Copy/Paste for Linux (Ctrl+Shift+C/V)
+    {
+      key = "c",
+      mods = "CTRL|SHIFT",
+      action = act.CopyTo("Clipboard"),
+    },
+    {
+      key = "v",
+      mods = "CTRL|SHIFT",
+      action = act.PasteFrom("Clipboard"),
+    },
+    -- Also allow Super+V for paste
+    {
+      key = "v",
+      mods = "SUPER",
+      action = act.PasteFrom("Clipboard"),
+    },
     -- cmd+o: gt(next tab)
     -- cmd+i: gT(prev tab)
     {
