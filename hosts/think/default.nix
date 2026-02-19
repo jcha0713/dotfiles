@@ -113,6 +113,7 @@
 
   programs.niri.enable = true;
   programs.xwayland.enable = true;
+  programs.zsh.enable = true;
 
   # Idle management: lock screen and turn off monitors
   systemd.user.services.swayidle = {
