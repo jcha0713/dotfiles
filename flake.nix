@@ -26,11 +26,11 @@
     in
     {
       # NixOS configurations
-      nixosConfigurations.thinkpad = nixpkgs.lib.nixosSystem {
+      nixosConfigurations.think = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
         specialArgs = sharedSpecialArgs;
         modules = [
-          ./hosts/thinkpad
+          ./hosts/think
           home-manager.nixosModules.home-manager
           {
             home-manager.useGlobalPkgs = true;
@@ -44,11 +44,11 @@
       };
 
       # Darwin configurations
-      darwinConfigurations.mac-mini = nix-darwin.lib.darwinSystem {
+      darwinConfigurations.mini = nix-darwin.lib.darwinSystem {
         system = "aarch64-darwin";
         specialArgs = sharedSpecialArgs // { username = "jcha0713"; };
         modules = [
-          ./hosts/mac-mini
+          ./hosts/mini
           home-manager.darwinModules.home-manager
           {
             home-manager.useGlobalPkgs = true;

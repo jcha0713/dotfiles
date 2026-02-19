@@ -12,7 +12,7 @@
   programs.bash = {
     enable = true;
     shellAliases = {
-      switch = "cd ~/dotfiles && sudo nixos-rebuild switch --flake .#thinkpad";
+      switch = "cd ~/dotfiles && sudo nixos-rebuild switch --flake .#think";
     };
   };
 
