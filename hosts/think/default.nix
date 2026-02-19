@@ -96,6 +96,16 @@
     type = "kime";
   };
 
+  # Environment variables for Wayland apps
+  environment.variables = {
+    # Kime input method (no GTK/QT_IM_MODULE needed for kime)
+    XMODIFIERS = "@im=kime";
+    # Tell apps it's running in a desktop session
+    XDG_CURRENT_DESKTOP = "niri";
+    # Force Wayland for Firefox and other apps
+    MOZ_ENABLE_WAYLAND = "1";
+  };
+
   # Enable the X11 windowing system.
   services.xserver.enable = true;
 
