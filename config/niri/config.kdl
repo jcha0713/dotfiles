@@ -400,8 +400,8 @@ binds {
     // or do a four-finger swipe up on a touchpad.
     Mod+O repeat=false { toggle-overview; }
 
-    // Clipboard history picker using cliphist + fuzzel
-    Mod+V { spawn-sh "cliphist list | fuzzel --dmenu --prompt 'Clipboard: ' | cliphist decode | wl-copy"; }
+    // Clipboard history picker using cliphist + fuzzel (Mod+Apostrophe to avoid conflict)
+    Mod+Apostrophe { spawn-sh "cliphist list | fuzzel --dmenu --prompt 'Clipboard: ' | cliphist decode | wl-copy"; }
 
     Mod+Q repeat=false { close-window; }
 
