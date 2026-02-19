@@ -139,9 +139,8 @@ layout {
     // preset-window-heights { }
 
     // You can change the default width of the new windows.
-    // default-column-width { proportion 0.5; }
-    // Let windows decide their own initial width (fills screen better with multiple windows)
-    default-column-width {}
+    // Force 50% width so two windows fill the screen
+    default-column-width { proportion 0.5; }
 
     // By default focus ring and border are rendered as a solid background rectangle
     // behind windows. That is, they will show up through semitransparent windows.
