@@ -1,5 +1,8 @@
 { config, pkgs, ... }:
 
+let
+  fdCommand = "fd --exclude '.git' --exclude 'node_modules' --exclude 'lua-language-server'";
+in
 {
   programs.zsh = {
     enable = true;
@@ -63,9 +66,6 @@
 
   programs.direnv.enable = true;
 
-  let
-    fdCommand = "fd --exclude '.git' --exclude 'node_modules' --exclude 'lua-language-server'";
-  in
   programs.fzf = {
     enable = true;
     enableBashIntegration = true;
