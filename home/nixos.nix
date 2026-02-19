@@ -53,5 +53,10 @@
     brightnessctl
     libnotify
     swaybg
+    # Clipboard management for Wayland
+    cliphist  # Clipboard history with fzf integration
   ];
+
+  # Clipboard history service - saves clipboard to history
+  services.cliphist.enable = true;
 }

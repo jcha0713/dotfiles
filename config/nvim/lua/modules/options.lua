@@ -1,3 +1,18 @@
+-- Wayland clipboard configuration
+-- Explicitly use wl-copy/wl-paste for system clipboard integration
+vim.g.clipboard = {
+  name = "wl-clipboard",
+  copy = {
+    ["+"] = "wl-copy",
+    ["*"] = "wl-copy",
+  },
+  paste = {
+    ["+"] = "wl-paste",
+    ["*"] = "wl-paste",
+  },
+  cache_enabled = 1,
+}
+
 local indent = 2 -- num of spaces for indentation
 
 -- vim.opt.guicursor = "n:blinkwait800-blinkon300blinkoff300" -- change cursor shape
