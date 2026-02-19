@@ -11,6 +11,10 @@ M.set_settings = function(config)
   -- Force Wayland backend for proper clipboard integration
   config.enable_wayland = true
 
+  -- Enable IME for Korean input (kime) on Wayland
+  -- Requires compositor support for zwp_text_input_v3
+  config.use_ime = true
+
   -- Clipboard settings
   config.canonicalize_pasted_newlines = "None"
 end
