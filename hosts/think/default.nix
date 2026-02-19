@@ -94,9 +94,7 @@
   i18n.inputMethod = {
     enable = true;
     type = "kime";
-    kime.config = {
-      indicator.icon_color = "White";
-    };
+    kime.indicator.icon_color = "White";
   };
 
   # Enable the X11 windowing system.
