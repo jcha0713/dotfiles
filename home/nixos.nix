@@ -63,8 +63,4 @@
 
   # Clipboard history service - saves clipboard to history
   services.cliphist.enable = true;
-
-  # Disable waybar systemd service - we'll start it manually if needed
-  # Actually, let's keep it enabled but make sure only one instance runs
-  services.waybar.enable = false;
 }
