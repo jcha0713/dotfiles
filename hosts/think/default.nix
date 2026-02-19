@@ -210,6 +210,7 @@
     isNormalUser = true;
     description = "joohoon";
     extraGroups = [ "networkmanager" "wheel" "video" ]; # Enable 'sudo' for the user.
+    shell = pkgs.zsh;
   #   packages = with pkgs; [
   #     tree
   #   ];
