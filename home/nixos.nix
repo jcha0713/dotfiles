@@ -58,6 +58,7 @@
     swaybg
     # Clipboard management for Wayland
     cliphist  # Clipboard history with fzf integration
+    unzip
   ];
 
   # Clipboard history service - saves clipboard to history

@@ -14,6 +14,7 @@ return {
 
   {
     "tzachar/cmp-fuzzy-buffer",
+    enabled = false,
     event = "VeryLazy",
     dependencies = { "hrsh7th/nvim-cmp", "tzachar/fuzzy.nvim" },
   },
@@ -384,6 +385,7 @@ return {
 
   {
     dir = "~/.pi/agent/extensions/neovim",
+    enabled = false,
     event = "VeryLazy",
     config = function()
       require("pi-nvim").setup()

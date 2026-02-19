@@ -1,7 +1,7 @@
 return {
   "jcha0713/classy.nvim",
   opts = {},
-  enabled = true,
+  enabled = false,
   dir = "~/dev/active/classy.nvim.git/main/",
   keys = {
     { "<leader>ac", ":ClassyAddClass<CR>", desc = "Add class attr" },
