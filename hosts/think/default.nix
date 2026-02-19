@@ -233,8 +233,7 @@
   environment.systemPackages = (with pkgs; [
     vim
     neovim
-    tree
-    gh
+    # tree, gh moved to home/common.nix
     # xclip
     wl-clipboard
     wezterm

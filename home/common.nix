@@ -69,12 +69,17 @@ in
     };
   };
 
-  # Common CLI tools
+  # Common CLI tools (used by both NixOS and Darwin)
   home.packages = with pkgs; [
     ripgrep
     bat
     fd
     lazygit
+    tree-sitter
+    tree
+    gh
+    curl
+    ncurses
   ];
 
   # fzf configuration

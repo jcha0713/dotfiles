@@ -53,22 +53,18 @@ in
       catimg
       colima
       comma
-      curl
+      # curl, ncurses, gh, tree, tree-sitter moved to home/common.nix
       darwin.trash
       deno
       fnm
       fx
-      gh
       git-absorb
       nap
       nb
-      ncurses
       pipx
       rustup
       sqlite
       tailscale
-      tree
-      tree-sitter
       wakeonlan
       zk
       zsh-autosuggestions
