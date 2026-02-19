@@ -243,6 +243,7 @@
     waybar
     git
     gcc  # C compiler for tree-sitter
+    nodejs  # Node.js LTS (using fnm on Mac Mini)
   ])
   ++
   (with inputs.llm-agents.packages.${pkgs.system}; [
