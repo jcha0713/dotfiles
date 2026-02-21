@@ -7,8 +7,11 @@ clipboard-write = allow
 clipboard-trim-trailing-spaces = true
 clipboard-paste-protection = false
 
-# SSH - automatically copy terminfo to remote servers
-shell-integration-features = ssh-terminfo
+# Shell integration (required for ssh-terminfo to work)
+shell-integration = zsh
+
+# SSH - automatically copy terminfo to remote servers, fallback to xterm-256color
+shell-integration-features = ssh-terminfo,ssh-env
 
 # Window
 title = "Ghostty"
