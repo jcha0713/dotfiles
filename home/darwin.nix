@@ -41,6 +41,14 @@ in
       rm $tempfile
     '';
 
+    activation.installGhosttyTerminfo = ''
+      echo "Installing Ghostty terminfo..."
+      tempfile=$(mktemp)
+      ${pkgs.curl}/bin/curl -o $tempfile https://raw.githubusercontent.com/ghostty-org/ghostty/main/src/shell-integration/zsh/ghostty.terminfo
+      ${pkgs.ncurses}/bin/tic -x -o ~/.terminfo $tempfile
+      rm $tempfile
+    '';
+
     # file = {
     #   ".zshrc".source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/dotfiles/config/zsh/.zshrc";
     # };
