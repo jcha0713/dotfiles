@@ -4,7 +4,7 @@ let
   # Import theme palettes
   palettes = import ../lib/themes/palettes.nix;
   
-  # Set your active theme here - change this to switch themes globally
+  # Default theme - change this to switch themes, or use the theme-picker script
   activeThemeName = "e-ink-night";  # Options: e-ink, e-ink-dark, e-ink-sepia, e-ink-night
   activeTheme = palettes.${activeThemeName};
   c = activeTheme.colors;
@@ -29,7 +29,6 @@ in
   };
 
   # Symlink dotfiles from the repo
-  # These configs are raw files you edit directly in ~/dotfiles/config/
   home.file = {
     # NixOS-specific
     ".config/niri/config.kdl".source = 
@@ -119,7 +118,6 @@ in
   };
 
   # User packages (NixOS-specific, mostly Wayland related)
-  # Common packages (ripgrep, fzf, bat, delta, lazygit, zoxide) are in common.nix
   home.packages = with pkgs; [
     swaylock-effects
     swayidle
@@ -131,8 +129,10 @@ in
     cliphist  # Clipboard history with fzf integration
     unzip
     trash-cli
-    # Ghostty theme picker
+    # Theme picker for Ghostty
     (import ../scripts/ghostty-theme-picker.nix { inherit pkgs; })
+    # System-wide theme picker
+    (import ../scripts/theme-picker.nix { inherit pkgs; })
   ];
 
   # Clipboard history service - saves clipboard to history
