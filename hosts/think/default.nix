@@ -253,6 +253,7 @@
     lua-language-server  # LSP for Lua (Mason version doesn't work on NixOS)
     go
     sqlite
+    gnumake
   ])
   ++
   (with inputs.llm-agents.packages.${pkgs.system}; [
