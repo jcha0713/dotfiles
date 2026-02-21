@@ -47,7 +47,7 @@
       # Darwin configurations
       darwinConfigurations.mini = nix-darwin.lib.darwinSystem {
         system = "aarch64-darwin";
-        specialArgs = sharedSpecialArgs // { username = "jcha0713"; };
+        specialArgs = sharedSpecialArgs // { username = "jcha0713"; system = "aarch64-darwin"; };
         modules = [
           ./hosts/mini
           home-manager.darwinModules.home-manager
