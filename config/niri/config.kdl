@@ -370,8 +370,8 @@ binds {
     Mod+T hotkey-overlay-title="Open a Terminal: ghostty" { spawn "ghostty"; }
     // Zellij multiplexer (Shift+Return for SSH/multiplexing)
     Mod+Shift+Return hotkey-overlay-title="Open Zellij Multiplexer" { spawn "ghostty" "-e" "zellij"; }
-    // Backup: wezterm (Mod+Shift+Return)
-    Mod+Shift+Return hotkey-overlay-title="Open Wezterm (backup)" { spawn "wezterm"; }
+    // Backup: wezterm (Mod+Alt+Return)
+    Mod+Alt+Return hotkey-overlay-title="Open Wezterm (backup)" { spawn "wezterm"; }
     Mod+D hotkey-overlay-title="Run an Application: fuzzel" { spawn "fuzzel"; }
     Super+Alt+L hotkey-overlay-title="Lock the Screen: swaylock" { spawn "swaylock"; }
 
