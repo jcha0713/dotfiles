@@ -67,6 +67,8 @@
     cliphist  # Clipboard history with fzf integration
     unzip
     trash-cli
+    # Ghostty theme picker
+    (import ../scripts/ghostty-theme-picker.nix { inherit pkgs; })
   ];
 
   # Clipboard history service - saves clipboard to history
