@@ -7,6 +7,9 @@ clipboard-write = allow
 clipboard-trim-trailing-spaces = true
 clipboard-paste-protection = false
 
+# SSH - automatically copy terminfo to remote servers
+shell-integration-features = ssh-terminfo
+
 # Window
 title = "Ghostty"
 window-padding-x = 0
@@ -26,8 +29,6 @@ font-size = 15
 # Cursor
 cursor-style = "block"
 cursor-style-blink = true
-
-# Shell - use default shell from environment
 
 # Keybindings
 keybind = ctrl+shift+c=copy_to_clipboard
