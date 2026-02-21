@@ -112,6 +112,9 @@ in
     opencode = {
       source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/dotfiles/config/opencode";
     };
+    zellij = {
+      source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/dotfiles/config/zellij";
+    };
   };
 
   imports = [
