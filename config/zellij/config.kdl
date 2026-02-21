@@ -1,0 +1,45 @@
+// Zellij minimal configuration
+// https://zellij.dev/documentation/configuration
+
+// Keybindings - use Ctrl+Space as prefix (like tmux but with space)
+keybinds {
+    // Unbind default Ctrl+Space to use it as prefix
+    unbind "Ctrl Space"
+    
+    normal {
+        bind "Ctrl Space" { SwitchToMode "Tmux"; }
+    }
+    
+    tmux {
+        bind "Ctrl Space" { Write 2; SwitchToMode "Normal"; }
+        bind "c" { NewPane; SwitchToMode "Normal"; }
+        bind "n" { NewTab; SwitchToMode "Normal"; }
+        bind "x" { CloseFocus; SwitchToMode "Normal"; }
+        bind "h" "Left" { MoveFocus "Left"; SwitchToMode "Normal"; }
+        bind "j" "Down" { MoveFocus "Down"; SwitchToMode "Normal"; }
+        bind "k" "Up" { MoveFocus "Up"; SwitchToMode "Normal"; }
+        bind "l" "Right" { MoveFocus "Right"; SwitchToMode "Normal"; }
+        bind "[" { SwitchToMode "Scroll"; }
+        bind "d" { Detach; }
+        bind "q" { Quit; }
+        bind "Esc" { SwitchToMode "Normal"; }
+    }
+}
+
+// Layout on startup - just a single pane
+// default_layout "compact"
+
+// Theme - disable fancy UI
+// theme "default"
+
+// Pane options
+pane_frames false
+
+// Scrollback buffer
+scroll_buffer_size 10000
+
+// Copy on select
+copy_on_select true
+
+// Mouse mode
+mouse_mode true

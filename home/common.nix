@@ -80,6 +80,7 @@ in
     gh
     curl
     ncurses
+    zellij  # Terminal multiplexer for SSH/multiplexing
   ];
 
   # Directory jumper

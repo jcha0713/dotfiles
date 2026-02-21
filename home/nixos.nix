@@ -45,6 +45,10 @@
     # Ghostty config
     ".config/ghostty/config".source =
       config.lib.file.mkOutOfStoreSymlink "${dotfilesPath}/config/ghostty/config";
+    
+    # Zellij config
+    ".config/zellij/config.kdl".source =
+      config.lib.file.mkOutOfStoreSymlink "${dotfilesPath}/config/zellij/config.kdl";
   };
 
   # User packages (NixOS-specific, mostly Wayland related)
