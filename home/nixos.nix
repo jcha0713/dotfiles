@@ -1,5 +1,14 @@
 { config, pkgs, dotfilesPath, ... }:
 
+let
+  # Import theme palettes
+  palettes = import ../lib/themes/palettes.nix;
+  
+  # Set your active theme here - change this to switch themes globally
+  activeThemeName = "e-ink-night";  # Options: e-ink, e-ink-dark, e-ink-sepia, e-ink-night
+  activeTheme = palettes.${activeThemeName};
+  c = activeTheme.colors;
+in
 {
   imports = [
     ./common.nix
@@ -25,12 +34,68 @@
     # NixOS-specific
     ".config/niri/config.kdl".source = 
       config.lib.file.mkOutOfStoreSymlink "${dotfilesPath}/config/niri/config.kdl";
+    
+    # Waybar - config is symlinked, style.css is generated from theme
     ".config/waybar/config".source = 
       config.lib.file.mkOutOfStoreSymlink "${dotfilesPath}/config/waybar/config";
-    ".config/waybar/style.css".source = 
-      config.lib.file.mkOutOfStoreSymlink "${dotfilesPath}/config/waybar/style.css";
-    ".config/swaylock/config".source = 
-      config.lib.file.mkOutOfStoreSymlink "${dotfilesPath}/config/swaylock/config";
+    
+    # Waybar style generated from active theme
+    ".config/waybar/style.css".text = ''
+      /* Generated from ${activeThemeName} theme */
+      * { 
+        font-family: monospace; 
+        font-size: 13px; 
+      }
+      
+      window#waybar { 
+        background-color: ${c.bg}; 
+        color: ${c.fg}; 
+      }
+      
+      #workspaces button { 
+        padding: 0 10px; 
+        color: ${c.fg};
+      }
+      
+      #workspaces button.focused { 
+        background-color: ${c.blue}; 
+        color: ${c.bg}; 
+      }
+      
+      #workspaces button.urgent {
+        background-color: ${c.red};
+        color: ${c.bg};
+      }
+      
+      #clock, #battery, #cpu, #memory, #disk, #temperature,
+      #backlight, #network, #pulseaudio, #tray {
+        padding: 0 10px;
+        margin: 0 4px;
+        color: ${c.fg};
+      }
+      
+      #battery.charging { color: ${c.green}; }
+      #battery.critical:not(.charging) { color: ${c.red}; }
+      #pulseaudio.muted { color: ${c.bright-black}; }
+      
+      tooltip {
+        background: ${c.selection-bg};
+        color: ${c.selection-fg};
+        border: 1px solid ${c.bright-black};
+      }
+    '';
+    
+    # Swaylock - generate config with theme colors
+    ".config/swaylock/config".text = ''
+      # Generated from ${activeThemeName} theme
+      color=${c.bg}
+      bs-hl-color=${c.red}
+      key-hl-color=${c.green}
+      line-color=${c.blue}
+      ring-color=${c.fg}
+      inside-color=${c.bg}
+      separator-color=${c.bright-black}
+    '';
     
     # Shared with Mac Mini
     ".config/nvim".source = 
@@ -42,10 +107,9 @@
     ".config/kime/config.yaml".source =
       config.lib.file.mkOutOfStoreSymlink "${dotfilesPath}/config/kime/config.yaml";
     
-    # Ghostty config
+    # Ghostty config and themes
     ".config/ghostty/config".source =
       config.lib.file.mkOutOfStoreSymlink "${dotfilesPath}/config/ghostty/config";
-    # Ghostty themes
     ".config/ghostty/themes".source =
       config.lib.file.mkOutOfStoreSymlink "${dotfilesPath}/config/ghostty/themes";
     
