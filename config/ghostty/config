@@ -1,6 +1,8 @@
 # Ghostty configuration
 # https://ghostty.org/docs/config
 
+custom-shader = ./ghostty-shaders/tft.glsl
+
 # Clipboard
 clipboard-read = allow
 clipboard-write = allow
@@ -9,16 +11,19 @@ clipboard-paste-protection = false
 
 # Window
 title = "Ghostty"
-window-padding-x = 4
-window-padding-y = 4
+window-padding-x = 0
+window-padding-y = 0
+window-padding-balance = true
 
 # Hide tab bar and window decorations
 window-decoration = none
 
+adjust-cell-height = 10%
+
 # Font
 font-family = "ComicCode Nerd Font"
 font-style = "Regular"
-font-size = 14
+font-size = 15
 
 # Cursor
 cursor-style = "block"
@@ -29,3 +34,6 @@ cursor-style-blink = true
 # Keybindings
 keybind = ctrl+shift+c=copy_to_clipboard
 keybind = ctrl+shift+v=paste_from_clipboard
+keybind = ctrl+a>t=new_tab
+
+link-url = true
