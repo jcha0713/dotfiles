@@ -166,7 +166,7 @@
     description = "Wallpaper service";
     serviceConfig = {
       Type = "simple";
-      ExecStart = "${pkgs.swaybg}/bin/swaybg -m fill -i /home/joohoon/Pictures/izayoi_sakuya.jpg";
+      ExecStart = "${pkgs.swaybg}/bin/swaybg -m fill -i /home/joohoon/Pictures/time.png";
       Restart = "on-failure";
     };
     wantedBy = [ "graphical-session.target" ];
