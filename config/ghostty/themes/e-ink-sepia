@@ -1,0 +1,33 @@
+# e-ink-sepia Theme
+# Warm sepia tones for e-ink display simulation
+# Simulates e-readers with warm frontlight or old book paper
+# Gentle on eyes for long reading sessions
+
+background = #f4ecd8
+foreground = #3d3229
+
+cursor-color = #3d3229
+cursor-text = #f4ecd8
+
+selection-background = #e6d9c0
+selection-foreground = #3d3229
+
+# Normal colors - warm sepia tones
+palette = 0=#3d3229
+palette = 1=#5c4d3c
+palette = 2=#7a6650
+palette = 3=#998066
+palette = 4=#b8997d
+palette = 5=#d1b899
+palette = 6=#e6d9c0
+palette = 7=#f4ecd8
+
+# Bright colors - lighter warm tones
+palette = 8=#2a231c
+palette = 9=#4a3d30
+palette = 10=#6b5945
+palette = 11=#8f7a60
+palette = 12=#b8a080
+palette = 13=#dccbb0
+palette = 14=#f0e6d0
+palette = 15=#faf6ed

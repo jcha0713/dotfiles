@@ -45,6 +45,9 @@
     # Ghostty config
     ".config/ghostty/config".source =
       config.lib.file.mkOutOfStoreSymlink "${dotfilesPath}/config/ghostty/config";
+    # Ghostty themes
+    ".config/ghostty/themes".source =
+      config.lib.file.mkOutOfStoreSymlink "${dotfilesPath}/config/ghostty/themes";
     
     # Zellij config
     ".config/zellij/config.kdl".source =

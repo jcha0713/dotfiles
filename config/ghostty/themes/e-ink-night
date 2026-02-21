@@ -1,0 +1,33 @@
+# e-ink-night Theme
+# Amber-orange night reading theme for e-ink display simulation
+# Simulates e-readers with amber frontlight for low blue light
+# Maximum contrast version for night use with reduced eye strain
+
+background = #0a0805
+foreground = #ffaa00
+
+cursor-color = #ffaa00
+cursor-text = #0a0805
+
+selection-background = #5c451c
+selection-foreground = #ffcc66
+
+# Normal colors - amber-orange tones
+palette = 0=#ffaa00
+palette = 1=#e69900
+palette = 2=#cc8800
+palette = 3=#b37700
+palette = 4=#996600
+palette = 5=#805500
+palette = 6=#664400
+palette = 7=#0a0805
+
+# Bright colors - vibrant amber-oranges to deep blacks
+palette = 8=#ffcc66
+palette = 9=#ffdd88
+palette = 10=#ffeeaa
+palette = 11=#fff4cc
+palette = 12=#665533
+palette = 13=#4d4026
+palette = 14=#332b1a
+palette = 15=#000000

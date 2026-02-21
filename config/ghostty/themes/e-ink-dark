@@ -1,0 +1,33 @@
+# e-ink-dark Theme
+# Dark version of e-ink theme
+# True monochrome greyscale for e-ink display simulation
+# High contrast version for maximum readability on dark backgrounds
+
+background = #0d0d0d
+foreground = #f5f2ed
+
+cursor-color = #f5f2ed
+cursor-text = #0d0d0d
+
+selection-background = #404040
+selection-foreground = #ffffff
+
+# Normal colors - high contrast greys, fewer mid-tones
+palette = 0=#f5f2ed
+palette = 1=#e0dcd4
+palette = 2=#c0c0c0
+palette = 3=#a0a0a0
+palette = 4=#808080
+palette = 5=#606060
+palette = 6=#404040
+palette = 7=#0d0d0d
+
+# Bright colors - extreme ends for maximum contrast
+palette = 8=#ffffff
+palette = 9=#f0f0f0
+palette = 10=#e8e8e8
+palette = 11=#d0d0d0
+palette = 12=#505050
+palette = 13=#303030
+palette = 14=#1a1a1a
+palette = 15=#000000

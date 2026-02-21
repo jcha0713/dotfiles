@@ -1,0 +1,32 @@
+# e-ink Theme
+# True monochrome greyscale for e-ink display simulation
+# Optimized for better contrast and readability
+
+background = #e0dcd4
+foreground = #1a1a1a
+
+cursor-color = #1a1a1a
+cursor-text = #e0dcd4
+
+selection-background = #d9d5cd
+selection-foreground = #1a1a1a
+
+# Normal colors - greyscale with better contrast
+palette = 0=#1a1a1a
+palette = 1=#404040
+palette = 2=#595959
+palette = 3=#808080
+palette = 4=#999999
+palette = 5=#b3b3b3
+palette = 6=#cccccc
+palette = 7=#e0dcd4
+
+# Bright colors - lighter greyscale
+palette = 8=#333333
+palette = 9=#666666
+palette = 10=#808080
+palette = 11=#a6a6a6
+palette = 12=#bfbfbf
+palette = 13=#d9d5cd
+palette = 14=#f0ece4
+palette = 15=#ffffff
