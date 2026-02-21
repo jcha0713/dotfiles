@@ -59,6 +59,7 @@
     # Clipboard management for Wayland
     cliphist  # Clipboard history with fzf integration
     unzip
+    trash-cli
   ];
 
   # Clipboard history service - saves clipboard to history
