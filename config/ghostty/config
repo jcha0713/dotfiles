@@ -1,8 +1,6 @@
 # Ghostty configuration
 # https://ghostty.org/docs/config
 
-custom-shader = ./ghostty-shaders/tft.glsl
-
 # Clipboard
 clipboard-read = allow
 clipboard-write = allow
