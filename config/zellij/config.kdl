@@ -285,10 +285,135 @@ web_client {
 // 
 simplified_ui true
  
+// Theme definition using e-ink-dark palette from lib/themes/palettes.nix
+// Colors: bg=#0d0d0d fg=#f5f2ed grays=#404040 #606060 #808080 #a0a0a0 #c0c0c0 #e0dcd4
+themes {
+    e-ink-dark {
+        // Text in UI (eg. "Ctrl" indicators in status bar)
+        text_unselected {
+            base 160 160 160
+            background 13 13 13
+            emphasis_0 192 192 192
+            emphasis_1 224 220 212
+            emphasis_2 245 242 237
+            emphasis_3 128 128 128
+        }
+        text_selected {
+            base 245 242 237
+            background 26 26 26
+            emphasis_0 192 192 192
+            emphasis_1 224 220 212
+            emphasis_2 245 242 237
+            emphasis_3 128 128 128
+        }
+        // Tabs and mode indicators (ribbons)
+        ribbon_unselected {
+            base 128 128 128
+            background 26 26 26
+            emphasis_0 160 160 160
+            emphasis_1 192 192 192
+            emphasis_2 96 96 96
+            emphasis_3 64 64 64
+        }
+        ribbon_selected {
+            base 13 13 13
+            background 128 128 128
+            emphasis_0 245 242 237
+            emphasis_1 224 220 212
+            emphasis_2 192 192 192
+            emphasis_3 160 160 160
+        }
+        // Table UI (session manager, etc.)
+        table_title {
+            base 192 192 192
+            background 13 13 13
+            emphasis_0 245 242 237
+            emphasis_1 224 220 212
+            emphasis_2 128 128 128
+            emphasis_3 160 160 160
+        }
+        table_cell_unselected {
+            base 160 160 160
+            background 13 13 13
+            emphasis_0 128 128 128
+            emphasis_1 192 192 192
+            emphasis_2 96 96 96
+            emphasis_3 64 64 64
+        }
+        table_cell_selected {
+            base 245 242 237
+            background 26 26 26
+            emphasis_0 224 220 212
+            emphasis_1 192 192 192
+            emphasis_2 160 160 160
+            emphasis_3 128 128 128
+        }
+        // Lists
+        list_unselected {
+            base 160 160 160
+            background 13 13 13
+            emphasis_0 128 128 128
+            emphasis_1 192 192 192
+            emphasis_2 96 96 96
+            emphasis_3 64 64 64
+        }
+        list_selected {
+            base 245 242 237
+            background 26 26 26
+            emphasis_0 224 220 212
+            emphasis_1 192 192 192
+            emphasis_2 160 160 160
+            emphasis_3 128 128 128
+        }
+        // Pane frames
+        frame_unselected {
+            base 64 64 64
+            background 13 13 13
+            emphasis_0 96 96 96
+            emphasis_1 128 128 128
+            emphasis_2 64 64 64
+            emphasis_3 64 64 64
+        }
+        frame_selected {
+            base 160 160 160
+            background 13 13 13
+            emphasis_0 192 192 192
+            emphasis_1 224 220 212
+            emphasis_2 128 128 128
+            emphasis_3 96 96 96
+        }
+        frame_highlight {
+            base 245 242 237
+            background 13 13 13
+            emphasis_0 224 220 212
+            emphasis_1 192 192 192
+            emphasis_2 160 160 160
+            emphasis_3 128 128 128
+        }
+        // Exit codes
+        exit_code_success {
+            base 160 160 160
+            background 13 13 13
+            emphasis_0 128 128 128
+            emphasis_1 128 128 128
+            emphasis_2 128 128 128
+            emphasis_3 128 128 128
+        }
+        exit_code_error {
+            base 128 128 128
+            background 13 13 13
+            emphasis_0 96 96 96
+            emphasis_1 96 96 96
+            emphasis_2 96 96 96
+            emphasis_3 96 96 96
+        }
+    }
+}
+ 
 // Choose the theme that is specified in the themes section.
 // Default: default
 // 
-// theme "dracula"
+theme "e-ink-dark"
  
 // Choose the base input mode of zellij.
 // Default: normal
