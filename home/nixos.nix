@@ -129,11 +129,7 @@ in
     cliphist  # Clipboard history with fzf integration
     unzip
     trash-cli
-    # Theme picker for Ghostty
-    (import ../scripts/ghostty-theme-picker.nix { inherit pkgs; })
-    # System-wide theme picker (terminal)
-    (import ../scripts/theme-picker.nix { inherit pkgs; })
-    # System-wide theme picker (fuzzel GUI)
+    # Theme picker (fuzzel GUI)
     (import ../scripts/theme-picker-fuzzel.nix { inherit pkgs; })
   ];
 

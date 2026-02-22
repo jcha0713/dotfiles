@@ -1,4 +1,0 @@
-* { font-family: monospace; font-size: 13px; }
-window#waybar { background-color: #1e1e2e; color: #cdd6f4; }
-#workspaces button { padding: 0 10px; }
-#workspaces button.focused { background-color: #cba6f7; color: #1e1e2e; }

@@ -2,7 +2,7 @@
 
 pkgs.writeShellApplication {
   name = "theme-picker-fuzzel";
-  runtimeInputs = with pkgs; [ fuzzel jq glib gnused systemd libnotify ];
+  runtimeInputs = with pkgs; [ fuzzel jq glib gnused systemd ];
   text = ''
     DOTFILES_DIR="$HOME/dotfiles"
     NIXOS_CONFIG="$DOTFILES_DIR/home/nixos.nix"
@@ -12,7 +12,7 @@ pkgs.writeShellApplication {
 
     # Check if dotfiles repo exists
     if [ ! -d "$DOTFILES_DIR" ]; then
-      notify-send "Theme Picker" "Error: Dotfiles directory not found" --urgency=critical
+      notify-send "Theme Picker" "Error: Dotfiles directory not found"
       exit 1
     fi
 
@@ -23,7 +23,7 @@ pkgs.writeShellApplication {
              sort -u)
 
     if [ -z "$themes" ]; then
-      notify-send "Theme Picker" "Error: No themes found" --urgency=critical
+      notify-send "Theme Picker" "Error: No themes found"
       exit 1
     fi
 
@@ -76,32 +76,7 @@ pkgs.writeShellApplication {
       jq ".theme = \"$COLOR_SCHEME\"" "$PI_SETTINGS" > "$PI_SETTINGS.tmp" && mv "$PI_SETTINGS.tmp" "$PI_SETTINGS"
     fi
 
-    # Run switch to apply Nix configuration (requires terminal for sudo password)
-    # Using a terminal to run switch so sudo password can be entered
-    notify-send "Theme Picker" "Building with 'switch'..." --urgency=low
-    
-    # Open a terminal to run the rebuild (so user can enter sudo password)
-    # After switch completes, services will be restarted
-    cat > /tmp/theme-switch.sh << 'SCRIPT'
-      #!/bin/bash
-      cd ~/dotfiles && sudo nixos-rebuild switch --flake .#think 2>&1
-      
-      if [ $? -eq 0 ]; then
-        # Restart services
-        systemctl --user restart waybar 2>/dev/null
-        systemctl --user restart mako 2>/dev/null
-        notify-send "Theme Picker" "✓ '$selected' applied! Reload Ghostty."
-      else
-        notify-send "Theme Picker" "✗ Switch failed. Check terminal." --urgency=critical
-      fi
-      
-      echo ""
-      echo "Press Enter to close..."
-      read
-    SCRIPT
-    chmod +x /tmp/theme-switch.sh
-    
-    # Run in ghostty
-    ghostty -e /tmp/theme-switch.sh
+    # Notify user to run switch
+    notify-send "Theme Picker" "'$selected' selected. Run 'switch' to apply changes."
   '';
 }
