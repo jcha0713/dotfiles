@@ -48,7 +48,6 @@
       nap
       nb
       pipx
-      rustup
       sqlite
       tailscale
       wakeonlan

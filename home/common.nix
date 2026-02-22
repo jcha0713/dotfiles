@@ -80,10 +80,10 @@ in
     gh
     curl
     ncurses
-    zellij # Terminal multiplexer for SSH/multiplexing
-    nixfmt-rfc-style
+    zellij
     go
-    cargo
+    rustup
+    nixfmt
   ];
 
   # Directory jumper
