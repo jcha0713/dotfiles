@@ -51,7 +51,7 @@ api.nvim_set_var("lsp_formatters", {
   "dprint",
   "prettier",
   "prettierd",
-  "stylua",
+  -- "stylua",
 })
 
 api.nvim_set_var("extras", {

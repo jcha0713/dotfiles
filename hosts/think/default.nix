@@ -256,6 +256,7 @@
       gcc # C compiler for tree-sitter
       nodejs_22 # Node.js 22.x LTS (using fnm on Mac Mini)
       lua-language-server # LSP for Lua (Mason version doesn't work on NixOS)
+      stylua
       sqlite
       gnumake
     ])
