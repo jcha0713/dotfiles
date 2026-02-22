@@ -82,6 +82,8 @@ in
     ncurses
     zellij # Terminal multiplexer for SSH/multiplexing
     nixfmt-rfc-style
+    go
+    cargo
   ];
 
   # Directory jumper
