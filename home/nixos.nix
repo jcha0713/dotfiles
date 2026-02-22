@@ -5,7 +5,7 @@ let
   palettes = import ../lib/themes/palettes.nix;
   
   # Default theme - change this to switch themes, or use the theme-picker script
-  activeThemeName = "e-ink-night";  # Options: e-ink, e-ink-dark, e-ink-sepia, e-ink-night
+  activeThemeName = "e-ink-sepia";  # Options: e-ink, e-ink-dark, e-ink-sepia, e-ink-night
   activeTheme = palettes.${activeThemeName};
   c = activeTheme.colors;
 in
@@ -131,8 +131,10 @@ in
     trash-cli
     # Theme picker for Ghostty
     (import ../scripts/ghostty-theme-picker.nix { inherit pkgs; })
-    # System-wide theme picker
+    # System-wide theme picker (terminal)
     (import ../scripts/theme-picker.nix { inherit pkgs; })
+    # System-wide theme picker (fuzzel GUI)
+    (import ../scripts/theme-picker-fuzzel.nix { inherit pkgs; })
   ];
 
   # Clipboard history service - saves clipboard to history
