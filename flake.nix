@@ -19,7 +19,14 @@
     };
   };
 
-  outputs = inputs@{ self, nixpkgs, home-manager, nix-darwin, ... }:
+  outputs =
+    inputs@{
+      self,
+      nixpkgs,
+      home-manager,
+      nix-darwin,
+      ...
+    }:
     let
       # Shared special args
       sharedSpecialArgs = { inherit inputs; };
@@ -47,13 +54,17 @@
       # Darwin configurations
       darwinConfigurations.mini = nix-darwin.lib.darwinSystem {
         system = "aarch64-darwin";
-        specialArgs = sharedSpecialArgs // { username = "jcha0713"; system = "aarch64-darwin"; };
+        specialArgs = sharedSpecialArgs // {
+          username = "jcha0713";
+          system = "aarch64-darwin";
+        };
         modules = [
           ./hosts/mini
           home-manager.darwinModules.home-manager
           {
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
+            home-manager.backupFileExtension = "backup";
             home-manager.users.jcha0713 = ./home/darwin.nix;
             home-manager.extraSpecialArgs = {
               dotfilesPath = "/Users/jcha0713/dotfiles";

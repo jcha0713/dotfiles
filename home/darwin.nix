@@ -102,6 +102,14 @@
     };
   };
 
+  home.file = {
+    ".pi/agent/keybindings.json".source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/dotfiles/config/pi/agent/keybindings.json";
+    ".pi/agent/settings.json".source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/dotfiles/config/pi/agent/settings.json";
+    ".pi/agent/skills/commit".source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/dotfiles/config/pi/agent/skills/commit";
+    ".pi/agent/skills/extending-pi".source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/dotfiles/config/pi/agent/skills/extending-pi";
+    ".pi/agent/skills/github".source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/dotfiles/config/pi/agent/skills/github";
+  };
+
   imports = [
     ./common.nix
     ./zsh.nix

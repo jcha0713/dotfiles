@@ -30,6 +30,12 @@ in
 
   # Symlink dotfiles from the repo
   home.file = {
+    ".pi/agent/keybindings.json".source = config.lib.file.mkOutOfStoreSymlink "${dotfilesPath}/config/pi/agent/keybindings.json";
+    ".pi/agent/settings.json".source = config.lib.file.mkOutOfStoreSymlink "${dotfilesPath}/config/pi/agent/settings.json";
+    ".pi/agent/skills/commit".source = config.lib.file.mkOutOfStoreSymlink "${dotfilesPath}/config/pi/agent/skills/commit";
+    ".pi/agent/skills/extending-pi".source = config.lib.file.mkOutOfStoreSymlink "${dotfilesPath}/config/pi/agent/skills/extending-pi";
+    ".pi/agent/skills/github".source = config.lib.file.mkOutOfStoreSymlink "${dotfilesPath}/config/pi/agent/skills/github";
+
     # NixOS-specific
     ".config/niri/config.kdl".source = 
       config.lib.file.mkOutOfStoreSymlink "${dotfilesPath}/config/niri/config.kdl";
