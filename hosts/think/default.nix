@@ -2,13 +2,19 @@
 # your system. Help is available in the configuration.nix(5) man page, on
 # https://search.nixos.org/options and in the NixOS manual (`nixos-help`).
 
-{ config, lib, pkgs, inputs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  inputs,
+  ...
+}:
 
 {
-  imports =
-    [ # Include the results of the hardware scan.
-      ./hardware-configuration.nix
-    ];
+  imports = [
+    # Include the results of the hardware scan.
+    ./hardware-configuration.nix
+  ];
 
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
@@ -26,15 +32,25 @@
   # FIX: Proper suspend/resume handling with Tailscale awareness
   systemd.services.fix-network-after-resume = {
     description = "Fix network after resume from suspend";
-    after = [ "suspend.target" "hibernate.target" "hybrid-sleep.target" "systemd-suspend.service" "systemd-hibernate.service" ];
-    wantedBy = [ "suspend.target" "hibernate.target" "hybrid-sleep.target" ];
+    after = [
+      "suspend.target"
+      "hibernate.target"
+      "hybrid-sleep.target"
+      "systemd-suspend.service"
+      "systemd-hibernate.service"
+    ];
+    wantedBy = [
+      "suspend.target"
+      "hibernate.target"
+      "hybrid-sleep.target"
+    ];
     serviceConfig = {
       Type = "oneshot";
       ExecStart = "${pkgs.writeShellScript "fix-network" ''
         set -e
         LOGFILE="/home/joohoon/suspend-debug.log"
         echo "$(date '+%Y-%m-%d %H:%M:%S') === POST-RESUME FIX ===" >> "$LOGFILE"
-        
+
         # Wait for Wi-Fi to reconnect
         for i in {1..30}; do
           if ${pkgs.iw}/bin/iw dev wlp4s0 link 2>/dev/null | grep -q "Connected"; then
@@ -43,7 +59,7 @@
           fi
           sleep 1
         done
-        
+
         # Check if we have internet
         if ! ${pkgs.iputils}/bin/ping -c 1 -W 3 8.8.8.8 &>/dev/null; then
           echo "$(date '+%Y-%m-%d %H:%M:%S') No internet, restarting NetworkManager..." >> "$LOGFILE"
@@ -52,7 +68,7 @@
         else
           echo "$(date '+%Y-%m-%d %H:%M:%S') Internet OK" >> "$LOGFILE"
         fi
-        
+
         # Restart Tailscale to fix its routing
         echo "$(date '+%Y-%m-%d %H:%M:%S') Restarting Tailscale..." >> "$LOGFILE"
         ${pkgs.systemd}/bin/systemctl restart tailscaled
@@ -63,17 +79,14 @@
   networking.hostName = "jcha-think"; # Define your hostname.
   # Pick only one of the below networking options.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
-  networking.networkmanager.enable = true;  # Easiest to use and most distros use this by default.
-
+  networking.networkmanager.enable = true; # Easiest to use and most distros use this by default.
 
   # Set your time zone.
   time.timeZone = "Asia/Seoul";
 
-
   # Configure network proxy if necessary
   # networking.proxy.default = "http://user:password@proxy:port/";
   # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
-
 
   # Select internationalisation properties.
   i18n.defaultLocale = "en_US.UTF-8";
@@ -88,7 +101,6 @@
     LC_TELEPHONE = "ko_KR.UTF-8";
     LC_TIME = "ko_KR.UTF-8";
   };
-
 
   # Kime - Korean IME (replaces ibus)
   i18n.inputMethod = {
@@ -174,8 +186,6 @@
     after = [ "graphical-session.target" ];
   };
 
-
-
   # Enable the GNOME Desktop Environment.
   services.xserver.displayManager.gdm.enable = true;
   services.xserver.desktopManager.gnome.enable = true;
@@ -190,7 +200,6 @@
   # Enable CUPS to print documents.
   services.printing.enable = true;
 
-
   # Enable sound.
   # services.pulseaudio.enable = true;
   # OR
@@ -201,65 +210,59 @@
     pulse.enable = true;
   };
 
-
   # Enable touchpad support (enabled default in most desktopManager).
   # services.libinput.enable = true;
-
 
   # Define a user account. Don't forget to set a password with 'passwd'.
   users.users.joohoon = {
     isNormalUser = true;
     description = "joohoon";
-    extraGroups = [ "networkmanager" "wheel" "video" ]; # Enable 'sudo' for the user.
+    extraGroups = [
+      "networkmanager"
+      "wheel"
+      "video"
+    ]; # Enable 'sudo' for the user.
     shell = pkgs.zsh;
-  #   packages = with pkgs; [
-  #     tree
-  #   ];
+    #   packages = with pkgs; [
+    #     tree
+    #   ];
   };
-
 
   services.displayManager.autoLogin.enable = lib.mkForce false;
   services.displayManager.autoLogin.user = "joohoon";
-
 
   # Workaround for GNOME autologin
   systemd.services."getty@tty1".enable = false;
   systemd.services."autovt@tty1".enable = false;
 
-
   programs.firefox.enable = true;
-
 
   nixpkgs.config.allowUnfree = true;
 
-
   # List packages installed in system profile.
   # You can use https://search.nixos.org/ to find more packages (and options).
-  environment.systemPackages = (with pkgs; [
-    vim
-    neovim
-    # tree, gh moved to home/common.nix
-    # xclip
-    wl-clipboard
-    wezterm
-    ghostty
-    tailscale
-    discord
-    fuzzel
-    waybar
-    git
-    gcc  # C compiler for tree-sitter
-    nodejs_22  # Node.js 22.x LTS (using fnm on Mac Mini)
-    lua-language-server  # LSP for Lua (Mason version doesn't work on NixOS)
-    go
-    sqlite
-    gnumake
-  ])
-  ++
-  (with inputs.llm-agents.packages.${pkgs.system}; [
-    pi
-  ]);
-
+  environment.systemPackages =
+    (with pkgs; [
+      vim
+      neovim
+      wl-clipboard
+      wezterm
+      ghostty
+      tailscale
+      discord
+      fuzzel
+      waybar
+      git
+      gcc # C compiler for tree-sitter
+      nodejs_22 # Node.js 22.x LTS (using fnm on Mac Mini)
+      lua-language-server # LSP for Lua (Mason version doesn't work on NixOS)
+      go
+      sqlite
+      gnumake
+    ])
+    ++ (with inputs.llm-agents.packages.${pkgs.system}; [
+      pi
+    ]);
 
   fonts.packages = with pkgs; [
     noto-fonts
@@ -268,12 +271,10 @@
     monaspace
   ];
 
-
   hardware.graphics = {
     enable = true;
     enable32Bit = true;
   };
-
 
   services.tailscale.enable = true;
 

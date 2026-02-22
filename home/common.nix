@@ -80,7 +80,8 @@ in
     gh
     curl
     ncurses
-    zellij  # Terminal multiplexer for SSH/multiplexing
+    zellij # Terminal multiplexer for SSH/multiplexing
+    nixfmt-rfc-style
   ];
 
   # Directory jumper
@@ -101,7 +102,11 @@ in
     settings = {
       mgr = {
         sort_dir_first = true;
-        ratio = [ 1 2 5 ];
+        ratio = [
+          1
+          2
+          5
+        ];
       };
       preview = {
         wrap = "yes";

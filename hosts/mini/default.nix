@@ -24,7 +24,6 @@ in
   # $ nix-env -qaP | grep wget
   environment.systemPackages = [
     pkgs.home-manager
-    pkgs.nixfmt-rfc-style
     pkgs.neovim
     pkgs.aerospace
     pkgs.docker
