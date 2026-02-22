@@ -5,7 +5,7 @@ let
   palettes = import ../lib/themes/palettes.nix;
   
   # Default theme - change this to switch themes, or use the theme-picker script
-  activeThemeName = "e-ink-sepia";  # Options: e-ink, e-ink-dark, e-ink-sepia, e-ink-night
+  activeThemeName = "e-ink-dark";  # Options: e-ink, e-ink-dark, e-ink-sepia, e-ink-night
   activeTheme = palettes.${activeThemeName};
   c = activeTheme.colors;
 in
@@ -38,55 +38,15 @@ in
     ".config/niri/config.kdl".source = 
       config.lib.file.mkOutOfStoreSymlink "${dotfilesPath}/config/niri/config.kdl";
     
-    # Waybar - config is symlinked, style.css is generated from theme
+    # Waybar - config and style symlinked from dotfiles
     ".config/waybar/config".source = 
       config.lib.file.mkOutOfStoreSymlink "${dotfilesPath}/config/waybar/config";
-    
-    # Waybar style generated from active theme
-    ".config/waybar/style.css".text = ''
-      /* Generated from ${activeThemeName} theme */
-      * { 
-        font-family: monospace; 
-        font-size: 13px; 
-      }
-      
-      window#waybar { 
-        background-color: ${c.bg}; 
-        color: ${c.fg}; 
-      }
-      
-      #workspaces button { 
-        padding: 0 10px; 
-        color: ${c.fg};
-      }
-      
-      #workspaces button.focused { 
-        background-color: ${c.blue}; 
-        color: ${c.bg}; 
-      }
-      
-      #workspaces button.urgent {
-        background-color: ${c.red};
-        color: ${c.bg};
-      }
-      
-      #clock, #battery, #cpu, #memory, #disk, #temperature,
-      #backlight, #network, #pulseaudio, #tray {
-        padding: 0 10px;
-        margin: 0 4px;
-        color: ${c.fg};
-      }
-      
-      #battery.charging { color: ${c.green}; }
-      #battery.critical:not(.charging) { color: ${c.red}; }
-      #pulseaudio.muted { color: ${c.bright-black}; }
-      
-      tooltip {
-        background: ${c.selection-bg};
-        color: ${c.selection-fg};
-        border: 1px solid ${c.bright-black};
-      }
-    '';
+    ".config/waybar/style.css".source = 
+      config.lib.file.mkOutOfStoreSymlink "${dotfilesPath}/config/waybar/style.css";
+    ".config/waybar/modules.jsonc".source = 
+      config.lib.file.mkOutOfStoreSymlink "${dotfilesPath}/config/waybar/modules.jsonc";
+    ".config/waybar/modules".source = 
+      config.lib.file.mkOutOfStoreSymlink "${dotfilesPath}/config/waybar/modules";
     
     # Swaylock - generate config with theme colors
     ".config/swaylock/config".text = ''

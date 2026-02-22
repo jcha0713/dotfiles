@@ -1,19 +1,30 @@
 {
   "layer": "top",
-  "position": "top",
-  "height": 30,
-  "modules-left": ["niri/workspaces", "niri/window"],
-  "modules-center": ["clock"],
-  "modules-right": ["network", "battery", "pulseaudio", "tray"],
-  "niri/workspaces": { "format": "{name}" },
-  "clock": { "format": "{:%Y-%m-%d %H:%M}" },
-  "battery": {
-    "format": "{capacity}% {icon}",
-    "format-charging": "{capacity}% 󱐋",
-    "format-icons": ["󰁺", "󰁻", "󰁼", "󰁽", "󰁾", "󰁿", "󰂀", "󰂁", "󰂂", "󰁹"],
-    "tooltip-format": "{timeTo}"
-  },
-  "network": { "format-wifi": "{essid}" },
-  "pulseaudio": { "format": "{volume}%" },
-  "tray": { "spacing": 10 }
+  "position": "bottom",
+  "margin-top": 0,
+  "margin-bottom": 0,
+  "margin-left": 0,
+  "margin-right": 0,
+  "spacing": 0,
+  "fixed_center": false,
+  "start_hidden": true,
+  "include": [
+    "~/.config/waybar/modules.jsonc"
+  ],
+  "modules-left": [
+    "niri/workspaces",
+    "custom/media"
+  ],
+  "modules-center": [
+    "niri/window"
+  ],
+  "modules-right": [
+    "custom/updates",
+    "backlight",
+    "pulseaudio",
+    "battery",
+    "network",
+    "power-profiles-daemon",
+    "clock"
+  ]
 }
