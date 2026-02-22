@@ -6,10 +6,8 @@
   "theme": "dark",
   "hideThinkingBlock": false,
   "packages": [
-    "npm:pi-messenger",
-    "npm:pi-interactive-shell",
     "extensions/pi-agent-extensions/slow-mode",
-    "npm:pi-extmgr",
+    "npm-pi-extmgr",
     "npm:pi-web-access",
     {
       "source": "git:github.com/aliou/pi-extensions",
