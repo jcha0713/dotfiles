@@ -125,6 +125,12 @@
 
   programs.niri.enable = true;
   programs.xwayland.enable = true;
+
+  # Required for Niri XWayland support
+  services.xserver.displayManager.sessionCommands = ''
+    export PATH="${pkgs.xwayland-satellite}/bin:$PATH"
+  '';
+
   programs.zsh.enable = true;
 
   # Idle management: lock screen and turn off monitors
@@ -246,10 +252,18 @@
       vim
       neovim
       wl-clipboard
+      xwayland-satellite
       wezterm
       ghostty
       tailscale
-      discord
+      (symlinkJoin {
+        name = "discord";
+        paths = [ discord ];
+        buildInputs = [ pkgs.makeWrapper ];
+        postBuild = ''
+          wrapProgram $out/bin/Discord --add-flags "--disable-gpu"
+        '';
+      })
       fuzzel
       waybar
       git
