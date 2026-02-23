@@ -61,6 +61,20 @@ input {
         // middle-emulation
     }
 
+    trackball {
+        // off
+        // natural-scroll
+        // Increase pointer speed (range: -1.0 to 1.0, default: 0.0)
+        accel-speed 0.5
+        // Use "flat" for 1:1 tracking without acceleration
+        // accel-profile "flat"
+        // scroll-method "on-button-down"
+        // scroll-button 273
+        // scroll-button-lock
+        // left-handed
+        // middle-emulation
+    }
+
     // Uncomment this to make the mouse warp to the center of newly focused windows.
     // warp-mouse-to-focus
 
