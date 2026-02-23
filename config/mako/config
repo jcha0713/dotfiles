@@ -1,0 +1,32 @@
+# Mako notification daemon configuration
+# https://github.com/emersion/mako
+
+# Font
+font=ComicCode Nerd Font 11
+
+# Style
+default-timeout=5000
+background-color=#1e1e2e
+text-color=#cdd6f4
+border-color=#89b4fa
+border-size=2
+border-radius=8
+padding=12
+margin=10
+
+# Icons
+icons=1
+icon-path=/usr/share/icons/hicolor:/usr/share/icons/Adwaita
+max-icon-size=48
+
+# Behavior
+on-button-left=dismiss
+on-button-middle=none
+on-button-right=dismiss-all
+ignore-timeout=0
+
+# History
+max-history=20
+
+# Anchor position (top-right)
+anchor=top-right

@@ -1,11 +1,16 @@
-{ config, pkgs, dotfilesPath, ... }:
+{
+  config,
+  pkgs,
+  dotfilesPath,
+  ...
+}:
 
 let
   # Import theme palettes
   palettes = import ../lib/themes/palettes.nix;
-  
+
   # Default theme - change this to switch themes, or use the theme-picker script
-  activeThemeName = "e-ink-dark";  # Options: e-ink, e-ink-dark, e-ink-sepia, e-ink-night
+  activeThemeName = "e-ink-dark"; # Options: e-ink, e-ink-dark, e-ink-sepia, e-ink-night
   activeTheme = palettes.${activeThemeName};
   c = activeTheme.colors;
 in
@@ -30,24 +35,27 @@ in
 
   # Symlink dotfiles from the repo
   home.file = {
-    ".pi/agent/keybindings.json".source = config.lib.file.mkOutOfStoreSymlink "${dotfilesPath}/config/pi/agent/keybindings.json";
-    ".pi/agent/settings.json".source = config.lib.file.mkOutOfStoreSymlink "${dotfilesPath}/config/pi/agent/settings.json";
-    ".pi/agent/skills".source = config.lib.file.mkOutOfStoreSymlink "${dotfilesPath}/config/pi/agent/skills";
+    ".pi/agent/keybindings.json".source =
+      config.lib.file.mkOutOfStoreSymlink "${dotfilesPath}/config/pi/agent/keybindings.json";
+    ".pi/agent/settings.json".source =
+      config.lib.file.mkOutOfStoreSymlink "${dotfilesPath}/config/pi/agent/settings.json";
+    ".pi/agent/skills".source =
+      config.lib.file.mkOutOfStoreSymlink "${dotfilesPath}/config/pi/agent/skills";
 
     # NixOS-specific
-    ".config/niri/config.kdl".source = 
+    ".config/niri/config.kdl".source =
       config.lib.file.mkOutOfStoreSymlink "${dotfilesPath}/config/niri/config.kdl";
-    
+
     # Waybar - config and style symlinked from dotfiles
-    ".config/waybar/config".source = 
+    ".config/waybar/config".source =
       config.lib.file.mkOutOfStoreSymlink "${dotfilesPath}/config/waybar/config";
-    ".config/waybar/style.css".source = 
+    ".config/waybar/style.css".source =
       config.lib.file.mkOutOfStoreSymlink "${dotfilesPath}/config/waybar/style.css";
-    ".config/waybar/modules.jsonc".source = 
+    ".config/waybar/modules.jsonc".source =
       config.lib.file.mkOutOfStoreSymlink "${dotfilesPath}/config/waybar/modules.jsonc";
-    ".config/waybar/modules".source = 
+    ".config/waybar/modules".source =
       config.lib.file.mkOutOfStoreSymlink "${dotfilesPath}/config/waybar/modules";
-    
+
     # Swaylock - generate config with theme colors
     ".config/swaylock/config".text = ''
       # Generated from ${activeThemeName} theme
@@ -59,26 +67,28 @@ in
       inside-color=${c.bg}
       separator-color=${c.bright-black}
     '';
-    
+
     # Shared with Mac Mini
-    ".config/nvim".source = 
-      config.lib.file.mkOutOfStoreSymlink "${dotfilesPath}/config/nvim";
-    ".config/wezterm".source = 
-      config.lib.file.mkOutOfStoreSymlink "${dotfilesPath}/config/wezterm";
-    
+    ".config/nvim".source = config.lib.file.mkOutOfStoreSymlink "${dotfilesPath}/config/nvim";
+    ".config/wezterm".source = config.lib.file.mkOutOfStoreSymlink "${dotfilesPath}/config/wezterm";
+
     # Kime Korean IME config
     ".config/kime/config.yaml".source =
       config.lib.file.mkOutOfStoreSymlink "${dotfilesPath}/config/kime/config.yaml";
-    
+
     # Ghostty config and themes
     ".config/ghostty/config".source =
       config.lib.file.mkOutOfStoreSymlink "${dotfilesPath}/config/ghostty/config";
     ".config/ghostty/themes".source =
       config.lib.file.mkOutOfStoreSymlink "${dotfilesPath}/config/ghostty/themes";
-    
+
     # Zellij config
     ".config/zellij/config.kdl".source =
       config.lib.file.mkOutOfStoreSymlink "${dotfilesPath}/config/zellij/config.kdl";
+
+    # Mako notification daemon config
+    ".config/mako/config".source =
+      config.lib.file.mkOutOfStoreSymlink "${dotfilesPath}/config/mako/config";
   };
 
   # User packages (NixOS-specific, mostly Wayland related)
@@ -90,9 +100,10 @@ in
     libnotify
     swaybg
     # Clipboard management for Wayland
-    cliphist  # Clipboard history with fzf integration
+    cliphist # Clipboard history with fzf integration
     unzip
     trash-cli
+    fastfetch
     # Theme picker (fuzzel GUI)
     (import ../scripts/theme-picker-fuzzel.nix { inherit pkgs; })
   ];
