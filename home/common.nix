@@ -84,6 +84,7 @@ in
     go
     rustup
     nixfmt
+    jq
   ];
 
   # Directory jumper
