@@ -1,0 +1,103 @@
+---
+name: dotfiles
+description: Navigate and modify Nix-based dotfiles with flakes and home-manager. Use when working with nix configs, finding where settings live, or understanding the repository structure.
+---
+
+# Dotfiles Navigation
+
+Unified NixOS + macOS configuration using Nix flakes and Home Manager.
+
+## Entry Points
+
+| File | Purpose |
+|------|---------|
+| `flake.nix` | System definitions (`think` = NixOS, `mini` = Darwin) |
+| `home/common.nix` | Shared packages and programs (git, delta, zoxide, lazygit, yazi) |
+| `home/nixos.nix` | ThinkPad-specific (Wayland, niri, waybar, themes) |
+| `home/darwin.nix` | Mac Mini-specific (aerospace, karabiner, hammerspoon, espanso) |
+| `hosts/think/default.nix` | NixOS system config |
+| `hosts/mini/default.nix` | Darwin system config |
+
+## Directory Conventions
+
+**Configs are symlinked from `config/` - edit there, NOT in `~/.config/`:**
+- Shared: `nvim/`, `zellij/`, `wezterm/`, `zsh/`
+- NixOS only: `niri/`, `waybar/`, `ghostty/`, `mako/`, `swaylock/`
+- macOS only: `aerospace/`, `karabiner/`, `hammerspoon/`, `espanso/`
+
+## Finding Things
+
+**To find where a config lives:**
+1. Check `home/common.nix` for shared tools
+2. Check `home/nixos.nix` or `home/darwin.nix` for platform-specific
+3. Check `config/<tool>/` for raw configs
+4. Search: `rg "<tool>" home/ config/ --type nix`
+
+**To find where packages are defined:**
+- Shared: `home/common.nix` → `home.packages`
+- NixOS: `home/nixos.nix` → `home.packages`
+- macOS: `home/darwin.nix` → `home.packages`
+
+## Key Patterns
+
+### Symlinking (used throughout)
+```nix
+home.file.".config/<tool>".source = 
+  config.lib.file.mkOutOfStoreSymlink "${dotfilesPath}/config/<tool>";
+```
+
+### Theme System
+- Defined in: `lib/themes/palettes.nix`
+- Active theme set in: `home/nixos.nix` → `activeThemeName`
+- Used by: Ghostty, swaylock (generated config)
+
+### Platform Detection
+```nix
+{ pkgs, ... }:
+let isDarwin = pkgs.stdenv.isDarwin;
+in { }
+```
+
+## Commands
+
+```bash
+# NixOS
+sudo nixos-rebuild switch --flake .#think
+
+# macOS
+darwin-rebuild switch --flake .#mini
+
+# Update flake.lock
+nix flake update
+```
+
+## When Unsure
+
+**Search the codebase rather than trusting this guide:**
+```bash
+# Find where a tool is configured
+rg "programs\.lazygit|lazygit" home/
+
+# Find package definitions
+rg "pkgs\.lazygit" home/
+
+# Find config symlinks
+rg "config/nvim" home/
+```
+
+## References
+
+- `references/nix-patterns.md` - Reusable code patterns
+- `references/platform-notes.md` - Platform-specific quirks
+- `references/structure.md` - Auto-generated full structure (see Maintenance)
+
+## Maintenance
+
+This skill is intentionally minimal. Verify with:
+- `scripts/verify-structure.sh` - Checks if documented paths exist
+- `scripts/generate-structure.sh` - Updates `references/structure.md`
+
+**If this skill seems out of date:**
+1. Trust the actual files over this documentation
+2. Use `rg` to find current locations
+3. Update the skill via `scripts/generate-structure.sh`
