@@ -1,0 +1,16 @@
+# Lua
+lua/.luarc.json
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Editor
+*.swp
+*.swo
+*~
+.vscode/
+.idea/
+
+# Test dependencies
+deps/

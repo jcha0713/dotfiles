@@ -1,0 +1,440 @@
+#+TITLE: pi-agent-extensions
+#+AUTHOR: rytswd
+#+OPTIONS: toc:3 num:nil ^:nil
+
+#+html:<div align="center">
+#+html:<p>A collection of extensions for <a href="https://github.com/mariozechner/pi">pi</a> coding agent</p>
+#+html:<p>
+#+html:<img src="https://img.shields.io/badge/pi-extensions-blue?style=flat-square" alt="pi extensions">
+#+html:<a href="https://github.com/rytswd/pi-agent-extensions"><img src="https://img.shields.io/badge/Source-grey?style=flat-square&logo=github" alt="GitHub Source"></a>
+#+html:<img src="https://img.shields.io/badge/License-MIT-blue?style=flat-square" alt="MIT License">
+#+html:</p>
+#+html:</div>
+
+-----
+
+** 🌄 Overview
+
+*pi-agent-extensions* is a collection of [[https://github.com/mariozechner/pi][pi]] coding agent extensions that enhance the development experience. Each extension is a standalone TypeScript file that plugs into pi's extension system.These extensions are configured for global auto-discovery and loaded on every pi session.
+
+By default, pi's extension system enables all the extensions. Using ~pi config~ command, extensions can be disabled per user.
+
+** 📦 Installation
+
+Choose one of the following methods:
+
+#+html:<details>
+#+html:<summary><b>Method 1: Install via pi Package Manager</b></summary>
+#+html:<br>
+
+#+begin_src bash
+pi install git:github/rytswd/pi-agent-extensions
+#+end_src
+
+This command:
+1. Clones the repository to =~/.pi/agent/git/=
+2. Runs =npm install= to install dependencies
+3. Adds the package path to =~/.pi/agent/settings.json= (="packages"= stanza)
+4. Makes all extensions available to pi automatically
+
+#+html:</details>
+
+#+html:<details>
+#+html:<summary><b>Method 2: Manual Installation via Git Clone</b></summary>
+#+html:<br>
+
+1. Clone the repository to any directory:
+
+#+begin_src bash
+  git clone https://github.com/rytswd/pi-agent-extensions.git ~/path/to/pi-agent-extensions
+#+end_src
+
+2. Install dependencies:
+
+#+begin_src bash
+  cd ~/path/to/pi-agent-extensions
+  npm install
+  # or: bun install
+#+end_src
+
+3. Add the package to pi's configuration by editing =~/.pi/agent/settings.json=:
+
+#+begin_src json
+  {
+    "packages": [
+      "/absolute/path/to/pi-agent-extensions"
+    ]
+  }
+#+end_src
+
+This setup enables all of the extensions.
+
+#+html:</details>
+
+#+html:<details>
+#+html:<summary><b>Method 3: Copy Individual Extensions</b></summary>
+#+html:<br>
+
+For selective installation, copy specific extension directories to =~/.pi/agent/extensions/=:
+
+#+begin_src bash
+# Copy only the extensions you want
+cp -r /path/to/pi-agent-extensions/slow-mode ~/.pi/agent/extensions/
+cp -r /path/to/pi-agent-extensions/direnv ~/.pi/agent/extensions/
+cp -r /path/to/pi-agent-extensions/questionnaire ~/.pi/agent/extensions/
+#+end_src
+
+Or clone directly to the extensions directory:
+
+#+begin_src bash
+git clone https://github.com/rytswd/pi-agent-extensions.git ~/.pi/agent/extensions/pi-agent-extensions
+#+end_src
+
+*Note:* If an extension has dependencies (e.g., =slow-mode= requires the =diff= package), you'll need to install them:
+
+#+begin_src bash
+cd ~/.pi/agent/extensions/slow-mode
+bun install
+#+end_src
+
+Extensions are auto-discovered from =~/.pi/agent/extensions/= — pi loads all =*.ts= files and =index.ts= files in subdirectories.
+
+#+html:</details>
+
+** ✨ Extensions
+
+#+html:<details>
+#+html:<summary><strong>slow-mode</strong> - Review gate for <code>write</code> and <code>edit</code> tool calls</summary>
+#+html:<br>
+
+- *Source*: [[https://github.com/rytswd/pi-agent-extensions/tree/main/slow-mode][slow-mode/]]
+- *License*: MIT
+- *Toggle*: =/slow-mode=
+- *Status bar*: =slow ■= (when active)
+- *Dependencies*: =diff= package (auto-installed via =bun install=)
+- *Optional*: =delta=, =nvim=, or =vim= for external diff viewing
+
+*Description*: Intercepts =write= and =edit= tool calls, letting you review and approve/reject changes before they hit disk.
+
+*Features*:
+- External diff viewer by default for edits (delta/vim/diff)
+- Proper unified diff using Myers algorithm
+- Vim-style navigation in inline TUI (=j/k=, =u/d=, =gg/G=)
+- =Ctrl+O= from inline view opens external diff viewer
+
+*Key bindings*:
+| Key           | Action                       |
+|---------------+------------------------------|
+| =Enter=       | Approve changes              |
+| =Esc=         | Reject changes               |
+| =Ctrl+O=      | Open in external diff viewer |
+| =j/k= / =↑↓=  | Scroll line by line          |
+| =u/d=         | Scroll half page             |
+| =gg= / =G=    | Jump to top/bottom           |
+
+*What it looks like*:
+
+For edits, opens delta/vim diff viewer by default:
+
+#+begin_example
+# Delta opens in your terminal showing side-by-side diff
+# After you close delta, you get a confirmation prompt:
+
+Apply changes to air/slow-mode.org?
+  > Yes
+    No
+#+end_example
+
+For writes (or if no external viewer), shows inline TUI diff:
+
+#+begin_example
+────────────────────────────────────────────────────────────────
+ EDIT (diff)
+ slow-mode.ts
+
+ @@ -28,7 +28,9 @@
+  export default function slowMode(pi: ExtensionAPI) {
+ +  // State: whether slow mode is currently enabled
+    let enabled = false;
+ +
+ +  // Staging directory for review
+    const tmpDir = `/tmp/pi-slow-mode-${process.pid}`;
+
+ (lines 1–30 of 150 — j/k u/d gg/G scroll)
+
+ Enter approve • Esc reject • Ctrl+O external • j/k u/d gg/G scroll
+────────────────────────────────────────────────────────────────
+#+end_example
+
+#+html:</details>
+
+#+html:<details>
+#+html:<summary><strong>questionnaire</strong> - Interactive multi-question tool with tab navigation</summary>
+#+html:<br>
+
+- *Source*: [[https://github.com/rytswd/pi-agent-extensions/tree/main/questionnaire][questionnaire/]]
+- *License*: MIT
+- *Type*: Tool (LLM-callable)
+- *Use cases*: Configuration wizards, disambiguation, confirmations, multi-step workflows
+
+*Description*: A tool the LLM can call to ask single or multiple-choice questions with tab-based navigation.
+
+*Features*:
+- Single question mode with option list
+- Multi-question mode with tab bar and completion indicators (■/□)
+- Free-text input option
+- Submit review screen showing all answers
+- Custom rendering in chat history
+
+*Key bindings*:
+| Key              | Action                 |
+|------------------+------------------------|
+| =Tab= / =←→=     | Navigate between tabs  |
+| =↑↓=             | Navigate options       |
+| =Enter=          | Confirm selection      |
+| =Esc=            | Cancel                 |
+
+*What it looks like*:
+
+Multi-question flow:
+
+#+begin_example
+────────────────────────────────────────────────────────────────
+← □ Framework  □ TypeScript  □ Styling  ✓ Submit →
+
+Which framework would you like to use?
+
+> 1. React
+     Component-based library
+  2. Vue
+     Progressive framework
+  3. Svelte
+     Compiled framework
+  4. Type something.
+
+Tab/←→ navigate • ↑↓ select • Enter confirm • Esc cancel
+────────────────────────────────────────────────────────────────
+#+end_example
+
+After selecting "React" and pressing Enter:
+
+#+begin_example
+────────────────────────────────────────────────────────────────
+← ■ Framework  □ TypeScript  □ Styling  ✓ Submit →
+
+Do you want to use TypeScript?
+
+> 1. Yes
+  2. No
+
+Tab/←→ navigate • ↑↓ select • Enter confirm • Esc cancel
+────────────────────────────────────────────────────────────────
+#+end_example
+
+Final submit screen shows all answers:
+
+#+begin_example
+────────────────────────────────────────────────────────────────
+← ■ Framework  ■ TypeScript  ■ Styling  ✓ Submit →
+
+Ready to submit
+
+Framework: 1. React
+TypeScript: 1. Yes
+Styling: 1. Tailwind CSS
+
+Press Enter to submit
+
+Tab/←→ navigate • ↑↓ select • Enter confirm • Esc cancel
+────────────────────────────────────────────────────────────────
+#+end_example
+
+#+html:</details>
+
+#+html:<details>
+#+html:<summary><strong>direnv</strong> - Auto-loads environment variables from <code>.envrc</code> files</summary>
+#+html:<br>
+
+- *Source*: [[https://github.com/rytswd/pi-agent-extensions/tree/main/direnv][direnv/]]
+- *License*: MIT
+- *Homepage*: [[https://direnv.net/][direnv.net]]
+- *Status bar*: =direnv …= (loading), =direnv ✓= (loaded), =direnv ✗= (error)
+- *Requirements*: =direnv= installed and =.envrc= files must be allowed (=direnv allow=)
+- *Credit*: Based on the original implementation by [[https://github.com/Mic92][Mic92]] from [[https://github.com/Mic92/dotfiles/blob/main/home/.pi/agent/extensions/direnv.ts][Mic92/dotfiles]]
+
+*Description*: Automatically loads [[https://direnv.net/][direnv]] environment variables into pi sessions, running after every bash command to pick up =.envrc= changes.
+
+*Features*:
+- Loads environment on session start and after every bash command
+- Serialized execution with 10s timeout
+- Picks up changes from =cd=, =git checkout=, =direnv allow=, etc.
+
+*What it looks like*:
+
+Status bar indicator:
+
+#+begin_example
+# While loading:
+direnv …
+
+# Successfully loaded:
+direnv ✓
+
+# Error (e.g., .envrc not allowed):
+direnv ✗
+#+end_example
+
+*When it runs*:
+- On session start
+- After every bash command
+
+#+html:</details>
+
+#+html:<details>
+#+html:<summary><strong>@marckrenn/pi-sub-core</strong> - Status bar core implementation</summary>
+#+html:<br>
+
+- *Source*: [[https://github.com/marckrenn/pi-sub][pi-sub upstream]]
+- *License*: MIT
+- *Author*: [[https://github.com/marckrenn][marckrenn]]
+- *Type*: Dependency (used by pi-sub-bar)
+
+*Description*: Core implementation for the status bar system, providing the foundational utilities and APIs for status bar management.
+
+#+html:</details>
+
+#+html:<details>
+#+html:<summary><strong>@marckrenn/pi-sub-bar</strong> - Status bar management</summary>
+#+html:<br>
+
+- *Source*: [[https://github.com/marckrenn/pi-sub][pi-sub upstream]]
+- *License*: MIT
+- *Author*: [[https://github.com/marckrenn][marckrenn]]
+- *Dependencies*: =@marckrenn/pi-sub-core=
+
+*Description*: Status bar extension that provides a persistent bottom bar for displaying extension status, notifications, and other real-time information in the pi terminal interface.
+
+#+html:</details>
+
+** ⚙️ Configuration
+
+Once installed, pi can use *all* of the extensions listed in this package's =package.json=.  *By default, all extensions are enabled.*
+
+To manage which extensions are active, run:
+
+#+begin_src bash
+pi config
+#+end_src
+
+This opens an interactive TUI where you can:
+- View all available extensions from installed packages
+- Toggle individual extensions on/off with =Space=
+- Filter extensions by typing
+- Navigate with arrow keys
+
+Example:
+
+#+begin_example
+────────────────────────────────────────────────────────────────
+Resource Configuration                     space toggle · esc close
+
+  ~/Coding/github.com/rytswd/pi-agent-extensions (user)
+    Extensions
+>     [x] direnv/index.ts
+      [x] pi-sub-bar/index.ts
+      [x] pi-sub-core/index.ts
+      [x] questionnaire/index.ts
+      [x] slow-mode/index.ts
+
+────────────────────────────────────────────────────────────────
+#+end_example
+
+Changes are saved to =~/.pi/agent/settings.json= and take effect on the next pi session. The actual content of ~settings.json~ would look like below.
+
+#+begin_src jsonc
+  {
+    "packages": [
+      {
+        "source": "~/Coding/github.com/rytswd/pi-agent-extensions",
+        "extensions": [
+          "-questionnaire/index.ts" # Disabled
+        ]
+      }
+    ]
+  }
+#+end_src
+
+
+** 🚀 Quick Start
+
+After installation, start using pi normally:
+
+#+begin_src bash
+pi
+#+end_src
+
+*** Try the Extensions
+
+- *slow-mode:* Type =/slow-mode= to toggle the review gate
+- *questionnaire:* The LLM will call it automatically when needed
+- *direnv:* Watch the status bar — it loads automatically if you have =.envrc= files
+- *subscription tools:* Use =sub_get_usage= and =sub_get_all_usage= tools, see status in the bar
+
+** 📁 Structure
+
+#+begin_example
+~/.pi/agent/extensions/
+├── direnv/             # Direnv integration
+│   └── index.ts
+├── questionnaire/      # Multi-question tool
+│   └── index.ts
+├── slow-mode/          # Review gate for write/edit
+│   ├── index.ts
+│   ├── package.json    # Dependencies (diff package)
+│   ├── package-lock.json
+│   ├── bun.lock
+│   └── node_modules/   # npm packages (gitignored)
+├── package.json        # Package metadata and extension list
+├── .gitignore          # Ignores node_modules, logs
+├── AGENTS.md           # Agent context for AI assistants
+├── air/                # Air documentation (development planning)
+│   ├── context/        # Project context files
+│   └── ...
+└── README.org          # This file
+#+end_example
+
+** 🔧 Adding New Extensions
+
+To add a new extension, create a directory with an =index.ts= file. pi auto-discovers =*.ts= files and =index.ts= files in subdirectories.
+
+A minimal extension looks like:
+
+#+begin_src typescript
+import type { ExtensionAPI } from "@mariozechner/pi-coding-agent";
+
+export default function (pi: ExtensionAPI) {
+  pi.on("session_start", async (_event, ctx) => {
+    ctx.ui.notify("My extension loaded!", "info");
+  });
+}
+#+end_src
+
+*Recommended structure:*
+
+#+begin_example
+my-extension/
+├── index.ts           # Extension entrypoint
+├── package.json       # Optional: if you need dependencies
+└── node_modules/      # Optional: npm packages (gitignored)
+#+end_example
+
+See the [[https://github.com/mariozechner/pi][pi documentation]] for the full extension API.
+
+** 🙏 Acknowledgements
+
+- [[https://github.com/mariozechner][Mario Zechner]]: pi coding agent
+- [[https://github.com/Mic92][Mic92]]: Original direnv implementation ([[https://github.com/Mic92/dotfiles/blob/main/home/.pi/agent/extensions/direnv.ts][source]])
+
+** 📄 License
+
+MIT

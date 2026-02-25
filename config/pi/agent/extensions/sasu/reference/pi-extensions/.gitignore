@@ -1,0 +1,9 @@
+node_modules/
+.direnv/
+dist/
+tmp/
+*.tsbuildinfo
+.DS_Store
+.osgrep
+
+pi-*.html

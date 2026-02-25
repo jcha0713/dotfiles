@@ -1,0 +1,66 @@
+{
+  "name": "@aliou/pi-extensions",
+  "private": true,
+  "type": "module",
+  "keywords": [
+    "pi-package"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/aliou/pi-extensions"
+  },
+  "pi": {
+    "extensions": [
+      "./extensions",
+      "extensions/*/index.ts"
+    ],
+    "themes": [
+      "./themes",
+      "!themes/**/package.json"
+    ]
+  },
+  "scripts": {
+    "postinstall": "node scripts/resolve-workspace-deps.mjs",
+    "lint": "biome check .",
+    "format": "biome check --write .",
+    "typecheck": "tsc --build",
+    "changeset": "changeset",
+    "version": "changeset version",
+    "release": "pnpm changeset publish"
+  },
+  "dependencies": {
+    "@aliou/pi-linkup": "^0.6.2",
+    "@aliou/pi-utils-settings": "^0.2.0",
+    "@aliou/sesame": "^0.2.0",
+    "@aliou/sh": "^0.1.0",
+    "better-sqlite3": "^12.6.2",
+    "yaml": "^2.8.2"
+  },
+  "devDependencies": {
+    "@aliou/biome-plugins": "^0.3.0",
+    "@biomejs/biome": "^2.0.0",
+    "@changesets/cli": "^2.27.11",
+    "@mariozechner/pi-agent-core": "0.52.9",
+    "@mariozechner/pi-ai": "0.52.9",
+    "@mariozechner/pi-coding-agent": "0.52.9",
+    "@mariozechner/pi-tui": "0.52.9",
+    "@sinclair/typebox": "^0.34.41",
+    "@types/better-sqlite3": "^7.6.13",
+    "@types/node": "^22.0.0",
+    "tsx": "^4.20.5",
+    "typescript": "^5.7.0"
+  },
+  "pnpm": {
+    "overrides": {
+      "@mariozechner/pi-coding-agent": "0.52.9",
+      "@mariozechner/pi-agent-core": "$@mariozechner/pi-coding-agent",
+      "@mariozechner/pi-ai": "$@mariozechner/pi-coding-agent",
+      "@mariozechner/pi-tui": "$@mariozechner/pi-coding-agent"
+    },
+    "onlyBuiltDependencies": [
+      "@aliou/sh",
+      "better-sqlite3"
+    ]
+  },
+  "packageManager": "pnpm@10.26.1"
+}

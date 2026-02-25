@@ -41,6 +41,8 @@ in
       config.lib.file.mkOutOfStoreSymlink "${dotfilesPath}/config/pi/agent/settings.json";
     ".pi/agent/skills".source =
       config.lib.file.mkOutOfStoreSymlink "${dotfilesPath}/config/pi/agent/skills";
+    ".pi/agent/extensions".source =
+      config.lib.file.mkOutOfStoreSymlink "${dotfilesPath}/config/pi/agent/extensions";
 
     # NixOS-specific
     ".config/niri/config.kdl".source =
