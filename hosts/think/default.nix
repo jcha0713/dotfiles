@@ -184,7 +184,7 @@
     description = "Wallpaper service";
     serviceConfig = {
       Type = "simple";
-      ExecStart = "${pkgs.swaybg}/bin/swaybg -m fill -i /home/joohoon/Pictures/time.png";
+      ExecStart = "${pkgs.swaybg}/bin/swaybg -m fill -i /home/joohoon/Pictures/mocha.jpg";
       Restart = "on-failure";
     };
     wantedBy = [ "graphical-session.target" ];
@@ -295,7 +295,10 @@
   services.flatpak.enable = true;
 
   # Enable nix-command and flakes
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
+  nix.settings.experimental-features = [
+    "nix-command"
+    "flakes"
+  ];
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
