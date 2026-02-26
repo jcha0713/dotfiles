@@ -648,4 +648,9 @@ binds {
     // Powers off the monitors. To turn them back on, do any input like
     // moving the mouse or pressing any other key.
     Mod+Shift+P { power-off-monitors; }
+
+    /* Noctalia */
+    Mod+Shift+B { spawn-sh "noctalia-shell ipc call bar toggle"; }
+    Mod+Shift+Comma { spawn-sh "noctalia-shell ipc call settings toggle"; }
+    Mod+Shift+Period { spawn-sh "noctalia-shell ipc call wallpaper toggle"; }
 }
