@@ -1,6 +1,6 @@
 # Auto-Generated Dotfiles Structure
 
-> Generated: 2026-02-25T06:40:38Z
+> Generated: 2026-02-26T13:59:44Z
 > Do not edit manually - run: `./scripts/generate-structure.sh`
 
 ## Repository Layout
@@ -64,6 +64,7 @@
 - common
 - darwin
 - nixos
+- noctalia
 - zsh
 
 ### System Configurations

@@ -35,8 +35,10 @@ check_dir() {
 echo "Entry Points:"
 check_file "flake.nix"
 check_file "home/common.nix"
+check_file "home/zsh.nix"
 check_file "home/nixos.nix"
 check_file "home/darwin.nix"
+check_file "home/noctalia.nix"
 check_dir "hosts/think"
 check_dir "hosts/mini"
 

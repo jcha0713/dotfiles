@@ -13,8 +13,10 @@ Unified NixOS + macOS configuration using Nix flakes and Home Manager.
 |------|---------|
 | `flake.nix` | System definitions (`think` = NixOS, `mini` = Darwin) |
 | `home/common.nix` | Shared packages and programs (git, delta, zoxide, lazygit, yazi) |
-| `home/nixos.nix` | ThinkPad-specific (Wayland, niri, waybar, themes) |
+| `home/zsh.nix` | Shared zsh configuration (imported by nixos.nix and darwin.nix) |
+| `home/nixos.nix` | ThinkPad-specific (Noctalia, niri, ghostty) |
 | `home/darwin.nix` | Mac Mini-specific (aerospace, karabiner, hammerspoon, espanso) |
+| `home/noctalia.nix` | Noctalia shell configuration (bar, notifications, lock screen) |
 | `hosts/think/default.nix` | NixOS system config |
 | `hosts/mini/default.nix` | Darwin system config |
 

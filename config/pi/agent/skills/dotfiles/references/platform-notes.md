@@ -15,11 +15,11 @@
   - Touchpad gestures for workspace switching
   - Built-in screenshot utility
 
-### Status Bar: Waybar
-- Config: `config/waybar/config`
-- Style: `config/waybar/style.css`
-- Modules: `config/waybar/modules.jsonc`
-- Custom scripts: `config/waybar/modules/*.sh`
+### Status Bar: Noctalia
+- Config: `home/noctalia.nix` → `programs.noctalia-shell.settings`
+- Provides: top bar, notifications, lock screen, launcher, screenshots
+- Replaces: waybar, mako, swaylock, swaybg, swayidle
+- Docs: https://docs.noctalia.dev
 
 ### Clipboard: cliphist
 - History with fzf integration
