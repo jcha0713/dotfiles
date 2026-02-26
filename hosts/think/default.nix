@@ -207,14 +207,6 @@
       wezterm
       ghostty
       tailscale
-      (symlinkJoin {
-        name = "discord";
-        paths = [ discord ];
-        buildInputs = [ pkgs.makeWrapper ];
-        postBuild = ''
-          wrapProgram $out/bin/Discord --add-flags "--disable-gpu"
-        '';
-      })
       fuzzel
       waybar
       git

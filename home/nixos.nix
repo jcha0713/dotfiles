@@ -69,7 +69,8 @@
     unzip
     trash-cli
     fastfetch
-    # Theme picker (fuzzel GUI)
+    vesktop
+    # Theme picker (fuzzel GUI) - keep for theme switching
     (import ../scripts/theme-picker-fuzzel.nix { inherit pkgs; })
   ];
 
