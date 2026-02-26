@@ -5,6 +5,8 @@ let
     url = "https://raw.githubusercontent.com/dandavison/delta/main/themes.gitconfig";
     sha256 = "sha256:1pkqd36ls3cc6xgycd6sawpnwvgbchs54dkgg007algkhqxv7wch";
   };
+
+  octorus = pkgs.callPackage ../pkgs/octorus/default.nix {};
 in
 {
   # Git configuration
@@ -85,6 +87,7 @@ in
     rustup
     nixfmt
     jq
+    octorus
   ];
 
   # Directory jumper
