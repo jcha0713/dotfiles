@@ -30,8 +30,8 @@
 
       # Top panel / bar configuration
       bar = {
-        barType = "simple";
-        position = "top";
+        barType = "floating";
+        position = "bottom";
         monitors = [ ];
         density = "default";
         showOutline = false;
@@ -39,18 +39,18 @@
         capsuleOpacity = 1;
         capsuleColorKey = "none";
         widgetSpacing = 6;
-        contentPadding = 0;
-        fontScale = 1;
-        backgroundOpacity = 0.93;
-        useSeparateOpacity = false;
+        contentPadding = 6;
+        fontScale = 1.05;
+        backgroundOpacity = 0;
+        useSeparateOpacity = true;
         floating = false;
         marginVertical = 4;
         marginHorizontal = 4;
         frameThickness = 8;
         frameRadius = 12;
         outerCorners = true;
-        hideOnOverview = false;
-        displayMode = "always_visible"; # or "autohide", "overlay"
+        hideOnOverview = true;
+        displayMode = "always_visible"; # "always_visible" "auto_hide", "overlay"
         autoHideDelay = 500;
         autoShowDelay = 150;
         showOnWorkspaceSwitch = true;
@@ -92,7 +92,7 @@
         boxRadiusRatio = 1;
         screenRadiusRatio = 1;
         animationSpeed = 1;
-        animationDisabled = false;
+        animationDisabled = true;
         compactLockScreen = false;
         lockScreenAnimations = false;
         lockOnSuspend = true;
@@ -139,15 +139,15 @@
         tooltipsEnabled = true;
         boxBorderEnabled = false;
         panelBackgroundOpacity = 0.93;
-        panelsAttachedToBar = true;
-        settingsPanelMode = "attached";
-        settingsPanelSideBarCardStyle = false;
+        panelsAttachedToBar = false;
+        settingsPanelMode = "centered";
+        settingsPanelSideBarCardStyle = true;
       };
 
       # Location and weather
       location = {
         name = "Seoul";
-        weatherEnabled = true;
+        weatherEnabled = false;
         weatherShowEffects = true;
         useFahrenheit = false;
         use12hourFormat = false;
@@ -182,7 +182,7 @@
       wallpaper = {
         enabled = true;
         overviewEnabled = false;
-        directory = "";
+        directory = "~/Pictures/";
         monitorDirectories = [ ];
         enableMultiMonitorDirectories = false;
         showHiddenFiles = false;
@@ -415,7 +415,7 @@
         enableMarkdown = false;
         density = "default";
         monitors = [ ];
-        location = "top_right"; # or "top_left", "bottom_right", "bottom_left"
+        location = "bottom_right"; # or "top_left", "bottom_right", "bottom_left"
         overlayLayer = true;
         backgroundOpacity = 1;
         respectExpireTimeout = false;
@@ -482,7 +482,7 @@
 
       # Color schemes and theming
       colorSchemes = {
-        useWallpaperColors = false;
+        useWallpaperColors = true;
         predefinedScheme = "Noctalia (default)";
         darkMode = true;
         schedulingMode = "off"; # or "sunrise_sunset", "manual"
