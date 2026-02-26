@@ -287,6 +287,8 @@ layout {
 // Start kime for Korean input method support
 spawn-at-startup "kime"
 
+spawn-at-startup "qs" "-c" "noctalia-shell" "--no-duplicate"
+
 // To run a shell command (with variables, pipes, etc.), use spawn-sh-at-startup:
 // spawn-sh-at-startup "qs -c ~/source/qs/MyAwesomeShell"
 

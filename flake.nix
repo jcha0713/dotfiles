@@ -7,11 +7,17 @@
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
     # For ThinkPad (NixOS)
     llm-agents = {
       url = "github:numtide/llm-agents.nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    noctalia = {
+      url = "github:noctalia-dev/noctalia-shell";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     # For Mac Mini (Darwin)
     nix-darwin = {
       url = "github:LnL7/nix-darwin";
@@ -45,6 +51,7 @@
             home-manager.backupFileExtension = "backup-%Y%m%d-%H%M%S";
             home-manager.users.joohoon = ./home/nixos.nix;
             home-manager.extraSpecialArgs = {
+              inherit inputs;
               dotfilesPath = "/home/joohoon/dotfiles";
             };
           }

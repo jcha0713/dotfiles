@@ -5,19 +5,11 @@
   ...
 }:
 
-let
-  # Import theme palettes
-  palettes = import ../lib/themes/palettes.nix;
-
-  # Default theme - change this to switch themes, or use the theme-picker script
-  activeThemeName = "e-ink-dark"; # Options: e-ink, e-ink-dark, e-ink-sepia, e-ink-night
-  activeTheme = palettes.${activeThemeName};
-  c = activeTheme.colors;
-in
 {
   imports = [
     ./common.nix
     ./zsh.nix
+    ./noctalia.nix
   ];
 
   home.username = "joohoon";
@@ -48,28 +40,6 @@ in
     ".config/niri/config.kdl".source =
       config.lib.file.mkOutOfStoreSymlink "${dotfilesPath}/config/niri/config.kdl";
 
-    # Waybar - config and style symlinked from dotfiles
-    ".config/waybar/config".source =
-      config.lib.file.mkOutOfStoreSymlink "${dotfilesPath}/config/waybar/config";
-    ".config/waybar/style.css".source =
-      config.lib.file.mkOutOfStoreSymlink "${dotfilesPath}/config/waybar/style.css";
-    ".config/waybar/modules.jsonc".source =
-      config.lib.file.mkOutOfStoreSymlink "${dotfilesPath}/config/waybar/modules.jsonc";
-    ".config/waybar/modules".source =
-      config.lib.file.mkOutOfStoreSymlink "${dotfilesPath}/config/waybar/modules";
-
-    # Swaylock - generate config with theme colors
-    ".config/swaylock/config".text = ''
-      # Generated from ${activeThemeName} theme
-      color=${c.bg}
-      bs-hl-color=${c.red}
-      key-hl-color=${c.green}
-      line-color=${c.blue}
-      ring-color=${c.fg}
-      inside-color=${c.bg}
-      separator-color=${c.bright-black}
-    '';
-
     # Shared with Mac Mini
     ".config/nvim".source = config.lib.file.mkOutOfStoreSymlink "${dotfilesPath}/config/nvim";
     ".config/wezterm".source = config.lib.file.mkOutOfStoreSymlink "${dotfilesPath}/config/wezterm";
@@ -87,22 +57,15 @@ in
     # Zellij config
     ".config/zellij/config.kdl".source =
       config.lib.file.mkOutOfStoreSymlink "${dotfilesPath}/config/zellij/config.kdl";
-
-    # Mako notification daemon config
-    ".config/mako/config".source =
-      config.lib.file.mkOutOfStoreSymlink "${dotfilesPath}/config/mako/config";
   };
 
   # User packages (NixOS-specific, mostly Wayland related)
+  # NOTE: Noctalia replaces: waybar, mako, swaylock, swaybg, swayidle
   home.packages = with pkgs; [
-    swaylock-effects
-    swayidle
-    mako
     brightnessctl
     libnotify
-    swaybg
-    # Clipboard management for Wayland
-    cliphist # Clipboard history with fzf integration
+    # Clipboard management for Wayland - Noctalia integrates with this
+    cliphist
     unzip
     trash-cli
     fastfetch
@@ -110,6 +73,4 @@ in
     (import ../scripts/theme-picker-fuzzel.nix { inherit pkgs; })
   ];
 
-  # Clipboard history service - saves clipboard to history
-  services.cliphist.enable = true;
 }

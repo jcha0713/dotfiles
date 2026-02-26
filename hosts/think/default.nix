@@ -14,6 +14,8 @@
   imports = [
     # Include the results of the hardware scan.
     ./hardware-configuration.nix
+    # Noctalia shell NixOS module
+    inputs.noctalia.nixosModules.default
   ];
 
   # Use the systemd-boot EFI boot loader.
@@ -81,6 +83,11 @@
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
   networking.networkmanager.enable = true; # Easiest to use and most distros use this by default.
 
+  # https://docs.noctalia.dev/getting-started/nixos/
+  hardware.bluetooth.enable = true;
+  services.power-profiles-daemon.enable = true;
+  services.upower.enable = true;
+
   # Set your time zone.
   time.timeZone = "Asia/Seoul";
 
@@ -133,64 +140,8 @@
 
   programs.zsh.enable = true;
 
-  # Idle management: lock screen and turn off monitors
-  systemd.user.services.swayidle = {
-    description = "Idle management for Wayland";
-    serviceConfig = {
-      Type = "simple";
-      ExecStart = ''
-        ${pkgs.swayidle}/bin/swayidle -w \
-          timeout 600 '${pkgs.swaylock}/bin/swaylock -f' \
-          timeout 601 '${pkgs.niri}/bin/niri msg action power-off-monitors' \
-          before-sleep '${pkgs.swaylock}/bin/swaylock -f'
-      '';
-      Restart = "on-failure";
-    };
-    wantedBy = [ "graphical-session.target" ];
-    partOf = [ "graphical-session.target" ];
-    after = [ "graphical-session.target" ];
-  };
-
-  # Notification daemon (mako)
-  environment.etc."xdg/mako/config".text = ''
-    background-color=#1e1e2e
-    text-color=#cdd6f4
-    border-color=#cba6f7
-    border-size=2
-    border-radius=10
-    default-timeout=5000
-    anchor=top-right
-  '';
-
-  systemd.user.services.mako = {
-    description = "Mako notification daemon";
-    serviceConfig = {
-      Type = "simple";
-      ExecStart = "${pkgs.mako}/bin/mako";
-      Restart = "on-failure";
-    };
-    wantedBy = [ "graphical-session.target" ];
-    partOf = [ "graphical-session.target" ];
-    after = [ "graphical-session.target" ];
-  };
-
-  # Status bar - waybar reads config from ~/.config/waybar/ (symlinked by home-manager)
-  programs.waybar = {
-    enable = true;
-  };
-
-  # Wallpaper - using dotfiles path
-  systemd.user.services.swaybg = {
-    description = "Wallpaper service";
-    serviceConfig = {
-      Type = "simple";
-      ExecStart = "${pkgs.swaybg}/bin/swaybg -m fill -i /home/joohoon/Pictures/mocha.jpg";
-      Restart = "on-failure";
-    };
-    wantedBy = [ "graphical-session.target" ];
-    partOf = [ "graphical-session.target" ];
-    after = [ "graphical-session.target" ];
-  };
+  # NOTE: Noctalia shell replaces waybar, mako, swaybg, and idle management
+  # These services are now handled by Noctalia
 
   # Enable the GNOME Desktop Environment.
   services.xserver.displayManager.gdm.enable = true;
