@@ -8,14 +8,14 @@
   "packages": [
     "extensions/pi-agent-extensions/slow-mode",
     "npm-pi-extmgr",
-    "npm:pi-web-access",
     {
       "source": "git:github.com/aliou/pi-extensions",
       "extensions": [
         "extensions/pi-extension-dev/index.ts",
         "extensions/the-dumb-zone/index.ts"
       ]
-    }
+    },
+    "npm:pi-searxng"
   ],
   "editorPaddingX": 2,
   "quietStartup": true,
