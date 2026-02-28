@@ -273,6 +273,8 @@ layout {
         // top 64
         // bottom 64
     }
+
+    background-color "transparent"
 }
 
 // Add lines like this to spawn processes at startup.
@@ -364,6 +366,18 @@ window-rule {
 window-rule {
     geometry-corner-radius 0
     clip-to-geometry true
+}
+
+// Set the regular wallpaper on the backdrop.
+layer-rule {
+  match namespace="^noctalia-wallpaper*"
+  place-within-backdrop true
+}
+
+overview {
+  workspace-shadow {
+    off
+  }
 }
 
 binds {
