@@ -163,12 +163,16 @@
           main = {
             # Map capslock to control (already done via xkb, but good to have here too)
             capslock = "layer(control)";
+            # Space as leader: hold for symbol layer, tap for space
+            space = "overloadt(symbol, space, 200)";
           };
           control = {
             h = "backspace";
+          };
+          symbol = {
             k = "-";
             l = "=";
-            ";" = "\";
+            ";" = "\\";
             "'" = "`";
           };
         };
