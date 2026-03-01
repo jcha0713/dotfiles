@@ -60,6 +60,20 @@ let isDarwin = pkgs.stdenv.isDarwin;
 in { }
 ```
 
+### Noctalia Plugin Widgets
+When adding plugin widgets to the bar, use the `plugin:` prefix in the widget ID:
+
+```nix
+# home/noctalia.nix
+settings.bar.widgets.right = [
+  { id = "plugin:catwalk"; }  # Note the "plugin:" prefix
+  { id = "Tray"; }
+  { id = "Volume"; }
+];
+```
+
+Without the prefix, Noctalia will log: `Deleted invalid bar widget catwalk` and the widget won't appear. Built-in widgets like `Tray`, `Clock`, `Workspace` don't use the prefix.
+
 ## Commands
 
 ```bash
@@ -91,6 +105,7 @@ rg "config/nvim" home/
 
 - `references/nix-patterns.md` - Reusable code patterns
 - `references/platform-notes.md` - Platform-specific quirks
+- `references/noctalia-plugins.md` - Guide for adding Noctalia plugins
 - `references/structure.md` - Auto-generated full structure (see Maintenance)
 
 ## Maintenance

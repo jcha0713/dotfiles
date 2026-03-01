@@ -1,6 +1,6 @@
 # Auto-Generated Dotfiles Structure
 
-> Generated: 2026-02-26T13:59:44Z
+> Generated: 2026-03-01T08:48:56Z
 > Do not edit manually - run: `./scripts/generate-structure.sh`
 
 ## Repository Layout
@@ -52,6 +52,12 @@
 │   └── themes
 ├── overlays
 │   └── packages
+├── pkgs
+│   ├── noctalia-catwalk
+│   ├── noctalia-pomodoro
+│   ├── noctalia-todo
+│   └── octorus
+├── references
 └── scripts
 ```
 
