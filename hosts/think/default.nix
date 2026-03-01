@@ -154,6 +154,28 @@
     options = "ctrl:nocaps";
   };
 
+  services.keyd = {
+    enable = true;
+    keyboards = {
+      default = {
+        ids = [ "*" ]; # Match all keyboards
+        settings = {
+          main = {
+            # Map capslock to control (already done via xkb, but good to have here too)
+            capslock = "layer(control)";
+          };
+          control = {
+            h = "backspace";
+            k = "-";
+            l = "=";
+            ";" = "\";
+            "'" = "`";
+          };
+        };
+      };
+    };
+  };
+
   # Enable CUPS to print documents.
   services.printing.enable = true;
 
