@@ -1,5 +1,5 @@
 {
-  "lastChangelogVersion": "0.54.1",
+  "lastChangelogVersion": "0.55.3",
   "defaultProvider": "kimi-coding",
   "defaultModel": "kimi-k2-thinking",
   "defaultThinkingLevel": "high",
@@ -15,7 +15,8 @@
         "extensions/the-dumb-zone/index.ts"
       ]
     },
-    "npm:pi-searxng"
+    "npm:pi-searxng",
+    "npm:pi-rtk"
   ],
   "editorPaddingX": 2,
   "quietStartup": true,
