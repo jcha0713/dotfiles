@@ -181,6 +181,9 @@ keybinds clear-defaults=true {
         bind "Alt o" { MoveTab "right"; }
         bind "Alt p" { TogglePaneInGroup; }
         bind "Alt Shift p" { ToggleGroupMarking; }
+        bind "x" { CloseFocus; SwitchToMode "locked"; }
+    }
+    shared_except "locked" "normal" {
         bind "Ctrl q" { Quit; }
     }
     shared_except "locked" "normal" "move" {
