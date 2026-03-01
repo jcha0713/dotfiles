@@ -5,6 +5,11 @@
   ...
 }:
 
+let
+  noctalia-catwalk = pkgs.callPackage ../pkgs/noctalia-catwalk {};
+  noctalia-todo = pkgs.callPackage ../pkgs/noctalia-todo {};
+  noctalia-pomodoro = pkgs.callPackage ../pkgs/noctalia-pomodoro {};
+in
 {
   imports = [
     ./common.nix
@@ -57,6 +62,14 @@
     # Zellij config
     ".config/zellij/config.kdl".source =
       config.lib.file.mkOutOfStoreSymlink "${dotfilesPath}/config/zellij/config.kdl";
+
+    # Noctalia plugins
+    ".local/share/noctalia/plugins/catwalk".source =
+      "${noctalia-catwalk}/share/noctalia/plugins/catwalk";
+    ".local/share/noctalia/plugins/todo".source =
+      "${noctalia-todo}/share/noctalia/plugins/todo";
+    ".local/share/noctalia/plugins/pomodoro".source =
+      "${noctalia-pomodoro}/share/noctalia/plugins/pomodoro";
   };
 
   # User packages (NixOS-specific, mostly Wayland related)
@@ -72,6 +85,12 @@
     vesktop
     # Theme picker (fuzzel GUI) - keep for theme switching
     (import ../scripts/theme-picker-fuzzel.nix { inherit pkgs; })
+    # Todo quick add via fuzzel
+    (import ../scripts/fuzzel-todo.nix { inherit pkgs; })
+    # Noctalia plugins
+    noctalia-catwalk
+    noctalia-todo
+    noctalia-pomodoro
   ];
 
 }

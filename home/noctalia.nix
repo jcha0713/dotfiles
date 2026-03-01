@@ -70,9 +70,17 @@
           right = [
             { id = "Tray"; }
             { id = "NotificationHistory"; }
-            { id = "Battery"; }
+            {
+              id = "Battery";
+              alwaysShowPercentage = true;
+              showPowerProfiles = true;
+              showNoctaliaPerformance = true;
+            }
             { id = "Volume"; }
             { id = "Brightness"; }
+            { id = "plugin:pomodoro"; }
+            { id = "plugin:todo"; }
+            { id = "plugin:catwalk"; }
             { id = "ControlCenter"; }
           ];
         };
@@ -564,29 +572,48 @@
     # PLUGINS
     # https://noctalia.dev/plugins/
     # ============================================================================
-    # plugins = {
-    #   version = 2;
-    #   sources = [
-    #     {
-    #       name = "Official Noctalia Plugins";
-    #       url = "https://github.com/noctalia-dev/noctalia-plugins";
-    #       enabled = true;
-    #     }
-    #   ];
-    #   states = {
-    #     catwalk = {
-    #       enabled = true;
-    #       sourceUrl = "https://github.com/noctalia-dev/noctalia-plugins";
-    #     };
-    #   };
-    # };
+    plugins = {
+      version = 2;
+      sources = [
+        {
+          name = "Official Noctalia Plugins";
+          url = "https://github.com/noctalia-dev/noctalia-plugins";
+          enabled = true;
+        }
+      ];
+      states = {
+        catwalk = {
+          enabled = true;
+          sourceUrl = "https://github.com/noctalia-dev/noctalia-plugins";
+        };
+        todo = {
+          enabled = true;
+          sourceUrl = "https://github.com/noctalia-dev/noctalia-plugins";
+        };
+        pomodoro = {
+          enabled = true;
+          sourceUrl = "https://github.com/noctalia-dev/noctalia-plugins";
+        };
+      };
+    };
 
-    # pluginSettings = {
-    #   catwalk = {
-    #     minimumThreshold = 25;
-    #     hideBackground = true;
-    #   };
-    # };
+    pluginSettings = {
+      catwalk = {
+        minimumThreshold = 15;
+        hideBackground = true;
+      };
+      todo = {
+        showCompleted = false;
+      };
+      pomodoro = {
+        workDuration = 25;
+        shortBreakDuration = 5;
+        longBreakDuration = 15;
+        cycles = 4;
+        autoStartBreaks = false;
+        autoStartWork = false;
+      };
+    };
 
     # ============================================================================
     # USER TEMPLATES
