@@ -1,9 +1,9 @@
 {
   "lastChangelogVersion": "0.55.3",
-  "defaultProvider": "kimi-coding",
-  "defaultModel": "kimi-k2-thinking",
+  "defaultProvider": "openai-codex",
+  "defaultModel": "gpt-5.3-codex",
   "defaultThinkingLevel": "high",
-  "theme": "dark",
+  "theme": "terminal",
   "hideThinkingBlock": false,
   "packages": [
     "extensions/pi-agent-extensions/slow-mode",
@@ -16,7 +16,13 @@
       ]
     },
     "npm:pi-searxng",
-    "npm:pi-rtk"
+    "npm:pi-rtk",
+    "npm:pi-token-burden",
+    "npm:pi-context",
+    "npm:pi-extmgr",
+    "npm:pi-open-sessions-files-extension",
+    "~/.pi/agent/extensions/sasu/index.ts",
+    "npm:pi-terminal-theme"
   ],
   "editorPaddingX": 2,
   "quietStartup": true,
