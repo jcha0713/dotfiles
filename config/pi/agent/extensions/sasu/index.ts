@@ -1,6 +1,7 @@
 import { access, mkdir, writeFile } from "node:fs/promises";
 import * as path from "node:path";
-import type { ExtensionAPI } from "@mariozechner/pi-coding-agent";
+import { DynamicBorder, type ExtensionAPI } from "@mariozechner/pi-coding-agent";
+import { Key, SelectList, Text, matchesKey, type SelectItem } from "@mariozechner/pi-tui";
 import { runOptionalChecks } from "./src/checks";
 import { DEFAULT_MAX_SUGGESTIONS, STATUS_PREVIEW_CHARS } from "./src/constants";
 import { collectGitContext } from "./src/git";
@@ -19,6 +20,8 @@ import { compactLines, previewText } from "./src/utils";
 
 const CHAT_SUGGESTIONS_LIMIT = 3;
 const SUGGESTION_PROMPT_FILE_LIMIT = 500;
+const OPEN_PICKER_VISIBLE_ROWS = 12;
+const OPEN_PICKER_MAX_RESULTS = 200;
 const NON_ACTIONABLE_SUGGESTION_PREFIXES = [".sasu/", ".git/", "node_modules/", "dist/", "reference/"];
 const NON_ACTIONABLE_SUGGESTION_FILES = new Set([".sasu/session.json"]);
 
@@ -88,13 +91,206 @@ async function ensureSuggestedFileExists(cwd: string, filePath: string): Promise
 	}
 }
 
+type OpenFileCandidate = {
+	path: string;
+	baseName: string;
+	suggested: boolean;
+	reason?: string;
+};
+
+function subsequenceScore(query: string, target: string): number | null {
+	if (!query) return 0;
+	let q = 0;
+	let score = 0;
+	let firstMatch = -1;
+	let previousMatch = -1;
+
+	for (let i = 0; i < target.length && q < query.length; i += 1) {
+		if (target[i] !== query[q]) continue;
+		if (firstMatch === -1) firstMatch = i;
+		if (previousMatch === i - 1) {
+			score += 7;
+		} else {
+			score += 3;
+			if (previousMatch >= 0) score -= Math.min(4, i - previousMatch - 1);
+		}
+		previousMatch = i;
+		q += 1;
+	}
+
+	if (q < query.length) return null;
+	return score + Math.max(0, 20 - Math.max(0, firstMatch));
+}
+
+function scoreOpenFileCandidate(candidate: OpenFileCandidate, query: string): number | null {
+	const trimmed = query.trim().toLowerCase();
+	if (!trimmed) {
+		return candidate.suggested ? 50 : 0;
+	}
+
+	const pathLower = candidate.path.toLowerCase();
+	const baseLower = candidate.baseName.toLowerCase();
+	let score = -1;
+
+	const baseContains = baseLower.indexOf(trimmed);
+	if (baseContains >= 0) {
+		score = Math.max(score, 1000 - baseContains * 8 - baseLower.length);
+	}
+
+	const pathContains = pathLower.indexOf(trimmed);
+	if (pathContains >= 0) {
+		score = Math.max(score, 800 - pathContains * 2 - pathLower.length);
+	}
+
+	const baseSubsequence = subsequenceScore(trimmed, baseLower);
+	if (baseSubsequence !== null) {
+		score = Math.max(score, 600 + baseSubsequence);
+	}
+
+	const pathSubsequence = subsequenceScore(trimmed, pathLower);
+	if (pathSubsequence !== null) {
+		score = Math.max(score, 450 + pathSubsequence);
+	}
+
+	if (score < 0) return null;
+	if (candidate.suggested) score += 90;
+	return score;
+}
+
+function rankOpenFileCandidates(candidates: OpenFileCandidate[], query: string): OpenFileCandidate[] {
+	const ranked = candidates
+		.map((candidate) => ({ candidate, score: scoreOpenFileCandidate(candidate, query) }))
+		.filter((entry): entry is { candidate: OpenFileCandidate; score: number } => typeof entry.score === "number")
+		.sort((a, b) => {
+			if (b.score !== a.score) return b.score - a.score;
+			if (a.candidate.suggested !== b.candidate.suggested) return a.candidate.suggested ? -1 : 1;
+			return a.candidate.path.localeCompare(b.candidate.path);
+		})
+		.map((entry) => entry.candidate);
+	return ranked.slice(0, OPEN_PICKER_MAX_RESULTS);
+}
+
+function toOpenFileSelectItems(candidates: OpenFileCandidate[]): SelectItem[] {
+	return candidates.map((candidate) => ({
+		value: candidate.path,
+		label: candidate.suggested ? `★ ${candidate.path}` : candidate.path,
+		description: candidate.suggested
+			? `Suggested by /sasu-suggest${candidate.reason ? ` — ${previewText(candidate.reason, 100)}` : ""}`
+			: undefined,
+	}));
+}
+
+async function pickProjectFileWithFuzzyFilter(input: {
+	ctx: any;
+	candidates: OpenFileCandidate[];
+	initialQuery?: string;
+}): Promise<string | null> {
+	const initialQuery = input.initialQuery?.trim() || "";
+	if (!input.ctx?.ui) return null;
+
+	if (!input.ctx.ui?.custom) {
+		const ranked = rankOpenFileCandidates(input.candidates, initialQuery);
+		const options = ranked.slice(0, 30).map((candidate, index) => `${index + 1}. ${candidate.path}`);
+		if (options.length === 0) return null;
+		const selected = await input.ctx.ui.select("SASU: choose a project file", options);
+		if (!selected) return null;
+		const matched = selected.match(/^(\d+)\.\s+/);
+		if (!matched) return null;
+		const index = Number(matched[1]) - 1;
+		return ranked[index]?.path ?? null;
+	}
+
+	const selected = await input.ctx.ui.custom<string | null>((tui: any, theme: any, _kb: any, done: any) => {
+		let filter = initialQuery;
+		let ranked: OpenFileCandidate[] = [];
+
+		const top = new DynamicBorder((s: string) => theme.fg("accent", s));
+		const title = new Text(theme.fg("accent", theme.bold(" SASU open project file")), 0, 0);
+		const filterLine = new Text("", 0, 0);
+		const help = new Text(
+			theme.fg("dim", " ↑↓ navigate • type fuzzy filter • backspace delete • ctrl+u clear • enter open • esc cancel"),
+			0,
+			0,
+		);
+		const bottom = new DynamicBorder((s: string) => theme.fg("accent", s));
+
+		const selectTheme = {
+			selectedPrefix: (text: string) => theme.fg("accent", text),
+			selectedText: (text: string) => theme.fg("accent", text),
+			description: (text: string) => theme.fg("muted", text),
+			scrollInfo: (text: string) => theme.fg("dim", text),
+			noMatch: (text: string) => theme.fg("warning", text),
+		};
+
+		const updateFilterLine = () => {
+			const count = ranked.length;
+			filterLine.setText(theme.fg("dim", ` filter: ${filter || "(empty)"} • matches: ${count}/${input.candidates.length}`));
+		};
+
+		const buildList = () => {
+			ranked = rankOpenFileCandidates(input.candidates, filter);
+			updateFilterLine();
+			const items = toOpenFileSelectItems(ranked);
+			const list = new SelectList(items, Math.min(items.length || 1, OPEN_PICKER_VISIBLE_ROWS), selectTheme);
+			list.onSelect = (item) => done(String(item.value));
+			list.onCancel = () => done(null);
+			return list;
+		};
+
+		let list = buildList();
+
+		return {
+			render: (width: number) => [
+				...top.render(width),
+				...title.render(width),
+				...filterLine.render(width),
+				...list.render(width),
+				...help.render(width),
+				...bottom.render(width),
+			],
+			invalidate: () => {
+				top.invalidate();
+				title.invalidate();
+				filterLine.invalidate();
+				list.invalidate();
+				help.invalidate();
+				bottom.invalidate();
+			},
+			handleInput: (data: string) => {
+				if (matchesKey(data, Key.backspace)) {
+					filter = filter.slice(0, -1);
+					list = buildList();
+					tui.requestRender();
+					return;
+				}
+				if (matchesKey(data, Key.ctrl("u"))) {
+					filter = "";
+					list = buildList();
+					tui.requestRender();
+					return;
+				}
+				if (data.length === 1 && data >= " " && data !== "\x7f") {
+					filter += data;
+					list = buildList();
+					tui.requestRender();
+					return;
+				}
+				list.handleInput(data);
+				tui.requestRender();
+			},
+		};
+	});
+
+	return selected ?? null;
+}
+
 function buildSuggestionsChatBlock(suggestions: SuggestedFile[], limit = CHAT_SUGGESTIONS_LIMIT): string {
 	const top = suggestions.slice(0, limit);
 	return [
 		"SASU suggested next files:",
 		...top.map((s, i) => `${i + 1}. ${formatSuggestionLabel(s)}`),
 		"",
-		"(Run /sasu-open to browse or open other suggestions.)",
+		"(Suggestions are guidance. Run /sasu-open to fuzzy-open any project file.)",
 	].join("\n");
 }
 
@@ -496,12 +692,19 @@ export default function sasu(pi: ExtensionAPI) {
 	});
 
 	pi.registerCommand("sasu-open", {
-		description: "Open a file from cached SASU suggestions (with manual path fallback)",
-		handler: async (_args, ctx) => {
+		description: "Open any project file with a fuzzy picker (optional initial filter)",
+		handler: async (args, ctx) => {
 			const cwd = ctx.cwd;
 			const config = await loadConfig(cwd);
-			const session = await loadSession(cwd);
+			const initialQuery = args.trim();
 
+			const projectFiles = await listProjectFiles(pi, cwd);
+			if (projectFiles.length === 0) {
+				ctx.ui.notify("No project files available to open.", "warning");
+				return;
+			}
+
+			const session = await loadSession(cwd);
 			let suggestions = Array.isArray(session.lastSuggestedFiles) ? session.lastSuggestedFiles : [];
 			suggestions = await normalizeSuggestedFilesForProject(
 				pi,
@@ -511,53 +714,31 @@ export default function sasu(pi: ExtensionAPI) {
 			);
 			suggestions = filterActionableSuggestions(suggestions);
 
-			if (suggestions.length === 0) {
-				ctx.ui.notify("No cached suggestions. Run /sasu-suggest to get agent-based suggestions.", "warning");
-				return;
-			}
-
-			await saveSession(cwd, {
-				...session,
-				lastSuggestedFiles: suggestions,
-				lastSuggestionsUpdatedAt: new Date().toISOString(),
-			});
-
-			const options = suggestions.map((suggestion, index) => `${index + 1}. ${formatSuggestionLabel(suggestion)}`);
-			const manualOption = "✍ Enter path manually";
-			const selected = await ctx.ui.select("SASU: choose a file to open", [...options, manualOption]);
-			if (!selected) return;
-
-			let targetPath: string | undefined;
-			let targetSuggestion: SuggestedFile | undefined;
-			if (selected === manualOption) {
-				targetPath = (await ctx.ui.input("File path", "src/..."))?.trim();
-				if (!targetPath) return;
-			} else {
-				const matched = selected.match(/^(\d+)\.\s+/);
-				if (matched) {
-					const index = Number(matched[1]) - 1;
-					targetSuggestion = suggestions[index];
-					targetPath = targetSuggestion?.path;
+			const suggestionReasonByPath = new Map<string, string | undefined>();
+			for (const suggestion of suggestions) {
+				if ((suggestion.action ?? "open") !== "open") continue;
+				if (!suggestionReasonByPath.has(suggestion.path)) {
+					suggestionReasonByPath.set(suggestion.path, suggestion.reason);
 				}
 			}
 
-			if (!targetPath) {
-				ctx.ui.notify("Could not resolve selected file path", "warning");
-				return;
-			}
+			const candidates: OpenFileCandidate[] = projectFiles
+				.map((filePath) => ({
+					path: filePath,
+					baseName: path.posix.basename(filePath),
+					suggested: suggestionReasonByPath.has(filePath),
+					reason: suggestionReasonByPath.get(filePath),
+				}))
+				.sort((a, b) => a.path.localeCompare(b.path));
 
-			if (targetSuggestion?.action === "create") {
-				const createOption = "Create and open";
-				const cancelOption = "Cancel";
-				const confirmed = await ctx.ui.select(`SASU: create and open ${targetPath}?`, [createOption, cancelOption]);
-				if (confirmed !== createOption) return;
+			const selectedPath = await pickProjectFileWithFuzzyFilter({
+				ctx,
+				candidates,
+				initialQuery,
+			});
+			if (!selectedPath) return;
 
-				const created = await ensureSuggestedFileExists(cwd, targetPath);
-				ctx.ui.notify(created.message, created.ok ? "info" : "error");
-				if (!created.ok) return;
-			}
-
-			const opened = await openFilePath(cwd, targetPath, config, ctx.ui);
+			const opened = await openFilePath(cwd, selectedPath, config, ctx.ui);
 			ctx.ui.notify(opened.message, opened.ok ? "info" : "error");
 		},
 	});
