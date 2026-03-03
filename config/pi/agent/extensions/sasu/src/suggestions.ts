@@ -68,131 +68,89 @@ function normalizeSuggestedPath(rawPath: string): Nullable<string> {
 	return p;
 }
 
-function addSuggestedFile(target: SuggestedFile[], file: SuggestedFile): void {
-	const normalized = normalizeSuggestedPath(file.path);
-	if (!normalized) return;
-	if (target.some((existing) => existing.path === normalized)) return;
-	target.push({
-		path: normalized,
-		reason: sanitizeReason(file.reason),
-	});
-}
+export function extractSuggestedPathsFromCandidates(
+	text: string,
+	candidatePaths: string[],
+	max = 40,
+): SuggestedFile[] {
+	const normalizedCandidates = Array.from(
+		new Set(candidatePaths.map((candidatePath) => normalizeSuggestedPath(candidatePath)).filter(Boolean) as string[]),
+	).sort((a, b) => b.length - a.length);
+	const candidateSet = new Set(normalizedCandidates);
 
-export function extractSuggestedFilesFromJsonBlock(text: string): SuggestedFile[] {
 	const suggestions: SuggestedFile[] = [];
-	const fenceRegex = /```(?:json)?\s*([\s\S]*?)```/gim;
-	let match: RegExpExecArray | null;
+	const seen = new Set<string>();
 
-	const collect = (node: any) => {
-		if (!node) return;
-		if (Array.isArray(node)) {
-			for (const item of node) collect(item);
-			return;
-		}
-		if (typeof node === "string") {
-			addSuggestedFile(suggestions, { path: node });
-			return;
-		}
-		if (typeof node !== "object") return;
-		if (typeof node.path === "string") {
-			addSuggestedFile(suggestions, {
-				path: node.path,
-				reason: typeof node.reason === "string" ? node.reason : undefined,
-			});
-		}
-		for (const key of ["suggested_files", "suggestedFiles", "files", "next_files", "nextFiles"]) {
-			if (key in node) collect(node[key]);
-		}
-	};
-
-	while ((match = fenceRegex.exec(text)) !== null) {
-		const block = match[1]?.trim();
-		if (!block) continue;
-		try {
-			collect(JSON.parse(block));
-		} catch {
-			// Ignore invalid JSON blocks.
-		}
-	}
-
-	return suggestions;
-}
-
-function pickCandidateFromListLine(line: string): string | null {
-	const withoutPrefix = line.replace(/^\s*(?:[-*+]\s+|\d+[.)]\s+)/, "").trim();
-	if (!withoutPrefix) return null;
-
-	const beforeReason = withoutPrefix.split(/\s+[–—-]\s+|\s*:\s+/)[0]?.trim();
-	if (beforeReason) return beforeReason;
-	return null;
-}
-
-function extractSuggestedFilesFromLines(text: string): SuggestedFile[] {
-	const suggestions: SuggestedFile[] = [];
-	const lines = text.split("\n");
-
-	for (const rawLine of lines) {
+	for (const rawLine of text.split("\n")) {
 		const line = rawLine.trim();
 		if (!line) continue;
 
-		const isListItem = /^\s*(?:[-*+]\s+|\d+[.)]\s+)/.test(rawLine);
-		const hasInlineCode = /`[^`]+`/.test(line);
-		if (!isListItem && !hasInlineCode) continue;
+		const isListLike = /^(?:[-*+]\s+|\d+[.)]\s+)/.test(line);
+		const inlineCodeTokens = Array.from(line.matchAll(/`([^`]+)`/g))
+			.map((m) => normalizeSuggestedPath(m[1] || ""))
+			.filter((token): token is string => Boolean(token));
+		if (!isListLike && inlineCodeTokens.length === 0) continue;
 
-		const candidates: string[] = [];
-		for (const m of line.matchAll(/`([^`]+)`/g)) {
-			if (m[1]) candidates.push(m[1]);
-		}
-		if (isListItem) {
-			const fromListPrefix = pickCandidateFromListLine(line);
-			if (fromListPrefix) candidates.push(fromListPrefix);
-		}
-		const fromPath = line.match(/(?:^|\s)(\.?\/?[A-Za-z0-9._-]+(?:\/[A-Za-z0-9._-]+)*)/g) ?? [];
-		for (const token of fromPath) {
-			candidates.push(token.trim());
-		}
-
-		let normalizedPath: string | null = null;
-		let usedToken: string | null = null;
-		for (const candidate of candidates) {
-			const normalized = normalizeSuggestedPath(candidate);
-			if (normalized) {
-				normalizedPath = normalized;
-				usedToken = candidate;
+		let selectedPath: string | null = null;
+		for (const token of inlineCodeTokens) {
+			if (candidateSet.has(token)) {
+				selectedPath = token;
 				break;
 			}
 		}
-		if (!normalizedPath) continue;
+
+		if (!selectedPath) {
+			for (const candidatePath of normalizedCandidates) {
+				if (line.includes(candidatePath)) {
+					selectedPath = candidatePath;
+					break;
+				}
+			}
+		}
+		if (!selectedPath || seen.has(selectedPath)) continue;
 
 		const strippedPrefix = line.replace(/^\s*(?:[-*+]\s+|\d+[.)]\s+)/, "");
-		const rawReason = usedToken
-			? strippedPrefix.replace(usedToken, "").replace(/^[-–—:\s]+/, "").trim()
-			: "";
-
-		addSuggestedFile(suggestions, {
-			path: normalizedPath,
-			reason: rawReason,
+		const rawReason = strippedPrefix.replace(selectedPath, "").replace(/^[-–—:\s]+/, "").trim();
+		seen.add(selectedPath);
+		suggestions.push({
+			path: selectedPath,
+			reason: sanitizeReason(rawReason),
 		});
+
+		if (suggestions.length >= max) break;
 	}
 
 	return suggestions;
 }
 
-export function extractSuggestedFiles(text: string, max = 40): SuggestedFile[] {
-	const jsonFiles = extractSuggestedFilesFromJsonBlock(text);
-	const lineFiles = extractSuggestedFilesFromLines(text);
-	const merged: SuggestedFile[] = [];
-	for (const s of [...jsonFiles, ...lineFiles]) addSuggestedFile(merged, s);
-	return merged.slice(0, max);
+async function pathExists(filePath: string): Promise<boolean> {
+	try {
+		await access(filePath);
+		return true;
+	} catch {
+		return false;
+	}
 }
 
-export async function listProjectFiles(pi: ExtensionAPI): Promise<string[]> {
+async function filterExistingProjectFiles(cwd: string, filePaths: string[]): Promise<string[]> {
+	const unique = Array.from(new Set(filePaths.map((filePath) => filePath.trim().replace(/^\.\//, "")).filter(Boolean)));
+	const existing = await Promise.all(
+		unique.map(async (relativePath) => {
+			const absolutePath = path.join(cwd, relativePath);
+			return (await pathExists(absolutePath)) ? relativePath : null;
+		}),
+	);
+	return existing.filter((filePath): filePath is string => typeof filePath === "string");
+}
+
+export async function listProjectFiles(pi: ExtensionAPI, cwd: string): Promise<string[]> {
 	const tracked = await runExec(pi, "git", ["ls-files", "--cached", "--others", "--exclude-standard"], 20_000);
 	if (tracked.code === 0) {
-		return tracked.stdout
+		const trackedFiles = tracked.stdout
 			.split("\n")
 			.map((line) => line.trim())
 			.filter((line) => line.length > 0);
+		return filterExistingProjectFiles(cwd, trackedFiles);
 	}
 
 	const found = await runExec(
@@ -206,19 +164,11 @@ export async function listProjectFiles(pi: ExtensionAPI): Promise<string[]> {
 	);
 	if (found.code !== 0) return [];
 
-	return found.stdout
+	const foundFiles = found.stdout
 		.split("\n")
 		.map((line) => line.trim().replace(/^\.\//, ""))
 		.filter((line) => line.length > 0);
-}
-
-async function pathExists(filePath: string): Promise<boolean> {
-	try {
-		await access(filePath);
-		return true;
-	} catch {
-		return false;
-	}
+	return filterExistingProjectFiles(cwd, foundFiles);
 }
 
 function findBestProjectRelativePath(candidate: string, projectFiles: string[]): string | null {
@@ -252,8 +202,9 @@ export async function normalizeSuggestedFilesForProject(
 	suggestions: SuggestedFile[],
 	max = 40,
 ): Promise<SuggestedFile[]> {
-	const projectFiles = await listProjectFiles(pi);
+	const projectFiles = await listProjectFiles(pi, cwd);
 	const normalized: SuggestedFile[] = [];
+	const seen = new Set<string>();
 
 	for (const suggestion of suggestions) {
 		const candidate = normalizeSuggestedPath(suggestion.path);
@@ -273,14 +224,22 @@ export async function normalizeSuggestedFilesForProject(
 			}
 		}
 
-		if (!resolved) continue;
-		addSuggestedFile(normalized, {
+		if (resolved) {
+			const resolvedAbsolutePath = path.join(cwd, resolved);
+			if (!(await pathExists(resolvedAbsolutePath))) {
+				resolved = null;
+			}
+		}
+		if (!resolved || seen.has(resolved)) continue;
+
+		seen.add(resolved);
+		normalized.push({
 			path: resolved,
-			reason: suggestion.reason,
+			reason: sanitizeReason(suggestion.reason),
 		});
+
 		if (normalized.length >= max) break;
 	}
 
 	return normalized;
 }
-

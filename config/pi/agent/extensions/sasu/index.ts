@@ -7,7 +7,7 @@ import { openFilePath } from "./src/open-file";
 import { buildReviewPrompt } from "./src/review";
 import { loadConfig, loadSession, saveSession } from "./src/storage";
 import {
-	extractSuggestedFiles,
+	extractSuggestedPathsFromCandidates,
 	extractTextFromMessage,
 	listProjectFiles,
 	normalizeSuggestedFilesForProject,
@@ -95,7 +95,7 @@ function buildSuggestionRequestPrompt(input: {
 	lastIntent?: string;
 	changedFiles: string[];
 	untrackedFiles: string[];
-	candidateFiles: string[];
+	candidatePaths: string[];
 	maxSuggestions: number;
 }): string {
 	const changedLines = input.changedFiles.length
@@ -104,8 +104,8 @@ function buildSuggestionRequestPrompt(input: {
 	const untrackedLines = input.untrackedFiles.length
 		? compactLines(input.untrackedFiles, 80).map((f) => `- ${f}`).join("\n")
 		: "- (none)";
-	const candidateLines = input.candidateFiles.length
-		? input.candidateFiles.slice(0, SUGGESTION_PROMPT_FILE_LIMIT).map((f) => `- ${f}`).join("\n")
+	const candidateLines = input.candidatePaths.length
+		? input.candidatePaths.slice(0, SUGGESTION_PROMPT_FILE_LIMIT).map((candidatePath) => `- ${candidatePath}`).join("\n")
 		: "- (no files found)";
 
 	return [
@@ -125,6 +125,9 @@ function buildSuggestionRequestPrompt(input: {
 		"- Prioritize files most relevant to the active focus and recent conversation intent.",
 		"- Prefer implementation/source files over docs unless docs are explicitly requested.",
 		"- Do not suggest .sasu/, .git/, node_modules/, dist/, or reference/ paths.",
+		"- If read returns ENOENT for a path, do not suggest it as an existing file.",
+		"- Suggest a missing path only when explicitly recommending creation of a new file.",
+		"- Do not include internal IDs in output.",
 		"- Keep each reason concise.",
 		"",
 		"Goal context:",
@@ -154,18 +157,21 @@ async function showSuggestionsAndOfferOpen(input: {
 	cwd: string;
 	config: ConfigData;
 	suggestions: SuggestedFile[];
+	showChatBlock?: boolean;
 }): Promise<void> {
 	const suggestions = filterActionableSuggestions(input.suggestions);
 	if (suggestions.length === 0) return;
 
-	input.pi.sendMessage(
-		{
-			customType: "sasu-suggested-files",
-			content: buildSuggestionsChatBlock(suggestions),
-			display: true,
-		},
-		{ triggerTurn: false },
-	);
+	if (input.showChatBlock !== false) {
+		input.pi.sendMessage(
+			{
+				customType: "sasu-suggested-files",
+				content: buildSuggestionsChatBlock(suggestions),
+				display: true,
+			},
+			{ triggerTurn: false },
+		);
+	}
 
 	const topSuggestions = suggestions.slice(0, CHAT_SUGGESTIONS_LIMIT);
 	if (!input.ctx.hasUI || topSuggestions.length === 0) return;
@@ -189,6 +195,7 @@ export default function sasu(pi: ExtensionAPI) {
 	let awaitingSuggestionResponse = false;
 	let skipNextSuggestionAgentEnd = false;
 	let suggestionGuardPreviousTools: string[] | null = null;
+	let pendingSuggestionPaths: string[] | null = null;
 
 	const isBusyWaiting = () => awaitingReviewResponse || awaitingSuggestionResponse;
 	const enterSuggestionGuard = (): boolean => {
@@ -215,11 +222,13 @@ export default function sasu(pi: ExtensionAPI) {
 		const session = await loadSession(input.cwd);
 		const goalInfo = await ensureGoalContext(input.cwd, session, input.ctx);
 		const gitContext = await collectGitContext(pi);
-		const projectFiles = (await listProjectFiles(pi)).filter(isActionableSuggestionPath);
-		if (projectFiles.length === 0) {
+		const candidatePaths = (await listProjectFiles(pi, input.cwd)).filter(isActionableSuggestionPath);
+		if (candidatePaths.length === 0) {
 			input.ctx.ui.notify("No project files available for suggestion", "warning");
 			return;
 		}
+
+		pendingSuggestionPaths = candidatePaths;
 
 		const prompt = buildSuggestionRequestPrompt({
 			projectGoal: goalInfo.projectGoal,
@@ -232,7 +241,7 @@ export default function sasu(pi: ExtensionAPI) {
 			lastIntent: session.lastIntent,
 			changedFiles: gitContext.changedFiles,
 			untrackedFiles: gitContext.untrackedFiles,
-			candidateFiles: projectFiles,
+			candidatePaths,
 			maxSuggestions: input.config.maxSuggestions ?? DEFAULT_MAX_SUGGESTIONS,
 		});
 
@@ -255,6 +264,7 @@ export default function sasu(pi: ExtensionAPI) {
 				input.ctx.ui.notify("SASU requested agent-based file suggestions", "info");
 			} catch {
 				awaitingSuggestionResponse = false;
+				pendingSuggestionPaths = null;
 				exitSuggestionGuard();
 				input.ctx.ui.notify("Failed to request agent-based file suggestions", "error");
 				return;
@@ -278,6 +288,7 @@ export default function sasu(pi: ExtensionAPI) {
 				input.ctx.ui.notify("SASU queued agent-based file suggestions", "info");
 			} catch {
 				awaitingSuggestionResponse = false;
+				pendingSuggestionPaths = null;
 				exitSuggestionGuard();
 				input.ctx.ui.notify("Failed to queue agent-based file suggestions", "error");
 				return;
@@ -497,19 +508,24 @@ export default function sasu(pi: ExtensionAPI) {
 
 			try {
 				if (!assistantText) {
+					pendingSuggestionPaths = null;
 					ctx.ui.notify("SASU could not read suggestion response", "warning");
 					return;
 				}
 
 				const config = await loadConfig(ctx.cwd);
 				const session = await loadSession(ctx.cwd);
-				let suggestions = extractSuggestedFiles(assistantText, config.maxSuggestions ?? DEFAULT_MAX_SUGGESTIONS);
-				suggestions = await normalizeSuggestedFilesForProject(
-					pi,
-					ctx.cwd,
-					suggestions,
-					config.maxSuggestions ?? DEFAULT_MAX_SUGGESTIONS,
-				);
+				const maxSuggestions = config.maxSuggestions ?? DEFAULT_MAX_SUGGESTIONS;
+				const candidatePaths = pendingSuggestionPaths;
+				pendingSuggestionPaths = null;
+
+				if (!candidatePaths || candidatePaths.length === 0) {
+					ctx.ui.notify("SASU suggestion context expired. Run /sasu-suggest again.", "warning");
+					return;
+				}
+
+				let suggestions = extractSuggestedPathsFromCandidates(assistantText, candidatePaths, maxSuggestions);
+				suggestions = await normalizeSuggestedFilesForProject(pi, ctx.cwd, suggestions, maxSuggestions);
 				suggestions = filterActionableSuggestions(suggestions);
 
 				await saveSession(ctx.cwd, {
@@ -519,7 +535,7 @@ export default function sasu(pi: ExtensionAPI) {
 				});
 
 				if (suggestions.length === 0) {
-					ctx.ui.notify("Agent returned no valid suggestions. Try /sasu-suggest with a clearer hint.", "warning");
+					ctx.ui.notify("Agent returned no valid candidate paths. Try /sasu-suggest again.", "warning");
 					return;
 				}
 
@@ -529,6 +545,7 @@ export default function sasu(pi: ExtensionAPI) {
 					cwd: ctx.cwd,
 					config,
 					suggestions,
+					showChatBlock: false,
 				});
 				return;
 			} finally {
