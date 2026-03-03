@@ -1,8 +1,11 @@
 export type Nullable<T> = T | null;
 export type OpenMode = "foreground" | "background";
 
+export type SuggestionAction = "open" | "create";
+
 export interface SuggestedFile {
 	path: string;
+	action?: SuggestionAction;
 	reason?: string;
 }
 

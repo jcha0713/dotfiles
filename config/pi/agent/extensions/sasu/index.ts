@@ -1,3 +1,5 @@
+import { access, mkdir, writeFile } from "node:fs/promises";
+import * as path from "node:path";
 import type { ExtensionAPI } from "@mariozechner/pi-coding-agent";
 import { runOptionalChecks } from "./src/checks";
 import { DEFAULT_MAX_SUGGESTIONS, STATUS_PREVIEW_CHARS } from "./src/constants";
@@ -7,7 +9,7 @@ import { openFilePath } from "./src/open-file";
 import { buildReviewPrompt } from "./src/review";
 import { loadConfig, loadSession, saveSession } from "./src/storage";
 import {
-	extractSuggestedPathsFromCandidates,
+	extractSuggestedFilesFromResponse,
 	extractTextFromMessage,
 	listProjectFiles,
 	normalizeSuggestedFilesForProject,
@@ -29,12 +31,20 @@ function isActionableSuggestionPath(filePath: string): boolean {
 
 function filterActionableSuggestions(suggestions: SuggestedFile[]): SuggestedFile[] {
 	const filtered: SuggestedFile[] = [];
-	const seen = new Set<string>();
+	const indexByPath = new Map<string, number>();
 	for (const suggestion of suggestions) {
 		if (!isActionableSuggestionPath(suggestion.path)) continue;
-		if (seen.has(suggestion.path)) continue;
-		seen.add(suggestion.path);
-		filtered.push(suggestion);
+		const action = suggestion.action === "create" ? "create" : "open";
+		const existingIndex = indexByPath.get(suggestion.path);
+		if (typeof existingIndex === "number") {
+			const existing = filtered[existingIndex];
+			if (existing.action === "create" && action === "open") {
+				filtered[existingIndex] = { ...suggestion, action };
+			}
+			continue;
+		}
+		indexByPath.set(suggestion.path, filtered.length);
+		filtered.push({ ...suggestion, action });
 	}
 	return filtered;
 }
@@ -43,11 +53,46 @@ function isReadTool(toolName: string): boolean {
 	return toolName === "read" || toolName.endsWith(".read");
 }
 
+function formatSuggestionLabel(suggestion: SuggestedFile): string {
+	const actionPrefix = suggestion.action === "create" ? "[CREATE] " : "";
+	const reason = suggestion.reason ? ` — ${suggestion.reason}` : "";
+	return `${actionPrefix}${suggestion.path}${reason}`;
+}
+
+async function ensureSuggestedFileExists(cwd: string, filePath: string): Promise<{ ok: boolean; message: string }> {
+	const resolvedPath = path.isAbsolute(filePath) ? filePath : path.join(cwd, filePath);
+	const relativePath = path.relative(cwd, resolvedPath).replace(/\\/g, "/");
+	if (!relativePath || relativePath === ".." || relativePath.startsWith("../") || path.isAbsolute(relativePath)) {
+		return { ok: false, message: `Refusing to create file outside project root: ${filePath}` };
+	}
+
+	try {
+		await access(resolvedPath);
+		return { ok: true, message: `File already exists: ${relativePath}` };
+	} catch {
+		// Create the file below.
+	}
+
+	try {
+		await mkdir(path.dirname(resolvedPath), { recursive: true });
+		await writeFile(resolvedPath, "", { encoding: "utf8", flag: "wx" });
+		return { ok: true, message: `Created: ${relativePath}` };
+	} catch (error: any) {
+		if (error?.code === "EEXIST") {
+			return { ok: true, message: `File already exists: ${relativePath}` };
+		}
+		return {
+			ok: false,
+			message: `Failed to create ${relativePath}: ${error?.message || "unknown error"}`,
+		};
+	}
+}
+
 function buildSuggestionsChatBlock(suggestions: SuggestedFile[], limit = CHAT_SUGGESTIONS_LIMIT): string {
 	const top = suggestions.slice(0, limit);
 	return [
 		"SASU suggested next files:",
-		...top.map((s, i) => `${i + 1}. ${s.path}${s.reason ? ` — ${s.reason}` : ""}`),
+		...top.map((s, i) => `${i + 1}. ${formatSuggestionLabel(s)}`),
 		"",
 		"(Run /sasu-open to browse or open other suggestions.)",
 	].join("\n");
@@ -117,17 +162,19 @@ function buildSuggestionRequestPrompt(input: {
 		"Do NOT call tools other than read.",
 		"Use concrete evidence from inspected files (functions/sections) in each reason.",
 		"Avoid hedging words like likely, may, might, or potentially.",
-		"Return a concise numbered list in plain text: <path> — <reason>.",
+		"Return a concise numbered list in plain text. Each line must start with OPEN or CREATE:",
+		"- OPEN <existing-path> — <reason>",
+		"- CREATE <new-path> — <reason>",
 		"",
 		"Rules:",
 		`- Suggest at most ${input.maxSuggestions} files.`,
-		"- Use ONLY paths from 'Candidate files'.",
+		"- OPEN paths must come ONLY from 'Candidate files'.",
+		"- CREATE paths must be project-relative file paths for new files.",
 		"- Prioritize files most relevant to the active focus and recent conversation intent.",
 		"- Prefer implementation/source files over docs unless docs are explicitly requested.",
 		"- Do not suggest .sasu/, .git/, node_modules/, dist/, or reference/ paths.",
-		"- If read returns ENOENT for a path, do not suggest it as an existing file.",
-		"- Suggest a missing path only when explicitly recommending creation of a new file.",
-		"- Do not include internal IDs in output.",
+		"- If read returns ENOENT for a path, do not suggest it with OPEN.",
+		"- Use CREATE only when explicitly recommending a new file.",
 		"- Keep each reason concise.",
 		"",
 		"Goal context:",
@@ -146,7 +193,7 @@ function buildSuggestionRequestPrompt(input: {
 		"Recently untracked files:",
 		untrackedLines,
 		"",
-		"Candidate files (absolute source of truth):",
+		"Candidate files for OPEN (absolute source of truth):",
 		candidateLines,
 	].join("\n");
 }
@@ -176,16 +223,30 @@ async function showSuggestionsAndOfferOpen(input: {
 	const topSuggestions = suggestions.slice(0, CHAT_SUGGESTIONS_LIMIT);
 	if (!input.ctx.hasUI || topSuggestions.length === 0) return;
 
-	const options = topSuggestions.map((s, i) => `${i + 1}. ${s.path}${s.reason ? ` — ${s.reason}` : ""}`);
+	const options = topSuggestions.map((suggestion, i) => `${i + 1}. ${formatSuggestionLabel(suggestion)}`);
 	const skipOption = "Skip for now";
 	const selected = await input.ctx.ui.select("SASU: open one suggested file now?", [...options, skipOption]);
 	if (!selected || selected === skipOption) return;
 
 	const selectedIndex = options.indexOf(selected);
-	const selectedPath = topSuggestions[selectedIndex]?.path;
-	if (!selectedPath) return;
+	const selectedSuggestion = topSuggestions[selectedIndex];
+	if (!selectedSuggestion?.path) return;
 
-	const opened = await openFilePath(input.cwd, selectedPath, input.config, input.ctx.ui);
+	if (selectedSuggestion.action === "create") {
+		const createOption = "Create and open";
+		const cancelOption = "Cancel";
+		const confirmed = await input.ctx.ui.select(
+			`SASU: create and open ${selectedSuggestion.path}?`,
+			[createOption, cancelOption],
+		);
+		if (confirmed !== createOption) return;
+
+		const created = await ensureSuggestedFileExists(input.cwd, selectedSuggestion.path);
+		input.ctx.ui.notify(created.message, created.ok ? "info" : "error");
+		if (!created.ok) return;
+	}
+
+	const opened = await openFilePath(input.cwd, selectedSuggestion.path, input.config, input.ctx.ui);
 	input.ctx.ui.notify(opened.message, opened.ok ? "info" : "error");
 }
 
@@ -461,15 +522,13 @@ export default function sasu(pi: ExtensionAPI) {
 				lastSuggestionsUpdatedAt: new Date().toISOString(),
 			});
 
-			const options = suggestions.map((s, index) => {
-				const reason = s.reason ? ` — ${s.reason}` : "";
-				return `${index + 1}. ${s.path}${reason}`;
-			});
+			const options = suggestions.map((suggestion, index) => `${index + 1}. ${formatSuggestionLabel(suggestion)}`);
 			const manualOption = "✍ Enter path manually";
 			const selected = await ctx.ui.select("SASU: choose a file to open", [...options, manualOption]);
 			if (!selected) return;
 
 			let targetPath: string | undefined;
+			let targetSuggestion: SuggestedFile | undefined;
 			if (selected === manualOption) {
 				targetPath = (await ctx.ui.input("File path", "src/..."))?.trim();
 				if (!targetPath) return;
@@ -477,13 +536,25 @@ export default function sasu(pi: ExtensionAPI) {
 				const matched = selected.match(/^(\d+)\.\s+/);
 				if (matched) {
 					const index = Number(matched[1]) - 1;
-					targetPath = suggestions[index]?.path;
+					targetSuggestion = suggestions[index];
+					targetPath = targetSuggestion?.path;
 				}
 			}
 
 			if (!targetPath) {
 				ctx.ui.notify("Could not resolve selected file path", "warning");
 				return;
+			}
+
+			if (targetSuggestion?.action === "create") {
+				const createOption = "Create and open";
+				const cancelOption = "Cancel";
+				const confirmed = await ctx.ui.select(`SASU: create and open ${targetPath}?`, [createOption, cancelOption]);
+				if (confirmed !== createOption) return;
+
+				const created = await ensureSuggestedFileExists(cwd, targetPath);
+				ctx.ui.notify(created.message, created.ok ? "info" : "error");
+				if (!created.ok) return;
 			}
 
 			const opened = await openFilePath(cwd, targetPath, config, ctx.ui);
@@ -524,7 +595,7 @@ export default function sasu(pi: ExtensionAPI) {
 					return;
 				}
 
-				let suggestions = extractSuggestedPathsFromCandidates(assistantText, candidatePaths, maxSuggestions);
+				let suggestions = extractSuggestedFilesFromResponse(assistantText, candidatePaths, maxSuggestions);
 				suggestions = await normalizeSuggestedFilesForProject(pi, ctx.cwd, suggestions, maxSuggestions);
 				suggestions = filterActionableSuggestions(suggestions);
 
@@ -535,7 +606,7 @@ export default function sasu(pi: ExtensionAPI) {
 				});
 
 				if (suggestions.length === 0) {
-					ctx.ui.notify("Agent returned no valid candidate paths. Try /sasu-suggest again.", "warning");
+					ctx.ui.notify("Agent returned no valid OPEN/CREATE suggestions. Try /sasu-suggest again.", "warning");
 					return;
 				}
 

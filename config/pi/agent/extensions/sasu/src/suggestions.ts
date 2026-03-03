@@ -2,19 +2,7 @@ import { access } from "node:fs/promises";
 import * as path from "node:path";
 import type { ExtensionAPI } from "@mariozechner/pi-coding-agent";
 import { runExec } from "./exec";
-import type { Nullable, SuggestedFile } from "./types";
-
-const KNOWN_FILE_BASENAMES = new Set([
-	"makefile",
-	"dockerfile",
-	"justfile",
-	"license",
-	"copying",
-	"readme",
-	"changelog",
-	"authors",
-	"contributors",
-]);
+import type { Nullable, SuggestedFile, SuggestionAction } from "./types";
 
 export function extractTextFromMessage(message: any): string {
 	if (!message) return "";
@@ -59,64 +47,118 @@ function normalizeSuggestedPath(rawPath: string): Nullable<string> {
 	if (p.includes("://") || p.startsWith("http")) return null;
 	if (p.startsWith("./")) p = p.slice(2);
 	p = p.replace(/\\/g, "/");
-	if (p.length === 0 || p.includes(" ")) return null;
-
-	const base = path.basename(p).toLowerCase();
-	const fileLike = base.includes(".") || KNOWN_FILE_BASENAMES.has(base);
-	if (!fileLike) return null;
+	p = p.replace(/\/+/g, "/");
+	if (p.length === 0 || /\s/.test(p) || p === "." || p === "..") return null;
 
 	return p;
 }
 
-export function extractSuggestedPathsFromCandidates(
+function normalizeCreatePath(rawPath: string): Nullable<string> {
+	if (!rawPath) return null;
+	if (path.isAbsolute(rawPath)) return null;
+
+	const normalized = path.posix.normalize(rawPath.replace(/^\.\//, ""));
+	if (!normalized || normalized === "." || normalized === "..") return null;
+	if (normalized.startsWith("../") || normalized.includes("/../")) return null;
+	if (normalized.endsWith("/")) return null;
+	return normalized;
+}
+
+function parseSuggestionLine(rawLine: string): Nullable<{ action: SuggestionAction; path: string; reason?: string }> {
+	const listStripped = rawLine.trim().replace(/^(?:[-*+]\s+|\d+[.)]\s+)/, "").trim();
+	if (!listStripped) return null;
+
+	const actionMatch = listStripped.match(/^(OPEN|CREATE)\b/i);
+	if (!actionMatch) return null;
+
+	const action = actionMatch[1].toLowerCase() === "create" ? "create" : "open";
+	let rest = listStripped.slice(actionMatch[0].length).replace(/^[-–—:\s]+/, "").trim();
+	if (!rest) return null;
+
+	let rawPath = "";
+	let rawReason = "";
+
+	if (rest.startsWith("`")) {
+		const closingTick = rest.indexOf("`", 1);
+		if (closingTick > 1) {
+			rawPath = rest.slice(1, closingTick);
+			rawReason = rest.slice(closingTick + 1);
+		} else {
+			rawPath = rest.slice(1);
+		}
+	} else {
+		const separatorMatch = rest.match(/\s+[—–-]\s+/);
+		if (separatorMatch && typeof separatorMatch.index === "number") {
+			rawPath = rest.slice(0, separatorMatch.index);
+			rawReason = rest.slice(separatorMatch.index + separatorMatch[0].length);
+		} else {
+			rawPath = rest;
+		}
+	}
+
+	const normalizedPath = normalizeSuggestedPath(rawPath);
+	if (!normalizedPath) return null;
+
+	return {
+		action,
+		path: normalizedPath,
+		reason: sanitizeReason(rawReason),
+	};
+}
+
+export function extractSuggestedFilesFromResponse(
 	text: string,
 	candidatePaths: string[],
 	max = 40,
 ): SuggestedFile[] {
 	const normalizedCandidates = Array.from(
 		new Set(candidatePaths.map((candidatePath) => normalizeSuggestedPath(candidatePath)).filter(Boolean) as string[]),
-	).sort((a, b) => b.length - a.length);
+	);
 	const candidateSet = new Set(normalizedCandidates);
 
 	const suggestions: SuggestedFile[] = [];
-	const seen = new Set<string>();
+	const pathIndex = new Map<string, number>();
 
 	for (const rawLine of text.split("\n")) {
-		const line = rawLine.trim();
-		if (!line) continue;
+		const parsed = parseSuggestionLine(rawLine);
+		if (!parsed) continue;
 
-		const isListLike = /^(?:[-*+]\s+|\d+[.)]\s+)/.test(line);
-		const inlineCodeTokens = Array.from(line.matchAll(/`([^`]+)`/g))
-			.map((m) => normalizeSuggestedPath(m[1] || ""))
-			.filter((token): token is string => Boolean(token));
-		if (!isListLike && inlineCodeTokens.length === 0) continue;
+		let action: SuggestionAction = parsed.action;
+		let resolvedPath: string | null = null;
 
-		let selectedPath: string | null = null;
-		for (const token of inlineCodeTokens) {
-			if (candidateSet.has(token)) {
-				selectedPath = token;
-				break;
+		if (action === "open") {
+			if (!candidateSet.has(parsed.path)) continue;
+			resolvedPath = parsed.path;
+		} else {
+			const createPath = normalizeCreatePath(parsed.path);
+			if (!createPath) continue;
+			if (candidateSet.has(createPath)) {
+				action = "open";
 			}
+			resolvedPath = createPath;
 		}
 
-		if (!selectedPath) {
-			for (const candidatePath of normalizedCandidates) {
-				if (line.includes(candidatePath)) {
-					selectedPath = candidatePath;
-					break;
-				}
-			}
-		}
-		if (!selectedPath || seen.has(selectedPath)) continue;
+		if (!resolvedPath) continue;
 
-		const strippedPrefix = line.replace(/^\s*(?:[-*+]\s+|\d+[.)]\s+)/, "");
-		const rawReason = strippedPrefix.replace(selectedPath, "").replace(/^[-–—:\s]+/, "").trim();
-		seen.add(selectedPath);
+		const existingIndex = pathIndex.get(resolvedPath);
+		if (typeof existingIndex === "number") {
+			const existing = suggestions[existingIndex];
+			if (existing.action === "create" && action === "open") {
+				suggestions[existingIndex] = {
+					path: resolvedPath,
+					action,
+					reason: sanitizeReason(parsed.reason),
+				};
+			}
+			continue;
+		}
+
+		pathIndex.set(resolvedPath, suggestions.length);
 		suggestions.push({
-			path: selectedPath,
-			reason: sanitizeReason(rawReason),
+			path: resolvedPath,
+			action,
+			reason: sanitizeReason(parsed.reason),
 		});
-
 		if (suggestions.length >= max) break;
 	}
 
@@ -196,6 +238,22 @@ function findBestProjectRelativePath(candidate: string, projectFiles: string[]):
 	return null;
 }
 
+async function resolveExistingPath(cwd: string, candidate: string, projectFiles: string[]): Promise<string | null> {
+	if (path.isAbsolute(candidate)) {
+		if (!(await pathExists(candidate))) return null;
+		const relative = path.relative(cwd, candidate).replace(/\\/g, "/");
+		if (!relative || relative.startsWith("../") || relative === "..") return null;
+		return relative;
+	}
+
+	const direct = path.join(cwd, candidate);
+	if (await pathExists(direct)) {
+		return candidate.replace(/^\.\//, "");
+	}
+
+	return findBestProjectRelativePath(candidate, projectFiles);
+}
+
 export async function normalizeSuggestedFilesForProject(
 	pi: ExtensionAPI,
 	cwd: string,
@@ -203,38 +261,52 @@ export async function normalizeSuggestedFilesForProject(
 	max = 40,
 ): Promise<SuggestedFile[]> {
 	const projectFiles = await listProjectFiles(pi, cwd);
+	const projectFileSet = new Set(projectFiles);
 	const normalized: SuggestedFile[] = [];
-	const seen = new Set<string>();
+	const pathIndex = new Map<string, number>();
 
 	for (const suggestion of suggestions) {
-		const candidate = normalizeSuggestedPath(suggestion.path);
-		if (!candidate) continue;
+		const normalizedPath = normalizeSuggestedPath(suggestion.path);
+		if (!normalizedPath) continue;
 
-		let resolved: string | null = null;
-		if (path.isAbsolute(candidate)) {
-			if (await pathExists(candidate)) {
-				resolved = path.relative(cwd, candidate).replace(/\\/g, "/");
+		let action: SuggestionAction = suggestion.action === "create" ? "create" : "open";
+		let resolvedPath: string | null = null;
+
+		if (action === "create") {
+			const createPath = normalizeCreatePath(normalizedPath);
+			if (!createPath) continue;
+
+			const absoluteCreatePath = path.join(cwd, createPath);
+			if (projectFileSet.has(createPath) || (await pathExists(absoluteCreatePath))) {
+				action = "open";
+				resolvedPath = createPath;
+			} else {
+				resolvedPath = createPath;
 			}
 		} else {
-			const direct = path.join(cwd, candidate);
-			if (await pathExists(direct)) {
-				resolved = candidate.replace(/^\.\//, "");
-			} else {
-				resolved = findBestProjectRelativePath(candidate, projectFiles);
-			}
+			resolvedPath = await resolveExistingPath(cwd, normalizedPath, projectFiles);
+			if (!resolvedPath) continue;
+			const resolvedAbsolutePath = path.join(cwd, resolvedPath);
+			if (!(await pathExists(resolvedAbsolutePath))) continue;
 		}
 
-		if (resolved) {
-			const resolvedAbsolutePath = path.join(cwd, resolved);
-			if (!(await pathExists(resolvedAbsolutePath))) {
-				resolved = null;
+		const existingIndex = pathIndex.get(resolvedPath);
+		if (typeof existingIndex === "number") {
+			const existing = normalized[existingIndex];
+			if (existing.action === "create" && action === "open") {
+				normalized[existingIndex] = {
+					path: resolvedPath,
+					action,
+					reason: sanitizeReason(suggestion.reason),
+				};
 			}
+			continue;
 		}
-		if (!resolved || seen.has(resolved)) continue;
 
-		seen.add(resolved);
+		pathIndex.set(resolvedPath, normalized.length);
 		normalized.push({
-			path: resolved,
+			path: resolvedPath,
+			action,
 			reason: sanitizeReason(suggestion.reason),
 		});
 
