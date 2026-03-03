@@ -7,7 +7,7 @@
 
 let
   noctalia-catwalk = pkgs.callPackage ../pkgs/noctalia-catwalk {};
-  noctalia-todo = pkgs.callPackage ../pkgs/noctalia-todo {};
+  noctalia-sticky-notes = pkgs.callPackage ../pkgs/noctalia-sticky-notes {};
   noctalia-pomodoro = pkgs.callPackage ../pkgs/noctalia-pomodoro {};
 in
 {
@@ -66,8 +66,8 @@ in
     # Noctalia plugins
     ".local/share/noctalia/plugins/catwalk".source =
       "${noctalia-catwalk}/share/noctalia/plugins/catwalk";
-    ".local/share/noctalia/plugins/todo".source =
-      "${noctalia-todo}/share/noctalia/plugins/todo";
+    ".local/share/noctalia/plugins/sticky-notes".source =
+      "${noctalia-sticky-notes}/share/noctalia/plugins/sticky-notes";
     ".local/share/noctalia/plugins/pomodoro".source =
       "${noctalia-pomodoro}/share/noctalia/plugins/pomodoro";
   };
@@ -85,11 +85,9 @@ in
     vesktop
     # Theme picker (fuzzel GUI) - keep for theme switching
     (import ../scripts/theme-picker-fuzzel.nix { inherit pkgs; })
-    # Todo quick add via fuzzel
-    (import ../scripts/fuzzel-todo.nix { inherit pkgs; })
     # Noctalia plugins
     noctalia-catwalk
-    noctalia-todo
+    noctalia-sticky-notes
     noctalia-pomodoro
   ];
 

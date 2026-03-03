@@ -79,7 +79,7 @@
             { id = "Volume"; }
             { id = "Brightness"; }
             { id = "plugin:pomodoro"; }
-            { id = "plugin:todo"; }
+            { id = "plugin:sticky-notes"; }
             { id = "plugin:catwalk"; }
             { id = "ControlCenter"; }
           ];
@@ -586,7 +586,7 @@
           enabled = true;
           sourceUrl = "https://github.com/noctalia-dev/noctalia-plugins";
         };
-        todo = {
+        "sticky-notes" = {
           enabled = true;
           sourceUrl = "https://github.com/noctalia-dev/noctalia-plugins";
         };
@@ -601,9 +601,6 @@
       catwalk = {
         minimumThreshold = 15;
         hideBackground = true;
-      };
-      todo = {
-        showCompleted = false;
       };
       pomodoro = {
         workDuration = 25;
