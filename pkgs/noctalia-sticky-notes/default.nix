@@ -5,13 +5,13 @@
 
 stdenv.mkDerivation rec {
   pname = "noctalia-sticky-notes";
-  version = "unstable-2025-02-28";
+  version = "unstable-2026-03-03";
 
   src = fetchFromGitHub {
-    owner = "noctalia-dev";
+    owner = "jcha0713";
     repo = "noctalia-plugins";
-    rev = "main";
-    hash = "sha256-S7YwPeum7mk0OCG8lpR+vV4m7dmTFnmwgsI/aJCk9xo=";
+    rev = "dfa0af032315f9cf4e43b90385e5faec2a5eea34";
+    hash = "sha256-UAVpBqsfHgYKSrORDIykjUDuRgtvYVmNpfmGZ/+dy0k=";
   };
 
   dontBuild = true;
@@ -26,7 +26,7 @@ stdenv.mkDerivation rec {
 
   meta = {
     description = "A sticky notes plugin for Noctalia Shell";
-    homepage = "https://github.com/noctalia-dev/noctalia-plugins/tree/main/sticky-notes";
+    homepage = "https://github.com/jcha0713/noctalia-plugins/tree/main/sticky-notes";
     license = lib.licenses.mit;
     platforms = lib.platforms.linux;
   };

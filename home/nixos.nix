@@ -63,13 +63,17 @@ in
     ".config/zellij/config.kdl".source =
       config.lib.file.mkOutOfStoreSymlink "${dotfilesPath}/config/zellij/config.kdl";
 
-    # Noctalia plugins
+    # Noctalia plugins packaged via Nix
     ".local/share/noctalia/plugins/catwalk".source =
       "${noctalia-catwalk}/share/noctalia/plugins/catwalk";
-    ".local/share/noctalia/plugins/sticky-notes".source =
-      "${noctalia-sticky-notes}/share/noctalia/plugins/sticky-notes";
     ".local/share/noctalia/plugins/pomodoro".source =
       "${noctalia-pomodoro}/share/noctalia/plugins/pomodoro";
+
+    # Sticky-notes must live in ~/.config/noctalia/plugins for IPC target registration
+    ".config/noctalia/plugins/sticky-notes" = {
+      source = "${noctalia-sticky-notes}/share/noctalia/plugins/sticky-notes";
+      force = true;
+    };
   };
 
   # User packages (NixOS-specific, mostly Wayland related)

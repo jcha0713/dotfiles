@@ -103,6 +103,17 @@ See the actual implementation in the dotfiles:
 
 ## Troubleshooting
 
+### IPC target not found (`plugin:<name>`)
+- IPC handlers are registered only if the plugin `Main.qml` is loaded.
+- Check targets with `noctalia-shell ipc show`.
+- If missing, ensure `manifest.json` has `"main": "Main.qml"` and `Main.qml` defines `IpcHandler { target: "plugin:<name>" }`.
+
+### Home Manager error: `settings.json ... outside $HOME`
+- Avoid symlinking entire plugin dirs with writable `settings.json` into `~/.config/noctalia/plugins/<name>`.
+- In this dotfiles setup:
+  - keep normal plugins in `~/.local/share/noctalia/plugins/...`
+  - only place plugins requiring direct Noctalia config loading (like custom IPC sticky-notes) in `~/.config/noctalia/plugins/...`
+
 ### Widget not appearing
 1. Check logs: `journalctl --user -u noctalia-shell -n 50 | grep -i <plugin-name>`
 2. Verify plugin loaded: Look for `Registered plugin widget: plugin:<name>`

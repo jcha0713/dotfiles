@@ -580,6 +580,11 @@
           url = "https://github.com/noctalia-dev/noctalia-plugins";
           enabled = true;
         }
+        {
+          name = "jcha Noctalia Plugins";
+          url = "https://github.com/jcha0713/noctalia-plugins";
+          enabled = true;
+        }
       ];
       states = {
         catwalk = {
@@ -588,7 +593,7 @@
         };
         "sticky-notes" = {
           enabled = true;
-          sourceUrl = "https://github.com/noctalia-dev/noctalia-plugins";
+          sourceUrl = "https://github.com/jcha0713/noctalia-plugins";
         };
         pomodoro = {
           enabled = true;
