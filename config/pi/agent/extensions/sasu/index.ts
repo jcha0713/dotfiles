@@ -391,6 +391,56 @@ function buildStatusChatBlock(input: {
 	return lines.join("\n");
 }
 
+function parseReviewCommandArgs(rawArgs: string): { intent: string; showPrompt: boolean } {
+	const showPrompt = /(?:^|\s)(?:--show-prompt|-p)(?=\s|$)/.test(rawArgs);
+	const intent = rawArgs.replace(/(?:^|\s)(?:--show-prompt|-p)(?=\s|$)/g, " ").trim();
+	return {
+		intent,
+		showPrompt,
+	};
+}
+
+function buildReviewKickoffChatBlock(input: {
+	projectGoalSource: string;
+	projectGoal: string;
+	activeFocusSource: string;
+	activeFocus: string;
+	intent: string;
+	changedCount: number;
+	untrackedCount: number;
+	checkCount: number;
+	checkPassCount: number;
+	checkFailCount: number;
+	queued: boolean;
+	showPrompt: boolean;
+}): string {
+	const checkSummary =
+		input.checkCount > 0
+			? `${input.checkCount} total (${input.checkPassCount} pass, ${input.checkFailCount} fail)`
+			: "none configured";
+
+	return [
+		"SASU review request queued",
+		"",
+		"Focus",
+		`- Project goal source: ${input.projectGoalSource}`,
+		`- Project goal: ${previewText(input.projectGoal, STATUS_PREVIEW_CHARS)}`,
+		`- Active review focus source: ${input.activeFocusSource}`,
+		`- Active review focus: ${previewText(input.activeFocus, STATUS_PREVIEW_CHARS)}`,
+		"",
+		"Scope",
+		`- Changed files: ${input.changedCount}`,
+		`- Untracked files: ${input.untrackedCount}`,
+		`- Checks: ${checkSummary}`,
+		"",
+		`Intent: ${previewText(input.intent, 180)}`,
+		`Dispatch: ${input.queued ? "follow-up turn" : "immediate turn"}`,
+		input.showPrompt
+			? "Prompt visibility: shown (--show-prompt)"
+			: "Prompt visibility: hidden (default; use --show-prompt to debug)",
+	].join("\n");
+}
+
 function buildSuggestionRequestPrompt(input: {
 	projectGoal: string;
 	projectGoalSource: string;
@@ -620,7 +670,7 @@ export default function sasu(pi: ExtensionAPI) {
 	};
 
 	pi.registerCommand("sasu-review", {
-		description: "Send current changes to Pi for a human-first review",
+		description: "Send current changes to Pi for a human-first review (use --show-prompt to debug prompt text)",
 		handler: async (args, ctx) => {
 			if (isBusyWaiting()) {
 				ctx.ui.notify("SASU is already waiting for a response. Please wait for it to finish.", "warning");
@@ -632,9 +682,13 @@ export default function sasu(pi: ExtensionAPI) {
 			const goalInfo = await ensureGoalContext(cwd, session, ctx);
 			session = goalInfo.session;
 
-			const userIntent = args.trim().length > 0 ? args.trim() : "No additional intent message provided.";
+			const parsedArgs = parseReviewCommandArgs(args);
+			const userIntent =
+				parsedArgs.intent.length > 0 ? parsedArgs.intent : "No additional intent message provided.";
 			const gitContext = await collectGitContext(pi);
 			const checks = await runOptionalChecks(pi, cwd);
+			const checkPassCount = checks.filter((check) => check.exitCode === 0).length;
+			const checkFailCount = checks.length - checkPassCount;
 
 			const reviewPrompt = buildReviewPrompt({
 				projectGoal: goalInfo.projectGoal,
@@ -650,20 +704,67 @@ export default function sasu(pi: ExtensionAPI) {
 
 			session = {
 				...session,
-				lastIntent: args.trim() || session.lastIntent,
+				lastIntent: parsedArgs.intent || session.lastIntent,
 			};
 			await saveSession(cwd, session);
 
-			if (ctx.isIdle()) {
-				awaitingReviewResponse = true;
-				skipNextReviewAgentEnd = false;
-				pi.sendUserMessage(reviewPrompt);
-				ctx.ui.notify("SASU review sent", "info");
-			} else {
-				awaitingReviewResponse = true;
-				skipNextReviewAgentEnd = true;
-				pi.sendUserMessage(reviewPrompt, { deliverAs: "followUp" });
+			const queued = !ctx.isIdle();
+			pi.sendMessage(
+				{
+					customType: "sasu-review-start",
+					content: buildReviewKickoffChatBlock({
+						projectGoalSource: goalInfo.projectGoalSource,
+						projectGoal: goalInfo.projectGoal,
+						activeFocusSource: goalInfo.activeGoalSource,
+						activeFocus: goalInfo.activeGoal,
+						intent: userIntent,
+						changedCount: gitContext.changedFiles.length,
+						untrackedCount: gitContext.untrackedFiles.length,
+						checkCount: checks.length,
+						checkPassCount,
+						checkFailCount,
+						queued,
+						showPrompt: parsedArgs.showPrompt,
+					}),
+					display: true,
+				},
+				{ triggerTurn: false },
+			);
+
+			awaitingReviewResponse = true;
+			skipNextReviewAgentEnd = queued;
+
+			if (parsedArgs.showPrompt) {
+				if (queued) {
+					pi.sendUserMessage(reviewPrompt, { deliverAs: "followUp" });
+					ctx.ui.notify("SASU review queued as follow-up (prompt visible)", "info");
+				} else {
+					pi.sendUserMessage(reviewPrompt);
+					ctx.ui.notify("SASU review sent (prompt visible)", "info");
+				}
+				return;
+			}
+
+			if (queued) {
+				pi.sendMessage(
+					{
+						customType: "sasu-review-request",
+						content: reviewPrompt,
+						display: false,
+					},
+					{ triggerTurn: true, deliverAs: "followUp" },
+				);
 				ctx.ui.notify("SASU review queued as follow-up", "info");
+			} else {
+				pi.sendMessage(
+					{
+						customType: "sasu-review-request",
+						content: reviewPrompt,
+						display: false,
+					},
+					{ triggerTurn: true },
+				);
+				ctx.ui.notify("SASU review sent", "info");
 			}
 		},
 	});
