@@ -1,0 +1,29 @@
+{
+  "name": "pi-open-here",
+  "version": "0.1.0",
+  "description": "Open current directory (or a path) in external editor from pi",
+  "type": "module",
+  "license": "MIT",
+  "keywords": [
+    "pi-package",
+    "pi-extension",
+    "editor"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/omaclaren/pi-open-here.git"
+  },
+  "files": [
+    "index.ts",
+    "README.md",
+    "LICENSE"
+  ],
+  "pi": {
+    "extensions": [
+      "./index.ts"
+    ]
+  },
+  "peerDependencies": {
+    "@mariozechner/pi-coding-agent": "*"
+  }
+}
