@@ -1,8 +1,9 @@
-{ lib
-, stdenv
-, fetchurl
-, autoPatchelfHook
-, zlib
+{
+  lib,
+  stdenv,
+  fetchurl,
+  autoPatchelfHook,
+  zlib,
 }:
 
 let
@@ -17,7 +18,7 @@ let
     };
     aarch64-darwin = {
       url = "https://github.com/ushironoko/octorus/releases/download/v0.5.1/octorus-0.5.1-aarch64-apple-darwin.tar.gz";
-      hash = "sha256-HMJhCd/JLWYp8q2cHhQPE9B7jSA3WDGfnyoU46THTJQ=";
+      hash = "sha256-RJIOJQnYW/fAK4y3IOTGwQESCU4U5ySMTHQy9xIggu0=";
       sourceRoot = "octorus-0.5.1-aarch64-apple-darwin";
     };
     x86_64-darwin = {
@@ -66,6 +67,10 @@ stdenv.mkDerivation rec {
     changelog = "https://github.com/ushironoko/octorus/releases/tag/v${version}";
     license = lib.licenses.mit;
     mainProgram = "or";
-    platforms = [ "x86_64-linux" "aarch64-darwin" "x86_64-darwin" ];
+    platforms = [
+      "x86_64-linux"
+      "aarch64-darwin"
+      "x86_64-darwin"
+    ];
   };
 }
