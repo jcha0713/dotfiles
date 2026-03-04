@@ -1,4 +1,9 @@
-{ config, pkgs, ... }:
+{
+  config,
+  pkgs,
+  dotfilesPath,
+  ...
+}:
 
 let
   deltaThemes = builtins.fetchurl {
@@ -6,7 +11,7 @@ let
     sha256 = "sha256:1pkqd36ls3cc6xgycd6sawpnwvgbchs54dkgg007algkhqxv7wch";
   };
 
-  octorus = pkgs.callPackage ../pkgs/octorus/default.nix {};
+  octorus = pkgs.callPackage ../pkgs/octorus/default.nix { };
 in
 {
   # Git configuration
@@ -68,6 +73,49 @@ in
       line-numbers = true;
       hyperlinks = true;
     };
+  };
+
+  home.file = {
+    # pi
+    ".pi/agent/keybindings.json".source =
+      config.lib.file.mkOutOfStoreSymlink "${dotfilesPath}/config/pi/agent/keybindings.json";
+    ".pi/agent/settings.json".source =
+      config.lib.file.mkOutOfStoreSymlink "${dotfilesPath}/config/pi/agent/settings.json";
+    ".pi/agent/skills".source =
+      config.lib.file.mkOutOfStoreSymlink "${dotfilesPath}/config/pi/agent/skills";
+    ".pi/agent/extensions".source =
+      config.lib.file.mkOutOfStoreSymlink "${dotfilesPath}/config/pi/agent/extensions";
+  };
+
+  xdg.configFile = {
+    nvim = {
+      source = config.lib.file.mkOutOfStoreSymlink "${dotfilesPath}/config/nvim";
+    };
+
+    wezterm = {
+      source = config.lib.file.mkOutOfStoreSymlink "${dotfilesPath}/config/wezterm";
+    };
+
+    ghostty = {
+      source = config.lib.file.mkOutOfStoreSymlink "${dotfilesPath}/config/ghostty";
+    };
+
+    zellij = {
+      source = config.lib.file.mkOutOfStoreSymlink "${dotfilesPath}/config/zellij";
+    };
+
+    sprinkles = {
+      source = config.lib.file.mkOutOfStoreSymlink "${dotfilesPath}/config/sprinkles";
+    };
+
+    opencode = {
+      source = config.lib.file.mkOutOfStoreSymlink "${dotfilesPath}/config/opencode";
+    };
+
+    "yazi/flavors/kanso-zen.yazi" = {
+      source = config.lib.file.mkOutOfStoreSymlink "${dotfilesPath}/config/yazi/flavors/kanso-zen.yazi";
+    };
+
   };
 
   # Common CLI tools (used by both NixOS and Darwin)

@@ -6,9 +6,9 @@
 }:
 
 let
-  noctalia-catwalk = pkgs.callPackage ../pkgs/noctalia-catwalk {};
-  noctalia-sticky-notes = pkgs.callPackage ../pkgs/noctalia-sticky-notes {};
-  noctalia-pomodoro = pkgs.callPackage ../pkgs/noctalia-pomodoro {};
+  noctalia-catwalk = pkgs.callPackage ../pkgs/noctalia-catwalk { };
+  noctalia-sticky-notes = pkgs.callPackage ../pkgs/noctalia-sticky-notes { };
+  noctalia-pomodoro = pkgs.callPackage ../pkgs/noctalia-pomodoro { };
 in
 {
   imports = [
@@ -32,37 +32,6 @@ in
 
   # Symlink dotfiles from the repo
   home.file = {
-    ".pi/agent/keybindings.json".source =
-      config.lib.file.mkOutOfStoreSymlink "${dotfilesPath}/config/pi/agent/keybindings.json";
-    ".pi/agent/settings.json".source =
-      config.lib.file.mkOutOfStoreSymlink "${dotfilesPath}/config/pi/agent/settings.json";
-    ".pi/agent/skills".source =
-      config.lib.file.mkOutOfStoreSymlink "${dotfilesPath}/config/pi/agent/skills";
-    ".pi/agent/extensions".source =
-      config.lib.file.mkOutOfStoreSymlink "${dotfilesPath}/config/pi/agent/extensions";
-
-    # NixOS-specific
-    ".config/niri/config.kdl".source =
-      config.lib.file.mkOutOfStoreSymlink "${dotfilesPath}/config/niri/config.kdl";
-
-    # Shared with Mac Mini
-    ".config/nvim".source = config.lib.file.mkOutOfStoreSymlink "${dotfilesPath}/config/nvim";
-    ".config/wezterm".source = config.lib.file.mkOutOfStoreSymlink "${dotfilesPath}/config/wezterm";
-
-    # Kime Korean IME config
-    ".config/kime/config.yaml".source =
-      config.lib.file.mkOutOfStoreSymlink "${dotfilesPath}/config/kime/config.yaml";
-
-    # Ghostty config and themes
-    ".config/ghostty/config".source =
-      config.lib.file.mkOutOfStoreSymlink "${dotfilesPath}/config/ghostty/config";
-    ".config/ghostty/themes".source =
-      config.lib.file.mkOutOfStoreSymlink "${dotfilesPath}/config/ghostty/themes";
-
-    # Zellij config
-    ".config/zellij/config.kdl".source =
-      config.lib.file.mkOutOfStoreSymlink "${dotfilesPath}/config/zellij/config.kdl";
-
     # Noctalia plugins packaged via Nix
     ".local/share/noctalia/plugins/catwalk".source =
       "${noctalia-catwalk}/share/noctalia/plugins/catwalk";
@@ -73,6 +42,17 @@ in
     ".config/noctalia/plugins/sticky-notes" = {
       source = "${noctalia-sticky-notes}/share/noctalia/plugins/sticky-notes";
       force = true;
+    };
+  };
+
+  xdg.configFile = {
+    niri = {
+      source = config.lib.file.mkOutOfStoreSymlink "${dotfilesPath}/config/niri";
+    };
+
+    kime = {
+      source = config.lib.file.mkOutOfStoreSymlink "${dotfilesPath}/config/kime";
+
     };
   };
 
