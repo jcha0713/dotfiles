@@ -94,6 +94,8 @@ async function ensureSuggestedFileExists(cwd: string, filePath: string): Promise
 type OpenFileCandidate = {
 	path: string;
 	baseName: string;
+	action: "open" | "create";
+	source: "project-file-index" | "sasu-suggest";
 	suggested: boolean;
 	reason?: string;
 };
@@ -125,6 +127,7 @@ function subsequenceScore(query: string, target: string): number | null {
 function scoreOpenFileCandidate(candidate: OpenFileCandidate, query: string): number | null {
 	const trimmed = query.trim().toLowerCase();
 	if (!trimmed) {
+		if (candidate.action === "create") return 80;
 		return candidate.suggested ? 50 : 0;
 	}
 
@@ -154,6 +157,7 @@ function scoreOpenFileCandidate(candidate: OpenFileCandidate, query: string): nu
 
 	if (score < 0) return null;
 	if (candidate.suggested) score += 90;
+	if (candidate.action === "create") score += 60;
 	return score;
 }
 
@@ -163,6 +167,7 @@ function rankOpenFileCandidates(candidates: OpenFileCandidate[], query: string):
 		.filter((entry): entry is { candidate: OpenFileCandidate; score: number } => typeof entry.score === "number")
 		.sort((a, b) => {
 			if (b.score !== a.score) return b.score - a.score;
+			if (a.candidate.action !== b.candidate.action) return a.candidate.action === "create" ? -1 : 1;
 			if (a.candidate.suggested !== b.candidate.suggested) return a.candidate.suggested ? -1 : 1;
 			return a.candidate.path.localeCompare(b.candidate.path);
 		})
@@ -171,10 +176,13 @@ function rankOpenFileCandidates(candidates: OpenFileCandidate[], query: string):
 }
 
 function toOpenFileSelectItems(candidates: OpenFileCandidate[]): SelectItem[] {
-	return candidates.map((candidate) => ({
-		value: candidate.path,
-		label: candidate.suggested ? `★ ${candidate.path}` : candidate.path,
-	}));
+	return candidates.map((candidate) => {
+		const prefix = candidate.action === "create" ? "✚ " : candidate.suggested ? "★ " : "";
+		return {
+			value: candidate.path,
+			label: `${prefix}${candidate.path}`,
+		};
+	});
 }
 
 async function pickProjectFileWithFuzzyFilter(input: {
@@ -187,7 +195,10 @@ async function pickProjectFileWithFuzzyFilter(input: {
 
 	if (!input.ctx.ui?.custom) {
 		const ranked = rankOpenFileCandidates(input.candidates, initialQuery);
-		const options = ranked.slice(0, 30).map((candidate, index) => `${index + 1}. ${candidate.path}`);
+		const options = ranked.slice(0, 30).map((candidate, index) => {
+			const prefix = candidate.action === "create" ? "[CREATE] " : candidate.suggested ? "[SUGGESTED] " : "";
+			return `${index + 1}. ${prefix}${candidate.path}`;
+		});
 		if (options.length === 0) return null;
 		const selected = await input.ctx.ui.select("SASU: choose a project file", options);
 		if (!selected) return null;
@@ -251,7 +262,6 @@ async function pickProjectFileWithFuzzyFilter(input: {
 				return;
 			}
 
-			const source = candidate.suggested ? "sasu-suggest" : "project-file-index";
 			const reason =
 				candidate.reason?.trim() ||
 				"No cached suggestion reason for this file. Open it directly when you already know where to go.";
@@ -259,7 +269,8 @@ async function pickProjectFileWithFuzzyFilter(input: {
 			detailsTitle.setText(theme.fg("accent", theme.bold(` details: ${candidate.path}`)));
 			detailsBody.setText(
 				[
-					theme.fg("dim", ` source: ${source}`),
+					theme.fg("dim", ` action: ${candidate.action}`),
+					theme.fg("dim", ` source: ${candidate.source}`),
 					theme.fg("dim", ` suggested: ${candidate.suggested ? "yes" : "no"}`),
 					"",
 					theme.fg("muted", " reason"),
@@ -754,10 +765,6 @@ export default function sasu(pi: ExtensionAPI) {
 			const initialQuery = args.trim();
 
 			const projectFiles = await listProjectFiles(pi, cwd);
-			if (projectFiles.length === 0) {
-				ctx.ui.notify("No project files available to open.", "warning");
-				return;
-			}
 
 			const session = await loadSession(cwd);
 			let suggestions = Array.isArray(session.lastSuggestedFiles) ? session.lastSuggestedFiles : [];
@@ -769,22 +776,49 @@ export default function sasu(pi: ExtensionAPI) {
 			);
 			suggestions = filterActionableSuggestions(suggestions);
 
-			const suggestionReasonByPath = new Map<string, string | undefined>();
+			const openSuggestionReasonByPath = new Map<string, string | undefined>();
+			const createSuggestions: SuggestedFile[] = [];
 			for (const suggestion of suggestions) {
-				if ((suggestion.action ?? "open") !== "open") continue;
-				if (!suggestionReasonByPath.has(suggestion.path)) {
-					suggestionReasonByPath.set(suggestion.path, suggestion.reason);
+				const action = suggestion.action === "create" ? "create" : "open";
+				if (action === "create") {
+					createSuggestions.push(suggestion);
+					continue;
+				}
+				if (!openSuggestionReasonByPath.has(suggestion.path)) {
+					openSuggestionReasonByPath.set(suggestion.path, suggestion.reason);
 				}
 			}
 
-			const candidates: OpenFileCandidate[] = projectFiles
-				.map((filePath) => ({
+			const candidateByPath = new Map<string, OpenFileCandidate>();
+			for (const filePath of projectFiles) {
+				const suggested = openSuggestionReasonByPath.has(filePath);
+				candidateByPath.set(filePath, {
 					path: filePath,
 					baseName: path.posix.basename(filePath),
-					suggested: suggestionReasonByPath.has(filePath),
-					reason: suggestionReasonByPath.get(filePath),
-				}))
-				.sort((a, b) => a.path.localeCompare(b.path));
+					action: "open",
+					source: suggested ? "sasu-suggest" : "project-file-index",
+					suggested,
+					reason: openSuggestionReasonByPath.get(filePath),
+				});
+			}
+
+			for (const suggestion of createSuggestions) {
+				if (candidateByPath.has(suggestion.path)) continue;
+				candidateByPath.set(suggestion.path, {
+					path: suggestion.path,
+					baseName: path.posix.basename(suggestion.path),
+					action: "create",
+					source: "sasu-suggest",
+					suggested: true,
+					reason: suggestion.reason,
+				});
+			}
+
+			const candidates = Array.from(candidateByPath.values()).sort((a, b) => a.path.localeCompare(b.path));
+			if (candidates.length === 0) {
+				ctx.ui.notify("No files available to open or create.", "warning");
+				return;
+			}
 
 			const selectedPath = await pickProjectFileWithFuzzyFilter({
 				ctx,
@@ -792,6 +826,18 @@ export default function sasu(pi: ExtensionAPI) {
 				initialQuery,
 			});
 			if (!selectedPath) return;
+
+			const selectedCandidate = candidateByPath.get(selectedPath);
+			if (selectedCandidate?.action === "create") {
+				const createOption = "Create and open";
+				const cancelOption = "Cancel";
+				const confirmed = await ctx.ui.select(`SASU: create and open ${selectedPath}?`, [createOption, cancelOption]);
+				if (confirmed !== createOption) return;
+
+				const created = await ensureSuggestedFileExists(cwd, selectedPath);
+				ctx.ui.notify(created.message, created.ok ? "info" : "error");
+				if (!created.ok) return;
+			}
 
 			const opened = await openFilePath(cwd, selectedPath, config, ctx.ui);
 			ctx.ui.notify(opened.message, opened.ok ? "info" : "error");
