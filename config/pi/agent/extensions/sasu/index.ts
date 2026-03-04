@@ -810,7 +810,7 @@ export default function sasu(pi: ExtensionAPI) {
 	});
 
 	pi.registerCommand("sasu-goal", {
-		description: "Set the current session focus and ask the agent for file suggestions",
+		description: "Manage project goal + session focus, then ask for file suggestions",
 		handler: async (args, ctx) => {
 			if (isBusyWaiting()) {
 				ctx.ui.notify("SASU is already waiting for a response. Please wait for it to finish.", "warning");
@@ -819,28 +819,96 @@ export default function sasu(pi: ExtensionAPI) {
 
 			const cwd = ctx.cwd;
 			const config = await loadConfig(cwd);
-			const session = await loadSession(cwd);
+			let session = await loadSession(cwd);
 
-			const requestedGoal = args.trim();
-			const enteredGoal = requestedGoal.length
-				? requestedGoal
-				: (await ctx.ui.input(
-						"SASU session focus",
-						session.sessionGoal?.trim() || session.projectGoal?.trim() || "What should this session focus on?",
-				  ))?.trim() || "";
-			if (!enteredGoal) {
-				ctx.ui.notify("SASU session focus unchanged", "warning");
+			const requestedSessionFocus = args.trim();
+			if (requestedSessionFocus.length > 0) {
+				const goalInfo = await ensureGoalContext(cwd, session, ctx);
+				session = goalInfo.session;
+
+				await saveSession(cwd, {
+					...session,
+					sessionGoal: requestedSessionFocus,
+					sessionGoalSource: "sasu-goal",
+					sessionGoalUpdatedAt: new Date().toISOString(),
+				});
+				ctx.ui.notify("SASU session focus set", "info");
+				await requestAgentSuggestions({ ctx, cwd, config });
 				return;
 			}
 
-			await saveSession(cwd, {
-				...session,
-				sessionGoal: enteredGoal,
-				sessionGoalSource: "sasu-goal",
-				sessionGoalUpdatedAt: new Date().toISOString(),
-			});
+			const goalInfo = await ensureGoalContext(cwd, session, ctx);
+			session = goalInfo.session;
 
-			ctx.ui.notify("SASU session focus set", "info");
+			const MODE_SESSION = "Update session focus";
+			const MODE_PROJECT = "Update project goal";
+			const MODE_BOTH = "Update both";
+			const MODE_CANCEL = "Cancel";
+			const mode = ctx.hasUI
+				? await ctx.ui.select("SASU goals: what would you like to update?", [
+						MODE_SESSION,
+						MODE_PROJECT,
+						MODE_BOTH,
+						MODE_CANCEL,
+				  ])
+				: MODE_BOTH;
+			if (!mode || mode === MODE_CANCEL) {
+				ctx.ui.notify("SASU goals unchanged", "warning");
+				return;
+			}
+
+			let next = session;
+			let projectUpdated = false;
+			let sessionUpdated = false;
+
+			if (mode === MODE_PROJECT || mode === MODE_BOTH) {
+				const enteredProjectGoal = (
+					await ctx.ui.input(
+						"SASU project goal (long-term)",
+						next.projectGoal?.trim() || "What is the long-term goal of this project?",
+					)
+				)?.trim();
+				if (enteredProjectGoal && enteredProjectGoal !== next.projectGoal) {
+					next = {
+						...next,
+						projectGoal: enteredProjectGoal,
+						projectGoalSource: "sasu-goal",
+					};
+					projectUpdated = true;
+				}
+			}
+
+			if (mode === MODE_SESSION || mode === MODE_BOTH) {
+				const enteredSessionFocus = (
+					await ctx.ui.input(
+						"SASU session focus (current loop)",
+						next.sessionGoal?.trim() || next.projectGoal?.trim() || "What should this session focus on?",
+					)
+				)?.trim();
+				if (enteredSessionFocus && enteredSessionFocus !== next.sessionGoal) {
+					next = {
+						...next,
+						sessionGoal: enteredSessionFocus,
+						sessionGoalSource: "sasu-goal",
+						sessionGoalUpdatedAt: new Date().toISOString(),
+					};
+					sessionUpdated = true;
+				}
+			}
+
+			if (!projectUpdated && !sessionUpdated) {
+				ctx.ui.notify("SASU goals unchanged", "warning");
+				return;
+			}
+
+			await saveSession(cwd, next);
+			if (projectUpdated && sessionUpdated) {
+				ctx.ui.notify("SASU project goal and session focus set", "info");
+			} else if (projectUpdated) {
+				ctx.ui.notify("SASU project goal set", "info");
+			} else {
+				ctx.ui.notify("SASU session focus set", "info");
+			}
 			await requestAgentSuggestions({ ctx, cwd, config });
 		},
 	});
