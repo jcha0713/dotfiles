@@ -48,7 +48,7 @@
           {
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
-            home-manager.backupFileExtension = "backup-%Y%m%d-%H%M%S";
+            home-manager.backupFileExtension = "backup";
             home-manager.users.joohoon = ./home/nixos.nix;
             home-manager.extraSpecialArgs = {
               inherit inputs;
@@ -71,7 +71,7 @@
           {
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
-            home-manager.backupFileExtension = "backup-%Y%m%d-%H%M%S";
+            home-manager.backupFileExtension = "backup";
             home-manager.users.jcha0713 = ./home/darwin.nix;
             home-manager.extraSpecialArgs = {
               dotfilesPath = "/Users/jcha0713/dotfiles";
