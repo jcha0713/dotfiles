@@ -174,9 +174,6 @@ function toOpenFileSelectItems(candidates: OpenFileCandidate[]): SelectItem[] {
 	return candidates.map((candidate) => ({
 		value: candidate.path,
 		label: candidate.suggested ? `★ ${candidate.path}` : candidate.path,
-		description: candidate.suggested
-			? `Suggested by /sasu-suggest${candidate.reason ? ` — ${previewText(candidate.reason, 100)}` : ""}`
-			: undefined,
 	}));
 }
 
@@ -200,15 +197,24 @@ async function pickProjectFileWithFuzzyFilter(input: {
 		return ranked[index]?.path ?? null;
 	}
 
+	const candidateByPath = new Map(input.candidates.map((candidate) => [candidate.path, candidate] as const));
+
 	const selected = await input.ctx.ui.custom<string | null>((tui: any, theme: any, _kb: any, done: any) => {
 		let filter = initialQuery;
 		let ranked: OpenFileCandidate[] = [];
+		let list: SelectList | null = null;
 
 		const top = new DynamicBorder((s: string) => theme.fg("accent", s));
 		const title = new Text(theme.fg("accent", theme.bold(" SASU open project file")), 0, 0);
 		const filterLine = new Text("", 0, 0);
+		const detailsDivider = new DynamicBorder((s: string) => theme.fg("dim", s));
+		const detailsTitle = new Text("", 0, 0);
+		const detailsBody = new Text("", 0, 0);
 		const help = new Text(
-			theme.fg("dim", " ↑↓ navigate • type fuzzy filter • backspace delete • ctrl+u clear • enter open • esc cancel"),
+			theme.fg(
+				"dim",
+				" ↑↓ navigate • type fuzzy filter • backspace delete • ctrl+u clear • enter open • esc cancel • details pane below",
+			),
 			0,
 			0,
 		);
@@ -227,24 +233,67 @@ async function pickProjectFileWithFuzzyFilter(input: {
 			filterLine.setText(theme.fg("dim", ` filter: ${filter || "(empty)"} • matches: ${count}/${input.candidates.length}`));
 		};
 
+		const updateDetailsPane = (selectedPath?: string) => {
+			const selectedValue =
+				typeof selectedPath === "string" && selectedPath.length > 0
+					? selectedPath
+					: String(list?.getSelectedItem()?.value || "");
+			if (!selectedValue) {
+				detailsTitle.setText(theme.fg("dim", " details"));
+				detailsBody.setText(theme.fg("dim", " Select a file to see full context."));
+				return;
+			}
+
+			const candidate = candidateByPath.get(selectedValue);
+			if (!candidate) {
+				detailsTitle.setText(theme.fg("dim", " details"));
+				detailsBody.setText(theme.fg("warning", " Selected file metadata is unavailable."));
+				return;
+			}
+
+			const source = candidate.suggested ? "sasu-suggest" : "project-file-index";
+			const reason =
+				candidate.reason?.trim() ||
+				"No cached suggestion reason for this file. Open it directly when you already know where to go.";
+
+			detailsTitle.setText(theme.fg("accent", theme.bold(` details: ${candidate.path}`)));
+			detailsBody.setText(
+				[
+					theme.fg("dim", ` source: ${source}`),
+					theme.fg("dim", ` suggested: ${candidate.suggested ? "yes" : "no"}`),
+					"",
+					theme.fg("muted", " reason"),
+					reason,
+				].join("\n"),
+			);
+		};
+
 		const buildList = () => {
 			ranked = rankOpenFileCandidates(input.candidates, filter);
 			updateFilterLine();
 			const items = toOpenFileSelectItems(ranked);
-			const list = new SelectList(items, Math.min(items.length || 1, OPEN_PICKER_VISIBLE_ROWS), selectTheme);
-			list.onSelect = (item) => done(String(item.value));
-			list.onCancel = () => done(null);
-			return list;
+			const nextList = new SelectList(items, Math.min(items.length || 1, OPEN_PICKER_VISIBLE_ROWS), selectTheme);
+			nextList.onSelect = (item) => done(String(item.value));
+			nextList.onCancel = () => done(null);
+			nextList.onSelectionChange = (item) => {
+				updateDetailsPane(String(item.value));
+				tui.requestRender();
+			};
+			return nextList;
 		};
 
-		let list = buildList();
+		list = buildList();
+		updateDetailsPane();
 
 		return {
 			render: (width: number) => [
 				...top.render(width),
 				...title.render(width),
 				...filterLine.render(width),
-				...list.render(width),
+				...(list ? list.render(width) : []),
+				...detailsDivider.render(width),
+				...detailsTitle.render(width),
+				...detailsBody.render(width),
 				...help.render(width),
 				...bottom.render(width),
 			],
@@ -252,7 +301,10 @@ async function pickProjectFileWithFuzzyFilter(input: {
 				top.invalidate();
 				title.invalidate();
 				filterLine.invalidate();
-				list.invalidate();
+				list?.invalidate();
+				detailsDivider.invalidate();
+				detailsTitle.invalidate();
+				detailsBody.invalidate();
 				help.invalidate();
 				bottom.invalidate();
 			},
@@ -260,22 +312,25 @@ async function pickProjectFileWithFuzzyFilter(input: {
 				if (matchesKey(data, Key.backspace)) {
 					filter = filter.slice(0, -1);
 					list = buildList();
+					updateDetailsPane();
 					tui.requestRender();
 					return;
 				}
 				if (matchesKey(data, Key.ctrl("u"))) {
 					filter = "";
 					list = buildList();
+					updateDetailsPane();
 					tui.requestRender();
 					return;
 				}
 				if (data.length === 1 && data >= " " && data !== "\x7f") {
 					filter += data;
 					list = buildList();
+					updateDetailsPane();
 					tui.requestRender();
 					return;
 				}
-				list.handleInput(data);
+				list?.handleInput(data);
 				tui.requestRender();
 			},
 		};
