@@ -1,9 +1,17 @@
 keybinds clear-defaults=true {
-    normal {
-        bind "Esc" { SwitchToMode "locked"; }
-    }
     locked {
         bind "Ctrl a" { SwitchToMode "tmux"; }
+        bind "Alt n" { NewPane; }
+        bind "Alt N" { NewPane "stacked"; }
+        bind "Alt t" { NewTab; }
+        bind "Alt x" { CloseFocus; }
+        bind "Alt z" { ToggleFocusFullscreen; }
+        bind "Alt h" { MoveFocus "Left"; }
+        bind "Alt j" { MoveFocus "Down"; }
+        bind "Alt k" { MoveFocus "Up"; }
+        bind "Alt l" { MoveFocus "Right"; }
+        bind "Alt [" { GoToPreviousTab; }
+        bind "Alt ]" { GoToNextTab; }
     }
     tmux {
         bind "Ctrl h" "Esc" "q" { SwitchToMode "locked"; }
@@ -17,7 +25,7 @@ keybinds clear-defaults=true {
         bind "N" { NewPane "stacked"; SwitchToMode "Locked"; }
         bind "-" { NewPane "Down"; SwitchToMode "Locked"; }
         bind "\\" { NewPane "Right"; SwitchToMode "Locked"; }
-        bind "r" { SwitchToMode "RenamePane"; PaneNameInput 0;}
+        bind "r" { SwitchToMode "RenamePane"; PaneNameInput 0; }
         bind "x" { CloseFocus; SwitchToMode "Locked"; }
         bind "z" { ToggleFocusFullscreen; SwitchToMode "Locked"; }
         bind "f" { ToggleFloatingPanes; SwitchToMode "Locked"; }
@@ -40,11 +48,12 @@ keybinds clear-defaults=true {
         bind "7" { GoToTab 7; SwitchToMode "locked"; }
         bind "8" { GoToTab 8; SwitchToMode "locked"; }
         bind "9" { GoToTab 9; SwitchToMode "locked"; }
+        bind "n" { NewTab; }
         bind "h" { GoToPreviousTab; }
         bind "j" { GoToNextTab; }
         bind "k" { GoToPreviousTab; }
         bind "l" { GoToNextTab; }
-        bind "r" { SwitchToMode "renametab"; TabNameInput 0; }
+        bind "r" { SwitchToMode "RenameTab"; TabNameInput 0; }
         bind "s" { ToggleActiveSyncTab; SwitchToMode "locked"; }
         bind "x" { CloseTab; SwitchToMode "locked"; }
         bind "tab" { ToggleTab; }
@@ -69,6 +78,7 @@ keybinds clear-defaults=true {
         bind "w" { SearchToggleOption "Wrap"; }
     }
     session {
+        bind "d" { Detach; }
         bind "a" {
             LaunchOrFocusPlugin "zellij:about" {
                 floating true
@@ -107,6 +117,7 @@ keybinds clear-defaults=true {
         }
     }
     shared_except "locked" "normal" {
+        bind "Enter" "Esc" { SwitchToMode "Locked"; }
         bind "Ctrl q" { Quit; }
     }
 }
@@ -145,6 +156,12 @@ web_client {
 //   - false (Default)
 // 
 simplified_ui true
+
+ui {
+    pane_frames {
+        hide_session_name true
+    }
+}
  
 // Theme definition using e-ink-dark palette from lib/themes/palettes.nix
 // Colors: bg=#0d0d0d fg=#f5f2ed grays=#404040 #606060 #808080 #a0a0a0 #c0c0c0 #e0dcd4
@@ -327,7 +344,7 @@ pane_frames false
 // (Requires restart)
 // Default: false
 // 
-// mirror_session true
+mirror_session true
  
 // Choose what to do when zellij receives SIGTERM, SIGINT, SIGQUIT or SIGHUP
 // eg. when terminal window with an active zellij session is closed
@@ -439,7 +456,8 @@ copy_on_select true
 // (Requires restart)
 // Default: true (if the host terminal supports it)
 // 
-// support_kitty_keyboard_protocol false
+support_kitty_keyboard_protocol true
+
 // Whether to make sure a local web server is running when a new Zellij session starts.
 // This web server will allow creating new sessions and attaching to existing ones that have
 // opted in to being shared in the browser.
