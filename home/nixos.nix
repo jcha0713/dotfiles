@@ -73,6 +73,10 @@ in
     noctalia-catwalk
     noctalia-sticky-notes
     noctalia-pomodoro
+
+    bun
+    jq
+    sqlite
   ];
 
 }
