@@ -1,3 +1,4 @@
+import { randomUUID } from "node:crypto";
 import { access, mkdir, writeFile } from "node:fs/promises";
 import * as path from "node:path";
 import { DynamicBorder, type ExtensionAPI } from "@mariozechner/pi-coding-agent";
@@ -8,6 +9,9 @@ import { collectGitContext } from "./src/git";
 import { ensureGoalContext, resolveActiveGoal } from "./src/goal";
 import { openFilePath } from "./src/open-file";
 import { buildReviewPrompt } from "./src/review";
+import { buildMissionBrief, resolveIntentContext } from "./src/memory/brief";
+import { ingestEvent, ingestEvents, type MemoryEventInput } from "./src/memory/ingest";
+import { createMemoryStore } from "./src/memory/store";
 import { loadConfig, loadSession, saveSession } from "./src/storage";
 import {
 	extractSuggestedFilesFromResponse,
@@ -15,7 +19,8 @@ import {
 	listProjectFiles,
 	normalizeSuggestedFilesForProject,
 } from "./src/suggestions";
-import type { ConfigData, SuggestedFile } from "./src/types";
+import type { FeedbackAction, MemoryEventKind } from "./src/memory/types";
+import type { CheckResult, ConfigData, GitContext, SuggestedFile } from "./src/types";
 import { compactLines, previewText } from "./src/utils";
 
 const CHAT_SUGGESTIONS_LIMIT = 3;
@@ -420,7 +425,7 @@ function buildReviewKickoffChatBlock(input: {
 			: "none configured";
 
 	return [
-		"SASU review request queued",
+		input.queued ? "SASU review request queued" : "SASU review request sent",
 		"",
 		"Focus",
 		`- Project goal source: ${input.projectGoalSource}`,
@@ -517,6 +522,11 @@ async function showSuggestionsAndOfferOpen(input: {
 	config: ConfigData;
 	suggestions: SuggestedFile[];
 	showChatBlock?: boolean;
+	onSuggestionAction?: (event: {
+		action: FeedbackAction;
+		suggestion?: SuggestedFile;
+		context?: Record<string, unknown>;
+	}) => Promise<void> | void;
 }): Promise<void> {
 	const suggestions = filterActionableSuggestions(input.suggestions);
 	if (suggestions.length === 0) return;
@@ -533,16 +543,37 @@ async function showSuggestionsAndOfferOpen(input: {
 	}
 
 	const topSuggestions = suggestions.slice(0, CHAT_SUGGESTIONS_LIMIT);
-	if (!input.ctx.hasUI || topSuggestions.length === 0) return;
+	if (!input.ctx.hasUI || topSuggestions.length === 0) {
+		await input.onSuggestionAction?.({
+			action: "ignored",
+			context: {
+				reason: !input.ctx.hasUI ? "no_ui" : "no_top_suggestions",
+				suggestionCount: suggestions.length,
+			},
+		});
+		return;
+	}
 
 	const options = topSuggestions.map((suggestion, i) => `${i + 1}. ${formatSuggestionLabel(suggestion)}`);
 	const skipOption = "Skip for now";
 	const selected = await input.ctx.ui.select("SASU: open one suggested file now?", [...options, skipOption]);
-	if (!selected || selected === skipOption) return;
+	if (!selected || selected === skipOption) {
+		await input.onSuggestionAction?.({
+			action: "ignored",
+			context: { reason: "skip", suggestionCount: topSuggestions.length },
+		});
+		return;
+	}
 
 	const selectedIndex = options.indexOf(selected);
 	const selectedSuggestion = topSuggestions[selectedIndex];
-	if (!selectedSuggestion?.path) return;
+	if (!selectedSuggestion?.path) {
+		await input.onSuggestionAction?.({
+			action: "dismissed",
+			context: { reason: "invalid_selection", selected },
+		});
+		return;
+	}
 
 	if (selectedSuggestion.action === "create") {
 		const createOption = "Create and open";
@@ -551,15 +582,99 @@ async function showSuggestionsAndOfferOpen(input: {
 			`SASU: create and open ${selectedSuggestion.path}?`,
 			[createOption, cancelOption],
 		);
-		if (confirmed !== createOption) return;
+		if (confirmed !== createOption) {
+			await input.onSuggestionAction?.({
+				action: "dismissed",
+				suggestion: selectedSuggestion,
+				context: { reason: "create_cancelled" },
+			});
+			return;
+		}
 
 		const created = await ensureSuggestedFileExists(input.cwd, selectedSuggestion.path);
 		input.ctx.ui.notify(created.message, created.ok ? "info" : "error");
-		if (!created.ok) return;
+		if (!created.ok) {
+			await input.onSuggestionAction?.({
+				action: "dismissed",
+				suggestion: selectedSuggestion,
+				context: { reason: "create_failed", message: created.message },
+			});
+			return;
+		}
 	}
 
 	const opened = await openFilePath(input.cwd, selectedSuggestion.path, input.config, input.ctx.ui);
 	input.ctx.ui.notify(opened.message, opened.ok ? "info" : "error");
+	await input.onSuggestionAction?.({
+		action: opened.ok ? "accepted" : "dismissed",
+		suggestion: selectedSuggestion,
+		context: {
+			reason: opened.ok ? "opened" : "open_failed",
+			message: opened.message,
+		},
+	});
+}
+
+function buildMemoryStatusChatBlock(input: {
+	dbPath: string;
+	totalEvents: number;
+	eventCounts: Record<string, number>;
+	workingStateKeys: string[];
+}): string {
+	const countLines = Object.entries(input.eventCounts)
+		.sort((a, b) => a[0].localeCompare(b[0]))
+		.map(([kind, count]) => `- ${kind}: ${count}`);
+	const stateLines = input.workingStateKeys.length > 0 ? input.workingStateKeys.map((key) => `- ${key}`) : ["- (none)"];
+	return [
+		"## SASU memory status",
+		`DB: ${input.dbPath}`,
+		`Total events: ${input.totalEvents}`,
+		"",
+		"Event counts by kind:",
+		...(countLines.length > 0 ? countLines : ["- (none)"]),
+		"",
+		"Working state keys:",
+		...stateLines,
+	].join("\n");
+}
+
+function buildMemoryTailChatBlock(events: Array<{ id: string; ts: string; kind: string; source: string; payload: unknown }>): string {
+	if (events.length === 0) {
+		return ["## SASU memory tail", "(no events found)"] .join("\n");
+	}
+
+	const lines = events.map((event) => {
+		const payloadLines = JSON.stringify(event.payload, null, 2).split(/\r?\n/);
+		const payloadPreview = previewText(compactLines(payloadLines, 6).join(" "), 140);
+		return `- ${event.ts} | ${event.kind} | ${event.source} | ${event.id}\n  payload: ${payloadPreview}`;
+	});
+	return ["## SASU memory tail", ...lines].join("\n");
+}
+
+function parseMemoryTailArgs(args: string): { limit: number; kind?: string } {
+	const tokens = args
+		.trim()
+		.split(/\s+/)
+		.filter((token) => token.length > 0);
+	let limit = 20;
+	let kind: string | undefined;
+	for (let i = 0; i < tokens.length; i += 1) {
+		const token = tokens[i];
+		if ((token === "--kind" || token === "-k") && i + 1 < tokens.length) {
+			kind = tokens[i + 1];
+			i += 1;
+			continue;
+		}
+		const asNumber = Number(token);
+		if (Number.isFinite(asNumber) && asNumber > 0) {
+			limit = Math.floor(asNumber);
+		}
+	}
+	return { limit: Math.max(1, Math.min(limit, 200)), kind };
+}
+
+function shouldForceMemoryReset(args: string): boolean {
+	return /(?:^|\s)--yes(?:\s|$)|(?:^|\s)-y(?:\s|$)/.test(args);
 }
 
 export default function sasu(pi: ExtensionAPI) {
@@ -586,15 +701,231 @@ export default function sasu(pi: ExtensionAPI) {
 		suggestionGuardPreviousTools = null;
 	};
 
+	const memoryStoreByCwd = new Map<string, Promise<Awaited<ReturnType<typeof createMemoryStore>>>>();
+	const getMemoryStore = (cwd: string) => {
+		const existing = memoryStoreByCwd.get(cwd);
+		if (existing) return existing;
+		const created = createMemoryStore(cwd);
+		memoryStoreByCwd.set(cwd, created);
+		return created;
+	};
+
+	const getSessionId = (ctx: any): string | undefined => {
+		const raw = (ctx as any)?.sessionId;
+		if (typeof raw !== "string") return undefined;
+		const trimmed = raw.trim();
+		return trimmed.length > 0 ? trimmed : undefined;
+	};
+
+	const emitMemoryEvent = async (
+		ctx: any,
+		event: Omit<MemoryEventInput, "projectRoot" | "sessionId">,
+	): Promise<void> => {
+		try {
+			const store = await getMemoryStore(ctx.cwd);
+			await ingestEvent(store, {
+				...event,
+				projectRoot: ctx.cwd,
+				sessionId: getSessionId(ctx),
+			});
+		} catch {
+			// memory ingestion is best-effort in v0
+		}
+	};
+
+	const emitMemoryEvents = async (
+		ctx: any,
+		events: Array<Omit<MemoryEventInput, "projectRoot" | "sessionId">>,
+	): Promise<void> => {
+		if (events.length === 0) return;
+		try {
+			const store = await getMemoryStore(ctx.cwd);
+			await ingestEvents(
+				store,
+				events.map((event) => ({
+					...event,
+					projectRoot: ctx.cwd,
+					sessionId: getSessionId(ctx),
+				})),
+			);
+		} catch {
+			// memory ingestion is best-effort in v0
+		}
+	};
+
+	const emitGitContextEvents = async (ctx: any, gitContext: GitContext, origin: string): Promise<void> => {
+		const changedAreas = Array.from(new Set([...gitContext.changedFiles, ...gitContext.untrackedFiles]));
+		const events: Array<Omit<MemoryEventInput, "projectRoot" | "sessionId">> = [
+			{
+				source: "git",
+				kind: "code.git.snapshot",
+				payload: {
+					origin,
+					available: gitContext.available,
+					baseRef: gitContext.baseRef,
+					note: gitContext.note,
+					changedFiles: gitContext.changedFiles,
+					untrackedFiles: gitContext.untrackedFiles,
+					diffChars: gitContext.diff.length,
+				},
+			},
+		];
+		if (changedAreas.length > 0) {
+			events.push({
+				source: "git",
+				kind: "code.files.changed",
+				payload: {
+					origin,
+					files: changedAreas,
+				},
+			});
+		}
+		await emitMemoryEvents(ctx, events);
+	};
+
+	const emitCheckResultEvents = async (
+		ctx: any,
+		checks: CheckResult[],
+		relatedFiles: string[],
+		origin: string,
+	): Promise<void> => {
+		if (checks.length === 0) return;
+		await emitMemoryEvents(
+			ctx,
+			checks.map((check) => ({
+				source: "check",
+				kind: "check.run.result" as const,
+				payload: {
+					origin,
+					name: check.command,
+					command: check.command,
+					status: check.exitCode === 0 ? "pass" : "fail",
+					exitCode: check.exitCode,
+					files: relatedFiles,
+					stdoutPreview: previewText(check.stdout, 200),
+					stderrPreview: previewText(check.stderr, 200),
+				},
+			})),
+		);
+	};
+
+	const resolveReviewMissionContext = async (input: {
+		ctx: any;
+		fallbackIntent: string;
+		fallbackFocus: string;
+		fallbackFocusSource: string;
+	}): Promise<{
+		resolvedIntentLabel: string;
+		resolvedIntentSource: string;
+		resolvedIntentConfidence?: number;
+		needsClarification: boolean;
+		activeFocus: string;
+		activeFocusSource: string;
+		missionBriefMarkdown?: string;
+		memoryAvailable: boolean;
+	}> => {
+		const fallbackIntent = input.fallbackIntent.trim();
+		let resolvedIntentLabel =
+			fallbackIntent.length > 0 ? fallbackIntent : "No additional intent message provided.";
+		let resolvedIntentSource = fallbackIntent.length > 0 ? "fallback.intent" : input.fallbackFocusSource;
+		let resolvedIntentConfidence: number | undefined = undefined;
+		let needsClarification = fallbackIntent.length === 0;
+		let activeFocus = input.fallbackFocus;
+		let activeFocusSource = input.fallbackFocusSource;
+		let missionBriefMarkdown: string | undefined;
+
+		try {
+			const store = await getMemoryStore(input.ctx.cwd);
+			const workingState = await store.getWorkingStateSnapshot();
+			const resolvedIntent = resolveIntentContext({
+				workingState,
+				fallbackIntent: fallbackIntent.length > 0 ? fallbackIntent : input.fallbackFocus,
+			});
+			if (resolvedIntent.selected?.label?.trim()) {
+				resolvedIntentLabel = resolvedIntent.selected.label;
+				resolvedIntentSource = resolvedIntent.selected.source;
+				resolvedIntentConfidence = resolvedIntent.selected.confidence;
+				needsClarification = resolvedIntent.needsClarification;
+			}
+
+			const missionBrief = buildMissionBrief({
+				workingState,
+				fallbackIntent: fallbackIntent.length > 0 ? fallbackIntent : input.fallbackFocus,
+			});
+			missionBriefMarkdown = missionBrief.markdown;
+			if (missionBrief.activeFocus?.trim()) {
+				activeFocus = missionBrief.activeFocus;
+				activeFocusSource = "memory.active_focus";
+			}
+
+			return {
+				resolvedIntentLabel,
+				resolvedIntentSource,
+				resolvedIntentConfidence,
+				needsClarification,
+				activeFocus,
+				activeFocusSource,
+				missionBriefMarkdown,
+				memoryAvailable: true,
+			};
+		} catch {
+			return {
+				resolvedIntentLabel,
+				resolvedIntentSource,
+				resolvedIntentConfidence,
+				needsClarification,
+				activeFocus,
+				activeFocusSource,
+				missionBriefMarkdown,
+				memoryAvailable: false,
+			};
+		}
+	};
+
+	const recordSuggestionFeedback = async (
+		ctx: any,
+		input: {
+			action: FeedbackAction;
+			suggestion?: SuggestedFile;
+			context?: Record<string, unknown>;
+		},
+	): Promise<void> => {
+		const payload = {
+			action: input.action,
+			suggestionPath: input.suggestion?.path,
+			suggestionAction: input.suggestion?.action ?? "open",
+			...input.context,
+		};
+		await emitMemoryEvent(ctx, {
+			source: "sasu",
+			kind: "user.suggestion.action",
+			payload,
+		});
+		try {
+			const store = await getMemoryStore(ctx.cwd);
+			await store.appendFeedback({
+				id: randomUUID(),
+				ts: new Date().toISOString(),
+				suggestionId: input.suggestion?.path,
+				action: input.action,
+				context: payload,
+			});
+		} catch {
+			// feedback persistence is best-effort in v0
+		}
+	};
+
 	const requestAgentSuggestions = async (input: {
 		ctx: any;
 		cwd: string;
 		config: ConfigData;
 		hint?: string;
+		origin: "sasu-suggest" | "sasu-goal";
 	}) => {
 		const session = await loadSession(input.cwd);
 		const goalInfo = await ensureGoalContext(input.cwd, session, input.ctx);
 		const gitContext = await collectGitContext(pi);
+		await emitGitContextEvents(input.ctx, gitContext, `${input.origin}:suggest`);
 		const candidatePaths = (await listProjectFiles(pi, input.cwd)).filter(isActionableSuggestionPath);
 		if (candidatePaths.length === 0) {
 			input.ctx.ui.notify("No project files available for suggestion", "warning");
@@ -683,28 +1014,77 @@ export default function sasu(pi: ExtensionAPI) {
 			session = goalInfo.session;
 
 			const parsedArgs = parseReviewCommandArgs(args);
-			const userIntent =
-				parsedArgs.intent.length > 0 ? parsedArgs.intent : "No additional intent message provided.";
+			const explicitIntent = parsedArgs.intent.trim();
+			await emitMemoryEvent(ctx, {
+				source: "sasu",
+				kind: "user.command.review",
+				payload: {
+					rawArgs: args,
+					showPrompt: parsedArgs.showPrompt,
+					intentProvided: explicitIntent.length > 0,
+					activeFocus: goalInfo.activeGoal,
+					activeFocusSource: goalInfo.activeGoalSource,
+				},
+			});
+			if (explicitIntent.length > 0) {
+				await emitMemoryEvent(ctx, {
+					source: "pi",
+					kind: "user.intent.explicit",
+					payload: {
+						intent: explicitIntent,
+						command: "sasu-review",
+					},
+				});
+			}
+
 			const gitContext = await collectGitContext(pi);
+			await emitGitContextEvents(ctx, gitContext, "sasu-review");
 			const checks = await runOptionalChecks(pi, cwd);
+			await emitCheckResultEvents(ctx, checks, gitContext.changedFiles, "sasu-review");
 			const checkPassCount = checks.filter((check) => check.exitCode === 0).length;
 			const checkFailCount = checks.length - checkPassCount;
+
+			const fallbackIntent = explicitIntent || session.lastIntent?.trim() || goalInfo.activeGoal;
+			const missionContext = await resolveReviewMissionContext({
+				ctx,
+				fallbackIntent,
+				fallbackFocus: goalInfo.activeGoal,
+				fallbackFocusSource: goalInfo.activeGoalSource,
+			});
+			const userIntent = explicitIntent || missionContext.resolvedIntentLabel || "No additional intent message provided.";
+			const activeReviewFocus = missionContext.activeFocus?.trim() || goalInfo.activeGoal;
+			const activeReviewFocusSource =
+				missionContext.activeFocus?.trim().length && missionContext.activeFocusSource
+					? missionContext.activeFocusSource
+					: goalInfo.activeGoalSource;
+			const resolvedIntentConfidence =
+				missionContext.resolvedIntentConfidence ?? (explicitIntent.length > 0 ? 0.95 : 0.4);
+			const resolvedIntentSource =
+				explicitIntent.length > 0 ? "user.command.review" : missionContext.resolvedIntentSource;
+			const intentNeedsClarification = explicitIntent.length > 0 ? false : missionContext.needsClarification;
 
 			const reviewPrompt = buildReviewPrompt({
 				projectGoal: goalInfo.projectGoal,
 				projectGoalSource: goalInfo.projectGoalSource,
 				sessionGoal: goalInfo.sessionGoal,
 				sessionGoalSource: goalInfo.sessionGoalSource,
-				activeGoal: goalInfo.activeGoal,
-				activeGoalSource: goalInfo.activeGoalSource,
+				activeGoal: activeReviewFocus,
+				activeGoalSource: activeReviewFocusSource,
 				intent: userIntent,
+				intentContext: {
+					label: userIntent,
+					confidence: resolvedIntentConfidence,
+					source: resolvedIntentSource,
+					needsClarification: intentNeedsClarification,
+				},
+				missionBriefMarkdown: missionContext.missionBriefMarkdown,
 				git: gitContext,
 				checks,
 			});
 
 			session = {
 				...session,
-				lastIntent: parsedArgs.intent || session.lastIntent,
+				lastIntent: explicitIntent || session.lastIntent,
 			};
 			await saveSession(cwd, session);
 
@@ -715,8 +1095,8 @@ export default function sasu(pi: ExtensionAPI) {
 					content: buildReviewKickoffChatBlock({
 						projectGoalSource: goalInfo.projectGoalSource,
 						projectGoal: goalInfo.projectGoal,
-						activeFocusSource: goalInfo.activeGoalSource,
-						activeFocus: goalInfo.activeGoal,
+						activeFocusSource: activeReviewFocusSource,
+						activeFocus: activeReviewFocus,
 						intent: userIntent,
 						changedCount: gitContext.changedFiles.length,
 						untrackedCount: gitContext.untrackedFiles.length,
@@ -737,9 +1117,29 @@ export default function sasu(pi: ExtensionAPI) {
 			if (parsedArgs.showPrompt) {
 				if (queued) {
 					pi.sendUserMessage(reviewPrompt, { deliverAs: "followUp" });
+					await emitMemoryEvent(ctx, {
+						source: "sasu",
+						kind: "agent.review.requested",
+						payload: {
+							dispatchMode: "followUp",
+							queued: true,
+							showPrompt: true,
+							checkCount: checks.length,
+						},
+					});
 					ctx.ui.notify("SASU review queued as follow-up (prompt visible)", "info");
 				} else {
 					pi.sendUserMessage(reviewPrompt);
+					await emitMemoryEvent(ctx, {
+						source: "sasu",
+						kind: "agent.review.requested",
+						payload: {
+							dispatchMode: "idle",
+							queued: false,
+							showPrompt: true,
+							checkCount: checks.length,
+						},
+					});
 					ctx.ui.notify("SASU review sent (prompt visible)", "info");
 				}
 				return;
@@ -754,6 +1154,16 @@ export default function sasu(pi: ExtensionAPI) {
 					},
 					{ triggerTurn: true, deliverAs: "followUp" },
 				);
+				await emitMemoryEvent(ctx, {
+					source: "sasu",
+					kind: "agent.review.requested",
+					payload: {
+						dispatchMode: "followUp",
+						queued: true,
+						showPrompt: false,
+						checkCount: checks.length,
+					},
+				});
 				ctx.ui.notify("SASU review queued as follow-up", "info");
 			} else {
 				pi.sendMessage(
@@ -764,6 +1174,16 @@ export default function sasu(pi: ExtensionAPI) {
 					},
 					{ triggerTurn: true },
 				);
+				await emitMemoryEvent(ctx, {
+					source: "sasu",
+					kind: "agent.review.requested",
+					payload: {
+						dispatchMode: "idle",
+						queued: false,
+						showPrompt: false,
+						checkCount: checks.length,
+					},
+				});
 				ctx.ui.notify("SASU review sent", "info");
 			}
 		},
@@ -809,6 +1229,73 @@ export default function sasu(pi: ExtensionAPI) {
 		},
 	});
 
+	pi.registerCommand("sasu-memory-status", {
+		description: "Show SASU memory DB status and working state summary",
+		handler: async (_args, ctx) => {
+			const store = await createMemoryStore(ctx.cwd);
+			const totalEvents = await store.getEventTotalCount({ projectRoot: ctx.cwd });
+			const eventCounts = await store.getEventCountsByKind({ projectRoot: ctx.cwd });
+			const snapshot = await store.getWorkingStateSnapshot();
+			const workingStateKeys = Object.keys(snapshot);
+			pi.sendMessage(
+				{
+					customType: "sasu-memory-status",
+					content: buildMemoryStatusChatBlock({
+						dbPath: store.getDbPath(),
+						totalEvents,
+						eventCounts,
+						workingStateKeys,
+					}),
+					display: true,
+				},
+				{ triggerTurn: false },
+			);
+		},
+	});
+
+	pi.registerCommand("sasu-memory-tail", {
+		description: "Show latest SASU memory events (usage: /sasu-memory-tail [N] [--kind <kind>])",
+		handler: async (args, ctx) => {
+			const parsed = parseMemoryTailArgs(args);
+			const store = await createMemoryStore(ctx.cwd);
+			const events = await store.queryEvents({
+				projectRoot: ctx.cwd,
+				kinds: parsed.kind ? [parsed.kind as MemoryEventKind] : undefined,
+				limit: parsed.limit,
+			});
+			pi.sendMessage(
+				{
+					customType: "sasu-memory-tail",
+					content: buildMemoryTailChatBlock(events),
+					display: true,
+				},
+				{ triggerTurn: false },
+			);
+		},
+	});
+
+	pi.registerCommand("sasu-memory-reset", {
+		description: "Reset SASU memory DB for current project (use --yes to skip confirmation)",
+		handler: async (args, ctx) => {
+			const force = shouldForceMemoryReset(args);
+			if (!force) {
+				if (!ctx.hasUI) {
+					ctx.ui.notify("Pass --yes to confirm memory reset in non-UI mode.", "warning");
+					return;
+				}
+				const selected = await ctx.ui.select("Reset SASU memory for this project?", ["Reset", "Cancel"]);
+				if (selected !== "Reset") {
+					ctx.ui.notify("SASU memory reset cancelled", "warning");
+					return;
+				}
+			}
+
+			const store = await createMemoryStore(ctx.cwd);
+			await store.resetAll();
+			ctx.ui.notify("SASU memory reset complete", "info");
+		},
+	});
+
 	pi.registerCommand("sasu-goal", {
 		description: "Manage project goal + session focus, then ask for file suggestions",
 		handler: async (args, ctx) => {
@@ -832,8 +1319,29 @@ export default function sasu(pi: ExtensionAPI) {
 					sessionGoalSource: "sasu-goal",
 					sessionGoalUpdatedAt: new Date().toISOString(),
 				});
+				await emitMemoryEvents(ctx, [
+					{
+						source: "sasu",
+						kind: "user.command.goal_set",
+						payload: {
+							rawArgs: args,
+							projectGoal: session.projectGoal,
+							sessionGoal: requestedSessionFocus,
+							mode: "session",
+						},
+					},
+					{
+						source: "sasu",
+						kind: "focus.override.manual",
+						payload: {
+							focus: requestedSessionFocus,
+							locked: true,
+							sourceCommand: "sasu-goal",
+						},
+					},
+				]);
 				ctx.ui.notify("SASU session focus set", "info");
-				await requestAgentSuggestions({ ctx, cwd, config });
+				await requestAgentSuggestions({ ctx, cwd, config, origin: "sasu-goal" });
 				return;
 			}
 
@@ -902,6 +1410,29 @@ export default function sasu(pi: ExtensionAPI) {
 			}
 
 			await saveSession(cwd, next);
+			await emitMemoryEvent(ctx, {
+				source: "sasu",
+				kind: "user.command.goal_set",
+				payload: {
+					rawArgs: args,
+					mode,
+					projectUpdated,
+					sessionUpdated,
+					projectGoal: next.projectGoal,
+					sessionGoal: next.sessionGoal,
+				},
+			});
+			if (sessionUpdated && next.sessionGoal) {
+				await emitMemoryEvent(ctx, {
+					source: "sasu",
+					kind: "focus.override.manual",
+					payload: {
+						focus: next.sessionGoal,
+						locked: true,
+						sourceCommand: "sasu-goal",
+					},
+				});
+			}
 			if (projectUpdated && sessionUpdated) {
 				ctx.ui.notify("SASU project goal and session focus set", "info");
 			} else if (projectUpdated) {
@@ -909,7 +1440,7 @@ export default function sasu(pi: ExtensionAPI) {
 			} else {
 				ctx.ui.notify("SASU session focus set", "info");
 			}
-			await requestAgentSuggestions({ ctx, cwd, config });
+			await requestAgentSuggestions({ ctx, cwd, config, origin: "sasu-goal" });
 		},
 	});
 
@@ -922,7 +1453,16 @@ export default function sasu(pi: ExtensionAPI) {
 			}
 			const cwd = ctx.cwd;
 			const config = await loadConfig(cwd);
-			await requestAgentSuggestions({ ctx, cwd, config, hint: args.trim() || undefined });
+			const hint = args.trim() || undefined;
+			await emitMemoryEvent(ctx, {
+				source: "sasu",
+				kind: "user.command.suggest",
+				payload: {
+					rawArgs: args,
+					hint,
+				},
+			});
+			await requestAgentSuggestions({ ctx, cwd, config, hint, origin: "sasu-suggest" });
 		},
 	});
 
@@ -994,22 +1534,77 @@ export default function sasu(pi: ExtensionAPI) {
 				candidates,
 				initialQuery,
 			});
-			if (!selectedPath) return;
+			if (!selectedPath) {
+				if (suggestions.length > 0) {
+					await recordSuggestionFeedback(ctx, {
+						action: "ignored",
+						context: { reason: "open_picker_cancelled", source: "sasu-open" },
+					});
+				}
+				return;
+			}
 
 			const selectedCandidate = candidateByPath.get(selectedPath);
+			if (suggestions.length > 0 && selectedCandidate && !selectedCandidate.suggested) {
+				await recordSuggestionFeedback(ctx, {
+					action: "edited",
+					context: {
+						reason: "selected_non_suggested_path",
+						selectedPath,
+						source: "sasu-open",
+					},
+				});
+			}
+			const selectedSuggestion: SuggestedFile | undefined = selectedCandidate?.suggested
+				? {
+						path: selectedPath,
+						action: selectedCandidate.action,
+						reason: selectedCandidate.reason,
+				  }
+				: undefined;
+
 			if (selectedCandidate?.action === "create") {
 				const createOption = "Create and open";
 				const cancelOption = "Cancel";
 				const confirmed = await ctx.ui.select(`SASU: create and open ${selectedPath}?`, [createOption, cancelOption]);
-				if (confirmed !== createOption) return;
+				if (confirmed !== createOption) {
+					if (selectedSuggestion) {
+						await recordSuggestionFeedback(ctx, {
+							action: "dismissed",
+							suggestion: selectedSuggestion,
+							context: { reason: "create_cancelled", source: "sasu-open" },
+						});
+					}
+					return;
+				}
 
 				const created = await ensureSuggestedFileExists(cwd, selectedPath);
 				ctx.ui.notify(created.message, created.ok ? "info" : "error");
-				if (!created.ok) return;
+				if (!created.ok) {
+					if (selectedSuggestion) {
+						await recordSuggestionFeedback(ctx, {
+							action: "dismissed",
+							suggestion: selectedSuggestion,
+							context: { reason: "create_failed", message: created.message, source: "sasu-open" },
+						});
+					}
+					return;
+				}
 			}
 
 			const opened = await openFilePath(cwd, selectedPath, config, ctx.ui);
 			ctx.ui.notify(opened.message, opened.ok ? "info" : "error");
+			if (selectedSuggestion) {
+				await recordSuggestionFeedback(ctx, {
+					action: opened.ok ? "accepted" : "dismissed",
+					suggestion: selectedSuggestion,
+					context: {
+						reason: opened.ok ? "opened" : "open_failed",
+						message: opened.message,
+						source: "sasu-open",
+					},
+				});
+			}
 		},
 	});
 
@@ -1049,6 +1644,18 @@ export default function sasu(pi: ExtensionAPI) {
 				let suggestions = extractSuggestedFilesFromResponse(assistantText, candidatePaths, maxSuggestions);
 				suggestions = await normalizeSuggestedFilesForProject(pi, ctx.cwd, suggestions, maxSuggestions);
 				suggestions = filterActionableSuggestions(suggestions);
+				await emitMemoryEvent(ctx, {
+					source: "sasu",
+					kind: "agent.suggestion.generated",
+					payload: {
+						suggestionCount: suggestions.length,
+						suggestions: suggestions.map((suggestion) => ({
+							path: suggestion.path,
+							action: suggestion.action ?? "open",
+							reason: suggestion.reason,
+						})),
+					},
+				});
 
 				await saveSession(ctx.cwd, {
 					...session,
@@ -1068,6 +1675,7 @@ export default function sasu(pi: ExtensionAPI) {
 					config,
 					suggestions,
 					showChatBlock: false,
+					onSuggestionAction: (actionEvent) => recordSuggestionFeedback(ctx, actionEvent),
 				});
 				return;
 			} finally {
@@ -1085,6 +1693,15 @@ export default function sasu(pi: ExtensionAPI) {
 		const session = await loadSession(ctx.cwd);
 		const config = await loadConfig(ctx.cwd);
 		const reviewedAt = new Date().toISOString();
+		await emitMemoryEvent(ctx, {
+			source: "sasu",
+			kind: "agent.review.completed",
+			payload: {
+				summary: previewText(assistantText, 500),
+				hasAssistantText: assistantText.length > 0,
+				reviewedAt,
+			},
+		});
 
 		let suggestions = Array.isArray(session.lastSuggestedFiles) ? session.lastSuggestedFiles : [];
 		suggestions = await normalizeSuggestedFilesForProject(
@@ -1117,6 +1734,7 @@ export default function sasu(pi: ExtensionAPI) {
 			cwd: ctx.cwd,
 			config,
 			suggestions,
+			onSuggestionAction: (actionEvent) => recordSuggestionFeedback(ctx, actionEvent),
 		});
 	});
 }

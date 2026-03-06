@@ -1,0 +1,105 @@
+[
+  {
+    "id": "evt-001",
+    "ts": "2026-03-05T01:00:00.000Z",
+    "source": "sasu",
+    "kind": "user.command.goal_set",
+    "payload": {
+      "goal": "Implement Memory Spine v0"
+    }
+  },
+  {
+    "id": "evt-002",
+    "ts": "2026-03-05T01:00:05.000Z",
+    "source": "sasu",
+    "kind": "focus.override.manual",
+    "payload": {
+      "focus": "Implement Memory Spine v0",
+      "locked": true
+    }
+  },
+  {
+    "id": "evt-003",
+    "ts": "2026-03-05T01:00:10.000Z",
+    "source": "git",
+    "kind": "code.files.changed",
+    "payload": {
+      "files": [
+        "src/memory/types.ts",
+        "src/memory/store.ts",
+        "index.ts"
+      ]
+    }
+  },
+  {
+    "id": "evt-004",
+    "ts": "2026-03-05T01:00:15.000Z",
+    "source": "check",
+    "kind": "check.run.result",
+    "payload": {
+      "name": "typecheck",
+      "status": "fail",
+      "files": [
+        "src/memory/store.ts"
+      ]
+    }
+  },
+  {
+    "id": "evt-005",
+    "ts": "2026-03-05T01:00:20.000Z",
+    "source": "sasu",
+    "kind": "user.command.review",
+    "payload": {
+      "mode": "idle"
+    }
+  },
+  {
+    "id": "evt-006",
+    "ts": "2026-03-05T01:00:22.000Z",
+    "source": "sasu",
+    "kind": "agent.review.requested",
+    "payload": {
+      "deliverAs": "idle"
+    }
+  },
+  {
+    "id": "evt-007",
+    "ts": "2026-03-05T01:00:30.000Z",
+    "source": "sasu",
+    "kind": "agent.review.completed",
+    "payload": {
+      "summary": "Found missing index and db init edge cases"
+    }
+  },
+  {
+    "id": "evt-008",
+    "ts": "2026-03-05T01:00:35.000Z",
+    "source": "sasu",
+    "kind": "user.command.suggest",
+    "payload": {
+      "maxSuggestions": 5
+    }
+  },
+  {
+    "id": "evt-009",
+    "ts": "2026-03-05T01:00:38.000Z",
+    "source": "sasu",
+    "kind": "agent.suggestion.generated",
+    "payload": {
+      "files": [
+        "src/memory/store.ts",
+        "src/memory/ingest.ts"
+      ]
+    }
+  },
+  {
+    "id": "evt-010",
+    "ts": "2026-03-05T01:00:42.000Z",
+    "source": "sasu",
+    "kind": "user.suggestion.action",
+    "payload": {
+      "action": "accepted",
+      "path": "src/memory/store.ts"
+    }
+  }
+]

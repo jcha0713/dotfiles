@@ -12,6 +12,13 @@ export function buildReviewPrompt(input: {
 	intent: string;
 	git: GitContext;
 	checks: CheckResult[];
+	missionBriefMarkdown?: string;
+	intentContext?: {
+		label: string;
+		confidence: number;
+		source: string;
+		needsClarification: boolean;
+	};
 }): string {
 	const changedLines = input.git.changedFiles.length
 		? compactLines(input.git.changedFiles, 200).map((f) => `- ${f}`).join("\n")
@@ -50,12 +57,24 @@ export function buildReviewPrompt(input: {
 			: "(No tracked diff content found.)"
 		: input.git.note ?? "Git data unavailable.";
 
+	const missionBriefBlock = input.missionBriefMarkdown?.trim().length
+		? input.missionBriefMarkdown.trim()
+		: "## SASU Mission Brief\n(unavailable; using direct goal/check/git context fallback)";
+	const intentContextLines = input.intentContext
+		? [
+				`Memory-selected intent: ${input.intentContext.label} (${input.intentContext.confidence.toFixed(2)} via ${input.intentContext.source})`,
+				`Needs clarification: ${input.intentContext.needsClarification ? "yes" : "no"}`,
+		  ]
+		: ["Memory-selected intent: (unavailable)"];
+
 	const prompt = [
 		"SASU review request",
 		"",
 		"You are reviewing code in a human-first workflow.",
 		"The user wrote the code; your role is to validate and guide, not take over implementation.",
 		"Default to coach-only behavior: do not offer to implement code, write patches, or take over unless the user explicitly requests implementation.",
+		"",
+		missionBriefBlock,
 		"",
 		"## Goal context",
 		`Project goal source: ${input.projectGoalSource}`,
@@ -67,6 +86,7 @@ export function buildReviewPrompt(input: {
 		"",
 		"## User intent for this review",
 		input.intent,
+		...intentContextLines,
 		"",
 		"## Changed files",
 		changedLines,

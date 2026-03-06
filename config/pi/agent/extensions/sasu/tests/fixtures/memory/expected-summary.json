@@ -1,0 +1,47 @@
+{
+  "totalEvents": 10,
+  "byKind": {
+    "agent.review.completed": 1,
+    "agent.review.requested": 1,
+    "agent.suggestion.generated": 1,
+    "check.run.result": 1,
+    "code.files.changed": 1,
+    "code.git.snapshot": 0,
+    "focus.override.manual": 1,
+    "user.command.goal_set": 1,
+    "user.command.review": 1,
+    "user.command.suggest": 1,
+    "user.intent.explicit": 0,
+    "user.suggestion.action": 1
+  },
+  "selectedIntent": {
+    "label": "Implement Memory Spine v0",
+    "confidence": 0.95,
+    "source": "manual_override"
+  },
+  "changedAreas": [
+    "index.ts",
+    "src"
+  ],
+  "failingChecks": [
+    {
+      "name": "typecheck",
+      "files": [
+        "src/memory/store.ts"
+      ]
+    }
+  ],
+  "topRisks": [
+    {
+      "type": "logic_regression",
+      "impact": 0.7,
+      "confidence": 0.8,
+      "evidence": [
+        "typecheck",
+        "src/memory/store.ts"
+      ],
+      "nextStep": "Fix failing check: typecheck"
+    }
+  ],
+  "brief": "## SASU Mission Brief\nIntent: Implement Memory Spine v0 (0.95)\nActive focus: index.ts, src\nRecent evidence:\n- changed areas: index.ts, src\n- failing checks: typecheck\nTop risks:\n1) logic_regression — Fix failing check: typecheck\nNext validation step:\n- Run typecheck and verify touched files."
+}
