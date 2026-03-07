@@ -535,6 +535,22 @@
         autoUpdate = false;
       };
 
+      # Idle management (screen off / lock / suspend)
+      idle = {
+        enabled = true;
+        screenOffTimeout = 600;
+        lockTimeout = 120;
+        suspendTimeout = 1800;
+        fadeDuration = 5;
+        screenOffCommand = "";
+        lockCommand = "";
+        suspendCommand = "";
+        resumeScreenOffCommand = "";
+        resumeLockCommand = "";
+        resumeSuspendCommand = "";
+        customCommands = "[]";
+      };
+
       # Desktop widgets (optional)
       desktopWidgets = {
         enabled = false;
