@@ -31,15 +31,17 @@
   # Use deep sleep for better ThinkPad compatibility
   boot.kernelParams = [ "mem_sleep_default=deep" ];
 
-  # FIX: Proper suspend/resume handling with Tailscale awareness
+  # Stable resume recovery for deep sleep:
+  # restart tailscaled first, then NetworkManager only if internet is still down.
   systemd.services.fix-network-after-resume = {
-    description = "Fix network after resume from suspend";
+    description = "Recover network after resume (tailscaled-first)";
     after = [
       "suspend.target"
       "hibernate.target"
       "hybrid-sleep.target"
       "systemd-suspend.service"
       "systemd-hibernate.service"
+      "systemd-hybrid-sleep.service"
     ];
     wantedBy = [
       "suspend.target"
@@ -48,32 +50,76 @@
     ];
     serviceConfig = {
       Type = "oneshot";
-      ExecStart = "${pkgs.writeShellScript "fix-network" ''
-        set -e
-        LOGFILE="/home/joohoon/suspend-debug.log"
-        echo "$(date '+%Y-%m-%d %H:%M:%S') === POST-RESUME FIX ===" >> "$LOGFILE"
+      ExecStart = "${pkgs.writeShellScript "fix-network-after-resume" ''
+        set -euo pipefail
 
-        # Wait for Wi-Fi to reconnect
-        for i in {1..30}; do
-          if ${pkgs.iw}/bin/iw dev wlp4s0 link 2>/dev/null | grep -q "Connected"; then
-            echo "$(date '+%Y-%m-%d %H:%M:%S') Wi-Fi connected" >> "$LOGFILE"
-            break
-          fi
-          sleep 1
-        done
+        nmcli_bin="${pkgs.networkmanager}/bin/nmcli"
+        ip_bin="${pkgs.iproute2}/bin/ip"
+        ping_bin="${pkgs.iputils}/bin/ping"
+        grep_bin="${pkgs.gnugrep}/bin/grep"
+        awk_bin="${pkgs.gawk}/bin/awk"
+        systemctl_bin="${pkgs.systemd}/bin/systemctl"
 
-        # Check if we have internet
-        if ! ${pkgs.iputils}/bin/ping -c 1 -W 3 8.8.8.8 &>/dev/null; then
-          echo "$(date '+%Y-%m-%d %H:%M:%S') No internet, restarting NetworkManager..." >> "$LOGFILE"
-          ${pkgs.systemd}/bin/systemctl restart NetworkManager
-          sleep 5
+        log() {
+          echo "[resume-net] $*"
+        }
+
+        wait_wifi_connected() {
+          local i=0
+          while [ "$i" -lt 20 ]; do
+            if $nmcli_bin -t -f DEVICE,TYPE,STATE device status | $awk_bin -F: '$2=="wifi" && $3=="connected"{found=1} END{exit(found?0:1)}'; then
+              return 0
+            fi
+            i=$((i + 1))
+            sleep 1
+          done
+          return 1
+        }
+
+        has_default_route() {
+          $ip_bin route show default | $grep_bin -q '^default '
+        }
+
+        internet_ok() {
+          has_default_route && $ping_bin -c 1 -W 3 1.1.1.1 >/dev/null 2>&1
+        }
+
+        restart_tailscaled() {
+          log "restarting tailscaled"
+          $systemctl_bin restart tailscaled
+          sleep 4
+        }
+
+        log "starting recovery"
+
+        if wait_wifi_connected; then
+          log "wifi-connected"
         else
-          echo "$(date '+%Y-%m-%d %H:%M:%S') Internet OK" >> "$LOGFILE"
+          log "wifi-not-connected-after-wait"
         fi
 
-        # Restart Tailscale to fix its routing
-        echo "$(date '+%Y-%m-%d %H:%M:%S') Restarting Tailscale..." >> "$LOGFILE"
-        ${pkgs.systemd}/bin/systemctl restart tailscaled
+        restart_tailscaled
+        if internet_ok; then
+          log "internet-restored-by=tailscaled"
+          exit 0
+        fi
+
+        log "internet-still-down restarting NetworkManager-fallback"
+        $systemctl_bin restart NetworkManager
+        sleep 6
+        if internet_ok; then
+          log "internet-restored-by=NetworkManager-fallback"
+          exit 0
+        fi
+
+        log "internet-still-down restarting tailscaled-second-fallback"
+        restart_tailscaled
+
+        if internet_ok; then
+          log "internet-restored-by=tailscaled-second-fallback"
+        else
+          log "internet-final=down"
+        fi
       ''}";
     };
   };
@@ -82,6 +128,9 @@
   # Pick only one of the below networking options.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
   networking.networkmanager.enable = true; # Easiest to use and most distros use this by default.
+
+  # Use systemd-resolved for more robust DNS handling (incl. Tailscale + resume)
+  services.resolved.enable = true;
 
   # https://docs.noctalia.dev/getting-started/nixos/
   hardware.bluetooth.enable = true;
