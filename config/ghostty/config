@@ -38,8 +38,12 @@ cursor-style = "block"
 cursor-style-blink = true
 
 # Keybindings
-keybind = ctrl+shift+c=copy_to_clipboard
+keybind = performable:ctrl+c=copy_to_clipboard
+# keybind = ctrl+shift+c=copy_to_clipboard
+keybind = ctrl+shift+c=write_screen_file:open
 keybind = ctrl+shift+v=paste_from_clipboard
+keybind = performable:ctrl+y=scroll_page_up
+keybind = performable:ctrl+e=scroll_page_down
 macos-option-as-alt = true
 
 link-url = true
