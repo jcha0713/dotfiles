@@ -23,6 +23,12 @@
       url = "github:LnL7/nix-darwin";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    # Worktrunk - CLI for git worktree management
+    worktrunk = {
+      url = "github:max-sixty/worktrunk";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
@@ -74,6 +80,7 @@
             home-manager.backupFileExtension = "backup";
             home-manager.users.jcha0713 = ./home/darwin.nix;
             home-manager.extraSpecialArgs = {
+              inherit inputs;
               dotfilesPath = "/Users/jcha0713/dotfiles";
             };
           }
