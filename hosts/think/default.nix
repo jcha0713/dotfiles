@@ -213,7 +213,7 @@
             # Map capslock to control (already done via xkb, but good to have here too)
             capslock = "layer(control)";
             # Space as leader: hold for symbol layer, tap for space
-            space = "overloadt(symbol, space, 200)";
+            space = "overloadt2(symbol, space, 200)";
           };
           control = {
             h = "backspace";
@@ -223,6 +223,16 @@
             l = "=";
             ";" = "\\";
             "'" = "`";
+            "i" = "[";
+            "o" = "]";
+            "z" = "!";
+            "x" = "@";
+            "c" = "#";
+            "v" = "$";
+            "n" = "%";
+            "m" = "^";
+            "," = "&";
+            "." = "*";
           };
         };
       };
@@ -259,6 +269,18 @@
     #     tree
     #   ];
   };
+
+  security.sudo.extraRules = [
+    {
+      users = [ "joohoon" ];
+      commands = [
+        {
+          command = "/run/current-system/sw/bin/nixos-rebuild";
+          options = [ "NOPASSWD" ];
+        }
+      ];
+    }
+  ];
 
   services.displayManager.autoLogin.enable = lib.mkForce false;
   services.displayManager.autoLogin.user = "joohoon";
@@ -331,11 +353,29 @@
   # Enable the OpenSSH daemon.
   services.openssh.enable = true;
 
+  programs.kdeconnect.enable = true;
+
   # Open ports in the firewall.
   # networking.firewall.allowedTCPPorts = [ ... ];
   # networking.firewall.allowedUDPPorts = [ ... ];
   # Or disable the firewall altogether.
   # networking.firewall.enable = false;
+
+  networking.firewall = {
+    enable = true;
+    allowedTCPPortRanges = [
+      {
+        from = 1714;
+        to = 1764;
+      } # KDE Connect
+    ];
+    allowedUDPPortRanges = [
+      {
+        from = 1714;
+        to = 1764;
+      } # KDE Connect
+    ];
+  };
 
   # Copy the NixOS configuration file and link it from the resulting system
   # (/run/current-system/configuration.nix). This is useful in case you
