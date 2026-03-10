@@ -539,7 +539,7 @@
       idle = {
         enabled = true;
         screenOffTimeout = 600;
-        lockTimeout = 120;
+        lockTimeout = 900;
         suspendTimeout = 1800;
         fadeDuration = 5;
         screenOffCommand = "";
