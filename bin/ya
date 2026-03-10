@@ -1,0 +1,16 @@
+#!/usr/bin/env -S just --justfile
+
+import 'ya.d/common.just'
+import 'ya.d/rebuild.just'
+import 'ya.d/nix.just'
+import 'ya.d/flake.just'
+
+default: help
+
+help:
+  @echo "Usage: ya <command> [args...]"
+  @echo ""
+  @just --justfile {{justfile()}} --list --unsorted
+  @echo ""
+  @echo "Root: {{ROOT}}"
+  @echo "Host: {{flake_host}}"

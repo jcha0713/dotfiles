@@ -1,12 +1,14 @@
 # Auto-Generated Dotfiles Structure
 
-> Generated: 2026-03-01T08:48:56Z
+> Generated: 2026-03-10T11:28:20Z
 > Do not edit manually - run: `./scripts/generate-structure.sh`
 
 ## Repository Layout
 
 ```
 /home/joohoon/dotfiles
+├── bin
+│   └── ya.d
 ├── config
 │   ├── aerospace
 │   ├── espanso
@@ -44,6 +46,7 @@
 │   │   └── flavors
 │   ├── zellij
 │   └── zsh
+├── docs
 ├── home
 ├── hosts
 │   ├── mini
@@ -55,9 +58,8 @@
 ├── pkgs
 │   ├── noctalia-catwalk
 │   ├── noctalia-pomodoro
-│   ├── noctalia-todo
+│   ├── noctalia-sticky-notes
 │   └── octorus
-├── references
 └── scripts
 ```
 

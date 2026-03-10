@@ -1,7 +1,9 @@
 {
   config,
   pkgs,
+  lib,
   dotfilesPath,
+  inputs,
   ...
 }:
 
@@ -12,6 +14,14 @@ let
   };
 
   octorus = pkgs.callPackage ../pkgs/octorus/default.nix { };
+
+  yaz = pkgs.writeShellScriptBin "yaz" ''
+    exec ${pkgs.yazi}/bin/ya "$@"
+  '';
+
+  ya = lib.hiPrio (pkgs.writeShellScriptBin "ya" ''
+    exec ${dotfilesPath}/bin/ya "$@"
+  '');
 in
 {
   # Git configuration
@@ -83,6 +93,8 @@ in
       config.lib.file.mkOutOfStoreSymlink "${dotfilesPath}/config/pi/agent/settings.json";
     ".pi/agent/skills".source =
       config.lib.file.mkOutOfStoreSymlink "${dotfilesPath}/config/pi/agent/skills";
+    ".pi/agent/prompts".source =
+      config.lib.file.mkOutOfStoreSymlink "${dotfilesPath}/config/pi/agent/prompts";
     ".pi/agent/extensions".source =
       config.lib.file.mkOutOfStoreSymlink "${dotfilesPath}/config/pi/agent/extensions";
   };
@@ -138,6 +150,10 @@ in
     };
   };
 
+  home.sessionPath = [
+    "${dotfilesPath}/bin"
+  ];
+
   # Common CLI tools (used by both NixOS and Darwin)
   home.packages = with pkgs; [
     zsh
@@ -156,6 +172,10 @@ in
     nixfmt
     jq
     octorus
+    just
+    yaz
+    ya
+    inputs.worktrunk.packages.${pkgs.system}.default
   ];
 
   # Directory jumper

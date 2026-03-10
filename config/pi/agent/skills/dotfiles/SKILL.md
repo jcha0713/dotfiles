@@ -74,7 +74,36 @@ settings.bar.widgets.right = [
 
 Without the prefix, Noctalia will log: `Deleted invalid bar widget catwalk` and the widget won't appear. Built-in widgets like `Tray`, `Clock`, `Workspace` don't use the prefix.
 
-## Commands
+## Commands (via `ya`)
+
+These dotfiles include a custom `just`-powered command interface at `bin/ya`.
+
+| Command | Description |
+| ------- | ----------- |
+| `ya rebuild` | Rebuild and switch (shortcut: `ya re`) |
+| `ya test` | Test configuration without switching |
+| `ya rollback` | Roll back to previous generation |
+| `ya gc` | Run garbage collection |
+| `ya search <query>` | Search nixpkgs |
+| `ya update-all` | Update all flake inputs (shortcut: `ya ua`) |
+| `ya update <input>` | Update specific input (shortcut: `ya u <input>`) |
+
+### `ya` Architecture
+
+- **Entry point**: `bin/ya` - main justfile with shebang
+- **Modules**: `bin/ya.d/*.just` - imported command modules
+- **Shared vars**: `bin/ya.d/common.just` - ROOT, flake_host, is_darwin
+- **Nix wrapper**: Defined in `home/common.nix` as `lib.hiPrio` package to shadow yazi's `ya`
+- **Yazi helper**: Available as `yaz` (yazi's original `ya` binary)
+
+### Adding New Commands
+
+1. Add recipe to existing module in `bin/ya.d/`
+2. Or create new module: `bin/ya.d/<name>.just`
+3. Import it in `bin/ya`: `import 'ya.d/<name>.just'`
+4. Use shared variables from `common.just`: `{{ROOT}}`, `{{flake_host}}`
+
+### Fallback (raw nix)
 
 ```bash
 # NixOS
