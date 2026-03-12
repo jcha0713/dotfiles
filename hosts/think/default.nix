@@ -181,6 +181,7 @@
 
   programs.niri.enable = true;
   programs.xwayland.enable = true;
+  programs.nix-ld.enable = true;
 
   # Required for Niri XWayland support
   services.xserver.displayManager.sessionCommands = ''
@@ -298,7 +299,6 @@
   environment.systemPackages =
     (with pkgs; [
       vim
-      neovim
       wl-clipboard
       xwayland-satellite
       wezterm

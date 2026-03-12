@@ -45,6 +45,10 @@ in
     };
   };
 
+  home.sessionPath = [
+    "/home/joohoon/.local/share/bob/nvim-bin"
+  ];
+
   xdg.configFile = {
     niri = {
       source = config.lib.file.mkOutOfStoreSymlink "${dotfilesPath}/config/niri";

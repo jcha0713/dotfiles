@@ -19,9 +19,11 @@ let
     exec ${pkgs.yazi}/bin/ya "$@"
   '';
 
-  ya = lib.hiPrio (pkgs.writeShellScriptBin "ya" ''
-    exec ${dotfilesPath}/bin/ya "$@"
-  '');
+  ya = lib.hiPrio (
+    pkgs.writeShellScriptBin "ya" ''
+      exec ${dotfilesPath}/bin/ya "$@"
+    ''
+  );
 in
 {
   # Git configuration
@@ -180,6 +182,7 @@ in
     yaz
     ya
     inputs.worktrunk.packages.${pkgs.system}.default
+    bob-nvim
   ];
 
   # Directory jumper
