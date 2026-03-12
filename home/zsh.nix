@@ -22,6 +22,8 @@ in
         source ${config.home.homeDirectory}/dotfiles/config/zsh/zk.zsh
         source ${config.home.homeDirectory}/dotfiles/config/zsh/functions.zsh
 
+        eval "$(wt config shell init zsh)"
+
         # bind <C-n> to yazi(y)
         bindkey -s '^n' 'y\n'
 

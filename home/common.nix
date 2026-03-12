@@ -124,6 +124,10 @@ in
       source = config.lib.file.mkOutOfStoreSymlink "${dotfilesPath}/config/opencode";
     };
 
+    worktrunk = {
+      source = config.lib.file.mkOutOfStoreSymlink "${dotfilesPath}/config/worktrunk";
+    };
+
     "yazi/flavors/kanso-zen.yazi" = {
       source = config.lib.file.mkOutOfStoreSymlink "${dotfilesPath}/config/yazi/flavors/kanso-zen.yazi";
     };
