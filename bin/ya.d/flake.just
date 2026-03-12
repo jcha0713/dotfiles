@@ -8,6 +8,8 @@ update-all:
 update input:
   cd "{{ROOT}}" && nix flake update "{{input}}"
 
+# Update all flake inputs
 ua: update-all
 
+# Update given flake input
 u input: (update input)
