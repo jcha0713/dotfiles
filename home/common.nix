@@ -14,6 +14,7 @@ let
   };
 
   octorus = pkgs.callPackage ../pkgs/octorus/default.nix { };
+  gitbutlerCli = pkgs.callPackage ../pkgs/gitbutler-cli { };
 
   yaz = pkgs.writeShellScriptBin "yaz" ''
     exec ${pkgs.yazi}/bin/ya "$@"
@@ -161,29 +162,33 @@ in
   ];
 
   # Common CLI tools (used by both NixOS and Darwin)
-  home.packages = with pkgs; [
-    zsh
-    ripgrep
-    bat
-    fd
-    lazygit
-    tree-sitter
-    tree
-    gh
-    curl
-    ncurses
-    zellij
-    go
-    rustup
-    nixfmt
-    jq
-    octorus
-    just
-    yaz
-    ya
-    inputs.worktrunk.packages.${pkgs.system}.default
-    bob-nvim
-  ];
+  home.packages =
+    (with pkgs; [
+      zsh
+      ripgrep
+      bat
+      fd
+      lazygit
+      tree-sitter
+      tree
+      gh
+      curl
+      ncurses
+      zellij
+      go
+      rustup
+      nixfmt
+      jq
+      octorus
+      just
+      yaz
+      ya
+      inputs.worktrunk.packages.${pkgs.system}.default
+      bob-nvim
+    ])
+    ++ lib.optionals pkgs.stdenv.hostPlatform.isLinux [
+      gitbutlerCli
+    ];
 
   # Directory jumper
   programs.zoxide = {
