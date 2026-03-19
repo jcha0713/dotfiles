@@ -3,7 +3,7 @@ vim.o.backup = false
 
 vim.o.clipboard = "unnamedplus"
 
-vim.o.keywordprg = "vertical botright help"
+vim.o.keywordprg = ":vertical botright help"
 
 -- UI
 vim.o.cursorline = true

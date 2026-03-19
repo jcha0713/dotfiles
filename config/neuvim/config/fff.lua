@@ -1,7 +1,7 @@
 vim.api.nvim_create_autocmd("PackChanged", {
   callback = function(event)
     if event.data.updated then
-      require('fff.download').download_or_build_binary()
+      vim.system({ "nix run .#release" })
     end
   end,
 })
@@ -9,5 +9,9 @@ vim.api.nvim_create_autocmd("PackChanged", {
 vim.g.fff = {
   lazy_sync = true,
 }
+
+require('fff').setup({
+
+})
 
 vim.keymap.set("n", "<leader>gr", function() require('fff').live_grep() end, { desc = "fff live grep" } )
