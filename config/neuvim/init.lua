@@ -6,3 +6,5 @@ vim.pack.add({
 
 local pack = require("lynn")
 pack.setup("neuvim.plugins")
+
+vim.cmd.colorscheme("vague")
