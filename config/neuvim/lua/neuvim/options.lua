@@ -24,7 +24,7 @@ vim.o.smartcase = true
 vim.o.inccommand = "split"
 
 -- use rg for grepping
-vim.o.grepprg = vim.fn.executable("rg") == 1 and "rg --vimgrep -. --" or "grep -rni --"
+vim.o.grepprg = vim.fn.executable("rg") == 1 and "rg --vimgrep --smart-case --hidden --glob '!.git' --" or "grep -rni --"
 vim.o.grepformat = "%f:%l:%c:%m"
 
 -- indentation
