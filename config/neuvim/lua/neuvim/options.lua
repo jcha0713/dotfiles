@@ -23,6 +23,10 @@ vim.o.ignorecase = true
 vim.o.smartcase = true
 vim.o.inccommand = "split"
 
+-- use rg for grepping
+vim.o.grepprg = vim.fn.executable("rg") == 1 and "rg --vimgrep -. --" or "grep -rni --"
+vim.o.grepformat = "%f:%l:%c:%m"
+
 -- indentation
 vim.o.smartindent = true
 vim.o.shiftwidth = 2
