@@ -13,7 +13,8 @@ shell-integration = zsh
 # SSH - automatically copy terminfo to remote servers, fallback to xterm-256color
 shell-integration-features = ssh-terminfo,ssh-env
 
-theme = Mellifluous
+# theme = Mellifluous
+theme = Vague
 
 # Window
 title = "Ghostty"

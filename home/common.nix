@@ -135,8 +135,8 @@ in
       source = config.lib.file.mkOutOfStoreSymlink "${dotfilesPath}/config/worktrunk";
     };
 
-    "yazi/flavors/kanso-zen.yazi" = {
-      source = config.lib.file.mkOutOfStoreSymlink "${dotfilesPath}/config/yazi/flavors/kanso-zen.yazi";
+    "yazi/flavors" = {
+      source = config.lib.file.mkOutOfStoreSymlink "${dotfilesPath}/config/yazi/flavors";
     };
 
   };
@@ -228,7 +228,7 @@ in
     };
     theme = {
       flavor = {
-        use = "kanso-zen";
+        use = "vague";
       };
     };
   };
