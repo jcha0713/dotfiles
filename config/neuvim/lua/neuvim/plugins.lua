@@ -7,5 +7,4 @@ return {
 
   "mikavilpas/yazi.nvim",
   "comfysage/artio.nvim",
-  "dmtrKovalenko/fff.nvim"
 }

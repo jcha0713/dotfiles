@@ -1,0 +1,32 @@
+{
+  "plugins": {
+    "artio": {
+      "rev": "778448454ded399f773cde2e6e432c0c9558eebd",
+      "src": "https://github.com/comfysage/artio.nvim"
+    },
+    "fff": {
+      "rev": "b005c0a790216bb19bbf7c051d0ecc4572181000",
+      "src": "https://github.com/dmtrKovalenko/fff.nvim"
+    },
+    "lynn": {
+      "rev": "b8c3575de98ae5846da15dc27dd4041c851e90ff",
+      "src": "https://github.com/comfysage/lynn.nvim"
+    },
+    "plenary": {
+      "rev": "b9fd5226c2f76c951fc8ed5923d85e4de065e509",
+      "src": "https://github.com/nvim-lua/plenary.nvim"
+    },
+    "treesitter": {
+      "rev": "2b50ab5ccbcd9e5708deb351308edd738adbf84c",
+      "src": "https://github.com/nvim-treesitter/nvim-treesitter"
+    },
+    "vague": {
+      "rev": "8c4643f8a5106dbc492918f86ff6b5c81111ce9a",
+      "src": "https://github.com/vague-theme/vague.nvim"
+    },
+    "yazi": {
+      "rev": "eaab94d2cc17eed894321724e11781762bb7f606",
+      "src": "https://github.com/mikavilpas/yazi.nvim"
+    }
+  }
+}
