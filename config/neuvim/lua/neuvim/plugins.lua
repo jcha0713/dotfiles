@@ -5,5 +5,6 @@ return {
 
   "vague-theme/vague.nvim",
 
-  "mikavilpas/yazi.nvim"
+  "mikavilpas/yazi.nvim",
+  "comfysage/artio.nvim"
 }
