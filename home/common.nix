@@ -228,7 +228,7 @@ in
     };
     theme = {
       flavor = {
-        use = "vague";
+        dark = "vague";
       };
     };
   };
