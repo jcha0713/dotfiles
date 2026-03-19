@@ -107,6 +107,10 @@ in
       source = config.lib.file.mkOutOfStoreSymlink "${dotfilesPath}/config/nvim";
     };
 
+    neuvim = {
+      source = config.lib.file.mkOutOfStoreSymlink "${dotfilesPath}/config/neuvim";
+    };
+
     wezterm = {
       source = config.lib.file.mkOutOfStoreSymlink "${dotfilesPath}/config/wezterm";
     };
@@ -160,6 +164,10 @@ in
   home.sessionPath = [
     "${dotfilesPath}/bin"
   ];
+
+  home.sessionVariables = {
+    NVIM_APPNAME = "neuvim";
+  };
 
   # Common CLI tools (used by both NixOS and Darwin)
   home.packages =
