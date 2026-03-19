@@ -1,3 +1,3 @@
-vim.keymap.set("n", "<leader>n", function()
+vim.keymap.set("n", "<C-n>", function()
   require("yazi").yazi()
-end)
+end, { desc = "Open Yazi" })
