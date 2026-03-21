@@ -3,8 +3,6 @@ vim.o.backup = false
 
 vim.o.clipboard = "unnamedplus"
 
-vim.o.keywordprg = ":vertical botright help"
-
 -- UI
 vim.o.cursorline = true
 vim.o.winborder = "rounded"
@@ -12,6 +10,16 @@ vim.o.termguicolors = true
 vim.o.number = true
 vim.o.cursorline = true
 vim.o.conceallevel = 0
+
+-- completion
+vim.o.pumheight = 15
+vim.o.pumwidth = 20
+vim.o.pummaxwidth = 42
+vim.o.wildoptions = "fuzzy,pum,tagfile"
+vim.o.wildmode = "longest:full,full"
+vim.o.completeopt = "menuone,noselect"
+vim.o.autocomplete = true
+vim.o.complete = "o,."
 
 -- split
 vim.o.splitbelow = true
