@@ -8,3 +8,9 @@ local pack = require("lynn")
 pack.setup("neuvim.plugins")
 
 vim.cmd.colorscheme("vague")
+
+require("vim._core.ui2").enable({
+  enable = true, msg = { targets = "cmd" },
+})
+
+vim.lsp.enable("lua_ls")
