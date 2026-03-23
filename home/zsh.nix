@@ -22,6 +22,10 @@ in
         source ${config.home.homeDirectory}/dotfiles/config/zsh/zk.zsh
         source ${config.home.homeDirectory}/dotfiles/config/zsh/functions.zsh
 
+        # bob-managed Neovim fallback: keep nvim reachable even if a shell
+        # inherits stale Home Manager session guard variables.
+        export PATH="$HOME/.local/share/bob/nvim-bin:$PATH"
+
         eval "$(wt config shell init zsh)"
 
         # bind <C-n> to yazi(y)
