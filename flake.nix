@@ -29,6 +29,12 @@
       url = "github:max-sixty/worktrunk";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    # tgt - Telegram TUI
+    tgt = {
+      url = "github:FedericoBruzzone/tgt";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =

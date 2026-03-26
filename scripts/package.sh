@@ -51,7 +51,9 @@ Usage:
 Examples:
   package.sh update gitbutler-cli
   package.sh update gitbutler-cli 0.19.5-2897
+  package.sh update tgt
   package.sh check gitbutler-cli
+  package.sh check tgt
   package.sh check-all
 EOF
   exit 1

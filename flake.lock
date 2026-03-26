@@ -258,6 +258,7 @@
         "nix-darwin": "nix-darwin",
         "nixpkgs": "nixpkgs",
         "noctalia": "noctalia",
+        "tgt": "tgt",
         "worktrunk": "worktrunk"
       }
     },
@@ -309,6 +310,26 @@
       "original": {
         "owner": "nix-systems",
         "repo": "default",
+        "type": "github"
+      }
+    },
+    "tgt": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1774255862,
+        "narHash": "sha256-DoI3bfp8G6qNhK8MhW7HhJkAs/i4ptMn1YuIELJekFA=",
+        "owner": "FedericoBruzzone",
+        "repo": "tgt",
+        "rev": "0b5b42c0a17c86c13836d8535d1a207f4bb24d74",
+        "type": "github"
+      },
+      "original": {
+        "owner": "FedericoBruzzone",
+        "repo": "tgt",
         "type": "github"
       }
     },

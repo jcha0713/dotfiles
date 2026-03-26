@@ -10,6 +10,7 @@
 let
   octorus = pkgs.callPackage ../pkgs/octorus/default.nix { };
   gitbutlerCli = pkgs.callPackage ../pkgs/gitbutler-cli { };
+  tgt = pkgs.callPackage ../pkgs/tgt/default.nix { inherit inputs; };
 
   yaz = pkgs.writeShellScriptBin "yaz" ''
     exec ${pkgs.yazi}/bin/ya "$@"
@@ -130,6 +131,7 @@ in
       yaz
       ya
       inputs.worktrunk.packages.${pkgs.system}.default
+      tgt
       bob-nvim
     ])
     ++ lib.optionals pkgs.stdenv.hostPlatform.isLinux [
