@@ -25,6 +25,7 @@ in
 {
   imports = [
     ./git.nix
+    ./devtools.nix
   ];
 
   home.file = {
@@ -124,7 +125,6 @@ in
       zellij
       go
       rustup
-      nixfmt
       jq
       octorus
       just
