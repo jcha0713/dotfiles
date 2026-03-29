@@ -384,8 +384,8 @@ return {
   },
 
   {
-    dir = "~/.pi/agent/extensions/neovim",
-    enabled = false,
+    dir = "~/dotfiles/config/pi/agent/extensions/sasu/reference/pi-extensions/extensions/neovim",
+    name = "pi-nvim-local",
     event = "VeryLazy",
     config = function()
       require("pi-nvim").setup()
@@ -408,6 +408,19 @@ return {
         require("pi-nvim").toggle,
         { desc = "Toggle Pi" }
       )
+    end,
+  },
+
+  {
+    dir = "~/dotfiles/config/pi/agent/extensions/sasu/neovim-sasu-feeder",
+    name = "sasu-feeder",
+    event = "VeryLazy",
+    dependencies = { "pi-nvim-local" },
+    config = function()
+      require("sasu-feeder").setup({
+        command = "/sasu-memory-ingest-nvim-save",
+        throttle_ms = 500,
+      })
     end,
   },
 }
