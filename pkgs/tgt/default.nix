@@ -14,7 +14,7 @@ rustPlatform.buildRustPackage rec {
   version = "unstable-${inputs.tgt.shortRev or (builtins.substring 0 7 inputs.tgt.rev)}";
 
   src = inputs.tgt;
-  cargoHash = "sha256-BQDcIO8XW1Csg2/yn4xRlDc4vEgY5cTHVsgEHEjNHR0=";
+  cargoHash = "sha256-p3NcT0dBvtPUav4Xjwus1cEKWumqmpvmyr+vvJ3iHbU=";
 
   nativeBuildInputs = [ pkg-config ] ++ lib.optionals stdenv.hostPlatform.isDarwin [ apple-sdk_12 ];
 
