@@ -39,7 +39,6 @@
       catimg
       colima
       comma
-      # curl, ncurses, gh, tree, tree-sitter moved to home/common.nix
       darwin.trash
       deno
       fnm
@@ -48,7 +47,6 @@
       nap
       nb
       pipx
-      sqlite
       tailscale
       wakeonlan
       zk

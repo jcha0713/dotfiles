@@ -117,14 +117,12 @@ in
       bat
       fd
       lazygit
-      tree-sitter
       tree
       gh
       curl
       ncurses
       zellij
       go
-      rustup
       jq
       octorus
       just
