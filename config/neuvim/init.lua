@@ -4,6 +4,8 @@ vim.pack.add({
   { src = "https://github.com/comfysage/lynn.nvim", name = "lynn" },
 })
 
+vim.cmd("packadd nvim.difftool")
+
 local pack = require("lynn")
 pack.setup("neuvim.plugins")
 
@@ -13,4 +15,4 @@ require("vim._core.ui2").enable({
   enable = true, msg = { targets = "cmd" },
 })
 
-vim.lsp.enable("lua_ls")
+require('neuvim.lsp')

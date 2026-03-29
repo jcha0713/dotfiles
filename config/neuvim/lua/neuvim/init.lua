@@ -1,3 +1,4 @@
 require("neuvim.options")
 require("neuvim.keymaps")
-require("neuvim.lsp")
+require("neuvim.diagnostic")
+require("neuvim.modules.autocmds").setup()

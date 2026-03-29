@@ -1,15 +1,33 @@
 {
   "plugins": {
     "artio": {
-      "rev": "778448454ded399f773cde2e6e432c0c9558eebd",
+      "rev": "045c5b33a6012bf79a77c7858553075ca5f0bc56",
       "src": "https://github.com/comfysage/artio.nvim"
     },
+    "blink": {
+      "rev": "451168851e8e2466bc97ee3e026c3dcb9141ce07",
+      "src": "https://github.com/saghen/blink.cmp",
+      "version": "1.0.0 - 2.0.0"
+    },
+    "blink.cmp": {
+      "rev": "451168851e8e2466bc97ee3e026c3dcb9141ce07",
+      "src": "https://github.com/saghen/blink.cmp",
+      "version": "1.0.0 - 2.0.0"
+    },
+    "conform": {
+      "rev": "086a40dc7ed8242c03be9f47fbcee68699cc2395",
+      "src": "https://github.com/stevearc/conform.nvim"
+    },
     "fff": {
-      "rev": "b005c0a790216bb19bbf7c051d0ecc4572181000",
+      "rev": "eecb795a0e14082f4b0c66e6ad80d82da49632ad",
       "src": "https://github.com/dmtrKovalenko/fff.nvim"
     },
+    "lint": {
+      "rev": "4b03656c09c1561f89b6aa0665c15d292ba9499d",
+      "src": "https://github.com/mfussenegger/nvim-lint"
+    },
     "lspconfig": {
-      "rev": "841c6d4139aedb8a3f2baf30cef5327371385b93",
+      "rev": "97774019cb17697f35872b28bc020a72b4ca1b51",
       "src": "https://github.com/neovim/nvim-lspconfig"
     },
     "lynn": {
@@ -37,7 +55,7 @@
       "src": "https://github.com/MeanderingProgrammer/render-markdown.nvim"
     },
     "treesitter": {
-      "rev": "2b50ab5ccbcd9e5708deb351308edd738adbf84c",
+      "rev": "7caec274fd19c12b55902a5b795100d21531391f",
       "src": "https://github.com/nvim-treesitter/nvim-treesitter"
     },
     "vague": {
@@ -45,7 +63,7 @@
       "src": "https://github.com/vague-theme/vague.nvim"
     },
     "yazi": {
-      "rev": "eaab94d2cc17eed894321724e11781762bb7f606",
+      "rev": "ea1b96a96b7eb8098c1ae264bf024e26e42464c3",
       "src": "https://github.com/mikavilpas/yazi.nvim"
     }
   }

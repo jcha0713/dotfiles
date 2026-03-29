@@ -11,16 +11,6 @@ vim.o.number = true
 vim.o.cursorline = true
 vim.o.conceallevel = 0
 
--- completion
-vim.o.pumheight = 15
-vim.o.pumwidth = 20
-vim.o.pummaxwidth = 42
-vim.o.wildoptions = "fuzzy,pum,tagfile"
-vim.o.wildmode = "longest:full,full"
-vim.o.completeopt = "menuone,noselect"
-vim.o.autocomplete = true
-vim.o.complete = "o,."
-
 -- split
 vim.o.splitbelow = true
 vim.o.splitright = true
@@ -32,7 +22,9 @@ vim.o.smartcase = true
 vim.o.inccommand = "split"
 
 -- use rg for grepping
-vim.o.grepprg = vim.fn.executable("rg") == 1 and "rg --vimgrep --smart-case --hidden --glob '!.git' --" or "grep -rni --"
+vim.o.grepprg = vim.fn.executable("rg") == 1
+    and "rg --vimgrep --smart-case --hidden --glob '!.git' --"
+  or "grep -rni --"
 vim.o.grepformat = "%f:%l:%c:%m"
 
 -- indentation
@@ -42,7 +34,6 @@ vim.o.expandtab = true
 vim.o.tabstop = 2
 
 -- text wrap
-vim.o.wrap = false
 vim.o.breakindent = true
 vim.o.linebreak = true
 
