@@ -1,8 +1,8 @@
 {
-  "lastChangelogVersion": "0.55.3",
+  "lastChangelogVersion": "0.57.1",
   "defaultProvider": "openai-codex",
-  "defaultModel": "gpt-5.3-codex",
-  "defaultThinkingLevel": "high",
+  "defaultModel": "gpt-5.4",
+  "defaultThinkingLevel": "medium",
   "theme": "terminal",
   "hideThinkingBlock": false,
   "packages": [
@@ -15,14 +15,18 @@
         "extensions/the-dumb-zone/index.ts"
       ]
     },
-    "npm:pi-searxng",
+    "~/projects/pi-searxng/index.ts",
     "npm:pi-rtk",
     "npm:pi-token-burden",
     "npm:pi-context",
     "npm:pi-extmgr",
     "npm:pi-open-sessions-files-extension",
     "~/.pi/agent/extensions/sasu/index.ts",
-    "npm:pi-terminal-theme"
+    "npm:pi-terminal-theme",
+    "npm:@marckrenn/pi-sub-bar",
+    "npm:pi-secret-guard",
+    "npm:pi-vim",
+    "npm:pi-promptsmith"
   ],
   "editorPaddingX": 2,
   "quietStartup": true,
