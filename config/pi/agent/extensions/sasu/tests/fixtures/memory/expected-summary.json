@@ -19,16 +19,11 @@
     "confidence": 0.95,
     "source": "manual_override"
   },
-  "changedAreas": [
-    "index.ts",
-    "src"
-  ],
+  "changedAreas": ["index.ts", "src"],
   "failingChecks": [
     {
       "name": "typecheck",
-      "files": [
-        "src/memory/store.ts"
-      ]
+      "files": ["src/memory/store.ts"]
     }
   ],
   "topRisks": [
@@ -36,10 +31,7 @@
       "type": "logic_regression",
       "impact": 0.7,
       "confidence": 0.8,
-      "evidence": [
-        "typecheck",
-        "src/memory/store.ts"
-      ],
+      "evidence": ["typecheck", "src/memory/store.ts"],
       "nextStep": "Fix failing check: typecheck"
     }
   ],

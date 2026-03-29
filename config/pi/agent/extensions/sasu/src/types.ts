@@ -4,53 +4,53 @@ export type OpenMode = "foreground" | "background";
 export type SuggestionAction = "open" | "create";
 
 export interface SuggestedFile {
-	path: string;
-	action?: SuggestionAction;
-	reason?: string;
+  path: string;
+  action?: SuggestionAction;
+  reason?: string;
 }
 
 export interface SessionData {
-	version: number;
-	projectGoal?: string;
-	projectGoalSource?: string;
-	sessionGoal?: string;
-	sessionGoalSource?: string;
-	sessionGoalUpdatedAt?: string;
-	lastIntent?: string;
-	lastReviewAt?: string;
-	lastSuggestedFiles?: SuggestedFile[];
-	lastSuggestionsUpdatedAt?: string;
-	// Legacy fields (for migration in loadSession)
-	goal?: string;
-	goalSource?: string;
+  version: number;
+  projectGoal?: string;
+  projectGoalSource?: string;
+  sessionGoal?: string;
+  sessionGoalSource?: string;
+  sessionGoalUpdatedAt?: string;
+  lastIntent?: string;
+  lastReviewAt?: string;
+  lastSuggestedFiles?: SuggestedFile[];
+  lastSuggestionsUpdatedAt?: string;
+  // Legacy fields (for migration in loadSession)
+  goal?: string;
+  goalSource?: string;
 }
 
 export interface ConfigData {
-	checks?: string[];
-	openCommand?: string;
-	openMode?: OpenMode;
-	maxSuggestions?: number;
+  checks?: string[];
+  openCommand?: string;
+  openMode?: OpenMode;
+  maxSuggestions?: number;
 }
 
 export interface CheckResult {
-	command: string;
-	exitCode: number;
-	stdout: string;
-	stderr: string;
+  command: string;
+  exitCode: number;
+  stdout: string;
+  stderr: string;
 }
 
 export interface GitContext {
-	available: boolean;
-	baseRef?: string;
-	changedFiles: string[];
-	untrackedFiles: string[];
-	diff: string;
-	note?: string;
+  available: boolean;
+  baseRef?: string;
+  changedFiles: string[];
+  untrackedFiles: string[];
+  diff: string;
+  note?: string;
 }
 
 export interface ExecResult {
-	stdout: string;
-	stderr: string;
-	code: number;
-	killed?: boolean;
+  stdout: string;
+  stderr: string;
+  code: number;
+  killed?: boolean;
 }

@@ -24,11 +24,7 @@
     "source": "git",
     "kind": "code.files.changed",
     "payload": {
-      "files": [
-        "src/memory/types.ts",
-        "src/memory/store.ts",
-        "index.ts"
-      ]
+      "files": ["src/memory/types.ts", "src/memory/store.ts", "index.ts"]
     }
   },
   {
@@ -39,9 +35,7 @@
     "payload": {
       "name": "typecheck",
       "status": "fail",
-      "files": [
-        "src/memory/store.ts"
-      ]
+      "files": ["src/memory/store.ts"]
     }
   },
   {
@@ -86,10 +80,7 @@
     "source": "sasu",
     "kind": "agent.suggestion.generated",
     "payload": {
-      "files": [
-        "src/memory/store.ts",
-        "src/memory/ingest.ts"
-      ]
+      "files": ["src/memory/store.ts", "src/memory/ingest.ts"]
     }
   },
   {
