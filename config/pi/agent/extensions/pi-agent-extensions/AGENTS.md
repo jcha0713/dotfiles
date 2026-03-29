@@ -10,15 +10,16 @@ This is **pi-agent-extensions** — a collection of [pi](https://github.com/mari
 
 ## Current Extensions
 
-| File | Description |
-|------|-------------|
-| `direnv.ts` | Loads direnv environment variables on session start and after bash commands |
-| `questionnaire.ts` | Multi-question tool for LLM-driven user input |
-| `slow-mode.ts` | Review gate for write/edit tool calls — toggle with `/slowmode` |
+| File               | Description                                                                 |
+| ------------------ | --------------------------------------------------------------------------- |
+| `direnv.ts`        | Loads direnv environment variables on session start and after bash commands |
+| `questionnaire.ts` | Multi-question tool for LLM-driven user input                               |
+| `slow-mode.ts`     | Review gate for write/edit tool calls — toggle with `/slowmode`             |
 
 ## Essential Context
 
 Review these files for project understanding:
+
 - `./air/context/OVERVIEW.md` — Project overview and structure
 - `./air/context/architecture.md` — How extensions work, key APIs
 - `./air/context/implementation-guide.md` — How to write new extensions

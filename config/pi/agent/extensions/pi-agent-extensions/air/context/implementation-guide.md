@@ -25,23 +25,27 @@ Extensions live in `~/.pi/agent/extensions/` for global auto-discovery.
 ## Coding Standards
 
 ### TypeScript Style
+
 - Use `import type` for type-only imports
 - Prefer `async/await` over raw promises
 - Use Node.js built-ins (`node:child_process`, `node:fs`, etc.) with the `node:` prefix
 - Keep extensions focused — one concern per file
 
 ### Error Handling
+
 - Never throw from event handlers — catch and handle gracefully
 - Use `ctx.ui.notify(msg, "error")` or `ctx.ui.setStatus()` to surface errors to the user
 - Degrade gracefully when external tools are missing (e.g., direnv not installed)
 
 ### UI Interaction
+
 - Always check `ctx.hasUI` before accessing `ctx.ui`
 - Use status bar (`ctx.ui.setStatus`) for ongoing state indicators
 - Use notifications (`ctx.ui.notify`) for one-time messages
 - Use theming (`ctx.ui.theme.fg("success", ...)`) for consistent colours
 
 ### Process Management
+
 - Use `spawn` from `node:child_process` for external processes
 - Implement timeouts for processes that might hang
 - Serialise concurrent access to the same resource (see direnv's `pending` pattern)
@@ -113,6 +117,7 @@ Pi doesn't have a built-in test framework for extensions. To test:
 ## Common Patterns
 
 ### Filtering by Tool Name
+
 ```typescript
 pi.on("tool_result", async (event, ctx) => {
   if (event.toolName !== "bash") return;
@@ -121,6 +126,7 @@ pi.on("tool_result", async (event, ctx) => {
 ```
 
 ### Serialised Execution
+
 ```typescript
 let pending: Promise<void> | null = null;
 
@@ -133,8 +139,9 @@ async function doWork() {
 ```
 
 ### Timeout Racing
+
 ```typescript
 const done = doExpensiveThing();
-const timeout = new Promise<void>(resolve => setTimeout(resolve, 10_000));
+const timeout = new Promise<void>((resolve) => setTimeout(resolve, 10_000));
 await Promise.race([done, timeout]);
 ```

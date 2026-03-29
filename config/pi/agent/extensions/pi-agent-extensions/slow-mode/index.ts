@@ -16,10 +16,7 @@
 import { mkdirSync, writeFileSync, unlinkSync, existsSync } from "node:fs";
 import { execFileSync } from "node:child_process";
 import { dirname, basename, join, resolve, relative } from "node:path";
-import type {
-  ExtensionAPI,
-  ExtensionContext,
-} from "@mariozechner/pi-coding-agent";
+import type { ExtensionAPI, ExtensionContext } from "@mariozechner/pi-coding-agent";
 import { Text, truncateToWidth } from "@mariozechner/pi-tui";
 import { createTwoFilesPatch } from "diff";
 
@@ -115,10 +112,7 @@ export default function slowMode(pi: ExtensionAPI) {
    * 4. User rejects → return { block: true } (tool aborted)
    * 5. Cleanup staged file
    */
-  async function reviewWrite(
-    input: Record<string, unknown>,
-    ctx: ExtensionContext,
-  ) {
+  async function reviewWrite(input: Record<string, unknown>, ctx: ExtensionContext) {
     const filePath = input.path as string;
     const content = input.content as string;
 
@@ -164,10 +158,7 @@ export default function slowMode(pi: ExtensionAPI) {
    * 6. User rejects → return { block: true } (tool aborted)
    * 7. Cleanup both staged files
    */
-  async function reviewEdit(
-    input: Record<string, unknown>,
-    ctx: ExtensionContext,
-  ) {
+  async function reviewEdit(input: Record<string, unknown>, ctx: ExtensionContext) {
     const filePath = input.path as string;
     const oldText = input.oldText as string;
     const newText = input.newText as string;
@@ -195,12 +186,9 @@ export default function slowMode(pi: ExtensionAPI) {
       try {
         // Open external diff viewer — blocks until user closes it
         openExternalDiff(oldPath, newPath, relPath);
-        
+
         // After viewer closes, ask user for approval decision
-        const choice = await ctx.ui.confirm(
-          `Apply changes to ${relPath}?`,
-          ["Yes", "No"],
-        );
+        const choice = await ctx.ui.confirm(`Apply changes to ${relPath}?`, ["Yes", "No"]);
         approved = choice === "Yes";
       } catch {
         // External viewer failed — fall back to inline diff
@@ -247,12 +235,12 @@ export default function slowMode(pi: ExtensionAPI) {
    * Options for the review UI component
    */
   interface ReviewOptions {
-    operation: "WRITE" | "EDIT";   // Type of change being reviewed
-    filePath: string;               // Relative path to the file
-    stagePath: string;              // Path to staged file (for writes and as fallback)
-    body: string;                   // Content to display (file content or diff)
-    oldPath?: string;               // Staged old file (edits only)
-    newPath?: string;               // Staged new file (edits only)
+    operation: "WRITE" | "EDIT"; // Type of change being reviewed
+    filePath: string; // Relative path to the file
+    stagePath: string; // Path to staged file (for writes and as fallback)
+    body: string; // Content to display (file content or diff)
+    oldPath?: string; // Staged old file (edits only)
+    newPath?: string; // Staged new file (edits only)
   }
 
   /**
@@ -271,10 +259,7 @@ export default function slowMode(pi: ExtensionAPI) {
    *
    * @returns Promise<boolean> - true if approved, false if rejected
    */
-  async function showReview(
-    ctx: ExtensionContext,
-    opts: ReviewOptions,
-  ): Promise<boolean> {
+  async function showReview(ctx: ExtensionContext, opts: ReviewOptions): Promise<boolean> {
     const { matchesKey, Key } = await import("@mariozechner/pi-tui");
 
     return ctx.ui.custom<boolean>((tui, theme, _kb, done) => {
@@ -284,7 +269,7 @@ export default function slowMode(pi: ExtensionAPI) {
 
       // Content split into lines for scrolling
       const bodyLines = opts.body.split("\n");
-      const maxVisible = 30;  // Show up to 30 lines at once
+      const maxVisible = 30; // Show up to 30 lines at once
 
       // Max scroll position (clamp to avoid scrolling past content)
       const maxScroll = Math.max(0, bodyLines.length - 5);
@@ -423,10 +408,7 @@ export default function slowMode(pi: ExtensionAPI) {
         lines.push("");
 
         // Scrollable content/diff window
-        const visible = bodyLines.slice(
-          scrollOffset,
-          scrollOffset + maxVisible,
-        );
+        const visible = bodyLines.slice(scrollOffset, scrollOffset + maxVisible);
         for (const line of visible) {
           if (opts.operation === "EDIT") {
             // Syntax highlighting for unified diff format
@@ -467,9 +449,7 @@ export default function slowMode(pi: ExtensionAPI) {
         lines.push("");
 
         // Key binding hints
-        add(
-          theme.fg("dim", " Enter approve • Esc reject • Ctrl+O external • j/k u/d gg/G scroll"),
-        );
+        add(theme.fg("dim", " Enter approve • Esc reject • Ctrl+O external • j/k u/d gg/G scroll"));
 
         // Bottom separator
         add(theme.fg("accent", "─".repeat(width)));
@@ -589,20 +569,10 @@ export default function slowMode(pi: ExtensionAPI) {
    * @param newText - Modified text
    * @returns Unified diff string
    */
-  function generateUnifiedDiff(
-    filePath: string,
-    oldText: string,
-    newText: string,
-  ): string {
-    return createTwoFilesPatch(
-      filePath,
-      filePath,
-      oldText,
-      newText,
-      undefined,
-      undefined,
-      { context: 3 },
-    );
+  function generateUnifiedDiff(filePath: string, oldText: string, newText: string): string {
+    return createTwoFilesPatch(filePath, filePath, oldText, newText, undefined, undefined, {
+      context: 3,
+    });
   }
 
   ////----------------------------------------

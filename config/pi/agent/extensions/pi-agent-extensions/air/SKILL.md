@@ -29,6 +29,7 @@ dropped
 ```
 
 **State Definitions:**
+
 - `draft` - Planning phase, requirements gathering
 - `ready` - Specification complete, approved for implementation
 - `work-in-progress` - Currently being implemented
@@ -39,6 +40,7 @@ dropped
 ## Quick Start Workflow
 
 ### 1. Check Current Status
+
 Always start by checking what work exists and its state:
 
 ```bash
@@ -57,6 +59,7 @@ airctl status --by-tag
 For new features without Air documents:
 
 1. **Check for existing specifications first**
+
    ```bash
    airctl status --state draft,ready
    ```
@@ -88,12 +91,14 @@ airctl update v0.1/feature-name.org --state work-in-progress
 ```
 
 **During implementation:**
+
 - Document design changes in the Air document
 - Update Implementation History with major milestones
 - Write tests based on Air document specifications
 - Run tests after any code changes
 
 **Before marking complete:**
+
 1. Run all tests - must pass without exceptions
 2. Run integration tests
 3. Fix any failing tests immediately
@@ -106,6 +111,7 @@ airctl update v0.1/feature-name.org --state work-in-progress
 ### 4. Managing Work
 
 **Update document metadata:**
+
 ```bash
 # Change state
 airctl update path/to/doc.org --state work-in-progress
@@ -118,6 +124,7 @@ airctl update path/to/doc.org --state complete --title "New Title"
 ```
 
 **Track progress:**
+
 ```bash
 # View specific directory
 airctl status --directory v0.1/
@@ -143,6 +150,7 @@ Standard Air project layout:
 ```
 
 **Organization guidelines:**
+
 - Use semantic versioning: v0.1, v0.2, v0.10 (sorts correctly)
 - Move completed work to archive/ when no longer actively referenced
 - Place OVERVIEW.md in directories to explain contents
@@ -160,6 +168,7 @@ airctl context generate --claude
 ```
 
 Generated context includes:
+
 - Project overview and architecture
 - Current work status from Air documents
 - Coding conventions and standards
@@ -208,36 +217,45 @@ tags: [tag1, tag2]
 ---
 
 # Summary
+
 Brief overview of what this addresses.
 
 # Motivation
+
 Why this work is needed and what problems it solves.
 
 ## Goals
+
 What we want to achieve.
 
 ## Non-Goals
+
 What is explicitly out of scope.
 
 # Proposal
+
 Detailed specification of the solution.
 
 # Design Details
+
 Technical implementation details.
 
 # Implementation History
+
 - YYYY-MM-DD: Description of work completed
 ```
 
 ## Best Practices
 
 ### Planning Phase
+
 - Create Air documents before implementing complex features
 - Complete specifications before moving to 'ready' state
 - Identify dependencies between documents
 - Get stakeholder approval before implementation
 
 ### Implementation Phase
+
 - Only implement from 'ready' documents
 - Update state immediately when starting work
 - Keep Implementation History current
@@ -245,6 +263,7 @@ Technical implementation details.
 - Never mark complete with failing tests
 
 ### Maintenance
+
 - Review document states regularly with `airctl status`
 - Archive completed work that's no longer referenced
 - Update specifications when requirements change
@@ -288,16 +307,19 @@ airctl context generate --claude
 ## Troubleshooting
 
 **Unknown states appearing:**
+
 - Check document has state property (Org-mode: `#+state:`, Markdown: `state:` in frontmatter)
 - Verify state value is one of: draft, ready, work-in-progress, complete, dropped
 - Ensure file extension matches configured file-types (.org or .md by default)
 
 **Documents not appearing in status:**
+
 - Verify files are in main-directory configured in air-config.toml
 - Check file extensions match configured file-types
 - Ensure documents aren't in archive/ (use --include-archive to see them)
 
 **Configuration issues:**
+
 - Run `airctl config show` to see current configuration
 - Check air-config.toml exists in project root or user config directory
 - Verify directory paths in configuration are correct
@@ -305,6 +327,7 @@ airctl context generate --claude
 ## Collaboration Workflow
 
 **For team members:**
+
 1. Check `airctl status` to see current work
 2. Review 'ready' documents before implementing
 3. Use `airctl update` to claim work (move to work-in-progress)
@@ -312,6 +335,7 @@ airctl context generate --claude
 5. Update state when finished
 
 **For project leads:**
+
 1. Review draft documents for completeness
 2. Approve documents by moving to 'ready' state
 3. Monitor progress with `airctl status --state work-in-progress`
@@ -329,6 +353,7 @@ airctl context generate --claude
 ---
 
 For more details, see context files in ./air/context/:
+
 - OVERVIEW.md - Project overview
 - air-conventions.md - Document structure and tag taxonomy
 - architecture.md - System architecture

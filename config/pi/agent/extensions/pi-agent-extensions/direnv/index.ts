@@ -17,10 +17,7 @@
  */
 
 import { spawn } from "node:child_process";
-import type {
-  ExtensionAPI,
-  ExtensionContext,
-} from "@mariozechner/pi-coding-agent";
+import type { ExtensionAPI, ExtensionContext } from "@mariozechner/pi-coding-agent";
 
 export default function (pi: ExtensionAPI) {
   let pending: Promise<void> | null = null;
@@ -54,10 +51,7 @@ export default function (pi: ExtensionAPI) {
       proc.on("close", (code) => {
         if (code !== 0) {
           if (ctx.hasUI) {
-            ctx.ui.setStatus(
-              "direnv",
-              ctx.ui.theme.fg("error", "direnv ✗"),
-            );
+            ctx.ui.setStatus("direnv", ctx.ui.theme.fg("error", "direnv ✗"));
           }
           resolve();
           return;

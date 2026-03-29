@@ -38,6 +38,7 @@
 ## Extensions
 
 ### direnv.ts
+
 Loads [direnv](https://direnv.net/) environment variables into pi sessions. Runs on session start and after every bash command to pick up `.envrc` changes. Displays status in the pi status bar.
 
 - **Origin**: Based on [Mic92's implementation](https://github.com/Mic92/dotfiles/blob/main/home/.pi/agent/extensions/direnv.ts)
@@ -45,12 +46,14 @@ Loads [direnv](https://direnv.net/) environment variables into pi sessions. Runs
 - **Status bar**: `direnv …` (running) · `direnv ✓` (loaded) · `direnv ✗` (error)
 
 ### questionnaire.ts
+
 Registers a `questionnaire` tool that the LLM can call to ask the user single or multiple-choice questions. Supports tab navigation for multi-question flows, free-text "type something" option, and a submit review screen.
 
 - **Mechanism**: `pi.registerTool()` — LLM decides when to call it
 - **UI**: `ctx.ui.custom()` interactive component with keyboard navigation
 
 ### slow-mode.ts
+
 Intercepts `write` and `edit` tool calls to let the user review proposed changes before they are applied. New files are staged in a tmp directory; edits stage old/new files and display a unified diff. Toggle with `/slow-mode`. Use Ctrl+O to open in an external diff viewer.
 
 - **Events**: `tool_call` (write, edit)

@@ -36,11 +36,13 @@ Detailed specification.
 ## Tag Taxonomy
 
 ### Extension Tags
+
 - `:direnv:` — Direnv integration
 - `:extension:` — General extension work
 - `:infra:` — Project infrastructure (CI, tooling, docs)
 
 ### Work Types
+
 - `:feature:` — New functionality
 - `:bugfix:` — Bug corrections
 - `:docs:` — Documentation updates

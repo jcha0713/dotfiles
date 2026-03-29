@@ -26,42 +26,46 @@ function getProjectName(cwd: string): string {
 }
 
 // Format a tool call for display
-function formatToolCall(toolName: string, args: Record<string, unknown>, maxLen: number = 50): string {
+function formatToolCall(
+  toolName: string,
+  args: Record<string, unknown>,
+  maxLen: number = 50,
+): string {
   // For bash tool, show the command
   if (toolName === "bash" && args?.command) {
     return `bash: ${truncate(String(args.command), maxLen)}`;
   }
-  
+
   // For read tool, show the path
   if (toolName === "read" && args?.path) {
     return `read: ${truncate(String(args.path), maxLen)}`;
   }
-  
+
   // For write tool, show the path
   if (toolName === "write" && args?.path) {
     return `write: ${truncate(String(args.path), maxLen)}`;
   }
-  
+
   // For edit tool, show the path
   if (toolName === "edit" && args?.path) {
     return `edit: ${truncate(String(args.path), maxLen)}`;
   }
-  
+
   // For grep tool, show the pattern
   if (toolName === "grep" && args?.pattern) {
     return `grep: ${truncate(String(args.pattern), maxLen)}`;
   }
-  
+
   // For find tool, show the pattern
   if (toolName === "find" && args?.pattern) {
     return `find: ${truncate(String(args.pattern), maxLen)}`;
   }
-  
+
   // For ls tool, show the path
   if (toolName === "ls" && args?.path) {
     return `ls: ${truncate(String(args.path), maxLen)}`;
   }
-  
+
   // Default: just show tool name
   return toolName;
 }
@@ -78,7 +82,7 @@ export default function (pi: ExtensionAPI) {
   pi.on("turn_end", async (event, ctx) => {
     const toolCount = event.toolResults?.length ?? 0;
     const projectName = getProjectName(ctx.cwd);
-    
+
     // Build notification message from tracked tool calls
     let message: string;
     if (toolCount === 0) {
@@ -93,7 +97,7 @@ export default function (pi: ExtensionAPI) {
           return result.toolName;
         })
         .join("\n");
-      
+
       if (toolCount === 1) {
         message = `${toolList}`;
       } else {
@@ -116,7 +120,7 @@ export default function (pi: ExtensionAPI) {
           "--urgency=normal",
           "--expire-time=20000",
         ],
-        { timeout: 5000 }
+        { timeout: 5000 },
       );
     } catch {
       // Silently fail if notification doesn't work
@@ -136,7 +140,7 @@ export default function (pi: ExtensionAPI) {
           "--urgency=low",
           "--expire-time=20000",
         ],
-        { timeout: 5000 }
+        { timeout: 5000 },
       );
     } catch {
       // Silently fail
