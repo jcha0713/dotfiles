@@ -1,11 +1,13 @@
 ---
 description: Generate a visual HTML project recap — rebuild mental model of a project's current state, recent decisions, and cognitive debt hotspots
 ---
+
 Load the visual-explainer skill, then generate a comprehensive visual project recap as a self-contained HTML page.
 
 Follow the visual-explainer skill workflow. Read the reference template, CSS patterns, and mermaid theming references before generating. Use a warm editorial or paper/ink aesthetic with muted blues and greens, but vary fonts and palette from previous diagrams.
 
 **Time window** — determine the recency window from `$1`:
+
 - Shorthand like `2w`, `30d`, `3m`: parse to git's `--since` format (`2w` → `"2 weeks ago"`, `30d` → `"30 days ago"`, `3m` → `"3 months ago"`)
 - If `$1` doesn't match a time pattern, treat it as free-form context and use the default window
 - No argument: default to `2w` (2 weeks)
@@ -23,20 +25,22 @@ Follow the visual-explainer skill workflow. Read the reference template, CSS pat
 5. **Architecture scan.** Read key source files to understand the module structure and dependencies. Focus on entry points, public API surface, and the files most frequently changed in the time window.
 
 **Verification checkpoint** — before generating HTML, produce a structured fact sheet of every claim you will present in the recap:
+
 - Every quantitative figure: commit counts, file counts, line counts, branch counts
 - Every module, function, and type name you will reference
 - Every behavior and architecture description
 - For each, cite the source: the git command output that produced it, or the file:line where you read it
-Verify each claim against the code. If something cannot be verified, mark it as uncertain rather than stating it as fact. This fact sheet is your source of truth during HTML generation — do not deviate from it.
+  Verify each claim against the code. If something cannot be verified, mark it as uncertain rather than stating it as fact. This fact sheet is your source of truth during HTML generation — do not deviate from it.
 
 **Optional hero image** — if `surf` CLI is available (`which surf`), generate a hero banner via `surf gemini --generate-image --aspect-ratio 16:9` that visually captures the project's identity or domain. Match the style to the page's palette. Embed as base64 data URI using the `.hero-img-wrap` pattern from css-patterns.md. Place above or just below the title. Skip if surf isn't available — the page should stand on its own.
 
 **Diagram structure** — the page should include:
-1. **Project identity** — not the README blurb. A *current-state* summary: what this project does, who uses it, what stage it's at (early dev, stable, actively shipping features). Include version, key dependencies, and the one-sentence "elevator pitch" for someone who forgot what they were building.
-2. **Architecture snapshot** — Mermaid diagram of the system as it exists today. Focus on the conceptual modules and their relationships, not every file. Label nodes with what they do, not just file names. Wrap in `.mermaid-wrap` with zoom controls (+/−/reset/expand buttons), Ctrl/Cmd+scroll zoom, click-and-drag panning, and click-to-expand (opens diagram full-size in new tab). See css-patterns.md "Mermaid Zoom Controls" for the full pattern including the `openMermaidInNewTab()` function. *Visual treatment: this is the visual anchor — use hero depth (elevated container, larger padding, subtle accent-tinted background). The rest of the page hangs off this diagram.*
+
+1. **Project identity** — not the README blurb. A _current-state_ summary: what this project does, who uses it, what stage it's at (early dev, stable, actively shipping features). Include version, key dependencies, and the one-sentence "elevator pitch" for someone who forgot what they were building.
+2. **Architecture snapshot** — Mermaid diagram of the system as it exists today. Focus on the conceptual modules and their relationships, not every file. Label nodes with what they do, not just file names. Wrap in `.mermaid-wrap` with zoom controls (+/−/reset/expand buttons), Ctrl/Cmd+scroll zoom, click-and-drag panning, and click-to-expand (opens diagram full-size in new tab). See css-patterns.md "Mermaid Zoom Controls" for the full pattern including the `openMermaidInNewTab()` function. _Visual treatment: this is the visual anchor — use hero depth (elevated container, larger padding, subtle accent-tinted background). The rest of the page hangs off this diagram._
 3. **Recent activity** — not raw git log. A human-readable narrative grouped by theme: feature work, bug fixes, refactors, infrastructure. Timeline visualization with the most significant changes called out. For each theme, a one-sentence summary of what happened and why it mattered.
 4. **Decision log** — key design decisions from the time window. Extracted from commit messages, conversation history, plan docs, progress docs. Each entry: what was decided, why, what was considered. This is the highest-value section for fighting cognitive debt — the reasoning that evaporates first.
-5. **State of things** — *visual treatment: use the KPI card pattern from css-patterns.md — large hero numbers for working/broken/blocked/in-progress counts, with color-coded trend indicators.* A dashboard of:
+5. **State of things** — _visual treatment: use the KPI card pattern from css-patterns.md — large hero numbers for working/broken/blocked/in-progress counts, with color-coded trend indicators._ A dashboard of:
    - What's working (stable, shipped, tested)
    - What's in progress (uncommitted work, open branches, active TODOs)
    - What's broken or degraded (known bugs, failing tests, tech debt items)
@@ -46,7 +50,7 @@ Verify each claim against the code. If something cannot be verified, mark it as 
    - Non-obvious coupling (things connected in ways you wouldn't guess from the file tree)
    - Gotchas (common mistakes, easy-to-forget requirements, things that break silently)
    - Naming conventions or patterns the codebase follows
-7. **Cognitive debt hotspots** — *visual treatment: use amber-tinted cards with severity indicators (colored left border: red for high, amber for medium, blue for low).* Areas where understanding is weakest:
+7. **Cognitive debt hotspots** — _visual treatment: use amber-tinted cards with severity indicators (colored left border: red for high, amber for medium, blue for low)._ Areas where understanding is weakest:
    - Code that changed recently but has no documented rationale
    - Complex modules with no tests
    - Areas where multiple people (or agents) made overlapping changes

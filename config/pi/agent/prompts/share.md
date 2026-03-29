@@ -9,9 +9,11 @@ Share a visual explainer HTML file instantly via Vercel. Returns a live URL with
 ```
 
 **Arguments:**
+
 - `file-path` - Path to the HTML file to share (required)
 
 **Examples:**
+
 ```
 /share ~/.agent/diagrams/my-diagram.html
 /share /tmp/visual-explainer-output.html
@@ -47,8 +49,14 @@ Claim URL: https://vercel.com/claim-deployment?code=...
 ```
 
 The script also outputs JSON for programmatic use:
+
 ```json
-{"previewUrl":"https://...","claimUrl":"https://...","deploymentId":"...","projectId":"..."}
+{
+  "previewUrl": "https://...",
+  "claimUrl": "https://...",
+  "deploymentId": "...",
+  "projectId": "..."
+}
 ```
 
 ## Notes
