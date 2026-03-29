@@ -43,10 +43,6 @@ in
   };
 
   xdg.configFile = {
-    nvim = {
-      source = config.lib.file.mkOutOfStoreSymlink "${dotfilesPath}/config/nvim";
-    };
-
     neuvim = {
       source = config.lib.file.mkOutOfStoreSymlink "${dotfilesPath}/config/neuvim";
     };
