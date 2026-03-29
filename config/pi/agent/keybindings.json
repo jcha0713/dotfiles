@@ -1,5 +1,11 @@
 {
-  "cycleModelForward": "",
-  "selectUp": ["ctrl+p", "up"],
-  "selectDown": ["ctrl+n", "down"]
+  "tui.select.up": [
+    "ctrl+p",
+    "up"
+  ],
+  "tui.select.down": [
+    "ctrl+n",
+    "down"
+  ],
+  "app.model.cycleForward": ""
 }
