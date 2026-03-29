@@ -10,26 +10,31 @@ Use the `gh` CLI to interact with GitHub. Always specify `--repo owner/repo` whe
 ## Pull Requests
 
 List open PRs:
+
 ```bash
 gh pr list --repo owner/repo --state open
 ```
 
 View PR details:
+
 ```bash
 gh pr view 55 --repo owner/repo
 ```
 
 Create a PR:
+
 ```bash
 gh pr create --repo owner/repo --title "Title" --body "Description" --base main
 ```
 
 Check CI status on a PR:
+
 ```bash
 gh pr checks 55 --repo owner/repo
 ```
 
 Merge a PR:
+
 ```bash
 gh pr merge 55 --repo owner/repo --squash
 ```
@@ -37,26 +42,31 @@ gh pr merge 55 --repo owner/repo --squash
 ## Issues
 
 List open issues:
+
 ```bash
 gh issue list --repo owner/repo --state open
 ```
 
 List with labels:
+
 ```bash
 gh issue list --repo owner/repo --label bug --state open
 ```
 
 View issue details:
+
 ```bash
 gh issue view 123 --repo owner/repo
 ```
 
 Create an issue:
+
 ```bash
 gh issue create --repo owner/repo --title "Title" --body "Description" --label bug
 ```
 
 Close an issue:
+
 ```bash
 gh issue close 123 --repo owner/repo
 ```
@@ -64,16 +74,19 @@ gh issue close 123 --repo owner/repo
 ## CI Runs
 
 List recent workflow runs:
+
 ```bash
 gh run list --repo owner/repo --limit 10
 ```
 
 View a run and see which steps failed:
+
 ```bash
 gh run view <run-id> --repo owner/repo
 ```
 
 View logs for failed steps only:
+
 ```bash
 gh run view <run-id> --repo owner/repo --log-failed
 ```
@@ -83,6 +96,7 @@ gh run view <run-id> --repo owner/repo --log-failed
 The `gh api` command is useful for accessing data not available through other subcommands.
 
 Get PR with specific fields:
+
 ```bash
 gh api repos/owner/repo/pulls/55 --jq '.title, .state, .user.login'
 ```

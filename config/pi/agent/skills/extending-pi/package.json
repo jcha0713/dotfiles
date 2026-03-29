@@ -2,18 +2,18 @@
   "name": "@tmustier/extending-pi",
   "version": "0.1.0",
   "description": "Guide for extending Pi — skills, extensions, prompt templates, themes, and packaging.",
-  "license": "MIT",
-  "author": "Thomas Mustier",
   "keywords": [
     "pi-package"
   ],
+  "homepage": "https://github.com/tmustier/pi-extensions/tree/main/extending-pi",
+  "bugs": "https://github.com/tmustier/pi-extensions/issues",
+  "license": "MIT",
+  "author": "Thomas Mustier",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/tmustier/pi-extensions.git",
     "directory": "extending-pi"
   },
-  "bugs": "https://github.com/tmustier/pi-extensions/issues",
-  "homepage": "https://github.com/tmustier/pi-extensions/tree/main/extending-pi",
   "pi": {
     "skills": [
       "SKILL.md",

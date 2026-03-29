@@ -67,8 +67,8 @@
 
 ### Flake Outputs
 
-
 ### Home Configurations
+
 - common
 - darwin
 - nixos
@@ -76,18 +76,21 @@
 - zsh
 
 ### System Configurations
+
 - mini
 - think
 
 ## Config Directories
 
 **Shared (both platforms):**
+
 - config/nvim/
 - config/zellij/
 - config/wezterm/
 - config/zsh/
 
 **NixOS only:**
+
 - config/niri/
 - config/waybar/
 - config/ghostty/
@@ -96,6 +99,7 @@
 - config/kime/
 
 **macOS only:**
+
 - config/aerospace/
 - config/karabiner/
 - config/hammerspoon/

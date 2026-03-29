@@ -19,6 +19,7 @@ When this skill is invoked via `/skill:web-search` or the skills menu:
 ## Tool usage
 
 Use the `web_search` tool with:
+
 - `query`: The search query
 - `limit` (optional): Number of results (default: 10)
 

@@ -3,6 +3,7 @@
 Guide for extending Pi — decide between skills, extensions, prompt templates, themes, context files, or custom models, then create and package them.
 
 Includes nested sub-skills:
+
 - **skill-creator** — detailed guidance for creating Pi skills
 
 ## Installation

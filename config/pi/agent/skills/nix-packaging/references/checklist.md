@@ -21,6 +21,7 @@ Use this checklist when packaging new software for your Nix dotfiles.
 ## Phase 3: Create Package
 
 ### If Pre-built Binary:
+
 - [ ] Create `pkgs/<name>/default.nix`
 - [ ] Copy from `references/binary-template.nix`
 - [ ] Define sources for each platform
@@ -29,6 +30,7 @@ Use this checklist when packaging new software for your Nix dotfiles.
 - [ ] Test with `nix-build -E 'with import <nixpkgs> {}; callPackage pkgs/<name> {}'`
 
 ### If Build from Source (Rust):
+
 - [ ] Create `pkgs/<name>/default.nix`
 - [ ] Copy from `references/rust-template.nix`
 - [ ] Set `version` and `src` (use `lib.fakeHash` first)
@@ -38,6 +40,7 @@ Use this checklist when packaging new software for your Nix dotfiles.
 - [ ] Test the build
 
 ### If Build from Source (Go):
+
 - [ ] Create `pkgs/<name>/default.nix`
 - [ ] Copy from `references/go-template.nix`
 - [ ] Set `version`, `src`, `vendorHash`
@@ -57,13 +60,13 @@ Use this checklist when packaging new software for your Nix dotfiles.
 
 ## Common Gotchas
 
-| Problem | Quick Fix |
-|---------|-----------|
-| `hash mismatch` | Use `lib.fakeHash`, rebuild, copy "got:" hash |
-| `source root not found` | Check tarball with `tar -tzf`, set `sourceRoot` |
-| `libstdc++.so.6 not found` | Add `stdenv.cc.cc.lib` to `buildInputs` |
-| Tests fail | Add `doCheck = false;` |
-| Darwin build fails | Add `darwin.apple_sdk.frameworks.*` to `buildInputs` |
+| Problem                    | Quick Fix                                            |
+| -------------------------- | ---------------------------------------------------- |
+| `hash mismatch`            | Use `lib.fakeHash`, rebuild, copy "got:" hash        |
+| `source root not found`    | Check tarball with `tar -tzf`, set `sourceRoot`      |
+| `libstdc++.so.6 not found` | Add `stdenv.cc.cc.lib` to `buildInputs`              |
+| Tests fail                 | Add `doCheck = false;`                               |
+| Darwin build fails         | Add `darwin.apple_sdk.frameworks.*` to `buildInputs` |
 
 ## Quick Commands
 

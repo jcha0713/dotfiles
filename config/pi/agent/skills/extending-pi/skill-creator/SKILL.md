@@ -43,6 +43,7 @@ pi-skill/
 ### 2) Plan reusable resources
 
 For each example, decide if you need:
+
 - **scripts/** for deterministic tasks
 - **references/** for long docs or schemas
 - **assets/** for templates or boilerplate
@@ -66,6 +67,7 @@ If you plan to share the skill with humans, a README.md helps discovery and inst
 Short summary for humans discovering the skill.
 
 ## Installation
+
 `pi install git:github.com/org/my-skill`
 ```
 

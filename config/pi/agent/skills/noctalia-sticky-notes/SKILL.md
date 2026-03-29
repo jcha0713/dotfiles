@@ -14,6 +14,7 @@ noctalia-shell ipc show | rg "^target plugin:sticky-notes$"
 ```
 
 If missing:
+
 1. `systemctl --user restart noctalia-shell`
 2. Re-check `noctalia-shell ipc show`
 3. Verify plugin files exist at `~/.config/noctalia/plugins/sticky-notes`
@@ -43,6 +44,7 @@ noctalia-shell ipc call plugin:sticky-notes togglePanel
 ## Markdown support (use in note content)
 
 Sticky Notes renders Markdown. You can include things like:
+
 - headings: `# Title`
 - emphasis: `**bold**`, `*italic*`, `~~done~~`
 - task lists: `- [ ] todo`, `- [x] done`
@@ -52,9 +54,9 @@ Sticky Notes renders Markdown. You can include things like:
 
 Example:
 
-```bash
+````bash
 noctalia-shell ipc call plugin:sticky-notes addNote $'# Today\n- [ ] Review PR\n- [x] Rebuild\n\n```sh\nnoctalia-shell ipc show\n```'
-```
+````
 
 ## Useful jq helpers
 

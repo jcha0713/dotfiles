@@ -4,7 +4,7 @@ Pi skill for navigating Nix-based dotfiles.
 
 ## Philosophy: Documentation as Navigation, Not State
 
-**This skill teaches *how to find* things, not *what's there*.**
+**This skill teaches _how to find_ things, not _what's there_.**
 
 The dotfiles repo changes frequently. To avoid documentation drift:
 
@@ -15,12 +15,12 @@ The dotfiles repo changes frequently. To avoid documentation drift:
 
 ## Files
 
-| File | Purpose | Auto-Generated |
-|------|---------|----------------|
-| `SKILL.md` | Core navigation guide | ❌ Manual |
-| `references/nix-patterns.md` | Reusable code patterns | ❌ Manual |
-| `references/platform-notes.md` | Platform-specific quirks | ❌ Manual |
-| `references/structure.md` | Full current structure | ✅ Yes |
+| File                           | Purpose                  | Auto-Generated |
+| ------------------------------ | ------------------------ | -------------- |
+| `SKILL.md`                     | Core navigation guide    | ❌ Manual      |
+| `references/nix-patterns.md`   | Reusable code patterns   | ❌ Manual      |
+| `references/platform-notes.md` | Platform-specific quirks | ❌ Manual      |
+| `references/structure.md`      | Full current structure   | ✅ Yes         |
 
 ## Maintenance
 
@@ -41,25 +41,26 @@ The dotfiles repo changes frequently. To avoid documentation drift:
 1. Add the tool to your dotfiles first
 2. Follow existing patterns (symlink from `config/`, define in `home/`)
 3. Use `rg` to find it when needed
-4. Only update the skill if it's a *new pattern*, not a new instance
+4. Only update the skill if it's a _new pattern_, not a new instance
 
 ### What's Worth Documenting
 
-| Worth Documenting | Not Worth Documenting |
-|-------------------|----------------------|
-| "Configs live in `config/` and are symlinked" | Every config directory |
-| "Use `home/common.nix` for shared tools" | Every shared package |
-| "Themes are centralized in `lib/themes/`" | The 4 specific theme names |
-| "NixOS uses niri, macOS uses aerospace" | Every keybinding |
+| Worth Documenting                             | Not Worth Documenting      |
+| --------------------------------------------- | -------------------------- |
+| "Configs live in `config/` and are symlinked" | Every config directory     |
+| "Use `home/common.nix` for shared tools"      | Every shared package       |
+| "Themes are centralized in `lib/themes/`"     | The 4 specific theme names |
+| "NixOS uses niri, macOS uses aerospace"       | Every keybinding           |
 
 ## When This Skill is Wrong
 
 **Trust the code, not this guide.**
 
 If something seems off:
+
 1. Check the actual files in `home/` and `config/`
 2. Use `rg "tool-name" home/ config/` to find current location
-3. Update the skill only if the *pattern* changed
+3. Update the skill only if the _pattern_ changed
 
 ## Testing
 

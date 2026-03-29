@@ -3,6 +3,7 @@
 ## Symlinking Configs
 
 ### NixOS Pattern
+
 ```nix
 home.file = {
   ".config/nvim".source =
@@ -11,9 +12,10 @@ home.file = {
 ```
 
 ### Darwin Pattern
+
 ```nix
 xdg.configFile = {
-  nvim.source = 
+  nvim.source =
     config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/dotfiles/config/nvim";
 };
 ```
@@ -23,6 +25,7 @@ xdg.configFile = {
 ## Theme System
 
 ### Defining a Theme
+
 ```nix
 # lib/themes/palettes.nix
 my-theme = {
@@ -37,6 +40,7 @@ my-theme = {
 ```
 
 ### Using a Theme
+
 ```nix
 # home/nixos.nix
 let
@@ -56,6 +60,7 @@ in {
 ## Conditional Platform Logic
 
 ### In Home Manager
+
 ```nix
 { config, pkgs, lib, ... }:
 
@@ -76,6 +81,7 @@ in {
 ```
 
 ### In Flake
+
 ```nix
 nixosConfigurations.think = nixpkgs.lib.nixosSystem {
   system = "x86_64-linux";
@@ -91,6 +97,7 @@ darwinConfigurations.mini = nix-darwin.lib.darwinSystem {
 ## Custom Scripts
 
 ### Nix Expression Pattern
+
 ```nix
 # scripts/my-script.nix
 { pkgs }:
@@ -103,6 +110,7 @@ pkgs.writeShellApplication {
 ```
 
 Then add to packages:
+
 ```nix
 home/packages = [
   (import ../scripts/my-script.nix { inherit pkgs; })
@@ -112,6 +120,7 @@ home/packages = [
 ## Overlays
 
 Custom packages via overlays:
+
 ```nix
 # overlays/default.nix
 final: prev: {
@@ -120,6 +129,7 @@ final: prev: {
 ```
 
 Add to flake:
+
 ```nix
 nixpkgs = {
   url = "github:NixOS/nixpkgs/nixpkgs-unstable";
@@ -130,6 +140,7 @@ nixpkgs = {
 ## Home Manager Modules
 
 ### Splitting Config
+
 ```nix
 # home/nixos.nix
 {
@@ -142,6 +153,7 @@ nixpkgs = {
 ```
 
 ### Passing Special Args
+
 ```nix
 nixosConfigurations.think = nixpkgs.lib.nixosSystem {
   specialArgs = { inherit inputs; };
@@ -157,9 +169,10 @@ nixosConfigurations.think = nixpkgs.lib.nixosSystem {
 ```
 
 Then access in home config:
+
 ```nix
 { config, pkgs, dotfilesPath, ... }: {
-  home.file.".config/nvim".source = 
+  home.file.".config/nvim".source =
     config.lib.file.mkOutOfStoreSymlink "${dotfilesPath}/config/nvim";
 }
 ```

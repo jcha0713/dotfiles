@@ -39,7 +39,7 @@ find_matching_tags() {
   local candidate
 
   while IFS= read -r candidate; do
-    awk -F '\t' -v t="$candidate" '$1 == t { print $1 "\t" $2 }' "$tags_file"
+    awk -F '\t' -v t="$candidate" '$1 == t { print $1 "\t" $2 "\t" $3 }' "$tags_file"
   done < <(candidate_tags "$term") | awk '!seen[$0]++' | head -n "$max_matches"
 }
 
@@ -59,16 +59,25 @@ echo "DOC_DIR: $doc_dir"
 echo "QUERY:   $tag"
 echo "CONTEXT: +/-${context_lines} lines"
 
-while IFS=$'\t' read -r matched_tag rel_file; do
+while IFS=$'\t' read -r matched_tag rel_file excmd; do
   [ -n "$matched_tag" ] || continue
   file="$doc_dir/$rel_file"
-  hit="$(rg -n -m 1 --fixed-strings "$matched_tag" "$file" || true)"
+
+  needle="$matched_tag"
+  if [ -n "${excmd:-}" ] && [[ "$excmd" == /* ]]; then
+    needle="${excmd#/}"
+  fi
+
+  hit="$(rg -n -m 1 --fixed-strings "$needle" "$file" || true)"
+  if [ -z "$hit" ] && [ "$needle" != "$matched_tag" ]; then
+    hit="$(rg -n -m 1 --fixed-strings "$matched_tag" "$file" || true)"
+  fi
 
   echo
   echo "== $matched_tag ($rel_file) =="
 
   if [ -z "$hit" ]; then
-    echo "Could not find literal tag text in file; inspect file manually."
+    echo "Could not find tag anchor in file; inspect file manually."
     continue
   fi
 

@@ -15,6 +15,7 @@ mkdir -p pkgs/<plugin-name>
 ```
 
 `pkgs/<plugin-name>/default.nix`:
+
 ```nix
 { lib, stdenv, fetchFromGitHub }:
 
@@ -50,8 +51,8 @@ let
 in
 {
   home.packages = [ noctalia-<plugin-name> ];
-  
-  home.file.".local/share/noctalia/plugins/<plugin-name>".source = 
+
+  home.file.".local/share/noctalia/plugins/<plugin-name>".source =
     "${noctalia-<plugin-name>}/share/noctalia/plugins/<plugin-name>";
 }
 ```
@@ -82,11 +83,12 @@ cd ~/dotfiles && sudo nixos-rebuild switch --flake .#think
 
 Plugin widgets **must** use the `plugin:<name>` format in the widget ID.
 
-| Correct | Incorrect |
-|---------|-----------|
+| Correct          | Incorrect |
+| ---------------- | --------- |
 | `plugin:catwalk` | `catwalk` |
 
 Without the prefix, Noctalia logs:
+
 ```
 WARN qml: Settings !!! Deleted invalid bar widget catwalk !!!
 ```
@@ -104,23 +106,28 @@ See the actual implementation in the dotfiles:
 ## Troubleshooting
 
 ### IPC target not found (`plugin:<name>`)
+
 - IPC handlers are registered only if the plugin `Main.qml` is loaded.
 - Check targets with `noctalia-shell ipc show`.
 - If missing, ensure `manifest.json` has `"main": "Main.qml"` and `Main.qml` defines `IpcHandler { target: "plugin:<name>" }`.
 
 ### Home Manager error: `settings.json ... outside $HOME`
+
 - Avoid symlinking entire plugin dirs with writable `settings.json` into `~/.config/noctalia/plugins/<name>`.
 - In this dotfiles setup:
   - keep normal plugins in `~/.local/share/noctalia/plugins/...`
   - only place plugins requiring direct Noctalia config loading (like custom IPC sticky-notes) in `~/.config/noctalia/plugins/...`
 
 ### Widget not appearing
+
 1. Check logs: `journalctl --user -u noctalia-shell -n 50 | grep -i <plugin-name>`
 2. Verify plugin loaded: Look for `Registered plugin widget: plugin:<name>`
 3. Check for "Deleted invalid bar widget" - indicates missing `plugin:` prefix
 
 ### Getting the hash
+
 Use `lib.fakeHash` initially, then copy the "got:" hash from the build error:
+
 ```nix
 hash = lib.fakeHash;
 ```

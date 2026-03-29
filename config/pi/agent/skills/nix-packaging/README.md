@@ -12,29 +12,32 @@ A Pi skill for packaging software in Nix when it's missing from nixpkgs or outda
 ## When to Use
 
 Use this skill when:
+
 - You discover a new CLI tool not in nixpkgs
 - A package in nixpkgs is outdated and you need the latest
 - You want to package your own software
 
 ## Files
 
-| File | Purpose |
-|------|---------|
-| `SKILL.md` | Main skill documentation and workflow |
-| `references/binary-template.nix` | Template for pre-built binaries |
-| `references/rust-template.nix` | Template for Rust builds |
-| `references/go-template.nix` | Template for Go builds |
-| `references/overlay-example.nix` | Example of overriding nixpkgs |
-| `references/checklist.md` | Step-by-step packaging checklist |
+| File                             | Purpose                               |
+| -------------------------------- | ------------------------------------- |
+| `SKILL.md`                       | Main skill documentation and workflow |
+| `references/binary-template.nix` | Template for pre-built binaries       |
+| `references/rust-template.nix`   | Template for Rust builds              |
+| `references/go-template.nix`     | Template for Go builds                |
+| `references/overlay-example.nix` | Example of overriding nixpkgs         |
+| `references/checklist.md`        | Step-by-step packaging checklist      |
 
 ## Installation
 
 Place this directory in your Pi skills path:
+
 ```bash
 ~/.pi/agent/skills/nix-packaging/
 ```
 
 Or load explicitly:
+
 ```bash
 pi --skill /path/to/nix-packaging
 ```
@@ -51,6 +54,7 @@ pi --skill /path/to/nix-packaging
 ## Examples from This Session
 
 The skill was developed while packaging [octorus](https://github.com/ushironoko/octorus):
+
 - Discovered: nixpkgs had v0.3.5, upstream was at v0.5.1
 - Upstream provided binaries for Linux and macOS
 - Used pre-built binary approach (10 seconds vs 15 minutes building)
