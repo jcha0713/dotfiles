@@ -6,9 +6,6 @@
 # https://docs.noctalia.dev/getting-started/nixos/#config-ref
 
 {
-  config,
-  pkgs,
-  lib,
   inputs,
   ...
 }:
@@ -325,6 +322,12 @@
         warningColor = "";
         criticalColor = "";
         externalMonitor = "resources || missioncenter || jdsystemmonitor || corestats || system-monitoring-center || gnome-system-monitor || plasma-systemmonitor || mate-system-monitor || ukui-system-monitor || deepin-system-monitor || pantheon-system-monitor";
+      };
+
+      # Noctalia Performance mode
+      NoctaliaPerformance = {
+        disableWallpaper = false;
+        disableDesktopWidgets = true;
       };
 
       # Dock (optional bottom dock)
