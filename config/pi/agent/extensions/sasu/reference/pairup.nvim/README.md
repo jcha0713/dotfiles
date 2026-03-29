@@ -62,25 +62,26 @@ Three separate operators for each marker type. Each works with any motion/text-o
 > These keybindings are only active when pairup is loaded. They won't conflict with
 > other plugins or built-in vim mappings when pairup is not in use.
 
-| Marker | Operator | Line | Visual |
-|--------|----------|------|--------|
-| `cc:` | `gC{motion}` | `gCC` | `gC` |
-| `cc!:` | `g!{motion}` | `g!!` | `g!` |
-| `ccp:` | `g?{motion}` | `g??` | `g?` |
+| Marker | Operator     | Line  | Visual |
+| ------ | ------------ | ----- | ------ |
+| `cc:`  | `gC{motion}` | `gCC` | `gC`   |
+| `cc!:` | `g!{motion}` | `g!!` | `g!`   |
+| `ccp:` | `g?{motion}` | `g??` | `g?`   |
 
-| Motion | Scope Hint | Example Output |
-|--------|------------|----------------|
-| `iw`/`aw` | `<word>` | `cc: <word>` |
-| `iW`/`aW` | `<WORD>` | `cc: <WORD>` |
-| `is`/`as` | `<sentence>` | `cc: <sentence>` |
-| `ip`/`ap` | `<paragraph>` | `cc: <paragraph>` |
-| `if`/`af` | `<function>` | `cc: <function>` |
-| `ic`/`ac` | `<codeblock>` | `cc: <codeblock>` |
-| `F` | `<file>` | `gCF` → `cc: <file>` |
-| double-tap | `<line>` | `g!!` → `cc!: <line>` |
-| visual | `<selection>` | captures text |
+| Motion     | Scope Hint    | Example Output        |
+| ---------- | ------------- | --------------------- |
+| `iw`/`aw`  | `<word>`      | `cc: <word>`          |
+| `iW`/`aW`  | `<WORD>`      | `cc: <WORD>`          |
+| `is`/`as`  | `<sentence>`  | `cc: <sentence>`      |
+| `ip`/`ap`  | `<paragraph>` | `cc: <paragraph>`     |
+| `if`/`af`  | `<function>`  | `cc: <function>`      |
+| `ic`/`ac`  | `<codeblock>` | `cc: <codeblock>`     |
+| `F`        | `<file>`      | `gCF` → `cc: <file>`  |
+| double-tap | `<line>`      | `g!!` → `cc!: <line>` |
+| visual     | `<selection>` | captures text         |
 
 Example: Select "controller configuration" and press `gC`:
+
 ```go
 // cc: <selection> controller configuration <-
 // Config holds the controller configuration
@@ -89,6 +90,7 @@ Example: Select "controller configuration" and press `gC`:
 ## Signs
 
 Markers show in the gutter:
+
 - 󰭻 (yellow) — `cc:` command / `cc!:` constitution / `ccp:` plan
 - 󰞋 (blue) — `uu:` question marker
 
@@ -121,6 +123,7 @@ end
 ```
 
 Accept/Reject: Position cursor in the section you want to keep, then `:Pairup accept` (or `<Plug>(pairup-accept)`):
+
 - Cursor in CURRENT → keep original (reject proposal)
 - Cursor in PROPOSED → keep Claude's change (accept proposal)
 
@@ -128,12 +131,12 @@ Accept/Reject: Position cursor in the section you want to keep, then `:Pairup ac
 
 **Edit view**: Use `<Plug>(pairup-proposal-edit)` to open a floating editor for the proposal at cursor. The editor shows only the PROPOSED content (editable), with CURRENT info and reason as virtual text (non-editable). A subtle backdrop dims the background for focus.
 
-| Key | Action |
-|-----|--------|
+| Key  | Action               |
+| ---- | -------------------- |
 | `:w` | Sync edits to buffer |
-| `q` | Close editor |
-| `ga` | Accept proposal |
-| `gd` | Open diff view |
+| `q`  | Close editor         |
+| `ga` | Accept proposal      |
+| `gd` | Open diff view       |
 
 **Diff view**: Use `<Plug>(pairup-conflict-diff)` to open a side-by-side diff in a new tab. Press `ga` to accept, `ge` to switch to edit view, `q` to close. Note: Opens with `diffopt+=algorithm:patience,indent-heuristic` for cleaner diffs.
 
@@ -214,23 +217,23 @@ Key bindings are optional — the plugin works with `:Pairup` commands alone.
 
 `:Pairup <subcommand>`
 
-| Command | Description |
-|---------|-------------|
-| `start` | Start Claude (hidden terminal) |
-| `stop` | Stop Claude |
-| `toggle` | Show/hide terminal |
-| `say <msg>` | Send message to Claude |
-| `markers user` | Show `uu:` in quickfix |
-| `markers claude` | Show `cc:`/`cc!:`/`ccp:` in quickfix |
-| `markers proposals` | Show PROPOSED sections in quickfix |
-| `inline` | Manual cc: trigger |
-| `diff` | Send git diff to Claude |
-| `lsp` | Send LSP diagnostics to Claude |
-| `suspend` | Pause auto-processing (indicator turns red) |
-| `accept` | Accept conflict section at cursor |
-| `edit` | Open floating editor for proposal |
-| `next` | Jump to next proposal |
-| `prev` | Jump to previous proposal |
+| Command             | Description                                 |
+| ------------------- | ------------------------------------------- |
+| `start`             | Start Claude (hidden terminal)              |
+| `stop`              | Stop Claude                                 |
+| `toggle`            | Show/hide terminal                          |
+| `say <msg>`         | Send message to Claude                      |
+| `markers user`      | Show `uu:` in quickfix                      |
+| `markers claude`    | Show `cc:`/`cc!:`/`ccp:` in quickfix        |
+| `markers proposals` | Show PROPOSED sections in quickfix          |
+| `inline`            | Manual cc: trigger                          |
+| `diff`              | Send git diff to Claude                     |
+| `lsp`               | Send LSP diagnostics to Claude              |
+| `suspend`           | Pause auto-processing (indicator turns red) |
+| `accept`            | Accept conflict section at cursor           |
+| `edit`              | Open floating editor for proposal           |
+| `next`              | Jump to next proposal                       |
+| `prev`              | Jump to previous proposal                   |
 
 ## Status Indicator
 
@@ -258,7 +261,7 @@ Add to `~/.claude/settings.json`:
     "PostToolUse": [
       {
         "matcher": "TodoWrite",
-        "hooks": [{"type": "command", "command": "$HOME/.claude/scripts/__pairup_todo_hook.sh"}]
+        "hooks": [{ "type": "command", "command": "$HOME/.claude/scripts/__pairup_todo_hook.sh" }]
       }
     ]
   }
@@ -276,6 +279,7 @@ require("pairup").setup({
 ```
 
 Manual setup (only if you disable auto-inject or use a custom statusline plugin):
+
 ```lua
 -- Disable auto-inject
 require("pairup").setup({ statusline = { auto_inject = false } })
@@ -377,7 +381,7 @@ vim.keymap.set('n', '[p', '<Plug>(pairup-proposal-prev)')           -- prev prop
 
 ## Requirements
 
-- Neovim 0.11+ 
+- Neovim 0.11+
 - [Claude Code CLI](https://docs.anthropic.com/en/docs/claude-code)
 
 ## License

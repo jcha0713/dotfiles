@@ -64,6 +64,7 @@ Use `pi --list-models` to see available models.
 **Examples:**
 
 This is basically the same as doing `pi --provider <provider> --model <model>`, so you can test it out on the cli to make sure it works.
+
 ```lua
 -- OpenRouter kimi-k2.5
 { provider = "openrouter", model = "moonshotai/kimi-k2.5" }
@@ -96,11 +97,10 @@ vim.keymap.set("v", "<leader>ai", ":PiAskSelection<CR>", { desc = "Ask pi (selec
 
 ### Commands
 
-| Command | Mode | Description |
-|---------|------|-------------|
-| `:PiAsk` | Normal | Prompt for input, sends it + current buffer as context |
+| Command           | Mode   | Description                                             |
+| ----------------- | ------ | ------------------------------------------------------- |
+| `:PiAsk`          | Normal | Prompt for input, sends it + current buffer as context  |
 | `:PiAskSelection` | Visual | Same as :PiAsk but also sends selected lines as context |
-
 
 ## License
 

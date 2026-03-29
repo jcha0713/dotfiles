@@ -5,6 +5,7 @@ Bidirectional integration between Pi and Neovim.
 ## Features
 
 **Pi Extension (for the agent):**
+
 - `nvim_context` tool: Query editor state (context, splits, diagnostics, current_function)
 - Auto-connect to Neovim on session start
 - Inject visible splits into system prompt
@@ -12,6 +13,7 @@ Bidirectional integration between Pi and Neovim.
 - Send LSP errors for modified files at turn end
 
 **Neovim Plugin (for the editor):**
+
 - RPC server exposing editor state
 - Terminal integration for Pi CLI
 
@@ -34,6 +36,7 @@ cp -R /path/to/pi-extensions/extensions/neovim ~/.pi/agent/extensions/
 Add the extension to your Neovim runtimepath. The `lua/` directory at the extension root is runtimepath-compatible.
 
 **lazy.nvim:**
+
 ```lua
 {
   dir = "~/.pi/agent/extensions/neovim",
@@ -44,6 +47,7 @@ Add the extension to your Neovim runtimepath. The `lua/` directory at the extens
 ```
 
 **mini.deps:**
+
 ```lua
 local add = MiniDeps.add
 add({ source = "~/.pi/agent/extensions/neovim" })
@@ -51,6 +55,7 @@ require("pi-nvim").setup()
 ```
 
 **packer.nvim:**
+
 ```lua
 use {
   "~/.pi/agent/extensions/neovim",
@@ -61,6 +66,7 @@ use {
 ```
 
 **Manual:**
+
 ```lua
 -- In init.lua
 vim.opt.runtimepath:append(vim.fn.expand("~/.pi/agent/extensions/neovim"))
@@ -112,6 +118,7 @@ vim.keymap.set('n', '<leader>pp', require('pi-nvim').toggle, { desc = 'Toggle Pi
 ### From Pi (agent)
 
 The `nvim_context` tool is available with these actions:
+
 - `context`: Focused file, cursor position, selection, filetype
 - `splits`: All visible splits with metadata (excludes help, quickfix, terminal buffers)
 - `diagnostics`: LSP diagnostics for current buffer
@@ -120,9 +127,11 @@ The `nvim_context` tool is available with these actions:
 ### From Neovim
 
 Commands:
+
 - `:PiNvimStatus` - Show RPC server and terminal status
 
 API:
+
 - `require("pi-nvim").open()` - Open Pi terminal
 - `require("pi-nvim").close()` - Close Pi terminal
 - `require("pi-nvim").toggle()` - Toggle Pi terminal

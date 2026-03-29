@@ -34,33 +34,33 @@ To install selectively (or disable specific extensions), edit your `settings.jso
 
 Standalone extensions published to npm. Install individually with `pi install npm:<package>`.
 
-| Extension | Description | README | npm |
-|-----------|-------------|--------|-----|
-| extension-dev | Tools and commands for developing and updating Pi extensions | [README](extensions/extension-dev/README.md) | [@aliou/pi-extension-dev](https://www.npmjs.com/package/@aliou/pi-extension-dev) |
-| guardrails | Security hooks to prevent potentially dangerous operations | [README](extensions/guardrails/README.md) | [@aliou/pi-guardrails](https://www.npmjs.com/package/@aliou/pi-guardrails) |
-| processes | Background process management without blocking the conversation | [README](extensions/processes/README.md) | [@aliou/pi-processes](https://www.npmjs.com/package/@aliou/pi-processes) |
+| Extension     | Description                                                     | README                                       | npm                                                                              |
+| ------------- | --------------------------------------------------------------- | -------------------------------------------- | -------------------------------------------------------------------------------- |
+| extension-dev | Tools and commands for developing and updating Pi extensions    | [README](extensions/extension-dev/README.md) | [@aliou/pi-extension-dev](https://www.npmjs.com/package/@aliou/pi-extension-dev) |
+| guardrails    | Security hooks to prevent potentially dangerous operations      | [README](extensions/guardrails/README.md)    | [@aliou/pi-guardrails](https://www.npmjs.com/package/@aliou/pi-guardrails)       |
+| processes     | Background process management without blocking the conversation | [README](extensions/processes/README.md)     | [@aliou/pi-processes](https://www.npmjs.com/package/@aliou/pi-processes)         |
 
 ## All Extensions
 
-| Extension | Description | README |
-|-----------|-------------|--------|
-| defaults | Sensible defaults and quality-of-life improvements | [README](extensions/defaults/README.md) |
-| extension-dev | Pi extension development tools and update workflow | [README](extensions/extension-dev/README.md) |
-| guardrails | Security hooks (brew block, env protection, dangerous command gate) | [README](extensions/guardrails/README.md) |
-| mac-app | macOS UI automation via Accessibility | [README](extensions/mac-app/README.md) |
-| neovim | Bidirectional Neovim integration (editor context, file reload, LSP diagnostics) | [README](extensions/neovim/README.md) |
-| planning | Save and execute implementation plans | [README](extensions/planning/README.md) |
-| presenter | Terminal notifications, title updates, sounds | [README](extensions/presenter/README.md) |
-| processes | Background process management | [README](extensions/processes/README.md) |
-| providers | Providers and usage dashboard (rate limits, session stats) | [README](extensions/providers/README.md) |
-| breadcrumbs | Session history tools (search, extract info, handoff) | [README](extensions/breadcrumbs/README.md) |
-| subagents | Framework for spawning specialized subagents (scout, oracle, reviewer, etc.) | [README](extensions/subagents/README.md) |
-| the-dumb-zone | Context window degradation warning | [README](extensions/the-dumb-zone/README.md) |
+| Extension     | Description                                                                     | README                                       |
+| ------------- | ------------------------------------------------------------------------------- | -------------------------------------------- |
+| defaults      | Sensible defaults and quality-of-life improvements                              | [README](extensions/defaults/README.md)      |
+| extension-dev | Pi extension development tools and update workflow                              | [README](extensions/extension-dev/README.md) |
+| guardrails    | Security hooks (brew block, env protection, dangerous command gate)             | [README](extensions/guardrails/README.md)    |
+| mac-app       | macOS UI automation via Accessibility                                           | [README](extensions/mac-app/README.md)       |
+| neovim        | Bidirectional Neovim integration (editor context, file reload, LSP diagnostics) | [README](extensions/neovim/README.md)        |
+| planning      | Save and execute implementation plans                                           | [README](extensions/planning/README.md)      |
+| presenter     | Terminal notifications, title updates, sounds                                   | [README](extensions/presenter/README.md)     |
+| processes     | Background process management                                                   | [README](extensions/processes/README.md)     |
+| providers     | Providers and usage dashboard (rate limits, session stats)                      | [README](extensions/providers/README.md)     |
+| breadcrumbs   | Session history tools (search, extract info, handoff)                           | [README](extensions/breadcrumbs/README.md)   |
+| subagents     | Framework for spawning specialized subagents (scout, oracle, reviewer, etc.)    | [README](extensions/subagents/README.md)     |
+| the-dumb-zone | Context window degradation warning                                              | [README](extensions/the-dumb-zone/README.md) |
 
 ## Themes
 
-| Theme | README |
-|-------|--------|
+| Theme      | README                                |
+| ---------- | ------------------------------------- |
 | jellybeans | [README](themes/jellybeans/README.md) |
 
 ## Development

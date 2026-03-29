@@ -34,7 +34,13 @@ type Summary = {
   };
   changedAreas: string[];
   failingChecks: Array<{ name: string; files: string[] }>;
-  topRisks: Array<{ type: string; impact: number; confidence: number; evidence: string[]; nextStep: string }>;
+  topRisks: Array<{
+    type: string;
+    impact: number;
+    confidence: number;
+    evidence: string[];
+    nextStep: string;
+  }>;
   brief: string;
 };
 
@@ -68,7 +74,9 @@ function parseArgs(argv: string[]) {
     else if (arg === "--update-snapshot") args.updateSnapshot = true;
     else if (arg === "--char-budget") args.charBudget = Number(argv[++i]);
     else if (arg === "--help" || arg === "-h") {
-      console.log("Usage: bun run scripts/replay-memory-smoke.ts [--fixture FILE] [--snapshot FILE] [--update-snapshot] [--char-budget N]");
+      console.log(
+        "Usage: bun run scripts/replay-memory-smoke.ts [--fixture FILE] [--snapshot FILE] [--update-snapshot] [--char-budget N]",
+      );
       process.exit(0);
     } else {
       throw new Error(`Unknown arg: ${arg}`);
@@ -100,10 +108,14 @@ function validateEvents(events: unknown): MemoryEvent[] {
     const event = raw as Partial<MemoryEvent>;
     if (!event.id || typeof event.id !== "string") throw new Error(`Event #${idx + 1}: missing id`);
     if (!event.ts || typeof event.ts !== "string") throw new Error(`Event #${idx + 1}: missing ts`);
-    if (!event.source || typeof event.source !== "string") throw new Error(`Event #${idx + 1}: missing source`);
-    if (!event.kind || typeof event.kind !== "string") throw new Error(`Event #${idx + 1}: missing kind`);
-    if (!EVENT_KINDS.has(event.kind as EventKind)) throw new Error(`Event #${idx + 1}: unknown kind ${event.kind}`);
-    if (!event.payload || typeof event.payload !== "object") throw new Error(`Event #${idx + 1}: missing payload`);
+    if (!event.source || typeof event.source !== "string")
+      throw new Error(`Event #${idx + 1}: missing source`);
+    if (!event.kind || typeof event.kind !== "string")
+      throw new Error(`Event #${idx + 1}: missing kind`);
+    if (!EVENT_KINDS.has(event.kind as EventKind))
+      throw new Error(`Event #${idx + 1}: unknown kind ${event.kind}`);
+    if (!event.payload || typeof event.payload !== "object")
+      throw new Error(`Event #${idx + 1}: missing payload`);
 
     return event as MemoryEvent;
   });
@@ -115,7 +127,7 @@ function buildSummary(events: MemoryEvent[], charBudget: number): Summary {
 
   const changedFiles = events
     .filter((e) => e.kind === "code.files.changed")
-    .flatMap((e) => ((e.payload.files as string[] | undefined) ?? []));
+    .flatMap((e) => (e.payload.files as string[] | undefined) ?? []);
 
   const changedAreas = Array.from(new Set(changedFiles.map(topDir))).sort();
 
@@ -127,28 +139,34 @@ function buildSummary(events: MemoryEvent[], charBudget: number): Summary {
     })
     .map((e) => ({
       name: String(e.payload.name ?? "unknown-check"),
-      files: (((e.payload.files as string[] | undefined) ?? []).map(normalizeRel)).sort(),
+      files: ((e.payload.files as string[] | undefined) ?? []).map(normalizeRel).sort(),
     }));
 
   const manualOverride = [...events]
     .reverse()
     .find((e) => e.kind === "focus.override.manual" || e.kind === "user.command.goal_set");
 
-  const explicitIntent = [...events]
-    .reverse()
-    .find((e) => e.kind === "user.intent.explicit");
+  const explicitIntent = [...events].reverse().find((e) => e.kind === "user.intent.explicit");
 
   const selectedIntent = (() => {
     if (manualOverride) {
-      const label = String(manualOverride.payload.focus ?? manualOverride.payload.goal ?? "manual focus");
+      const label = String(
+        manualOverride.payload.focus ?? manualOverride.payload.goal ?? "manual focus",
+      );
       return { label, confidence: 0.95, source: "manual_override" as const };
     }
     if (explicitIntent) {
-      const label = String(explicitIntent.payload.intent ?? explicitIntent.payload.goal ?? "explicit intent");
+      const label = String(
+        explicitIntent.payload.intent ?? explicitIntent.payload.goal ?? "explicit intent",
+      );
       return { label, confidence: 0.85, source: "explicit_intent" as const };
     }
     if (changedAreas.length > 0) {
-      return { label: `Work on ${changedAreas[0]}`, confidence: 0.6, source: "changed_area" as const };
+      return {
+        label: `Work on ${changedAreas[0]}`,
+        confidence: 0.6,
+        source: "changed_area" as const,
+      };
     }
     return { label: "Unspecified", confidence: 0.2, source: "fallback" as const };
   })();
@@ -226,7 +244,9 @@ async function main() {
     process.exit(1);
   }
 
-  console.log(`Replay OK: ${events.length} events, ${summary.failingChecks.length} failing checks, intent=${summary.selectedIntent.label}`);
+  console.log(
+    `Replay OK: ${events.length} events, ${summary.failingChecks.length} failing checks, intent=${summary.selectedIntent.label}`,
+  );
 }
 
 main().catch((error) => {

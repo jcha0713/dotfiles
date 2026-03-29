@@ -222,7 +222,7 @@ function M.enter()
   -- Position cursor on first line and scroll to show virtual header above
   vim.api.nvim_win_set_cursor(float_win, { 1, 0 })
   -- Scroll view up to reveal virtual text above line 1 (2 lines: header + separator)
-  vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes('2<C-y>', true, false, true), 'n', false)
+  -- vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes('2<C-y>', true, false, true), 'n', false)
 
   -- Keymaps
   local kopts = { buffer = float_buf, nowait = true }

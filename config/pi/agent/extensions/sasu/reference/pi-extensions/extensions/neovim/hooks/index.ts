@@ -1,9 +1,6 @@
 import type { ExtensionAPI } from "@mariozechner/pi-coding-agent";
 import { Box, Text } from "@mariozechner/pi-tui";
-import {
-  type NvimConnectionState,
-  registerNvimContextHook,
-} from "./nvim-context";
+import { type NvimConnectionState, registerNvimContextHook } from "./nvim-context";
 
 export type { NvimConnectionState } from "./nvim-context";
 
@@ -33,8 +30,7 @@ export function setupNvimHooks(pi: ExtensionAPI, state: NvimConnectionState) {
     if (!details?.diagnostics) {
       box.addChild(
         new Text(
-          theme.fg("toolTitle", theme.bold("nvim_lsp ")) +
-            theme.fg("error", "LSP errors detected"),
+          theme.fg("toolTitle", theme.bold("nvim_lsp ")) + theme.fg("error", "LSP errors detected"),
           0,
           0,
         ),
@@ -50,14 +46,8 @@ export function setupNvimHooks(pi: ExtensionAPI, state: NvimConnectionState) {
 
     // Header line: tool name + error summary (like a tool call header)
     let header = theme.fg("toolTitle", theme.bold("nvim_lsp "));
-    header += theme.fg(
-      "error",
-      `${errorCount} error${errorCount > 1 ? "s" : ""}`,
-    );
-    header += theme.fg(
-      "dim",
-      ` in ${fileCount} file${fileCount > 1 ? "s" : ""}`,
-    );
+    header += theme.fg("error", `${errorCount} error${errorCount > 1 ? "s" : ""}`);
+    header += theme.fg("dim", ` in ${fileCount} file${fileCount > 1 ? "s" : ""}`);
     box.addChild(new Text(header, 0, 0));
 
     // Detailed errors (always shown, like tool output)

@@ -4,8 +4,8 @@ Open current directory (or a path) in an external editor from [pi](https://githu
 
 This extension adds one command:
 
-| Command | Description |
-|---------|-------------|
+| Command             | Description                                                       |
+| ------------------- | ----------------------------------------------------------------- |
 | `/open-here [path]` | Open current directory (default) or a given path in an editor app |
 
 ## Install

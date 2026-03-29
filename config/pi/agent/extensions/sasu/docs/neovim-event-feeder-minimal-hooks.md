@@ -13,9 +13,11 @@ Use existing v0 event kinds first (no taxonomy expansion required).
 ### 1) Save hook: `BufWritePost` → `code.files.changed`
 
 **When it fires**
+
 - On file save only (not on every cursor move or text change).
 
 **Event**
+
 - `source`: `nvim`
 - `kind`: `code.files.changed`
 - `payload`:
@@ -24,23 +26,59 @@ Use existing v0 event kinds first (no taxonomy expansion required).
   - `reason: "save"`
 
 **Why this matters**
+
 - Keeps `working_state.changed_areas` fresh between review cycles.
 - Makes mission brief evidence refs closer to what you actually touched in editor.
 
 **Easy manual test**
+
 1. Edit `src/memory/brief.ts` in Neovim.
 2. Save.
 3. Run `/sasu-memory-tail 10 --kind code.files.changed`.
 4. Expect latest event with that file path.
+
+**Phase-2 helper command (for hook wiring/debugging)**
+
+- `/sasu-memory-ingest-nvim-save <path-or-json>`
+- Examples:
+  - `/sasu-memory-ingest-nvim-save src/memory/brief.ts`
+  - `/sasu-memory-ingest-nvim-save {"file":"/abs/path/to/project/src/memory/brief.ts"}`
+
+**Implemented emitter plugin**
+
+- Path: `neovim-sasu-feeder/`
+- Module: `require("sasu-feeder")`
+- Transport: sends command text to active `pi-nvim` terminal job.
+
+**Setup sketch (lazy.nvim)**
+
+```lua
+{
+  dir = "~/dotfiles/config/pi/agent/extensions/sasu/neovim-sasu-feeder",
+  config = function()
+    require("sasu-feeder").setup({
+      command = "/sasu-memory-ingest-nvim-save",
+      throttle_ms = 500,
+    })
+  end,
+}
+```
+
+Emitter behavior:
+
+- on `BufWritePost`, emits `/sasu-memory-ingest-nvim-save {"file":"<abs-path>","ts":"..."}`
+- Pi/SASU side normalizes to project-relative `payload.files`
 
 ---
 
 ### 2) Explicit focus command: `:SasuFocus <text>` → `focus.override.manual`
 
 **When it fires**
+
 - Only when user explicitly sets/locks focus from Neovim.
 
 **Event**
+
 - `source`: `nvim`
 - `kind`: `focus.override.manual`
 - `payload`:
@@ -49,10 +87,12 @@ Use existing v0 event kinds first (no taxonomy expansion required).
   - `sourceCommand: "nvim:SasuFocus"`
 
 **Why this matters**
+
 - Gives deterministic intent selection (`manual_override`) and stops low-confidence drift.
 - Best leverage per event for review quality.
 
 **Easy manual test**
+
 1. Run `:SasuFocus tighten mission brief evidence ranking`.
 2. Run `/sasu-review`.
 3. In prompt, expect:
@@ -64,10 +104,12 @@ Use existing v0 event kinds first (no taxonomy expansion required).
 ### 3) Diagnostics hook: `DiagnosticChanged` (debounced) → `check.run.result`
 
 **When it fires**
+
 - On diagnostics updates, with debounce (e.g. 750–1500ms).
 - Emit only when state meaningfully changes (count/severity changed).
 
 **Event**
+
 - `source`: `nvim`
 - `kind`: `check.run.result`
 - `payload`:
@@ -80,14 +122,17 @@ Use existing v0 event kinds first (no taxonomy expansion required).
   - `warningCount: <number>`
 
 **Status rule (simple)**
+
 - `fail` if `errorCount > 0`
 - `pass` if `errorCount === 0`
 
 **Why this matters**
+
 - Updates `working_state.last_checks` without waiting for explicit test commands.
 - Lets mission brief surface failing areas and better “next validation step”.
 
 **Easy manual test**
+
 1. Introduce a syntax/type error in a file.
 2. Wait for diagnostics update.
 3. Run `/sasu-memory-tail 10 --kind check.run.result`.
@@ -101,9 +146,22 @@ Use existing v0 event kinds first (no taxonomy expansion required).
 Use a small Neovim-side emitter that sends structured events to SASU ingestion (not direct SQL writes).
 
 Why:
+
 - Keep dedupe/fingerprint behavior.
 - Keep reducer behavior consistent.
 - Avoid schema drift and brittle DB coupling.
+
+Phase-1 helper command:
+
+- `/sasu-memory-ingest-nvim <json-envelope>` validates the contract (`source/kind/payload/projectRoot/ts`) and ingests through the same reducer pipeline.
+
+Phase-2 save helper command:
+
+- `/sasu-memory-ingest-nvim-save <path-or-json>` builds the `code.files.changed` save event shape (`origin=nvim.buf_write`, `reason=save`) and ingests through the same reducer pipeline.
+
+Phase-2 Neovim auto-emitter implementation:
+
+- `neovim-sasu-feeder/` emits save signals automatically on `BufWritePost` and forwards them to the active Pi terminal session (`pi-nvim` transport).
 
 ---
 

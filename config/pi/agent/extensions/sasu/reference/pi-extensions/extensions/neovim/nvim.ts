@@ -63,15 +63,7 @@ export function getPiNvimDataDirs(): string[] {
 
   // Fallback for macOS: some Neovim builds use native macOS paths
   if (process.platform === "darwin" && !process.env.XDG_DATA_HOME) {
-    dirs.push(
-      path.join(
-        os.homedir(),
-        "Library",
-        "Application Support",
-        appName,
-        "pi-nvim",
-      ),
-    );
+    dirs.push(path.join(os.homedir(), "Library", "Application Support", appName, "pi-nvim"));
   }
 
   return dirs;
@@ -166,14 +158,10 @@ export async function queryNvim(
     expr = `luaeval('vim.json.encode(require("pi-nvim").query(vim.json.decode([==[${escaped}]==])))')`;
   }
 
-  const result = await exec(
-    "nvim",
-    ["--server", socket, "--remote-expr", expr],
-    {
-      timeout: 5000,
-      ...options,
-    },
-  );
+  const result = await exec("nvim", ["--server", socket, "--remote-expr", expr], {
+    timeout: 5000,
+    ...options,
+  });
 
   if (result.killed) {
     throw new Error("Timed out querying Neovim");

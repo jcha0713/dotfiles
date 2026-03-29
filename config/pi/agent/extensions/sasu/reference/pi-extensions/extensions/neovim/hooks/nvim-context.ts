@@ -11,12 +11,7 @@
 import * as path from "node:path";
 import type { ExtensionAPI } from "@mariozechner/pi-coding-agent";
 
-import {
-  type DiscoveredInstance,
-  discoverNvim,
-  type ExecFn,
-  queryNvim,
-} from "../nvim";
+import { type DiscoveredInstance, discoverNvim, type ExecFn, queryNvim } from "../nvim";
 
 // ============================================================================
 // Types
@@ -78,10 +73,7 @@ function formatPath(filePath: string, cwd: string): string {
 /**
  * Query each instance for its current file to build a useful selection label.
  */
-async function getInstanceInfo(
-  exec: ExecFn,
-  instance: DiscoveredInstance,
-): Promise<InstanceInfo> {
+async function getInstanceInfo(exec: ExecFn, instance: DiscoveredInstance): Promise<InstanceInfo> {
   try {
     const result = await queryNvim(exec, instance.lockfile.socket, "context", {
       timeout: 1000,
@@ -142,10 +134,7 @@ function formatSplitsContext(splits: SplitInfo[], cwd: string): string {
 /**
  * Format diagnostics into a message for the LLM.
  */
-function formatDiagnosticsMessage(
-  diagnostics: DiagnosticsForFilesResult,
-  cwd: string,
-): string {
+function formatDiagnosticsMessage(diagnostics: DiagnosticsForFilesResult, cwd: string): string {
   const lines: string[] = ["LSP errors detected in modified files:"];
 
   for (const [file, errors] of Object.entries(diagnostics)) {
@@ -164,10 +153,7 @@ function formatDiagnosticsMessage(
 // Hook Registration
 // ============================================================================
 
-export function registerNvimContextHook(
-  pi: ExtensionAPI,
-  state: NvimConnectionState,
-) {
+export function registerNvimContextHook(pi: ExtensionAPI, state: NvimConnectionState) {
   // -------------------------------------------------------------------------
   // Session start: auto-connect to Neovim
   // -------------------------------------------------------------------------
@@ -190,22 +176,14 @@ export function registerNvimContextHook(
     } else {
       // Multiple instances: prompt user to select
       if (!ctx.hasUI) {
-        ctx.ui.notify(
-          `nvim: Multiple instances found, cannot prompt in headless mode`,
-          "warning",
-        );
+        ctx.ui.notify(`nvim: Multiple instances found, cannot prompt in headless mode`, "warning");
         return;
       }
 
       // Query each instance for its current file to build useful labels
-      const infos = await Promise.all(
-        instances.map((i) => getInstanceInfo(pi.exec, i)),
-      );
+      const infos = await Promise.all(instances.map((i) => getInstanceInfo(pi.exec, i)));
       const options = infos.map((info) => info.label);
-      const selected = await ctx.ui.select(
-        "Multiple Neovim instances found. Select one:",
-        options,
-      );
+      const selected = await ctx.ui.select("Multiple Neovim instances found. Select one:", options);
 
       if (!selected) {
         ctx.ui.notify("nvim: No instance selected", "info");
@@ -229,10 +207,7 @@ export function registerNvimContextHook(
 
     state.socket = selectedInstance.lockfile.socket;
     state.lockfile = selectedInstance.lockfilePath;
-    ctx.ui.notify(
-      `nvim: Connected to Neovim (PID ${selectedInstance.lockfile.pid})`,
-      "info",
-    );
+    ctx.ui.notify(`nvim: Connected to Neovim (PID ${selectedInstance.lockfile.pid})`, "info");
 
     // Notify Neovim via RPC
     try {

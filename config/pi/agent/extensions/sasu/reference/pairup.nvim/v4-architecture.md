@@ -27,6 +27,7 @@ The new architecture uses a stateless, functional approach:
 - **Immediate actions**: Accept or reject happens instantly, no intermediate states
 
 **Components**:
+
 1. **Marker Parser** - Detects Claude's output markers in terminal
 2. **Overlay Store** - Flat list of overlay objects
 3. **Renderer** - Converts overlays to virtual text/lines
@@ -37,6 +38,7 @@ This separation allows each component to be tested and reasoned about independen
 ## Migration Notes
 
 If you were using removed features:
+
 - **Staging**: Accept/reject immediately instead of marking
 - **Variants**: Claude provides single best suggestion
 - **Follow mode**: Manually navigate with `:PairNext`/:PairPrev`

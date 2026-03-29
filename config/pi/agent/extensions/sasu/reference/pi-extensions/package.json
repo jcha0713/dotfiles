@@ -1,7 +1,6 @@
 {
   "name": "@aliou/pi-extensions",
   "private": true,
-  "type": "module",
   "keywords": [
     "pi-package"
   ],
@@ -9,16 +8,7 @@
     "type": "git",
     "url": "https://github.com/aliou/pi-extensions"
   },
-  "pi": {
-    "extensions": [
-      "./extensions",
-      "extensions/*/index.ts"
-    ],
-    "themes": [
-      "./themes",
-      "!themes/**/package.json"
-    ]
-  },
+  "type": "module",
   "scripts": {
     "postinstall": "node scripts/resolve-workspace-deps.mjs",
     "lint": "biome check .",
@@ -50,6 +40,7 @@
     "tsx": "^4.20.5",
     "typescript": "^5.7.0"
   },
+  "packageManager": "pnpm@10.26.1",
   "pnpm": {
     "overrides": {
       "@mariozechner/pi-coding-agent": "0.52.9",
@@ -62,5 +53,14 @@
       "better-sqlite3"
     ]
   },
-  "packageManager": "pnpm@10.26.1"
+  "pi": {
+    "extensions": [
+      "./extensions",
+      "extensions/*/index.ts"
+    ],
+    "themes": [
+      "./themes",
+      "!themes/**/package.json"
+    ]
+  }
 }

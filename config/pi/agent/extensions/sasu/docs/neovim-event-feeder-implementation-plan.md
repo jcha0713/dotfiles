@@ -40,6 +40,15 @@ Exit criteria:
 
 - Can submit a synthetic `nvim` event and observe it in `/sasu-memory-tail`.
 
+Current implementation support:
+
+- Use `/sasu-memory-ingest-nvim <json-envelope>` for contract validation + ingestion-path transport test.
+- Example:
+
+```text
+/sasu-memory-ingest-nvim {"source":"nvim","kind":"code.files.changed","payload":{"origin":"nvim.buf_write","files":["src/memory/brief.ts"],"reason":"save"},"projectRoot":"<cwd>","ts":"2026-03-06T09:00:00.000Z"}
+```
+
 ---
 
 ## Phase 2: Hook A — save signal (`BufWritePost`)
@@ -62,6 +71,22 @@ Validation:
 Exit criteria:
 
 - Stable file-save events with no duplicate storm on repeated writes.
+
+Current implementation support:
+
+- `/sasu-memory-ingest-nvim-save <path-or-json>` builds a phase-2 save envelope and ingests via the normal memory pipeline.
+- Accepts relative or absolute file path input; persisted payload is normalized to project-relative path.
+- Repeated identical save events are deduped by existing fingerprint/window logic.
+- Neovim auto-emitter plugin implemented at `neovim-sasu-feeder/`:
+  - registers `BufWritePost`
+  - sends `/sasu-memory-ingest-nvim-save {"file":"<abs-path>","ts":"..."}` to active `pi-nvim` terminal session
+
+Examples:
+
+```text
+/sasu-memory-ingest-nvim-save src/memory/brief.ts
+/sasu-memory-ingest-nvim-save {"file":"/abs/path/to/project/src/memory/brief.ts","ts":"2026-03-06T10:00:00.000Z"}
+```
 
 ---
 

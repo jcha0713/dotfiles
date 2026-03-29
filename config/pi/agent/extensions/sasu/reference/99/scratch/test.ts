@@ -15,12 +15,7 @@ function fizz_buzz_classic() {
 const foo2 = () => {};
 const foo = function () {};
 
-function display_text(
-  canvas: HTMLCanvasElement,
-  text: string,
-  x: number,
-  y: number,
-): void {
+function display_text(canvas: HTMLCanvasElement, text: string, x: number, y: number): void {
   // test
 }
 

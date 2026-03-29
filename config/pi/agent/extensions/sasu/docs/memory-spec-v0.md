@@ -20,21 +20,25 @@ This spec defines the v0 foundation.
 ## 2) Research synthesis (what we adopt)
 
 ### From `pi-brain`
+
 - Keep **reasoning memory separate from code version control**.
 - Use event/hook capture for continuity.
 - Preserve distilled milestone snapshots.
 
 ### From `rho`
+
 - Use **event-sourced local memory**.
 - Use typed memory entries + dedup/tombstone semantics.
 - Use strict **budgeted context building** before model calls.
 - Add memory observability commands.
 
 ### From `momo`
+
 - Keep door open for optional external semantic retrieval later.
 - Do **not** make external memory service mandatory in v0.
 
 ### Design choice
+
 Build a **local-first memory spine** in SASU now. External memory backends are optional Phase 2+.
 
 ---
@@ -83,6 +87,7 @@ File: `.sasu/context.db` (SQLite)
 ### Tables
 
 #### `events`
+
 Append-only event log.
 
 - `id TEXT PRIMARY KEY`
@@ -95,11 +100,13 @@ Append-only event log.
 - `fingerprint TEXT` (dedup helper)
 
 Indexes:
+
 - `(project_root, ts DESC)`
 - `(kind, ts DESC)`
 - `(session_id, ts DESC)`
 
 #### `working_state`
+
 Current materialized state.
 
 - `key TEXT PRIMARY KEY`
@@ -107,6 +114,7 @@ Current materialized state.
 - `updated_at TEXT NOT NULL`
 
 Keys expected in v0:
+
 - `intent_hypotheses`
 - `active_focus`
 - `changed_areas`
@@ -115,6 +123,7 @@ Keys expected in v0:
 - `last_review_summary`
 
 #### `episodes`
+
 Session-loop summaries.
 
 - `id TEXT PRIMARY KEY`
@@ -126,6 +135,7 @@ Session-loop summaries.
 - `outcome_json TEXT`
 
 #### `feedback`
+
 What guidance was accepted/ignored.
 
 - `id TEXT PRIMARY KEY`
@@ -186,7 +196,11 @@ Output shape:
 ```ts
 {
   hypotheses: Array<{ label: string; confidence: number; evidence: string[] }>;
-  selected: { label: string; confidence: number; source: string };
+  selected: {
+    label: string;
+    confidence: number;
+    source: string;
+  }
   needsClarification: boolean;
 }
 ```
@@ -200,6 +214,7 @@ Scoring signals (deterministic first):
 - last accepted suggestions
 
 Policy:
+
 - If manual goal is locked/recent, do not auto-overwrite.
 - Ask a single clarification only when confidence below threshold.
 
@@ -211,18 +226,23 @@ Before `/sasu-review`, build a compact brief:
 
 ```md
 ## SASU Mission Brief
+
 Intent: ... (confidence)
 Active focus: ...
 Recent evidence:
+
 - changed areas
 - failing checks/diagnostics
-Top risks:
-1) ...
-Next validation step:
+  Top risks:
+
+1. ...
+   Next validation step:
+
 - ...
 ```
 
 Budget rules:
+
 - Hard cap: ~1800 tokens (configurable)
 - Include top-K evidence only (ranked by relevance)
 - Never include raw full history or full event dump
@@ -248,6 +268,7 @@ Priority:
 `priority = impact * confidence * actionability`
 
 UI routing policy:
+
 - low: statusline only
 - medium: panel only
 - high: panel + line anchor
@@ -267,10 +288,12 @@ UI routing policy:
 ## 12) Neovim ambient integration model
 
 v0 (practical):
+
 - SASU memory updates mostly from existing Pi/SASU hooks.
 - Optional Neovim event feeder can append structured events later.
 
 v1:
+
 - Add Neovim panel + statusline + sparse anchors backed by `working_state`.
 - Only show proactive hints on high priority and novelty.
 
@@ -279,6 +302,7 @@ v1:
 ## 13) Implementation plan
 
 ### Phase 0 (foundation)
+
 - Add `src/memory/` module with:
   - `types.ts`
   - `store.ts` (SQLite access)
@@ -291,11 +315,13 @@ v1:
   - `/sasu-memory-tail`
 
 ### Phase 1 (review integration)
+
 - Replace direct goal fallback path in `/sasu-review` with `resolveIntentContext()` from memory.
 - Use `buildMissionBrief()` as review preamble.
 - Preserve existing busy/queue/notification behavior.
 
 ### Phase 2 (ambient UX)
+
 - Panel/statusline/anchors using risk routing policy.
 - Feedback capture from user actions for adaptive ranking.
 
@@ -311,6 +337,7 @@ This is viable if we keep scope narrow:
 - additive integration (no rewrite of current SASU flow).
 
 Expected value quickly:
+
 - less manual goal management,
 - better intent continuity,
 - more evidence-backed guidance.

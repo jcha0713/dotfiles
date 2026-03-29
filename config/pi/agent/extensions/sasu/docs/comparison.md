@@ -3,7 +3,9 @@
 ## Project: ailou/pi-extensions (Neovim Extension)
 
 ### Overview
+
 This is a bidirectional integration between Pi (agentic coding harness) and Neovim. It enables:
+
 1. Pi to query Neovim for editor state
 2. Neovim to host Pi in an embedded terminal
 3. Automatic context injection and file synchronization
@@ -15,6 +17,7 @@ This is a bidirectional integration between Pi (agentic coding harness) and Neov
 ### 🔌 Connection Mechanism
 
 **How it works:**
+
 - **Lockfile-based discovery**: Neovim creates a JSON lockfile at `~/.local/share/nvim/pi-nvim/{cwd_hash}-{pid}.json` containing socket path, cwd, and pid
 - **Unix socket RPC**: Neovim starts an RPC server via `vim.fn.serverstart(socket_path)`
 - **Remote expression queries**: Pi uses `nvim --server {socket} --remote-expr {lua_expr}` to execute Lua code and get JSON responses
@@ -33,12 +36,14 @@ Pi Extension (TypeScript)          Neovim Plugin (Lua)
 ```
 
 **Strengths:**
+
 - ✅ Simple, no additional dependencies beyond Neovim
 - ✅ Lockfile cleanup on stale PIDs (process kill check)
 - ✅ Supports multiple Neovim instances with interactive selection
 - ✅ Cross-platform socket paths (respects XDG, macOS variants)
 
 **Weaknesses:**
+
 - ⚠️ Spawning `nvim --remote-expr` subprocess for every query has overhead
 - ⚠️ No persistent connection (could use msgpack-rpc over socket instead)
 - ⚠️ Lockfile approach may fail if Neovim crashes without cleanup
@@ -73,12 +78,14 @@ pi.registerTool({
 | `current_function` | Treesitter info about function at cursor |
 
 **Strengths:**
+
 - ✅ Rich context: filetype, cursor, selection, visible ranges, modified status
 - ✅ Structured tool result with both text content and typed details
 - ✅ Graceful degradation (continues without context if query fails)
 - ✅ Caching: stores socket in state to avoid rediscovery
 
 **Weaknesses:**
+
 - ⚠️ Tool calls add latency to agent response
 - ⚠️ No automatic context refresh during an agent turn
 
@@ -104,18 +111,21 @@ local win = vim.api.nvim_open_win(buf, true, {
 ```
 
 **Features:**
+
 - Auto-start Pi terminal with configurable layout
 - Keymaps for close, exit terminal mode, suspend, context picker
 - Focus source window on terminal exit option
 - Resume terminal insert mode after suspend
 
 **Strengths:**
+
 - ✅ Native Neovim terminal integration (no external window)
 - ✅ Flexible layouts with auto-detection based on screen size
 - ✅ Passes `NVIM` env var so Pi can connect back to this instance
 - ✅ Clean buffer/window lifecycle management
 
 **Weaknesses:**
+
 - ⚠️ Terminal UI is limited compared to full TUI
 - ⚠️ No built-in file picker integration in the terminal itself
 
@@ -143,6 +153,7 @@ pi.on("before_agent_start", async (...) => {
 | `turn_end` | Query LSP errors for modified files, send as follow-up |
 
 **Context format example:**
+
 ```
 Current editor state:
 - src/main.ts [focused] (typescript) visible lines 1-50, cursor at line 25:10
@@ -150,12 +161,14 @@ Current editor state:
 ```
 
 **Strengths:**
+
 - ✅ Zero-config: auto-discovers Neovim on session start
 - ✅ Multiple instance support with interactive picker
 - ✅ Tracks modified files across agent turns for LSP diagnostics
 - ✅ Follow-up messages for diagnostics (doesn't block agent)
 
 **Weaknesses:**
+
 - ⚠️ System prompt injection on every turn can be verbose
 - ⚠️ No deduplication if context hasn't changed
 
@@ -169,11 +182,11 @@ Current editor state:
 pi.on("tool_result", async (event, ctx) => {
   if (event.toolName === "write" || event.toolName === "edit") {
     state.modifiedFilesThisTurn.add(absPath);
-    
+
     // Notify Neovim to reload the file
     await queryNvim(pi.exec, state.socket, {
       type: "reload",
-      files: [absPath]
+      files: [absPath],
     });
   }
 });
@@ -193,11 +206,13 @@ end
 ```
 
 **Strengths:**
+
 - ✅ Immediate file reload in Neovim after Pi writes/edits
 - ✅ Uses `checktime()` to respect 'autoread' settings
 - ✅ Only reloads if buffer is loaded
 
 **Weaknesses:**
+
 - ⚠️ Requires 'autoread' to be set for automatic reload
 - ⚠️ Could use `nvim_buf_set_lines` for smoother updates without disk read
 
@@ -213,7 +228,7 @@ pi.on("turn_end", async (...) => {
     type: "diagnostics_for_files",
     files: Array.from(state.modifiedFilesThisTurn)
   });
-  
+
   pi.sendMessage({
     customType: "nvim-diagnostics",
     content: formatDiagnosticsMessage(diagnostics, ctx.cwd),
@@ -228,12 +243,14 @@ pi.on("turn_end", async (...) => {
 **Custom message renderer:** Styled like a failed tool call with `toolErrorBg` background
 
 **Strengths:**
+
 - ✅ Only checks files modified in current turn (not entire codebase)
 - ✅ Custom TUI renderer for diagnostics with error/warning counts
 - ✅ Follow-up message triggers agent to fix errors automatically
 - ✅ Expandable/collapsible error details
 
 **Weaknesses:**
+
 - ⚠️ Only errors, not warnings/hints
 - ⚠️ Could be noisy if many files modified
 
@@ -272,6 +289,7 @@ State shared across hooks and tools avoids redundant discovery.
 ### 3. **Graceful Degradation**
 
 Every RPC call wrapped in try/catch, continues without context on failure:
+
 ```typescript
 try {
   const splits = await queryNvim(...);
@@ -285,33 +303,34 @@ try {
 
 ## What to Adopt
 
-| Component | Recommendation |
-|-----------|---------------|
-| **Lockfile discovery** | ✅ Excellent pattern - simple, reliable, cross-platform |
-| **Hooks architecture** | ✅ Lifecycle hooks provide clean integration points |
-| **Automatic context injection** | ✅ Essential for agent awareness |
-| **File reload on write** | ✅ Critical for tight feedback loop |
-| **LSP diagnostics follow-up** | ✅ Auto-fix pattern is powerful |
-| **Action dispatch pattern** | ✅ Clean, extensible architecture |
-| **Multiple instance selection** | ✅ Real-world consideration |
-| **Custom message renderers** | ✅ Improves TUI experience |
+| Component                       | Recommendation                                          |
+| ------------------------------- | ------------------------------------------------------- |
+| **Lockfile discovery**          | ✅ Excellent pattern - simple, reliable, cross-platform |
+| **Hooks architecture**          | ✅ Lifecycle hooks provide clean integration points     |
+| **Automatic context injection** | ✅ Essential for agent awareness                        |
+| **File reload on write**        | ✅ Critical for tight feedback loop                     |
+| **LSP diagnostics follow-up**   | ✅ Auto-fix pattern is powerful                         |
+| **Action dispatch pattern**     | ✅ Clean, extensible architecture                       |
+| **Multiple instance selection** | ✅ Real-world consideration                             |
+| **Custom message renderers**    | ✅ Improves TUI experience                              |
 
 ## What to Avoid/Improve
 
-| Component | Issue | Better Approach |
-|-----------|-------|----------------|
-| **Subprocess RPC** | Overhead of spawning nvim for each query | Persistent msgpack-rpc connection |
-| **System prompt injection** | Can be verbose | Use context files or compressed format |
-| **Autoread dependency** | File reload requires 'autoread' | Direct buffer manipulation via API |
-| **Tool-based context** | Adds latency | Background sync + on-demand refresh |
-| **Lockfile staleness** | Crash leaves lockfile | Heartbeat/ttl mechanism |
-| **Single error severity** | Only errors, not warnings | Configurable severity levels |
+| Component                   | Issue                                    | Better Approach                        |
+| --------------------------- | ---------------------------------------- | -------------------------------------- |
+| **Subprocess RPC**          | Overhead of spawning nvim for each query | Persistent msgpack-rpc connection      |
+| **System prompt injection** | Can be verbose                           | Use context files or compressed format |
+| **Autoread dependency**     | File reload requires 'autoread'          | Direct buffer manipulation via API     |
+| **Tool-based context**      | Adds latency                             | Background sync + on-demand refresh    |
+| **Lockfile staleness**      | Crash leaves lockfile                    | Heartbeat/ttl mechanism                |
+| **Single error severity**   | Only errors, not warnings                | Configurable severity levels           |
 
 ---
 
 ## Gap Analysis: Workspace-Level Change Awareness
 
 The pi-neovim extension tracks **files Pi modified** and queries **Neovim loaded buffers**. It does NOT:
+
 - Track external changes (git operations, other editors, build tools)
 - Provide diagnostics for unloaded files
 - Give the agent a complete picture of codebase delta
@@ -323,23 +342,23 @@ The pi-neovim extension tracks **files Pi modified** and queries **Neovim loaded
 ```typescript
 // Track changes since last agent turn using git
 interface CodebaseDelta {
-  modified: string[];   // Files modified since last turn
-  created: string[];    // New files
-  deleted: string[];    // Removed files
-  diffs: Map<string, string>;  // Unified diff per file
+  modified: string[]; // Files modified since last turn
+  created: string[]; // New files
+  deleted: string[]; // Removed files
+  diffs: Map<string, string>; // Unified diff per file
 }
 
 async function getDeltaSinceLastTurn(cwd: string): Promise<CodebaseDelta> {
   // Option A: Compare against staged/stash
-  const lastKnown = getLastTurnRef();  // Store commit hash or create temp ref
-  
+  const lastKnown = getLastTurnRef(); // Store commit hash or create temp ref
+
   // Option B: Use git stash/create temp commits
   // 1. Before agent turn: git stash push -m "pi-turn-${timestamp}"
   // 2. After agent turn: git diff stash@{0}..HEAD
-  
+
   const modified = await exec("git", ["diff", "--name-only", lastKnown]);
-  const diffs = await exec("git", ["diff", "-U3", lastKnown]);  // Unified diff with context
-  
+  const diffs = await exec("git", ["diff", "-U3", lastKnown]); // Unified diff with context
+
   return { modified, created, deleted, diffs };
 }
 
@@ -347,23 +366,26 @@ async function getDeltaSinceLastTurn(cwd: string): Promise<CodebaseDelta> {
 pi.on("before_agent_start", async () => {
   const delta = await getDeltaSinceLastTurn(ctx.cwd);
   return {
-    systemPrompt: formatDeltaContext(delta)
+    systemPrompt: formatDeltaContext(delta),
   };
 });
 ```
 
 **Pros:**
+
 - ✅ Captures ALL changes (Pi, user, external tools, git operations)
 - ✅ Provides semantic diffs (not just file lists)
 - ✅ Works across the entire codebase, not just open buffers
 - ✅ Git is already present in most codebases
 
 **Cons:**
+
 - ⚠️ Requires git repository
 - ⚠️ Need to manage "last turn" reference point
 - ⚠️ Large refactors could produce huge diffs
 
 **Implementation strategy:**
+
 ```
 Turn N: Agent generates changes
    ↓
@@ -386,7 +408,7 @@ import { watch } from "fs";
 class WorkspaceWatcher {
   private changes = new Set<string>();
   private watchers = new Map<string, ReturnType<typeof watch>>();
-  
+
   start(cwd: string) {
     const watcher = watch(cwd, { recursive: true }, (event, filename) => {
       if (this.shouldTrack(filename)) {
@@ -395,7 +417,7 @@ class WorkspaceWatcher {
     });
     this.watchers.set(cwd, watcher);
   }
-  
+
   getAndClearChanges(): string[] {
     const result = Array.from(this.changes);
     this.changes.clear();
@@ -408,19 +430,21 @@ pi.on("before_agent_start", async () => {
   const diffs = await Promise.all(
     changes.map(async (file) => ({
       file,
-      diff: await computeDiffFromSnapshot(file)  // Need snapshot storage
-    }))
+      diff: await computeDiffFromSnapshot(file), // Need snapshot storage
+    })),
   );
   return { systemPrompt: formatChanges(diffs) };
 });
 ```
 
 **Pros:**
+
 - ✅ Works without git
 - ✅ Real-time tracking
 - ✅ Captures external editor changes
 
 **Cons:**
+
 - ⚠️ Platform-specific (recursive watch not supported on Linux)
 - ⚠️ Need to store file snapshots to compute diffs
 - ⚠️ Noise from build artifacts, node_modules, etc.
@@ -433,36 +457,39 @@ pi.on("before_agent_start", async () => {
 pi.on("turn_end", async () => {
   // 1. Get all modified files (git)
   const gitChanges = await getGitDelta();
-  
+
   // 2. Get workspace diagnostics from LSP (if server supports it)
   const workspaceDiagnostics = await queryLspWorkspaceDiagnostics();
-  
+
   // 3. Cross-reference: which changed files have errors?
-  const relevantErrors = workspaceDiagnostics.filter(
-    d => gitChanges.modified.includes(d.file)
-  );
-  
+  const relevantErrors = workspaceDiagnostics.filter((d) => gitChanges.modified.includes(d.file));
+
   // 4. Also check if changes introduced errors in OTHER files
   // (e.g., changed interface broke consumers)
   const affectedFiles = workspaceDiagnostics.filter(
-    d => !gitChanges.modified.includes(d.file) && d.severity === "error"
+    (d) => !gitChanges.modified.includes(d.file) && d.severity === "error",
   );
-  
+
   if (affectedFiles.length > 0) {
-    pi.sendMessage({
-      content: `Changes may have broken ${affectedFiles.length} other files`,
-      details: { affectedFiles, gitChanges }
-    }, { deliverAs: "followUp", triggerTurn: true });
+    pi.sendMessage(
+      {
+        content: `Changes may have broken ${affectedFiles.length} other files`,
+        details: { affectedFiles, gitChanges },
+      },
+      { deliverAs: "followUp", triggerTurn: true },
+    );
   }
 });
 ```
 
 **Pros:**
+
 - ✅ Correlates changes with impact
 - ✅ Finds breaking changes across the codebase
 - ✅ LSP already knows the dependency graph
 
 **Cons:**
+
 - ⚠️ Not all LSP servers support workspace diagnostics
 - ⚠️ More complex to implement
 
@@ -479,7 +506,7 @@ pi.registerTool({
   description: "Get all changes made to the codebase since the last turn",
   parameters: Type.Object({
     includeDiffs: Type.Boolean({ default: true }),
-    maxFiles: Type.Number({ default: 20 })
+    maxFiles: Type.Number({ default: 20 }),
   }),
   execute: async (params) => {
     const delta = await getGitDelta();
@@ -488,15 +515,16 @@ pi.registerTool({
       limited.map(async (f) => ({
         file: f,
         diff: params.includeDiffs ? await getDiff(f) : null,
-        summary: await summarizeChanges(f)  // LLM-based or simple stats
-      }))
+        summary: await summarizeChanges(f), // LLM-based or simple stats
+      })),
     );
     return { content };
-  }
+  },
 });
 ```
 
 **Usage in agent flow:**
+
 1. Agent completes turn
 2. Before next turn, agent calls `get_codebase_changes`
 3. Sees: "User modified src/types.ts - interface User changed"
@@ -506,13 +534,13 @@ pi.registerTool({
 
 ### Comparison Matrix
 
-| Approach | All Files | External Changes | Diffs Available | Complexity | Best For |
-|----------|-----------|------------------|-----------------|------------|----------|
-| Current (pi-neovim) | ❌ Loaded only | ❌ No | ❌ No | Low | Editor-focused |
-| Git-based | ✅ Yes | ✅ Yes | ✅ Yes | Medium | Most projects |
-| Filesystem watcher | ✅ Yes | ✅ Yes | ⚠️ Snapshots needed | High | Non-git projects |
-| LSP workspace | ✅ Yes | ❌ No | ❌ No | Medium | Large refactors |
-| Tool-driven | ✅ Yes | ✅ Yes | ✅ Optional | Low | User control |
+| Approach            | All Files      | External Changes | Diffs Available     | Complexity | Best For         |
+| ------------------- | -------------- | ---------------- | ------------------- | ---------- | ---------------- |
+| Current (pi-neovim) | ❌ Loaded only | ❌ No            | ❌ No               | Low        | Editor-focused   |
+| Git-based           | ✅ Yes         | ✅ Yes           | ✅ Yes              | Medium     | Most projects    |
+| Filesystem watcher  | ✅ Yes         | ✅ Yes           | ⚠️ Snapshots needed | High       | Non-git projects |
+| LSP workspace       | ✅ Yes         | ❌ No            | ❌ No               | Medium     | Large refactors  |
+| Tool-driven         | ✅ Yes         | ✅ Yes           | ✅ Optional         | Low        | User control     |
 
 ---
 
@@ -542,9 +570,11 @@ The pi-neovim extension demonstrates a **pragmatic, production-ready** approach 
 ## Project: pablopunk/pi.nvim
 
 ### Overview
+
 A **minimalist, unidirectional** Neovim plugin for Pi. Unlike pi-extensions (bidirectional), this is a simpler "fire and forget" approach where Neovim drives Pi as a subprocess.
 
 **Core Philosophy:**
+
 > "It's funny that all AI plugins for Neovim are quite complex to interact with, like they want to imitate all current IDE features, while those are trending towards the simplicity of the CLI... pi.dev is the best example of this philosophy"
 
 ---
@@ -590,14 +620,14 @@ vim.fn.chansend(state.job, prompt_cmd .. "\n")
 
 **Key differences from pi-extensions:**
 
-| Aspect | pi-extensions | pi.nvim |
-|--------|--------------|---------|
-| Direction | Bidirectional | Unidirectional |
-| Who hosts | Pi embeds Neovim terminal | Neovim spawns Pi |
-| Connection | Unix socket (remote-expr) | Stdio JSON RPC |
-| Context | Pi queries Neovim | Neovim pushes to Pi |
-| Persistence | Multi-turn session | Single prompt/response |
-| LSP feedback | Yes (follow-up messages) | No (one-shot) |
+| Aspect       | pi-extensions             | pi.nvim                |
+| ------------ | ------------------------- | ---------------------- |
+| Direction    | Bidirectional             | Unidirectional         |
+| Who hosts    | Pi embeds Neovim terminal | Neovim spawns Pi       |
+| Connection   | Unix socket (remote-expr) | Stdio JSON RPC         |
+| Context      | Pi queries Neovim         | Neovim pushes to Pi    |
+| Persistence  | Multi-turn session        | Single prompt/response |
+| LSP feedback | Yes (follow-up messages)  | No (one-shot)          |
 
 ---
 
@@ -609,61 +639,63 @@ Two context modes:
 
 #### 1. Full Buffer Context (`:PiAsk`)
 
-```lua
+````lua
 function M.get_buffer_context()
   local context = SYSTEM_PROMPT .. "\n\n"
   if has_filename then
     context = context .. string.format(
-      "File: %s\n```\n%s\n```", 
+      "File: %s\n```\n%s\n```",
       filename, content
     )
   end
-  
+
   if buffer_is_empty(bufnr) then
     context = context .. "\n\n" .. EMPTY_FILE_NOTE
   end
-  
+
   return context
 end
 
 -- SYSTEM_PROMPT:
--- "You are running inside the pi.nvim Neovim plugin. 
---  The user has sent a request and will not be able to reply back. 
+-- "You are running inside the pi.nvim Neovim plugin.
+--  The user has sent a request and will not be able to reply back.
 --  You must complete the task immediately without asking any questions..."
 
 -- EMPTY_FILE_NOTE:
--- "NOTE: This file is currently empty. Please create or populate it 
+-- "NOTE: This file is currently empty. Please create or populate it
 --  directly by applying the necessary edits..."
-```
+````
 
 #### 2. Visual Selection Context (`:PiAskSelection`)
 
-```lua
+````lua
 function M.get_visual_context()
   -- Sends BOTH full file AND selection
   context = string.format([[
     File: %s
-    
+
     Full file content:
     ```
     %s
     ```
-    
+
     Selected lines %d-%d:
     ```
     %s
     ```
   ]], filename, all_content, start_line, end_line, selection_content)
 end
-```
+````
 
 **Strengths:**
+
 - ✅ Simple, predictable context format
 - ✅ Handles empty files specially (prompts Pi to create content)
 - ✅ Selection context includes full file for broader context
 - ✅ Hardcoded system prompt forces agent to act (no clarifying questions)
 
 **Weaknesses:**
+
 - ⚠️ No automatic context on every turn
 - ⚠️ No LSP diagnostics or error feedback
 - ⚠️ Fixed system prompt, not configurable
@@ -677,7 +709,7 @@ end
 local function create_output_window()
   local buf = vim.api.nvim_create_buf(false, true)
   vim.api.nvim_buf_set_option(buf, "filetype", "markdown")
-  
+
   local win = vim.api.nvim_open_win(buf, true, {
     relative = "editor",
     width = math.min(40, max_width),
@@ -689,7 +721,7 @@ local function create_output_window()
     title = " pi ",
     title_pos = "center",
   })
-  
+
   return buf, win
 end
 ```
@@ -699,7 +731,7 @@ end
 ```lua
 local function handle_event(data)
   local event = vim.json.decode(data)
-  
+
   if event.type == "message_update" then
     if delta.type == "thinking_delta" then
       update_spinner("Thinking...")
@@ -720,6 +752,7 @@ end
 ```
 
 **Features:**
+
 - Floating window with rounded border and "pi" title
 - Animated spinner (⠋⠙⠹⠸⠼⠴⠦⠧⠇⠏) with status text
 - Virtual text extmark for inline spinner
@@ -727,12 +760,14 @@ end
 - Auto-reload file (`:edit!`) when agent finishes
 
 **Strengths:**
+
 - ✅ Clean, unobtrusive UI (doesn't take over editor)
 - ✅ Spinner gives feedback during long operations
 - ✅ Markdown filetype for syntax highlighting
 - ✅ Auto-reload shows changes immediately
 
 **Weaknesses:**
+
 - ⚠️ No scrollable output buffer (content not shown, just status)
 - ⚠️ Window closes on completion - can't review what happened
 - ⚠️ No way to see tool outputs or reasoning
@@ -742,63 +777,67 @@ end
 
 ## What to Adopt
 
-| Component | Recommendation |
-|-----------|---------------|
-| **RPC mode over stdio** | ✅ Simple, no socket/files needed |
-| **System prompt** | ✅ Forces agent to act, no back-and-forth |
-| **Empty file handling** | ✅ Special prompt for file creation |
-| **Selection context** | ✅ Full file + selection is smart |
-| **Auto-reload on finish** | ✅ Essential for seeing changes |
-| **Spinner feedback** | ✅ Good UX for long operations |
-| **Floating window** | ✅ Non-intrusive, centered |
+| Component                 | Recommendation                            |
+| ------------------------- | ----------------------------------------- |
+| **RPC mode over stdio**   | ✅ Simple, no socket/files needed         |
+| **System prompt**         | ✅ Forces agent to act, no back-and-forth |
+| **Empty file handling**   | ✅ Special prompt for file creation       |
+| **Selection context**     | ✅ Full file + selection is smart         |
+| **Auto-reload on finish** | ✅ Essential for seeing changes           |
+| **Spinner feedback**      | ✅ Good UX for long operations            |
+| **Floating window**       | ✅ Non-intrusive, centered                |
 
 ## What to Avoid/Improve
 
-| Component | Issue | Better Approach |
-|-----------|-------|----------------|
-| **No session** | Each prompt is isolated | Allow multi-turn with context |
-| **Output not visible** | Window shows spinner only, not content | Scrollable output buffer |
-| **No LSP feedback** | Errors not shown | Query diagnostics post-edit |
-| **Fixed system prompt** | Not configurable | Allow user override |
-| **Single job** | Can't queue or parallelize | Job queue or cancellation |
-| **Auto-close** | Can't review what happened | Keep buffer open, keymap to close |
+| Component               | Issue                                  | Better Approach                   |
+| ----------------------- | -------------------------------------- | --------------------------------- |
+| **No session**          | Each prompt is isolated                | Allow multi-turn with context     |
+| **Output not visible**  | Window shows spinner only, not content | Scrollable output buffer          |
+| **No LSP feedback**     | Errors not shown                       | Query diagnostics post-edit       |
+| **Fixed system prompt** | Not configurable                       | Allow user override               |
+| **Single job**          | Can't queue or parallelize             | Job queue or cancellation         |
+| **Auto-close**          | Can't review what happened             | Keep buffer open, keymap to close |
 
 ---
 
 ## Comparison: pi-extensions vs pi.nvim
 
-| Feature | pi-extensions | pi.nvim |
-|---------|--------------|---------|
-| **Complexity** | High (bidirectional) | Low (unidirectional) |
-| **Setup** | Extension + Neovim plugin | Just Neovim plugin |
-| **Pi mode** | Normal session | RPC mode (`--mode rpc`) |
-| **Context injection** | Automatic (hooks) | Manual (commands) |
-| **LSP integration** | Yes (follow-up diagnostics) | No |
-| **File reload** | Immediate (on tool_result) | On agent_end |
-| **Multi-turn** | Yes (persistent session) | No (one-shot) |
-| **Terminal** | Embedded in Neovim | Floating window |
-| **Output visibility** | Full TUI with history | Spinner only, auto-close |
-| **Configuration** | Extensive | Minimal (provider/model) |
+| Feature               | pi-extensions               | pi.nvim                  |
+| --------------------- | --------------------------- | ------------------------ |
+| **Complexity**        | High (bidirectional)        | Low (unidirectional)     |
+| **Setup**             | Extension + Neovim plugin   | Just Neovim plugin       |
+| **Pi mode**           | Normal session              | RPC mode (`--mode rpc`)  |
+| **Context injection** | Automatic (hooks)           | Manual (commands)        |
+| **LSP integration**   | Yes (follow-up diagnostics) | No                       |
+| **File reload**       | Immediate (on tool_result)  | On agent_end             |
+| **Multi-turn**        | Yes (persistent session)    | No (one-shot)            |
+| **Terminal**          | Embedded in Neovim          | Floating window          |
+| **Output visibility** | Full TUI with history       | Spinner only, auto-close |
+| **Configuration**     | Extensive                   | Minimal (provider/model) |
 
 ---
 
 ## Philosophical Differences
 
 ### pi-extensions: "Agent as IDE"
+
 - Agent is the driver, editor is a component
 - Rich integration, stateful, conversational
 - More like Copilot/ChatGPT IDE integration
 
 ### pi.nvim: "Agent as CLI tool"
+
 - Editor is the driver, agent is a utility
 - Stateless, command-based, simple
 - More like `:!git diff` or `:!make`
 
 **Which to choose depends on your mental model:**
+
 - Use **pi-extensions** if you want the agent to be a persistent pair programmer
 - Use **pi.nvim** if you want the agent to be a powerful command you invoke when needed
 
 For **sasu**, consider a hybrid:
+
 - Lightweight like pi.nvim for quick tasks
 - Rich integration like pi-extensions for deep sessions
 - Workspace change tracking (the gap we identified) as a unique feature
@@ -808,9 +847,11 @@ For **sasu**, consider a hybrid:
 ## Project: ThePrimeagen/99
 
 ### Overview
+
 A **multi-provider, async-first** AI client for Neovim supporting opencode, claude, cursor-agent, and kiro. Built for developers who "don't have skill issues" - focusing on streamlined, restricted AI workflows rather than general chat.
 
 **Core Philosophy:**
+
 > "The AI client that Neovim deserves, built by those that still enjoy to code."
 > "For more general requests, please just use opencode. Don't use neovim."
 
@@ -894,7 +935,7 @@ end
 ```lua
 function BaseProvider:make_request(query, request, observer)
   local command = self:_build_command(query, request)
-  
+
   local proc = vim.system(
     command,
     {
@@ -924,6 +965,7 @@ end
 ```
 
 **Key strengths:**
+
 - ✅ True async using `vim.system` (Neovim 0.10+)
 - ✅ Multiple concurrent requests supported
 - ✅ Proper cancellation with SIGTERM
@@ -945,14 +987,14 @@ end
 function RequestStatus:start()
   local function update_spinner()
     if not self.running then return end
-    
+
     self.status_line:update()
     if self.mark then
       self.mark:set_virtual_text(self:get())
     end
     vim.defer_fn(update_spinner, self.update_time)
   end
-  
+
   self.running = true
   vim.defer_fn(update_spinner, self.update_time)
 end
@@ -972,13 +1014,14 @@ function Throbber:_run()
   local elapsed = time.now() - self.start_time
   local percent = math.min(1, elapsed / self.section_time)
   local icon = self.throb_fn(percent)
-  
+
   self.cb(icon)  -- Callback to update UI
   vim.defer_fn(function() self:_run() end, tick_time)
 end
 ```
 
 **Animation features:**
+
 - Multiple icon sets (⠋⠙⠹..., ◐◓◑◒, ⣾⣽⣻...)
 - Easing functions (linear, ease-in-out-quadratic, ease-in-out-cubic)
 - Throb/cooldown cycles for visual variety
@@ -988,9 +1031,9 @@ end
 ```lua
 local function show_in_flight_requests()
   vim.defer_fn(show_in_flight_requests, 1000)  -- Poll every second
-  
+
   if _99_state:active_request_count() == 0 then return end
-  
+
   local win = Window.status_window()
   local throb = Throbber.new(function(throb)
     local count = _99_state:active_request_count()
@@ -1003,7 +1046,7 @@ local function show_in_flight_requests()
     Window.resize(win, #lines[1], #lines)
     vim.api.nvim_buf_set_lines(win.buf_id, 0, 1, false, lines)
   end)
-  
+
   throb:start()
 end
 ```
@@ -1058,6 +1101,7 @@ context:add_references(refs)
 ```
 
 **Features:**
+
 - **SKILL.md system**: Load domain-specific rules from directories
 - **#rules**: Reference rules by name with autocomplete
 - **@files**: Reference files with fuzzy search
@@ -1080,13 +1124,14 @@ return function(context, name, clean_up_fn)
     clean_up_fn()
     context._99:remove_active_request(request_id)
   end
-  
+
   request_id = context._99:add_active_request(clean_up, context.xid, name)
   return clean_up
 end
 ```
 
 **Ensures:**
+
 - Idempotent cleanup (called once)
 - Request removal from active list
 - Resource cleanup (marks, status lines, processes)
@@ -1095,57 +1140,61 @@ end
 
 ## What to Adopt
 
-| Component | Recommendation |
-|-----------|---------------|
-| **vim.system** | ✅ Modern async API (Neovim 0.10+) |
-| **Request state machine** | ✅ Clear lifecycle (ready → calling → parsing → updating) |
-| **Global request tracking** | ✅ Cancel all, view history, status overview |
-| **Observer pattern** | ✅ Clean separation of request and UI |
-| **Throbber with easing** | ✅ Polished visual feedback |
-| **Virtual text status** | ✅ Non-intrusive progress indication |
-| **Provider abstraction** | ✅ Easy to add new AI backends |
-| **Rules system (#/@)** | ✅ Powerful context augmentation |
-| **Cleanup guards** | ✅ Prevents double-cleanup bugs |
+| Component                   | Recommendation                                            |
+| --------------------------- | --------------------------------------------------------- |
+| **vim.system**              | ✅ Modern async API (Neovim 0.10+)                        |
+| **Request state machine**   | ✅ Clear lifecycle (ready → calling → parsing → updating) |
+| **Global request tracking** | ✅ Cancel all, view history, status overview              |
+| **Observer pattern**        | ✅ Clean separation of request and UI                     |
+| **Throbber with easing**    | ✅ Polished visual feedback                               |
+| **Virtual text status**     | ✅ Non-intrusive progress indication                      |
+| **Provider abstraction**    | ✅ Easy to add new AI backends                            |
+| **Rules system (#/@)**      | ✅ Powerful context augmentation                          |
+| **Cleanup guards**          | ✅ Prevents double-cleanup bugs                           |
 
 ## What to Avoid/Improve
 
-| Component | Issue | Better Approach |
-|-----------|-------|----------------|
-| **Polling for UI** | `vim.defer_fn(show_in_flight_requests, 1000)` | Event-driven updates |
-| **Temp file for response** | `_retrieve_response` reads from disk | Capture stdout directly |
-| **No bidirectional** | One-shot requests only | Session-based for multi-turn |
-| **Limited error recovery** | Fatal on mark invalidation | Graceful degradation |
-| **Global state** | `_99_state` singleton | Dependency injection for testability |
+| Component                  | Issue                                         | Better Approach                      |
+| -------------------------- | --------------------------------------------- | ------------------------------------ |
+| **Polling for UI**         | `vim.defer_fn(show_in_flight_requests, 1000)` | Event-driven updates                 |
+| **Temp file for response** | `_retrieve_response` reads from disk          | Capture stdout directly              |
+| **No bidirectional**       | One-shot requests only                        | Session-based for multi-turn         |
+| **Limited error recovery** | Fatal on mark invalidation                    | Graceful degradation                 |
+| **Global state**           | `_99_state` singleton                         | Dependency injection for testability |
 
 ---
 
 ## Comparison: 99 vs Others
 
-| Feature | 99 | pi-extensions | pi.nvim |
-|---------|-----|---------------|---------|
-| **Async model** | vim.system (true async) | Subprocess RPC | jobstart (legacy) |
-| **Parallel requests** | ✅ Yes | ❌ No | ❌ No |
-| **Cancellation** | ✅ SIGTERM | ❌ N/A | ❌ No |
-| **Multi-provider** | ✅ 4 providers | ❌ Pi only | ❌ Pi only |
-| **Visual feedback** | Virtual text + throbber | Custom TUI | Spinner only |
-| **Request history** | ✅ Full history | Session-based | ❌ None |
-| **Rules system** | ✅ SKILL.md + #/@ | Context files | ❌ None |
-| **Session support** | ❌ One-shot | ✅ Yes | ❌ One-shot |
+| Feature               | 99                      | pi-extensions  | pi.nvim           |
+| --------------------- | ----------------------- | -------------- | ----------------- |
+| **Async model**       | vim.system (true async) | Subprocess RPC | jobstart (legacy) |
+| **Parallel requests** | ✅ Yes                  | ❌ No          | ❌ No             |
+| **Cancellation**      | ✅ SIGTERM              | ❌ N/A         | ❌ No             |
+| **Multi-provider**    | ✅ 4 providers          | ❌ Pi only     | ❌ Pi only        |
+| **Visual feedback**   | Virtual text + throbber | Custom TUI     | Spinner only      |
+| **Request history**   | ✅ Full history         | Session-based  | ❌ None           |
+| **Rules system**      | ✅ SKILL.md + #/@       | Context files  | ❌ None           |
+| **Session support**   | ❌ One-shot             | ✅ Yes         | ❌ One-shot       |
 
 ---
 
 ## Key Innovations
 
 ### 1. **True Parallel Execution**
+
 Unlike pi-extensions and pi.nvim which handle one request at a time, 99 supports multiple concurrent AI requests with proper lifecycle management.
 
 ### 2. **Rich Visual Feedback Without Blocking**
+
 Virtual text spinners at the location of change (above/below selection) rather than a separate window.
 
 ### 3. **Rules System**
+
 Domain-specific SKILL.md files with `#rule` and `@file` completion for powerful context assembly.
 
 ### 4. **Provider Abstraction**
+
 Clean separation allowing support for opencode, claude, cursor-agent, and kiro without code changes.
 
 ---
@@ -1155,6 +1204,7 @@ Clean separation allowing support for opencode, claude, cursor-agent, and kiro w
 **99** represents a **mature, async-first architecture** for AI-Neovim integration. Its use of `vim.system`, parallel request handling, and sophisticated visual feedback sets it apart from both pi-extensions (bidirectional but single-threaded) and pi.nvim (simple but blocking).
 
 **For sasu:**
+
 - Adopt the **async job architecture** (vim.system + state tracking)
 - Consider the **rules system** for domain-specific context
 - Take the **cancellation** and **cleanup patterns** for robustness
@@ -1167,9 +1217,11 @@ Clean separation allowing support for opencode, claude, cursor-agent, and kiro w
 ## Project: Piotr1215/pairup.nvim
 
 ### Overview
+
 An **inline AI pair programming** plugin that uses comment markers (`cc:`, `uu:`, `cc!:`, `ccp:`) to trigger Claude Code CLI actions directly in the editor. Unlike other plugins that manage complex state, pairup.nvim takes a radically simplified approach inspired by sidekick.nvim.
 
 **Core Philosophy:**
+
 > "Less complexity, more reliability. Claude edits files directly — no parsing, no overlays, no state management. Just write `cc:`, save, and Claude handles it."
 
 ---
@@ -1180,13 +1232,13 @@ An **inline AI pair programming** plugin that uses comment markers (`cc:`, `uu:`
 
 **From v4-architecture.md:**
 
-| Before (v3) | After (v4) |
-|-------------|-----------|
-| **Extmark-based indexing** | **Line-based scanning** |
-| 4-state workflow (pending/accepted/rejected/edited) | Immediate accept/reject |
-| Variant management (multiple alternatives) | Single best suggestion |
-| Continuous position recalculation | Clear-and-rebuild pattern |
-| Tight coupling between display/buffer | Stateless, functional approach |
+| Before (v3)                                         | After (v4)                     |
+| --------------------------------------------------- | ------------------------------ |
+| **Extmark-based indexing**                          | **Line-based scanning**        |
+| 4-state workflow (pending/accepted/rejected/edited) | Immediate accept/reject        |
+| Variant management (multiple alternatives)          | Single best suggestion         |
+| Continuous position recalculation                   | Clear-and-rebuild pattern      |
+| Tight coupling between display/buffer               | Stateless, functional approach |
 
 ### Why Extmark Indexing Was Abandoned
 
@@ -1211,6 +1263,7 @@ local overlay = {
 ```
 
 **Issues with extmark indexing:**
+
 1. **Synchronization overhead** - Every buffer change requires re-syncing extmark positions with overlay state
 2. **State coupling** - Display state (extmark) tightly coupled with logical state (overlay)
 3. **Race conditions** - Multiple overlays shifting simultaneously creates timing issues
@@ -1292,7 +1345,7 @@ function M.update(bufnr)
 
   -- 2. Re-scan
   local markers = detect_markers(bufnr)
-  
+
   -- 3. Re-render
   for _, m in ipairs(markers) do
     place_marker(bufnr, m.line, m.content, m.is_question)
@@ -1303,6 +1356,7 @@ end
 ```
 
 **Why this works:**
+
 - No extmark IDs to track
 - No position synchronization
 - No state machine
@@ -1331,6 +1385,7 @@ end
 ```
 
 **Accept/Reject mechanism:**
+
 ```lua
 -- lua/pairup/conflict.lua
 function M.accept()
@@ -1367,18 +1422,19 @@ end
 ```
 
 **Claude Code CLI integration:**
+
 ```lua
 -- lua/pairup/providers/claude.lua
 function M.start()
-  local cmd = config.get('providers.claude.cmd') 
+  local cmd = config.get('providers.claude.cmd')
     -- "claude --permission-mode acceptEdits"
-  
+
   local buf = vim.api.nvim_create_buf(false, true)
   local win = vim.api.nvim_open_win(buf, false, {
     split = position,
     ...
   })
-  
+
   vim.fn.termopen(cmd, {
     on_exit = function() M.stop() end,
   })
@@ -1408,10 +1464,10 @@ Instead of maintaining state, pairup uses **file-based IPC** via Claude hooks:
 local function check_hook_state()
   local hook_file = get_hook_file()  -- /tmp/pairup-todo-*.json
   local stat = vim.loop.fs_stat(hook_file)
-  
+
   if mtime == last_file_mtime then return end  -- No change
   last_file_mtime = mtime
-  
+
   local data = vim.json.decode(read_file(hook_file))
   set_indicator(string.format('[C:%d/%d]', data.completed, data.total))
   set_virtual_text(data.current)
@@ -1422,6 +1478,7 @@ file_watcher:start(500, 500, vim.schedule_wrap(check_hook_state))
 ```
 
 **Advantages:**
+
 - No direct coupling between Neovim and Claude
 - Survives Neovim restarts
 - Simple JSON file as shared state
@@ -1431,57 +1488,62 @@ file_watcher:start(500, 500, vim.schedule_wrap(check_hook_state))
 
 ## What to Adopt
 
-| Component | Recommendation |
-|-----------|---------------|
-| **Stateless scanning** | ✅ Clear-and-rebuild eliminates sync bugs |
-| **Line-based detection** | ✅ Simple, deterministic, debuggable |
-| **Conflict markers** | ✅ Standard format, no custom UI needed |
-| **File-based IPC** | ✅ Decouples Neovim from AI process |
-| **Immediate actions** | ✅ No pending state complexity |
-| **Marker operators** | ✅ `gC{motion}` for quick marker insertion |
-| **Progress via hooks** | ✅ Non-invasive progress tracking |
+| Component                | Recommendation                             |
+| ------------------------ | ------------------------------------------ |
+| **Stateless scanning**   | ✅ Clear-and-rebuild eliminates sync bugs  |
+| **Line-based detection** | ✅ Simple, deterministic, debuggable       |
+| **Conflict markers**     | ✅ Standard format, no custom UI needed    |
+| **File-based IPC**       | ✅ Decouples Neovim from AI process        |
+| **Immediate actions**    | ✅ No pending state complexity             |
+| **Marker operators**     | ✅ `gC{motion}` for quick marker insertion |
+| **Progress via hooks**   | ✅ Non-invasive progress tracking          |
 
 ## What to Avoid/Improve
 
-| Component | Issue | Better Approach |
-|-----------|-------|----------------|
-| **Full re-scan** | O(n) on every keystroke | Debounce + incremental for large files |
-| **Polling for progress** | 500ms latency | File watcher events (if available) |
-| **Conflict markers** | Verbose in prose files | Virtual text diff for non-code |
-| **Single provider** | Only Claude Code | Provider abstraction (like 99) |
-| **No session history** | One-shot requests | Request log (like 99) |
+| Component                | Issue                   | Better Approach                        |
+| ------------------------ | ----------------------- | -------------------------------------- |
+| **Full re-scan**         | O(n) on every keystroke | Debounce + incremental for large files |
+| **Polling for progress** | 500ms latency           | File watcher events (if available)     |
+| **Conflict markers**     | Verbose in prose files  | Virtual text diff for non-code         |
+| **Single provider**      | Only Claude Code        | Provider abstraction (like 99)         |
+| **No session history**   | One-shot requests       | Request log (like 99)                  |
 
 ---
 
 ## Comparison: pairup.nvim vs Others
 
-| Feature | pairup.nvim | 99 | pi-extensions | pi.nvim |
-|---------|-------------|-----|---------------|---------|
-| **State management** | Stateless | Global state | Hooks + tools | Simple state |
-| **Position tracking** | Line scanning | Marks | Extmarks (via RPC) | N/A |
-| **Suggestion display** | Conflict markers | Virtual text | TUI renderers | Spinner only |
-| **Accept/Reject** | Cursor-based | Immediate | Tool confirmation | N/A |
-| **Provider support** | Claude only | 4 providers | Pi only | Pi only |
-| **Async model** | termopen | vim.system | Subprocess RPC | jobstart |
-| **Progress tracking** | File-based hooks | vim.loop timer | Built-in | N/A |
-| **Multi-turn** | Via `uu:` markers | ❌ | ✅ | ❌ |
+| Feature                | pairup.nvim       | 99             | pi-extensions      | pi.nvim      |
+| ---------------------- | ----------------- | -------------- | ------------------ | ------------ |
+| **State management**   | Stateless         | Global state   | Hooks + tools      | Simple state |
+| **Position tracking**  | Line scanning     | Marks          | Extmarks (via RPC) | N/A          |
+| **Suggestion display** | Conflict markers  | Virtual text   | TUI renderers      | Spinner only |
+| **Accept/Reject**      | Cursor-based      | Immediate      | Tool confirmation  | N/A          |
+| **Provider support**   | Claude only       | 4 providers    | Pi only            | Pi only      |
+| **Async model**        | termopen          | vim.system     | Subprocess RPC     | jobstart     |
+| **Progress tracking**  | File-based hooks  | vim.loop timer | Built-in           | N/A          |
+| **Multi-turn**         | Via `uu:` markers | ❌             | ✅                 | ❌           |
 
 ---
 
 ## Key Innovations
 
 ### 1. **Radical Simplicity**
+
 The v4 rewrite demonstrates that **statelessness beats smart state management**. By abandoning extmark indexing and state machines, the plugin became more reliable and maintainable.
 
 ### 2. **Conflict Markers as UI**
+
 Using standard Git conflict markers (`<<<<<<<`, `=======`, `>>>>>>>`) for review flow means:
+
 - No custom UI components to maintain
 - Users already understand the format
 - Works with existing diff tools
 - Cursor position determines context
 
 ### 3. **File-Based IPC**
+
 Instead of complex RPC or shared memory, simple JSON files in `/tmp` provide:
+
 - Process isolation
 - Persistence across restarts
 - Easy debugging (just `cat` the file)
@@ -1494,6 +1556,7 @@ Instead of complex RPC or shared memory, simple JSON files in `/tmp` provide:
 **pairup.nvim** represents a **philosophical rejection of complexity** in AI-Neovim integration. The v4 architecture demonstrates that for many use cases, **stateless line-scanning outperforms sophisticated extmark-based tracking**.
 
 **For sasu:**
+
 - Consider **stateless approaches** for simple marker-based workflows
 - **Conflict markers** are a clever reuse of existing UI conventions
 - **File-based IPC** is surprisingly effective for decoupling
@@ -1505,19 +1568,20 @@ Instead of complex RPC or shared memory, simple JSON files in `/tmp` provide:
 
 ## Cross-Project Patterns Summary
 
-| Pattern | Projects Using It | Best For |
-|---------|------------------|----------|
-| **Extmark indexing** | pi-extensions | Persistent overlays, rich UI |
-| **Line scanning** | pairup.nvim (v4) | Simple markers, reliability |
-| **vim.system** | 99 | True async, parallel requests |
-| **RPC over socket** | pi-extensions | Bidirectional communication |
-| **Stdio JSON RPC** | pi.nvim | Simple integration |
-| **File-based IPC** | pairup.nvim | Decoupled progress tracking |
-| **Conflict markers** | pairup.nvim | Review/accept flow |
-| **Virtual text spinners** | 99 | Non-intrusive feedback |
-| **Hooks (lifecycle)** | pi-extensions | Automatic context injection |
+| Pattern                   | Projects Using It | Best For                      |
+| ------------------------- | ----------------- | ----------------------------- |
+| **Extmark indexing**      | pi-extensions     | Persistent overlays, rich UI  |
+| **Line scanning**         | pairup.nvim (v4)  | Simple markers, reliability   |
+| **vim.system**            | 99                | True async, parallel requests |
+| **RPC over socket**       | pi-extensions     | Bidirectional communication   |
+| **Stdio JSON RPC**        | pi.nvim           | Simple integration            |
+| **File-based IPC**        | pairup.nvim       | Decoupled progress tracking   |
+| **Conflict markers**      | pairup.nvim       | Review/accept flow            |
+| **Virtual text spinners** | 99                | Non-intrusive feedback        |
+| **Hooks (lifecycle)**     | pi-extensions     | Automatic context injection   |
 
 **Recommended architecture for sasu:**
+
 1. **Async foundation**: `vim.system` from 99
 2. **Bidirectional capabilities**: Socket RPC from pi-extensions
 3. **Workspace change tracking**: Git-based delta (our gap analysis)

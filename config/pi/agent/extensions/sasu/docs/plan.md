@@ -94,6 +94,7 @@ When user feels confident, run:
 - or `:BackToPi <intent message>`
 
 Intent examples:
+
 - “I refactored auth middleware to reduce duplication.”
 - “I think this fixes the race in queue retries.”
 

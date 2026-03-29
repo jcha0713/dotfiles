@@ -21,6 +21,7 @@ Scope: `config/pi/agent/extensions/sasu`
 ## Milestone 1 — Memory module scaffold (`src/memory/`)
 
 ### 1.1 Types and contracts
+
 - [x] Create `src/memory/types.ts`
 - [x] Define event taxonomy union:
   - [x] `user.command.review`
@@ -46,6 +47,7 @@ Scope: `config/pi/agent/extensions/sasu`
 - [x] Define mission brief and risk interfaces
 
 ### 1.2 SQLite store
+
 - [x] Create `src/memory/store.ts`
 - [x] Add DB path resolver: `.sasu/context.db`
 - [x] Add init/migration function creating tables:
@@ -67,6 +69,7 @@ Scope: `config/pi/agent/extensions/sasu`
   - [x] `resetAll()` (for debug command)
 
 ### 1.3 Ingest + reducers
+
 - [x] Create `src/memory/ingest.ts`
 - [x] Implement event validation/normalization
 - [x] Implement fingerprint-based dedup policy (best-effort)
@@ -79,6 +82,7 @@ Scope: `config/pi/agent/extensions/sasu`
 - [x] Add `reduceFromEvent(event)` and `rebuildSnapshot(from events)`
 
 ### 1.4 Mission brief builder
+
 - [x] Create `src/memory/brief.ts`
 - [x] Implement `resolveIntentContext()`
 - [x] Implement `buildMissionBrief()`
@@ -93,6 +97,7 @@ Scope: `config/pi/agent/extensions/sasu`
 ## Milestone 2 — Wire ingest into existing SASU flow
 
 ### 2.1 Command-level ingestion
+
 - [x] Update `index.ts` `/sasu-review` handler:
   - [x] emit `user.command.review`
   - [x] emit `user.intent.explicit` (if provided)
@@ -105,6 +110,7 @@ Scope: `config/pi/agent/extensions/sasu`
   - [x] emit `focus.override.manual`
 
 ### 2.2 Collector ingestion
+
 - [x] Ingest structured output from git context collection:
   - [x] `code.git.snapshot`
   - [x] `code.files.changed`
@@ -112,6 +118,7 @@ Scope: `config/pi/agent/extensions/sasu`
   - [x] `check.run.result`
 
 ### 2.3 Lifecycle ingestion
+
 - [x] In `pi.on("agent_end")` review completion path:
   - [x] emit `agent.review.completed`
 - [x] In suggestion action handling:
@@ -157,6 +164,7 @@ Scope: `config/pi/agent/extensions/sasu`
 ## Milestone 5 — Tests and validation
 
 ### 5.1 Unit tests
+
 - [x] `types` validation tests (scaffold)
 - [x] `store` migration/init tests (scaffold)
 - [x] `ingest` dedup tests
@@ -164,6 +172,7 @@ Scope: `config/pi/agent/extensions/sasu`
 - [x] `brief` token-cap/truncation tests (scaffold)
 
 ### 5.2 Integration tests
+
 - [x] `/sasu-review` idle path uses mission brief
 - [x] `/sasu-review` follow-up path uses mission brief
 - [x] busy/queue semantics unchanged
@@ -171,6 +180,7 @@ Scope: `config/pi/agent/extensions/sasu`
 - [x] `/sasu-goal` override blocks low-confidence auto intent replacement
 
 ### 5.3 Manual smoke checklist
+
 - [x] Fresh repo: DB auto-creates
 - [x] Existing repo: no crash/regression
 - [x] No visible chat prompt spam regression
@@ -195,18 +205,22 @@ Scope: `config/pi/agent/extensions/sasu`
 ## Recommended execution order (day-by-day)
 
 ### Day 1
+
 - [x] Milestone 1.1 + 1.2 (types + store)
 - [x] Milestone 4 (`/sasu-memory-status` minimal)
 
 ### Day 2
+
 - [x] Milestone 1.3 + 1.4 (reducers + brief)
 - [x] Milestone 2.1 (review/goal/suggest event wiring)
 
 ### Day 3
+
 - [x] Milestone 2.2 + 2.3 (collector + lifecycle wiring)
 - [x] Milestone 3 (review integration)
 
 ### Day 4
+
 - [x] Milestone 5 (tests/smokes)
 - [x] Milestone 6 acceptance + cleanup docs
 
