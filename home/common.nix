@@ -76,27 +76,6 @@ in
     };
 
   };
-
-  xdg.desktopEntries.nvim-ghostty = {
-    name = "Neovim (Ghostty)";
-    genericName = "Text Editor";
-    comment = "Edit text files in Neovim via Ghostty";
-    exec = "ghostty -e nvim %F";
-    terminal = false;
-    categories = [
-      "Utility"
-      "TextEditor"
-    ];
-    mimeType = [ "text/plain" ];
-  };
-
-  xdg.mimeApps = {
-    enable = true;
-    defaultApplications = {
-      "text/plain" = [ "nvim-ghostty.desktop" ];
-    };
-  };
-
   home.sessionPath = [
     "${dotfilesPath}/bin"
   ];

@@ -60,6 +60,26 @@ in
     };
   };
 
+  xdg.desktopEntries.nvim-ghostty = {
+    name = "Neovim (Ghostty)";
+    genericName = "Text Editor";
+    comment = "Edit text files in Neovim via Ghostty";
+    exec = "ghostty -e nvim %F";
+    terminal = false;
+    categories = [
+      "Utility"
+      "TextEditor"
+    ];
+    mimeType = [ "text/plain" ];
+  };
+
+  xdg.mimeApps = {
+    enable = true;
+    defaultApplications = {
+      "text/plain" = [ "nvim-ghostty.desktop" ];
+    };
+  };
+
   # User packages (NixOS-specific, mostly Wayland related)
   # NOTE: Noctalia replaces: waybar, mako, swaylock, swaybg, swayidle
   home.packages = with pkgs; [
