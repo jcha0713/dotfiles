@@ -12,7 +12,8 @@ pack.setup("neuvim.plugins")
 vim.cmd.colorscheme("vague")
 
 require("vim._core.ui2").enable({
-  enable = true, msg = { targets = "cmd" },
+  enable = true,
+  msg = { targets = "cmd" },
 })
 
-require('neuvim.lsp')
+require("neuvim.lsp")
