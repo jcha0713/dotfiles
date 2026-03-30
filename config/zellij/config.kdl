@@ -67,6 +67,8 @@ keybinds clear-defaults=true {
         bind "l" { MovePane "right"; }
     }
     scroll {
+        bind "u" { PageScrollUp; }
+        bind "d" { PageScrollDown; }
         bind "e" { EditScrollback; SwitchToMode "locked"; }
         bind "s" { SwitchToMode "entersearch"; SearchInput 0; }
     }
