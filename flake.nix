@@ -27,13 +27,11 @@
     # Worktrunk - CLI for git worktree management
     worktrunk = {
       url = "github:max-sixty/worktrunk";
-      inputs.nixpkgs.follows = "nixpkgs";
     };
 
     # tgt - Telegram TUI
     tgt = {
       url = "github:FedericoBruzzone/tgt";
-      inputs.nixpkgs.follows = "nixpkgs";
     };
   };
 
