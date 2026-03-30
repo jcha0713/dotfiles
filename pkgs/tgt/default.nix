@@ -5,7 +5,7 @@
   openssl,
   tdlib,
   stdenv,
-  apple-sdk_12 ? null,
+  apple-sdk ? null,
   inputs,
 }:
 
@@ -16,7 +16,7 @@ rustPlatform.buildRustPackage rec {
   src = inputs.tgt;
   cargoHash = "sha256-p3NcT0dBvtPUav4Xjwus1cEKWumqmpvmyr+vvJ3iHbU=";
 
-  nativeBuildInputs = [ pkg-config ] ++ lib.optionals stdenv.hostPlatform.isDarwin [ apple-sdk_12 ];
+  nativeBuildInputs = [ pkg-config ] ++ lib.optionals stdenv.hostPlatform.isDarwin [ apple-sdk ];
 
   buildInputs = [
     openssl
