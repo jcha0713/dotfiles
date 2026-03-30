@@ -3,7 +3,9 @@ return {
   "neovim/nvim-lspconfig",
   "nvim-lua/plenary.nvim",
 
+  -- Colorscheme
   "vague-theme/vague.nvim",
+  "e-ink-colorscheme/e-ink.nvim",
 
   "mikavilpas/yazi.nvim",
   "comfysage/artio.nvim",

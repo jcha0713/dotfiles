@@ -18,6 +18,10 @@
       "rev": "086a40dc7ed8242c03be9f47fbcee68699cc2395",
       "src": "https://github.com/stevearc/conform.nvim"
     },
+    "e-ink": {
+      "rev": "a0f003a0c6e2952abd9b73ef89d56c65e6c46f00",
+      "src": "https://github.com/e-ink-colorscheme/e-ink.nvim"
+    },
     "fff": {
       "rev": "eecb795a0e14082f4b0c66e6ad80d82da49632ad",
       "src": "https://github.com/dmtrKovalenko/fff.nvim"
