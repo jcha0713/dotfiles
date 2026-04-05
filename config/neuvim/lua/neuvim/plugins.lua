@@ -6,6 +6,7 @@ return {
   -- Colorscheme
   "vague-theme/vague.nvim",
   "e-ink-colorscheme/e-ink.nvim",
+  "kungfusheep/mfd.nvim",
 
   "mikavilpas/yazi.nvim",
   "comfysage/artio.nvim",

@@ -38,6 +38,10 @@
       "rev": "b8c3575de98ae5846da15dc27dd4041c851e90ff",
       "src": "https://github.com/comfysage/lynn.nvim"
     },
+    "mfd": {
+      "rev": "2a8541fe8f9802ef682b134ccc201955aee5fef9",
+      "src": "https://github.com/kungfusheep/mfd.nvim"
+    },
     "mini.icons": {
       "rev": "5b9076dae1bfbe47ba4a14bc8b967cde0ab5d77e",
       "src": "https://github.com/echasnovski/mini.icons"
