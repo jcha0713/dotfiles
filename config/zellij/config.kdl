@@ -69,6 +69,8 @@ keybinds clear-defaults=true {
     scroll {
         bind "u" { PageScrollUp; }
         bind "d" { PageScrollDown; }
+        bind "k" { HalfPageScrollUp; }
+        bind "j" { HalfPageScrollDown; }
         bind "e" { EditScrollback; SwitchToMode "locked"; }
         bind "s" { SwitchToMode "entersearch"; SearchInput 0; }
     }
