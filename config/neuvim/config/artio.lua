@@ -15,7 +15,7 @@ require("artio").setup({
     ["<c-s>"] = "split",
     ["<c-v>"] = "vsplit",
     ["<c-t>"] = "tabnew",
-  }
+  },
 })
 
 vim.ui.select = require("artio").select
@@ -69,34 +69,35 @@ local function fileactions(fn)
 end
 
 vim.keymap.set("n", "<leader>ff", function()
-  require('artio.builtins').smart({
-    actions = fileactions(function(item) 
+  require("artio.builtins").smart({
+    actions = fileactions(function(item)
       return vim.fn.bufnr(item.v, true)
-    end)
+    end),
   })
 end)
 
 vim.keymap.set("n", "<leader>fh", function()
-  require('artio.builtins').helptags({
-    actions = fileactions(function(item) 
+  require("artio.builtins").helptags({
+    actions = fileactions(function(item)
       return vim.fn.bufnr(item.v, true)
-    end)
+    end),
   })
 end)
 
 vim.keymap.set("n", "<leader>fo", function()
-  require('artio.builtins').oldfiles({
-    actions = fileactions(function(item) 
+  require("artio.builtins").oldfiles({
+    actions = fileactions(function(item)
       return vim.fn.bufnr(item.v, true)
-    end)
+    end),
   })
 end)
 
 vim.keymap.set("n", "<leader>gr", function()
-  require('artio.builtins').grep({
-    actions = fileactions(function(item) 
+  require("artio.builtins").grep({
+    actions = fileactions(function(item)
       return vim.fn.bufnr(item.v, true)
-    end)
+    end),
   })
 end)
 
+vim.keymap.set("n", "<leader>cs", "<Plug>(artio-colorschemes)")
