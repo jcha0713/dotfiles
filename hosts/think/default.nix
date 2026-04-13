@@ -3,24 +3,36 @@
 # https://search.nixos.org/options and in the NixOS manual (`nixos-help`).
 
 {
-  config,
   lib,
   pkgs,
   inputs,
   ...
 }:
 
+let
+  mkSecret = file: {
+    file = ../../secrets/${file};
+    owner = "joohoon";
+    mode = "0400";
+  };
+in
 {
   imports = [
     # Include the results of the hardware scan.
     ./hardware-configuration.nix
     # Noctalia shell NixOS module
     inputs.noctalia.nixosModules.default
+    inputs.agenix.nixosModules.default
   ];
 
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
+
+  # Agenix
+  age.identityPaths = [ "/home/joohoon/.ssh/id_ed25519" ];
+
+  age.secrets.llm-env = mkSecret "llm.env.age";
 
   # ThinkPad sleep/wake Wi-Fi fix - disable power management for iwlwifi
   boot.extraModprobeConfig = ''
@@ -310,6 +322,7 @@
       gcc # C compiler for tree-sitter
       nodejs_22 # Node.js 22.x LTS (using fnm on Mac Mini)
       gnumake
+      inputs.agenix.packages.${pkgs.system}.default
     ])
     ++ (with inputs.llm-agents.packages.${pkgs.system}; [
       pi
