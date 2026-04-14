@@ -23,4 +23,6 @@ return {
   { "saghen/blink.cmp", name = "blink", version = vim.version.range("^1") },
 
   { "cursortab/cursortab.nvim", name = "cursortab" },
+
+  { "yorickpeterse/nvim-jump", name = "jump", event = "BufEnter" },
 }
