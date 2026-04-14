@@ -11,8 +11,9 @@ return {
   "mikavilpas/yazi.nvim",
   "comfysage/artio.nvim",
 
-  "echasnovski/mini.icons",
-  { "echasnovski/mini.pairs", event = "BufRead" },
+  "nvim-mini/mini.icons",
+  { "nvim-mini/mini.pairs", event = "BufRead" },
+  { "nvim-mini/mini.diff" },
 
   { "MeanderingProgrammer/render-markdown.nvim", event = "BufEnter" },
   { "bassamsdata/namu.nvim", event = "BufEnter" },

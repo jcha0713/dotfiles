@@ -46,6 +46,10 @@
       "rev": "2a8541fe8f9802ef682b134ccc201955aee5fef9",
       "src": "https://github.com/kungfusheep/mfd.nvim"
     },
+    "mini.diff": {
+      "rev": "ab11575a6c147ecfba894d676d0c93e855021d34",
+      "src": "https://github.com/nvim-mini/mini.diff"
+    },
     "mini.icons": {
       "rev": "5b9076dae1bfbe47ba4a14bc8b967cde0ab5d77e",
       "src": "https://github.com/echasnovski/mini.icons"
