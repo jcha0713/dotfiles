@@ -21,4 +21,6 @@ return {
   { "mfussenegger/nvim-lint", name = "lint" },
 
   { "saghen/blink.cmp", name = "blink", version = vim.version.range("^1") },
+
+  { "cursortab/cursortab.nvim", name = "cursortab" },
 }

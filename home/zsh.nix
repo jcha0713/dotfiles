@@ -49,6 +49,28 @@ in
         zle -N Resume
         bindkey "^Z" Resume
 
+        with-secret() {
+          if [ $# -lt 2 ]; then
+            echo "usage: with-secret <secret-name> <command> [args...]" >&2
+            return 1
+          fi
+
+          local secret_file="/run/agenix/$1"
+          shift
+
+          if [ ! -f "$secret_file" ]; then
+            echo "missing secret: $secret_file" >&2
+            return 1
+          fi
+
+          (
+            set -a
+            . "$secret_file"
+            set +a
+            exec "$@"
+          )
+        }
+
         setopt PROMPT_SUBST
         RPROMPT='%(1j.⏸ %j.)'  # Shows job count when jobs exist
 

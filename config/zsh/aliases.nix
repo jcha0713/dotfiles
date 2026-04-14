@@ -20,4 +20,9 @@
   rm = "trash";
   eas = "npx eas-cli@latest";
   imsg = "~/dev/sandbox/imsg/bin/imsg";
+
+  # ============================
+  # secret
+  # ============================
+  nvllm = "with-secret llm-env nvim";
 }
