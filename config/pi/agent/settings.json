@@ -3,7 +3,7 @@
   "defaultProvider": "openai-codex",
   "defaultModel": "gpt-5.4",
   "defaultThinkingLevel": "medium",
-  "theme": "terminal",
+  "theme": "dark",
   "hideThinkingBlock": false,
   "packages": [
     "extensions/pi-agent-extensions/slow-mode",
@@ -22,7 +22,6 @@
     "npm:pi-extmgr",
     "npm:pi-open-sessions-files-extension",
     "~/.pi/agent/extensions/sasu/index.ts",
-    "npm:pi-terminal-theme",
     "npm:@marckrenn/pi-sub-bar",
     "npm:pi-secret-guard",
     "npm:pi-vim",
