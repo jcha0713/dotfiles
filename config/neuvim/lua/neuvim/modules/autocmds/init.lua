@@ -5,6 +5,7 @@ local autocmds = {
   "lsp_progress",
   "yank_highlight",
   "no_auto_comment",
+  "pack_hooks",
 }
 
 function M.setup()

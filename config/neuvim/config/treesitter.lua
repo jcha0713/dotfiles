@@ -1,28 +1,19 @@
-vim.api.nvim_create_autocmd("PackChanged", {
-  callback = function(event)
-    local name, kind = event.data.spec.name, event.data.kind
-    if name == "treesitter" and kind == 'update' then
-      vim.cmd("TSUpdate")
-    end
-  end,
-})
-
-local ensure_installed = { 
-  'gleam',
-  'go',
-  'javascript',
-  'json',
-  'lua',
-  'markdown',
-  'markdown_inline',
-  'nix',
-  'rust',
-  'typescript',
+local ensure_installed = {
+  "gleam",
+  "go",
+  "javascript",
+  "json",
+  "lua",
+  "markdown",
+  "markdown_inline",
+  "nix",
+  "rust",
+  "typescript",
 }
 
 require("nvim-treesitter").install(ensure_installed)
 
-vim.api.nvim_create_autocmd('FileType', {
+vim.api.nvim_create_autocmd("FileType", {
   pattern = ensure_installed,
   callback = function(args)
     local filetype = vim.bo[args.buf].filetype
@@ -33,4 +24,3 @@ vim.api.nvim_create_autocmd('FileType', {
     vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
   end,
 })
-
