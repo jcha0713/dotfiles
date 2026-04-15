@@ -5,6 +5,7 @@ import 'ya.d/rebuild.just'
 import 'ya.d/nix.just'
 import 'ya.d/flake.just'
 import 'ya.d/packages.just'
+import 'ya.d/git.just'
 
 default: help
 
