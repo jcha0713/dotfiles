@@ -13,7 +13,9 @@ return {
 
   "nvim-mini/mini.icons",
   { "nvim-mini/mini.pairs", event = "BufRead" },
-  { "nvim-mini/mini.diff" },
+  { "nvim-mini/mini.diff", event = "BufEnter" },
+  { "nvim-mini/mini.visits", event = "BufEnter" },
+  { "nvim-mini/mini.surround", event = "BufEnter" },
 
   { "MeanderingProgrammer/render-markdown.nvim", event = "BufEnter" },
   { "bassamsdata/namu.nvim", event = "BufEnter" },

@@ -58,6 +58,14 @@
       "rev": "b7fde3719340946feb75017ef9d75edebdeb0566",
       "src": "https://github.com/echasnovski/mini.pairs"
     },
+    "mini.surround": {
+      "rev": "2715e04bea3ec9244f15b421dc5b18c0fe326210",
+      "src": "https://github.com/nvim-mini/mini.surround"
+    },
+    "mini.visits": {
+      "rev": "dc91169809deec9612b684f22f617619f5b3279b",
+      "src": "https://github.com/nvim-mini/mini.visits"
+    },
     "namu": {
       "rev": "e7afbdf63a75ace6ccc6202d58a4f6f9ac09db92",
       "src": "https://github.com/bassamsdata/namu.nvim"

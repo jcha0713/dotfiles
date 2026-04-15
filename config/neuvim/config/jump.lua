@@ -1,4 +1,4 @@
-vim.keymap.set({ "n", "x", "o" }, "s", function()
+vim.keymap.set({ "n", "x", "o" }, "f", function()
   require("jump").start()
 end, { desc = "Jump to character" })
 
