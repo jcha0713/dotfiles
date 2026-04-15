@@ -10,6 +10,7 @@
 let
   octorus = pkgs.callPackage ../pkgs/octorus/default.nix { };
   gitbutlerCli = pkgs.callPackage ../pkgs/gitbutler-cli { };
+  rou = pkgs.callPackage ../pkgs/rou/default.nix { };
   tgt = pkgs.callPackage ../pkgs/tgt/default.nix { inherit inputs; };
 
   yaz = pkgs.writeShellScriptBin "yaz" ''
@@ -67,6 +68,10 @@ in
       source = config.lib.file.mkOutOfStoreSymlink "${dotfilesPath}/config/opencode";
     };
 
+    rou = {
+      source = config.lib.file.mkOutOfStoreSymlink "${dotfilesPath}/config/rou";
+    };
+
     worktrunk = {
       source = config.lib.file.mkOutOfStoreSymlink "${dotfilesPath}/config/worktrunk";
     };
@@ -82,6 +87,7 @@ in
 
   home.sessionVariables = {
     NVIM_APPNAME = "neuvim";
+    ROU_LANGUAGES_FILE = "${dotfilesPath}/config/rou/languages.txt";
   };
 
   # Common CLI tools (used by both NixOS and Darwin)
@@ -100,6 +106,7 @@ in
       go
       jq
       octorus
+      rou
       just
       yaz
       ya

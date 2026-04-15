@@ -50,8 +50,44 @@
     let
       # Shared special args
       sharedSpecialArgs = { inherit inputs; };
+      supportedSystems = [
+        "x86_64-linux"
+        "aarch64-darwin"
+        "x86_64-darwin"
+      ];
+      forAllSystems = nixpkgs.lib.genAttrs supportedSystems;
+      mkPkgs = system: import nixpkgs { inherit system; };
     in
     {
+      packages = forAllSystems (
+        system:
+        let
+          pkgs = mkPkgs system;
+          rou = pkgs.callPackage ./pkgs/rou/default.nix { };
+        in
+        {
+          inherit rou;
+          default = rou;
+        }
+      );
+
+      apps = forAllSystems (
+        system:
+        let
+          program = "${self.packages.${system}.rou}/bin/rou";
+        in
+        {
+          rou = {
+            type = "app";
+            inherit program;
+          };
+          default = {
+            type = "app";
+            inherit program;
+          };
+        }
+      );
+
       # NixOS configurations
       nixosConfigurations.think = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
