@@ -9,9 +9,6 @@ in
     enableCompletion = true;
     autosuggestion.enable = true;
     syntaxHighlighting.enable = true;
-    sessionVariables = {
-      EDITOR = "nvim";
-    };
     shellAliases = import ../config/zsh/aliases.nix;
     oh-my-zsh = {
       enable = true;

@@ -88,6 +88,8 @@ in
   home.sessionVariables = {
     NVIM_APPNAME = "neuvim";
     ROU_LANGUAGES_FILE = "${dotfilesPath}/config/rou/languages.txt";
+    EDITOR = "nvim";
+    MANPAGER = "nvim +Man!";
   };
 
   # Common CLI tools (used by both NixOS and Darwin)
