@@ -1,5 +1,5 @@
 keybinds clear-defaults=true {
-    locked {
+    shared_among "locked" "scroll" {
         bind "Ctrl a" { SwitchToMode "tmux"; }
         bind "Alt n" { NewPane; }
         bind "Alt N" { NewPane "stacked"; }
