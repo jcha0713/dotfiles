@@ -6,7 +6,6 @@ return {
   -- Colorscheme
   "vague-theme/vague.nvim",
   "e-ink-colorscheme/e-ink.nvim",
-  "kungfusheep/mfd.nvim",
 
   -- UI
   { "MeanderingProgrammer/render-markdown.nvim", event = "BufEnter" },
