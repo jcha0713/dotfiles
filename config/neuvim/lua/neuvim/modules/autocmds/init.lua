@@ -2,7 +2,6 @@ local M = {}
 
 local autocmds = {
   "last_position",
-  "lsp_progress",
   "yank_highlight",
   "no_auto_comment",
   "pack_hooks",
