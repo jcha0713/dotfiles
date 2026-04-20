@@ -25,7 +25,8 @@
     "npm:@marckrenn/pi-sub-bar",
     "npm:pi-secret-guard",
     "npm:pi-vim",
-    "npm:pi-promptsmith"
+    "npm:pi-promptsmith",
+    "npm:@mjakl/pi-kagi-search"
   ],
   "editorPaddingX": 2,
   "quietStartup": true,
