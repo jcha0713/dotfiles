@@ -37,6 +37,11 @@
     tgt = {
       url = "github:FedericoBruzzone/tgt";
     };
+
+    helium = {
+      url = "github:amaanq/helium-flake";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =

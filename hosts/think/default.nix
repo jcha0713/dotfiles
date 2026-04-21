@@ -153,8 +153,8 @@ in
   time.timeZone = "Asia/Seoul";
 
   # Configure network proxy if necessary
-  # networking.proxy.default = "http://user:password@proxy:port/";
-  # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
+  # networking.proxy.default = "http://proxy:port/";
+  # networking.proxy.noProxy = "127.0.0.1,localhost,internal.example";
 
   # Select internationalisation properties.
   i18n.defaultLocale = "en_US.UTF-8";
@@ -302,7 +302,7 @@ in
   systemd.services."getty@tty1".enable = false;
   systemd.services."autovt@tty1".enable = false;
 
-  programs.firefox.enable = true;
+  programs.firefox.enable = false;
 
   nixpkgs.config.allowUnfree = true;
 

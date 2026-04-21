@@ -2,6 +2,7 @@
   config,
   pkgs,
   dotfilesPath,
+  inputs,
   ...
 }:
 
@@ -77,6 +78,12 @@ in
     enable = true;
     defaultApplications = {
       "text/plain" = [ "nvim-ghostty.desktop" ];
+      "text/html" = [ "helium.desktop" ];
+      "application/xhtml+xml" = [ "helium.desktop" ];
+      "x-scheme-handler/http" = [ "helium.desktop" ];
+      "x-scheme-handler/https" = [ "helium.desktop" ];
+      "x-scheme-handler/about" = [ "helium.desktop" ];
+      "x-scheme-handler/unknown" = [ "helium.desktop" ];
     };
   };
 
@@ -98,6 +105,7 @@ in
     noctalia-sticky-notes
     noctalia-pomodoro
     jq
+    inputs.helium.packages.${pkgs.system}.default
   ];
 
 }
