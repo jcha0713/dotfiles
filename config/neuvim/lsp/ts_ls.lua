@@ -12,13 +12,26 @@ vim.api.nvim_create_autocmd("LspAttach", {
       client.server_capabilities.documentRangeFormattingProvider = false
     end
 
-    vim.keymap.set("n", "<leader>oi", function()
+    vim.keymap.set("n", "gto", function()
       client:exec_cmd({
         title = "Organize Imports",
         command = "_typescript.organizeImports",
         arguments = { vim.api.nvim_buf_get_name(event.buf) }
       })
-    end)
+    end, {
+      buffer = event.buf,
+      desc = "TypeScript organize imports",
+    })
+
+    vim.keymap.set("n", "gta", "<cmd>LspTypescriptSourceAction<cr>", {
+      buffer = event.buf,
+      desc = "TypeScript source action",
+    })
+
+    vim.keymap.set("n", "gts", "<cmd>LspTypescriptGoToSourceDefinition<cr>", {
+      buffer = event.buf,
+      desc = "TypeScript source definition",
+    })
   end
 })
 
