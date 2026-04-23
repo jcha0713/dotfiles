@@ -14,6 +14,7 @@ vim.o.conceallevel = 0
 -- split
 vim.o.splitbelow = true
 vim.o.splitright = true
+vim.opt.switchbuf:append("vsplit")
 
 -- search
 vim.o.hlsearch = false
