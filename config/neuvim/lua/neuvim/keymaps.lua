@@ -3,18 +3,19 @@ vim.g.mapleader = " "
 vim.keymap.set("n", "vv", "<S-v>", { desc = "Select line" })
 
 vim.keymap.set("n", "<leader><leader>q", "<cmd>qa<cr>", { desc = "Quit nvim" })
-vim.keymap.set(
-  "n",
-  "<leader>qo",
-  "<cmd>botright cwindow<cr>",
-  { desc = "Open quickfix" }
-)
-vim.keymap.set(
-  "n",
-  "<leader>qq",
-  "<cmd>cclose<cr>",
-  { desc = "Close quickfix" }
-)
+
+local function toggle_quickfix()
+  for _, win in ipairs(vim.fn.getwininfo()) do
+    if win.quickfix == 1 then
+      vim.cmd("cclose")
+      return
+    end
+  end
+
+  vim.cmd("botright cwindow")
+end
+
+vim.keymap.set("n", "<leader>qq", toggle_quickfix, { desc = "Toggle quickfix" })
 vim.keymap.set("n", "<leader>qd", function()
   vim.diagnostic.setqflist({ title = "Diagnostics" })
 end, { desc = "Send diagnostics to quickfix" })
