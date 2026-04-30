@@ -12,9 +12,12 @@ return {
 
   -- Navigation
   "mikavilpas/yazi.nvim",
-  "comfysage/artio.nvim",
   { "bassamsdata/namu.nvim", event = "BufEnter" },
   { "yorickpeterse/nvim-jump", name = "jump", event = "BufEnter" },
+
+  -- Search
+  "comfysage/artio.nvim",
+  "MagicDuck/grug-far.nvim",
 
   -- Mini
   "nvim-mini/mini.icons",

@@ -26,6 +26,10 @@
       "rev": "a0f003a0c6e2952abd9b73ef89d56c65e6c46f00",
       "src": "https://github.com/e-ink-colorscheme/e-ink.nvim"
     },
+    "grug-far": {
+      "rev": "21790e59dd0109a92a70cb874dd002af186314f5",
+      "src": "https://github.com/MagicDuck/grug-far.nvim"
+    },
     "jump": {
       "rev": "672204397c51507d7a821bc61ba9fad7dbed4303",
       "src": "https://github.com/yorickpeterse/nvim-jump"
