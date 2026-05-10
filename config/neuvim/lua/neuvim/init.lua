@@ -1,4 +1,5 @@
 require("neuvim.options")
 require("neuvim.keymaps")
 require("neuvim.diagnostic")
+require("neuvim.modules.difftool").setup()
 require("neuvim.modules.autocmds").setup()
