@@ -3,7 +3,7 @@ vim.g.maplocalleader = ";"
 
 vim.keymap.set("n", "vv", "<S-v>", { desc = "Select line" })
 
-vim.keymap.set("n", "<leader><leader>q", "<cmd>qa<cr>", { desc = "Quit nvim" })
+vim.keymap.set("n", "<leader>q", "<cmd>qa<cr>", { desc = "Quit nvim" })
 
 local function toggle_quickfix()
   for _, win in ipairs(vim.fn.getwininfo()) do
@@ -16,10 +16,7 @@ local function toggle_quickfix()
   vim.cmd("botright cwindow")
 end
 
-vim.keymap.set("n", "<leader>qq", toggle_quickfix, { desc = "Toggle quickfix" })
-vim.keymap.set("n", "<leader>qd", function()
-  vim.diagnostic.setqflist({ title = "Diagnostics" })
-end, { desc = "Send diagnostics to quickfix" })
+vim.keymap.set("n", "<C-q>", toggle_quickfix, { desc = "Toggle quickfix" })
 
 vim.keymap.set("n", "gh", "^", { desc = "Move to first character in line" })
 vim.keymap.set("n", "gl", "$", { desc = "Move to last character in line" })

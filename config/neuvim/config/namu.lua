@@ -27,3 +27,10 @@ vim.keymap.set(
   ":Namu symbols<cr>",
   { desc = "Namu symbols" }
 )
+
+vim.keymap.set(
+  "n",
+  "<leader>nd",
+  ":Namu diagnostics<cr>",
+  { desc = "Namu symbols" }
+)
