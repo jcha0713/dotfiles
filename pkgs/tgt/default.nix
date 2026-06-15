@@ -14,7 +14,9 @@ rustPlatform.buildRustPackage rec {
   version = "unstable-${inputs.tgt.shortRev or (builtins.substring 0 7 inputs.tgt.rev)}";
 
   src = inputs.tgt;
-  cargoHash = "sha256-E+l0+qcJrEuEKYdaTz4d0wKQhhmS/4HLsBJ3iNL0l38=";
+  # Use importCargoLock instead of fetchCargoVendor. crates.io currently blocks the
+  # python-requests User-Agent used by fetch-cargo-vendor-util with HTTP 403.
+  cargoLock.lockFile = "${src}/Cargo.lock";
 
   nativeBuildInputs = [ pkg-config ] ++ lib.optionals stdenv.hostPlatform.isDarwin [ apple-sdk ];
 
@@ -42,7 +44,10 @@ rustPlatform.buildRustPackage rec {
   meta = {
     description = "TUI for Telegram written in Rust";
     homepage = "https://github.com/FedericoBruzzone/tgt";
-    license = with lib.licenses; [ mit asl20 ];
+    license = with lib.licenses; [
+      mit
+      asl20
+    ];
     mainProgram = "tgt";
     platforms = lib.platforms.unix;
   };

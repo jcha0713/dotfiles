@@ -10,6 +10,7 @@
 let
   octorus = pkgs.callPackage ../pkgs/octorus/default.nix { };
   gitbutlerCli = pkgs.callPackage ../pkgs/gitbutler-cli { };
+  kagiCli = pkgs.callPackage ../pkgs/kagi-cli/default.nix { };
   rou = pkgs.callPackage ../pkgs/rou/default.nix { };
   tgt = pkgs.callPackage ../pkgs/tgt/default.nix { inherit inputs; };
 
@@ -107,6 +108,7 @@ in
       zellij
       go
       jq
+      kagiCli
       octorus
       rou
       just

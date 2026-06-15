@@ -68,10 +68,11 @@
         system:
         let
           pkgs = mkPkgs system;
+          kagi-cli = pkgs.callPackage ./pkgs/kagi-cli/default.nix { };
           rou = pkgs.callPackage ./pkgs/rou/default.nix { };
         in
         {
-          inherit rou;
+          inherit kagi-cli rou;
           default = rou;
         }
       );

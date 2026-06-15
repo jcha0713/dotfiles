@@ -1,7 +1,7 @@
 {
-  "lastChangelogVersion": "0.67.1",
+  "lastChangelogVersion": "0.79.3",
   "defaultProvider": "openai-codex",
-  "defaultModel": "gpt-5.4",
+  "defaultModel": "gpt-5.5",
   "defaultThinkingLevel": "medium",
   "theme": "dark",
   "hideThinkingBlock": false,
@@ -26,7 +26,7 @@
     "npm:pi-secret-guard",
     "npm:pi-vim",
     "npm:pi-promptsmith",
-    "npm:@mjakl/pi-kagi-search"
+    "npm:pi-web-access"
   ],
   "editorPaddingX": 2,
   "quietStartup": true,

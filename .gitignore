@@ -1,5 +1,6 @@
 .DS_Store
 result
+.kagi.toml
 
 # tgt logs
 .data/logs
