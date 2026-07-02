@@ -13,7 +13,7 @@ local function toggle_quickfix()
     end
   end
 
-  vim.cmd("botright cwindow")
+  vim.cmd("botright copen")
 end
 
 vim.keymap.set("n", "<C-q>", toggle_quickfix, { desc = "Toggle quickfix" })
