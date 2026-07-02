@@ -2,7 +2,11 @@ require("namu").setup({
   namu_symbols = {
     enable = true,
     options = {
+      display = {
+        format = "tree_guides",
+      },
       row_position = "top10_right",
+      preserve_order = true,
     },
   },
 })
