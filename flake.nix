@@ -42,6 +42,12 @@
       url = "github:amaanq/helium-flake";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    # Kagi CLI - upstream is not a flake; update with `ya u kagi`
+    kagi = {
+      url = "github:Microck/kagi-cli";
+      flake = false;
+    };
   };
 
   outputs =
@@ -68,7 +74,7 @@
         system:
         let
           pkgs = mkPkgs system;
-          kagi-cli = pkgs.callPackage ./pkgs/kagi-cli/default.nix { };
+          kagi-cli = pkgs.callPackage ./pkgs/kagi-cli/default.nix { inherit inputs; };
           rou = pkgs.callPackage ./pkgs/rou/default.nix { };
         in
         {

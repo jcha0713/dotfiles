@@ -1,63 +1,31 @@
 {
   lib,
-  stdenv,
-  fetchurl,
-  autoPatchelfHook,
+  rustPlatform,
+  inputs,
 }:
 
 let
-  version = "0.9.0";
-  target =
-    if stdenv.hostPlatform.system == "x86_64-linux" then
-      "x86_64-unknown-linux-gnu"
-    else if stdenv.hostPlatform.system == "aarch64-darwin" then
-      "aarch64-apple-darwin"
-    else if stdenv.hostPlatform.system == "x86_64-darwin" then
-      "x86_64-apple-darwin"
-    else
-      throw "kagi-cli: unsupported system ${stdenv.hostPlatform.system}";
-
-  hashes = {
-    x86_64-unknown-linux-gnu = "sha256-jIt96TVUeanbOLWUbUAuaBYRlu0YKvCq0uf7KodY1bI=";
-    aarch64-apple-darwin = "sha256-cAB2bji3q8L7jMKeGLSWtzZaFhB6MgwNN+/fiAappO0=";
-    x86_64-apple-darwin = "sha256-3s34vR0W3MdCgrHVbX72Lc62Ro4danOVwrZ6H4j6OCQ=";
-  };
+  src = inputs.kagi;
+  cargoToml = builtins.fromTOML (builtins.readFile "${src}/Cargo.toml");
 in
-stdenv.mkDerivation {
+rustPlatform.buildRustPackage {
   pname = "kagi-cli";
-  inherit version;
+  version = cargoToml.package.version;
 
-  src = fetchurl {
-    url = "https://github.com/Microck/kagi-cli/releases/download/v${version}/kagi-v${version}-${target}";
-    hash = hashes.${target};
-  };
+  inherit src;
 
-  nativeBuildInputs = lib.optionals stdenv.hostPlatform.isLinux [ autoPatchelfHook ];
+  # Use upstream's checked-in lockfile from the flake input, like pkgs/tgt.
+  cargoLock.lockFile = "${src}/Cargo.lock";
 
-  buildInputs = lib.optionals stdenv.hostPlatform.isLinux [
-    stdenv.cc.cc.lib
-  ];
-
-  dontUnpack = true;
-  dontConfigure = true;
-  dontBuild = true;
-
-  installPhase = ''
-    runHook preInstall
-    install -Dm755 "$src" "$out/bin/kagi"
-    runHook postInstall
-  '';
+  # Integration tests can require network/API/auth state.
+  doCheck = false;
 
   meta = {
-    description = "Terminal CLI for Kagi search, public feeds, and subscriber features";
+    description = "Agent-native CLI for Kagi subscribers with JSON-first search output";
     homepage = "https://github.com/Microck/kagi-cli";
     license = lib.licenses.mit;
     maintainers = [ ];
     mainProgram = "kagi";
-    platforms = [
-      "x86_64-linux"
-      "aarch64-darwin"
-      "x86_64-darwin"
-    ];
+    platforms = lib.platforms.unix;
   };
 }

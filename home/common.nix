@@ -10,7 +10,7 @@
 let
   octorus = pkgs.callPackage ../pkgs/octorus/default.nix { };
   gitbutlerCli = pkgs.callPackage ../pkgs/gitbutler-cli { };
-  kagiCli = pkgs.callPackage ../pkgs/kagi-cli/default.nix { };
+  kagiCli = pkgs.callPackage ../pkgs/kagi-cli/default.nix { inherit inputs; };
   rou = pkgs.callPackage ../pkgs/rou/default.nix { };
   tgt = pkgs.callPackage ../pkgs/tgt/default.nix { inherit inputs; };
 
