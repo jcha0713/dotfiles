@@ -225,27 +225,35 @@ in
           main = {
             # Map capslock to control (already done via xkb, but good to have here too)
             capslock = "layer(control)";
-            # Space as leader: hold for symbol layer, tap for space
-            space = "overloadt2(symbol, space, 200)";
+            # The Korean/English key reports as RightAlt on this ThinkPad.
+            # Tap it as F13 for app/editor leader; hold it for the symbol layer.
+            rightalt = "overloadt2(symbol, f13, 200)";
           };
           control = {
             h = "backspace";
           };
           symbol = {
+            # symbol
+            j = "*";
             k = "-";
             l = "=";
             ";" = "\\";
             "'" = "`";
             "i" = "[";
             "o" = "]";
-            "z" = "!";
-            "x" = "@";
-            "c" = "#";
-            "v" = "$";
-            "n" = "%";
-            "m" = "^";
-            "," = "&";
-            "." = "*";
+            "m" = "(";
+            "," = ")";
+            # number
+            "z" = "1";
+            "x" = "2";
+            "c" = "3";
+            "a" = "4";
+            "s" = "5";
+            "d" = "6";
+            "q" = "7";
+            "w" = "8";
+            "e" = "9";
+            "r" = "0";
           };
         };
       };

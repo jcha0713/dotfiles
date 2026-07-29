@@ -2,5 +2,11 @@
 # Reference: https://github.com/Riey/kime/blob/master/docs/CONFIGURATION.md
 
 engine:
+  global_hotkeys:
+    M-Space:
+      behavior: !Toggle
+      - Hangul
+      - Latin
+      result: Consume
   hangul:
     layout: dubeolsik
