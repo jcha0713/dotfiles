@@ -7,7 +7,7 @@ function M.init()
       { clear = true }
     ),
     callback = function()
-      vim.hl.on_yank({ on_visual = false })
+      vim.hl.hl_op({ on_visual = false })
     end,
   })
 end
