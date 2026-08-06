@@ -1,6 +1,9 @@
 # Ghostty configuration
 # https://ghostty.org/docs/config
 
+# Open zellij through a login shell so Nix/Home Manager PATH is loaded.
+command = /bin/zsh -lc 'exec zellij -l welcome'
+
 # Clipboard
 clipboard-read = allow
 clipboard-write = allow
