@@ -30,10 +30,13 @@ keybinds clear-defaults=true {
         bind "z" { ToggleFocusFullscreen; SwitchToMode "Locked"; }
         bind "f" { ToggleFloatingPanes; SwitchToMode "Locked"; }
         bind "F" { TogglePaneEmbedOrFloating; SwitchToMode "Locked"; }
+        bind "p" { TogglePanePinned; SwitchToMode "Locked"; }
         bind "h" { MoveFocus "Left"; }
         bind "j" { MoveFocus "Down"; }
         bind "k" { MoveFocus "Up"; }
         bind "l" { MoveFocus "Right"; }
+        bind "+" { Resize "Increase"; }
+        bind "-" { Resize "Decrease"; }
     }
 
     tab {
@@ -163,7 +166,7 @@ simplified_ui true
 
 ui {
     pane_frames {
-        hide_session_name true
+        hide_session_name false
     }
 }
  
