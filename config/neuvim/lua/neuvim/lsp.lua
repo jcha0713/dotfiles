@@ -15,4 +15,12 @@ vim.api.nvim_create_autocmd("LspAttach", {
   end,
 })
 
-vim.lsp.enable({ "lua_ls", "ts_ls", "rust_analyzer", "nixd", "html", "cssls" })
+vim.lsp.enable({
+  "cssls",
+  "gleam",
+  "html",
+  "lua_ls",
+  "nixd",
+  "rust_analyzer",
+  "ts_ls",
+})
