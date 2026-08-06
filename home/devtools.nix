@@ -19,6 +19,7 @@ let
   linters = with pkgs; [
     oxlint
     eslint_d
+    vale-ls
   ];
 
   runtimes = with pkgs; [
@@ -29,6 +30,7 @@ let
     tree-sitter
     rustup
     sqlite
+    vale
   ];
 in
 {

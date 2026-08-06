@@ -9,6 +9,10 @@
       "src": "https://github.com/saghen/blink.cmp",
       "version": "1.0.0 - 2.0.0"
     },
+    "blink.cmp": {
+      "rev": "451168851e8e2466bc97ee3e026c3dcb9141ce07",
+      "src": "git@github.com:saghen/blink.cmp"
+    },
     "conform": {
       "rev": "086a40dc7ed8242c03be9f47fbcee68699cc2395",
       "src": "https://github.com/stevearc/conform.nvim"
@@ -80,6 +84,10 @@
     "vague": {
       "rev": "8c4643f8a5106dbc492918f86ff6b5c81111ce9a",
       "src": "https://github.com/vague-theme/vague.nvim"
+    },
+    "vim-repeat-test": {
+      "rev": "65846025c15494983dafe5e3b46c8f88ab2e9635",
+      "src": "git@github.com:tpope/vim-repeat"
     },
     "yazi": {
       "rev": "ea1b96a96b7eb8098c1ae264bf024e26e42464c3",
