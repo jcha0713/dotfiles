@@ -80,11 +80,6 @@ in
     "yazi/flavors" = {
       source = config.lib.file.mkOutOfStoreSymlink "${dotfilesPath}/config/yazi/flavors";
     };
-
-    "vale" = {
-      source = config.lib.file.mkOutOfStoreSymlink "${dotfilesPath}/config/vale";
-    };
-
   };
   home.sessionPath = [
     "${dotfilesPath}/bin"
@@ -95,7 +90,6 @@ in
     ROU_LANGUAGES_FILE = "${dotfilesPath}/config/rou/languages.txt";
     EDITOR = "nvim";
     MANPAGER = "nvim +Man!";
-    VALE_CONFIG_PATH = "${dotfilesPath}/config/vale/.vale.ini";
   };
 
   # Common CLI tools (used by both NixOS and Darwin)

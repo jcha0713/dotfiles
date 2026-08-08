@@ -4,8 +4,6 @@ require("lint").linters_by_ft = {
   javascriptreact = { "oxlint" },
   typescriptreact = { "oxlint" },
   nix = { "nix" },
-  markdown = { "vale" },
-  txt = { "vale" },
 }
 vim.api.nvim_create_autocmd({
   "BufEnter",
