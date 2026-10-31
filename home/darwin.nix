@@ -1,4 +1,9 @@
-{ config, pkgs, ... }:
+{
+  config,
+  pkgs,
+  inputs,
+  ...
+}:
 
 {
   programs.home-manager.enable = true;
@@ -64,6 +69,8 @@
       espanso
       mos
       wezterm
+
+      inputs.llm-agents.packages.${pkgs.system}.pi
     ];
   };
 

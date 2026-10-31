@@ -321,7 +321,6 @@ in
       vim
       wl-clipboard
       xwayland-satellite
-      wezterm
       ghostty
       tailscale
       fuzzel
