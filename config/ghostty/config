@@ -1,8 +1,9 @@
 # Ghostty configuration
 # https://ghostty.org/docs/config
 
-# Open zellij through a login shell so Nix/Home Manager PATH is loaded.
-command = /bin/zsh -lc 'exec zellij -l welcome'
+# # Open zellij through a login shell so Nix/Home Manager PATH is loaded.
+# # Note: use bare `zsh` (PATH lookup) — /bin/zsh doesn't exist on NixOS.
+# command = zsh -lc 'exec zellij -l welcome'
 
 # Clipboard
 clipboard-read = allow
