@@ -14,6 +14,7 @@ vim.o.conceallevel = 0
 -- split
 vim.o.splitbelow = true
 vim.o.splitright = true
+vim.o.laststatus = 3
 vim.opt.switchbuf:append("uselast")
 
 -- search
