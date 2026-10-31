@@ -65,7 +65,7 @@ input {
         // off
         // natural-scroll
         // Increase pointer speed (range: -1.0 to 1.0, default: 0.0)
-        accel-speed 0.5
+        accel-speed 0.7
         // Use "flat" for 1:1 tracking without acceleration
         // accel-profile "flat"
         // scroll-method "on-button-down"
