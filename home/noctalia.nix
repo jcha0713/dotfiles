@@ -1,3 +1,4 @@
+# see: https://docs.noctalia.dev/noctalia/configuration/
 {
   inputs,
   ...
@@ -9,6 +10,56 @@
   programs.noctalia = {
     enable = true;
     systemd.enable = true;
+
+    settings = {
+      bar.default = {
+        position = "bottom";
+        auto_hide = true;
+        reserve_space = false;
+        background_opacity = 0.75;
+        widget_spacing = 12;
+        start = [
+          "launcher"
+          "wallpaper"
+          "workspaces"
+          "media"
+        ];
+        center = [
+          "clock"
+        ];
+        end = [
+          "tray"
+          "notifications"
+          "network"
+          "bluetooth"
+          "volume"
+          "brightness"
+          "battery"
+          "control-center"
+          "session"
+        ];
+      };
+
+      wallpaper = {
+        fill_mode = "crop";
+        directory = "/home/joohoon/Pictures/";
+
+        default = {
+          path = "/home/joohoon/Pictures/Wallpapers/fruits.jpeg";
+        };
+      };
+
+      theme = {
+        mode = "dark";
+        source = "wallpaper";
+        wallpaper_scheme = "soft";
+      };
+
+      location = {
+        address = "Seoul";
+      };
+    };
+
     #
     # # ============================================================================
     # # ALL DEFAULT SETTINGS (from official docs)
