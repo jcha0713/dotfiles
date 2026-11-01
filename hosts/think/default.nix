@@ -202,9 +202,6 @@ in
 
   programs.zsh.enable = true;
 
-  # NOTE: Noctalia shell replaces waybar, mako, swaybg, and idle management
-  # These services are now handled by Noctalia
-
   # Enable the GNOME Desktop Environment.
   services.xserver.displayManager.gdm.enable = true;
   services.xserver.desktopManager.gnome.enable = true;
@@ -356,6 +353,13 @@ in
     "nix-command"
     "flakes"
   ];
+
+  nix.settings = {
+    extra-substituters = [ "https://noctalia.cachix.org" ];
+    extra-trusted-public-keys = [
+      "noctalia.cachix.org-1:pCOR47nnMEo5thcxNDtzWpOxNFQsBRglJzxWPp3dkU4="
+    ];
+  };
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
