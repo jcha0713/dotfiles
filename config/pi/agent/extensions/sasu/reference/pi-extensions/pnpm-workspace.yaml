@@ -1,4 +1,0 @@
-packages:
-  - "extensions/*"
-  - "packages/*"
-  - "themes/*"

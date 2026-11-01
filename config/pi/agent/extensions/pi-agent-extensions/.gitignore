@@ -1,7 +1,0 @@
-# npm dependencies
-node_modules/
-package-lock.json
-
-# Temporary files
-*.log
-*.tmp
