@@ -1,5 +1,5 @@
 vim.api.nvim_create_autocmd("LspAttach", {
-  group = vim.api.nvim_create_augroup("neuvim.lsp.ts_ls", { clear = true }),
+  group = vim.api.nvim_create_augroup("neuvim.lsp.tsc", { clear = true }),
   callback = function(event)
     local client = vim.lsp.get_client_by_id(event.data.client_id)
 
@@ -16,7 +16,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
       client:exec_cmd({
         title = "Organize Imports",
         command = "_typescript.organizeImports",
-        arguments = { vim.api.nvim_buf_get_name(event.buf) }
+        arguments = { vim.api.nvim_buf_get_name(event.buf) },
       })
     end, {
       buffer = event.buf,
@@ -32,9 +32,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
       buffer = event.buf,
       desc = "TypeScript source definition",
     })
-  end
+  end,
 })
 
-return {
-  cmd = { 'true' },
-}
+return {}

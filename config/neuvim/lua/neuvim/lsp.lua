@@ -22,5 +22,5 @@ vim.lsp.enable({
   "lua_ls",
   "nixd",
   "rust_analyzer",
-  "ts_ls",
+  "tsc",
 })
