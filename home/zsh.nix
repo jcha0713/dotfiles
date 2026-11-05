@@ -1,4 +1,9 @@
-{ config, pkgs, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
 
 let
   fdCommand = "fd --exclude '.git' --exclude 'node_modules' --exclude 'lua-language-server'";
@@ -19,9 +24,9 @@ in
         source ${config.home.homeDirectory}/dotfiles/config/zsh/zk.zsh
         source ${config.home.homeDirectory}/dotfiles/config/zsh/functions.zsh
 
-        # bob-managed Neovim fallback: keep nvim reachable even if a shell
-        # inherits stale Home Manager session guard variables.
-        export PATH="$HOME/.local/share/bob/nvim-bin:$PATH"
+        # bob nvim: ensure the active bob proxy is on PATH.
+        ${lib.optionalString pkgs.stdenv.hostPlatform.isDarwin ''export PATH="$HOME/Library/Application Support/bob/nvim-bin:$PATH"''}
+        ${lib.optionalString pkgs.stdenv.hostPlatform.isLinux ''export PATH="$HOME/.local/share/bob/nvim-bin:$PATH"''}
 
         eval "$(wt config shell init zsh)"
 

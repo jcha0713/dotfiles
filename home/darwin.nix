@@ -21,7 +21,7 @@
     };
 
     sessionPath = [
-      "/Users/jcha0713/.local/share/bob/nvim-bin"
+      "/Users/jcha0713/Library/Application Support/bob/nvim-bin"
     ];
 
     activation.installWeztermTerminfo = ''
