@@ -26,6 +26,7 @@ let
   ];
 
   misc = with pkgs; [
+    typescript
     tree-sitter
     rustup
     sqlite
