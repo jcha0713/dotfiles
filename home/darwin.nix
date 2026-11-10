@@ -87,6 +87,9 @@
     hammerspoon = {
       source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/dotfiles/config/hammerspoon";
     };
+    rex = {
+      source = config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/dotfiles/config/rex";
+    };
   };
 
   imports = [
@@ -98,6 +101,10 @@
   programs.zsh.initContent =
     # zsh
     ''
+      if [ -n "$REX_BIN_DIR" ]; then
+        export PATH="$REX_BIN_DIR:$PATH"
+      fi
+
       eval "$(fnm env --use-on-cd --shell zsh)"
 
       # POKE CLI API
