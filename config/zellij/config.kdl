@@ -2,7 +2,8 @@ keybinds clear-defaults=true {
     shared_among "locked" "scroll" {
         bind "Ctrl a" { SwitchToMode "tmux"; }
         bind "Alt n" { NewPane; }
-        bind "Alt N" { NewPane "stacked"; }
+        bind "Alt N" { NewPane "down"; }
+        bind "Alt s" { NewPane "stacked"; }
         bind "Alt t" { NewTab; }
         bind "Alt x" { CloseFocus; }
         bind "Alt z" { ToggleFocusFullscreen; }
