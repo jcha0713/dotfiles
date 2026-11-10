@@ -15,6 +15,10 @@ let
     owner = "joohoon";
     mode = "0400";
   };
+
+  overlays = [
+    (import ../../overlays)
+  ];
 in
 {
   imports = [
@@ -176,6 +180,7 @@ in
     type = "kime";
   };
 
+  nixpkgs.overlays = overlays;
   # Environment variables for Wayland apps
   environment.variables = {
     # Kime input method (no GTK/QT_IM_MODULE needed for kime)

@@ -5,8 +5,8 @@ engine:
   global_hotkeys:
     M-Space:
       behavior: !Toggle
-      - Hangul
-      - Latin
+        - Hangul
+        - Latin
       result: Consume
   hangul:
     layout: dubeolsik

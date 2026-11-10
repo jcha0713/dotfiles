@@ -1,13 +1,13 @@
-self: super: {
-  bun = super.bun.overrideAttrs (
-    import ./packages/bun.nix {
-      inherit (super) fetchurl stdenv;
+final: prev: {
+  nb = prev.nb.overrideAttrs (
+    import ./packages/nb.nix {
+      inherit (prev) fetchFromGitHub;
     }
   );
 
-  nb = super.nb.overrideAttrs (
-    import ./packages/nb.nix {
-      inherit (super) fetchFromGitHub;
+  kime = prev.kime.overrideAttrs (
+    import ./packages/kime.nix {
+      inherit (prev) makeWrapper wayland;
     }
   );
 }
